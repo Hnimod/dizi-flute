@@ -207,6 +207,7 @@ Mary Had a Little Lamb
 3 2 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5 - |
 3 2 1 2 | 3 3 3 3 | 2 2 3 2 | 1 - - - ||
 ```
+> **Listen:** [YouTube search: dizi Mary Had a Little Lamb](https://www.youtube.com/results?search_query=dizi+Mary+Had+a+Little+Lamb)
 
 ### Song 2: Hot Cross Buns
 Very simple, only 3 notes (1, 2, 3).
@@ -217,6 +218,7 @@ Hot Cross Buns
 
 3 2 1 - | 3 2 1 - | 1 1 2 2 | 3 2 1 - ||
 ```
+> **Listen:** [YouTube search: dizi Hot Cross Buns](https://www.youtube.com/results?search_query=dizi+Hot+Cross+Buns+beginner)
 
 ### Song 3: Lightly Row
 ```
@@ -228,6 +230,7 @@ Lightly Row
 2 2 2 2 | 2 3 4 - | 3 3 3 3 | 3 4 5 - |
 5 3 3 3 | 4 2 2 2 | 1 3 5 5 | 1 - - - ||
 ```
+> **Listen:** [YouTube search: dizi Lightly Row](https://www.youtube.com/results?search_query=dizi+Lightly+Row)
 
 ### Song 4: Simple Chinese Melody — 找朋友 (Finding Friends)
 A well-known Chinese children's song.
@@ -241,6 +244,7 @@ A well-known Chinese children's song.
 1 1 | 1 3 | 5 5 | 5 3 |
 4 2 | 3 1 | 2 1 | 1 - ||
 ```
+> **Listen:** [YouTube search: 找朋友 笛子](https://www.youtube.com/results?search_query=找朋友+笛子)
 
 ### Song 5: 上学歌 (Going to School Song)
 Another Chinese children's classic using notes 1-5.
@@ -254,6 +258,7 @@ Another Chinese children's classic using notes 1-5.
 3 4 | 5 5 | 3 4 | 5 - |
 5 4 | 3 1 | 2 3 | 1 - ||
 ```
+> **Listen:** [YouTube search: 上学歌 笛子](https://www.youtube.com/results?search_query=上学歌+笛子)
 
 ---
 

@@ -172,6 +172,8 @@ Allegro ♩=132
 
 **Note:** This is a simplified teaching version. The full piece is longer and more ornamented. Work on the complete version from the CCOM exam book once you've mastered these sections.
 
+> **Listen:** [YouTube search: 姑苏行 笛子独奏](https://www.youtube.com/results?search_query=姑苏行+笛子独奏) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/41/414121.htm)
+
 ### Song 2: 小放牛 (Little Cowherd)
 Grade 3-4, northern style. Playful and lively, based on a Hebei folk melody.
 
@@ -187,6 +189,8 @@ Allegretto ♩=120
 ```
 Use double tonguing in fast passages. Bright, energetic character.
 
+> **Listen:** [YouTube search: 小放牛 笛子独奏](https://www.youtube.com/results?search_query=小放牛+笛子独奏)
+
 ### Song 3: 牧笛 (Shepherd's Flute)
 A lyrical piece by Liu Zhi (1958). Tests tone quality and breath control.
 
@@ -200,6 +204,7 @@ Andante ♩=66
 1 - 6̣ 1 | 2 3 5 3 | 2 - 1 2 | 3 5 6 - |
 5 3 2 1 | 6̣ 5̣ 6̣ 1 | 2 - 1 6̣ | 5̣ - - - ||
 ```
+> **Listen:** [YouTube search: 牧笛 刘森 笛子](https://www.youtube.com/results?search_query=牧笛+刘森+笛子) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com/htm/k9/525126.htm)
 
 ### Song 4: 喜相逢 (Happy Reunion)
 Grade 4-5, northern style by Feng Zicun. Energetic, showcases double tonguing. Based on a Inner Mongolian folk melody depicting the joy of friends reuniting.
@@ -222,6 +227,8 @@ Allegro ♩=144
 ```
 Double tongue throughout the fast section.
 
+> **Listen:** [YouTube search: 喜相逢 冯子存 笛子](https://www.youtube.com/results?search_query=喜相逢+冯子存+笛子) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com/htm/uc/232222.htm)
+
 ### Song 5: 扬鞭催马运粮忙 (Whipping the Horse to Transport Grain)
 An energetic northern piece depicting the busy harvest season. Grade 4-5.
 
@@ -235,6 +242,7 @@ Allegro ♩=144
 3 3 | 5 3 2 1 | 6̣ - | 1 2 3 5 |
 6 6 | 5 3 2 1 | 6̣ 5̣ | 6̣ - ||
 ```
+> **Listen:** [YouTube search: 扬鞭催马运粮忙 笛子](https://www.youtube.com/results?search_query=扬鞭催马运粮忙+笛子) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/60/60011.htm)
 
 ### Song 6: 中花六板 (Zhonghua Liuban)
 A traditional Jiangnan silk and bamboo (江南丝竹) ensemble piece. Elegant southern style.
@@ -249,6 +257,7 @@ Andante ♩=60
 3 - 5 3 | 2 - 1 2 | 3 - 5 6 | 5 - 3 2 |
 1 - 6̣ 1 | 2 - 1 6̣ | 5̣ - - - | 0 - - - ||
 ```
+> **Listen:** [YouTube search: 中花六板 笛子](https://www.youtube.com/results?search_query=中花六板+笛子) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/31/315124.htm)
 
 ---
 
@@ -298,6 +307,8 @@ See: [Eason — What Keys Should an Amateur Get?](https://www.easonmusicschool.c
 
 ## Vietnamese-Familiar Chinese Songs (越南常見曲目)
 
+> Note: The jianpu below is approximate. Use the YouTube and jianpu source links to verify the exact melody.
+
 ### Song 7: 上海滩 (Bến Thượng Hải / The Bund)
 
 Theme of the 1Mo80 Hong Kong TVB drama "上海滩." Sung by Frances Yip. Sweeping, dramatic melody — iconic across all of Asia.
@@ -314,6 +325,7 @@ Andante ♩=80
 0 0 0 5̣ | 1 - 2 3 | 2 - 1 6̣ | 1 - - - |
 0 0 0 1 | 3 - 5 6 | 5 - 3 2 | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 上海滩 笛子](https://www.youtube.com/results?search_query=上海滩+笛子) | **Jianpu source:** [dizijun.com](http://www.dizijun.com/jianpu/346.html)
 
 ### Song 8: 枉凝眉 (Uổng Ngưng Mi / Vain Knitting of Brows)
 
@@ -333,6 +345,8 @@ Adagio ♩=56
 ```
 Very slow, deeply expressive. Rich vibrato on every held note. Think of longing and loss.
 
+> **Listen:** [YouTube search: 枉凝眉 笛子 红楼梦](https://www.youtube.com/results?search_query=枉凝眉+笛子+红楼梦) | **Jianpu source:** [dizijun.com](http://www.dizijun.com/jianpu/150.html)
+
 ### Song 9: 琵琶语 (Tỳ Bà Ngữ / Pipa Language)
 
 By Lin Hai (林海), from the album "琵琶相" (2003). An instrumental piece originally for pipa, beautifully adapted for dizi/sáo. Extremely popular among Vietnamese sáo players on YouTube.
@@ -350,6 +364,8 @@ Adagio ♩=66
 5 - 3 2 | 1 - 6̣ 1 | 2 - 1 6̣ | 5̣ - - - ||
 ```
 Flowing, meditative. Let each phrase breathe. Slides (滑音) between notes add beauty.
+
+> **Listen:** [YouTube search: 琵琶语 笛子](https://www.youtube.com/results?search_query=琵琶语+笛子) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com/htm/0l/469940.htm)
 
 ---
 

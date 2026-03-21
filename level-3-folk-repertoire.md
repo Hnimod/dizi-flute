@@ -184,7 +184,7 @@ The most famous Chinese folk song. Pentatonic, lyrical, beautiful. This is a mil
 1=D  2/4
 Andante ♩=72
 
-3 3 | 5 6̇ 1̇ 6 | 5 - | 5 6̇ 1̇ 6 |
+3 3 | 5 6 1̇ 6 | 5 - | 5 6 1̇ 6 |
 5 - | 5 3 | 5 6 5 3 | 2 - |
 1 6̣ | 5̣ 6̣ 1 - | 2 3 | 2 1 6̣ 5̣ |
 6̣ 1 | 2 - | 3 5 | 3 2 1 2 |
@@ -198,6 +198,8 @@ Andante ♩=72
 - Keep the tempo slow and flowing — this is a lyrical song
 - Add grace notes on repeated notes once you're comfortable with the melody
 
+> **Listen:** [YouTube search: 茉莉花 笛子教学](https://www.youtube.com/results?search_query=茉莉花+笛子教学) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com)
+
 ### Song 2: 康定情歌 (Kangding Love Song)
 
 A famous Sichuan folk song about love. Lively and joyful.
@@ -207,12 +209,14 @@ A famous Sichuan folk song about love. Lively and joyful.
 1=G  2/4
 Moderato ♩=108
 
-5 5̇ | 6̇ 5̇ | 3 5 | 6 1̇ | 5 - |
+5 5 | 6 5 | 3 5 | 6 1̇ | 5 - |
 3 2 | 3 5 - | 2 1 | 6̣ 1 | 2 - |
-5 5̇ | 6̇ 5̇ | 3 5 | 6 1̇ | 5 - |
+5 5 | 6 5 | 3 5 | 6 1̇ | 5 - |
 3 2 | 1 6̣ | 5̣ - - ||
 ```
 *Note: Written in 1=G. On a D-key dizi, use 筒音作2 fingering, or simply play with D-key fingerings for practice.*
+
+> **Listen:** [YouTube search: 康定情歌 笛子](https://www.youtube.com/results?search_query=康定情歌+笛子)
 
 ### Song 3: 南泥湾 (Nanniwan)
 
@@ -228,6 +232,7 @@ Moderato ♩=100
 0 5 3 | 5 6 | 1̇ 6 | 5 - | 0 5 3 | 5 6 | 5 - |
 3 2 | 1 6̣ | 5̣ 6̣ | 1 - - ||
 ```
+> **Listen:** [YouTube search: 南泥湾 笛子](https://www.youtube.com/results?search_query=南泥湾+笛子)
 
 ### Song 4: Scarborough Fair
 
@@ -246,6 +251,8 @@ Andante ♩=80
 
 **Note:** This uses 3/4 time (waltz feel). Count: ONE two three | ONE two three.
 
+> **Listen:** [YouTube search: dizi Scarborough Fair](https://www.youtube.com/results?search_query=dizi+Scarborough+Fair)
+
 ### Song 5: 送别 (Farewell)
 
 Based on the melody of "Dreaming of Home and Mother" by J.P. Ordway. One of China's most cherished songs, famously used in the film "城南旧事."
@@ -260,6 +267,7 @@ Andante ♩=72
 5 3 5 | 1̇ - 7 | 6 1̇ 6 | 5 - - |
 5 2 3 | 1 - - | 1 - - | 0 - - ||
 ```
+> **Listen:** [YouTube search: 送别 笛子 李叔同](https://www.youtube.com/results?search_query=送别+笛子+李叔同)
 
 ### Song 6: 小燕子 (Little Swallow)
 
@@ -274,6 +282,7 @@ A classic Chinese children's song from the 1950s film. Very singable melody.
 2 3 | 4 3 | 2 - | 5 3 |
 4 2 | 1 - ||
 ```
+> **Listen:** [YouTube search: 小燕子 笛子](https://www.youtube.com/results?search_query=小燕子+笛子)
 
 ### Song 7: 彝族舞曲 (Yi Dance Melody — Simplified)
 
@@ -287,6 +296,7 @@ A simplified version of a Yi ethnic minority melody. Great introduction to ethni
 3 5 6 | 5 3 2 | 1 6̣ 1 | 2 - - |
 3 2 1 | 6̣ - 5̣ | 6̣ 1 2 | 1 - - ||
 ```
+> **Listen:** [YouTube search: 彝族舞曲 笛子](https://www.youtube.com/results?search_query=彝族舞曲+笛子)
 
 ---
 
@@ -320,6 +330,8 @@ Most songs you've learned so far are in Gong mode (home note = 1) or Yu mode (ho
 
 ## Vietnamese-Familiar Chinese Songs (越南常見曲目)
 
+> Note: The jianpu below is approximate. Use the YouTube and jianpu source links to verify the exact melody.
+
 ### Song 8: 但愿人长久 (Đản Nguyện Nhân Trường Cửu / Wishing We Last Forever)
 
 Based on Su Shi's (苏轼) Song dynasty poem "水调歌头" (1076 AD). Teresa Teng's 1983 recording made it immortal. Lyrical and beautiful — a must-learn for any Chinese flute player.
@@ -337,6 +349,7 @@ Adagio ♩=66
 0 0 0 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
 0 0 0 5 | 3 - 2 1 | 6̣ - 1 2 | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 但愿人长久 笛子 邓丽君](https://www.youtube.com/results?search_query=但愿人长久+笛子+邓丽君)
 
 ### Song 9: 故乡的原风景 (Cố Hương Đích Nguyên Phong Cảnh / Original Scenery of Hometown)
 
@@ -354,6 +367,7 @@ Adagio ♩=66
 3 - 5 6 | 5 - - - | 3 - 2 3 | 2 - - - |
 6̣ - 1 2 | 1 - - - | 6̣ - 5̣ 6̣ | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 故乡的原风景 笛子](https://www.youtube.com/results?search_query=故乡的原风景+笛子) | **Jianpu source:** [dizijun.com](http://www.dizijun.com)
 
 ### Song 10: 渡情 (Độ Tình / Crossing Love)
 
@@ -371,6 +385,7 @@ Moderato ♩=108
 3 5 | 6 5 | 3 2 | 1 - |
 6̣ 1 | 2 3 | 2 1 | 6̣ - ||
 ```
+> **Listen:** [YouTube search: 渡情 笛子 新白娘子传奇](https://www.youtube.com/results?search_query=渡情+笛子+新白娘子传奇)
 
 ---
 

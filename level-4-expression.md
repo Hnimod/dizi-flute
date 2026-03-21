@@ -317,6 +317,8 @@ Moderato ♩=96
 
 **Performance notes:** Add vibrato on the held notes (6 -, 1 -, etc.). Keep the rhythm steady and dignified. The melody should feel proud and sweeping.
 
+> **Listen:** [YouTube search: 龙的传人 笛子](https://www.youtube.com/results?search_query=龙的传人+笛子)
+
 ### Song 2: 女儿情 (Daughter's Love)
 
 From the 1986 TV series "Journey to the West." One of the most beloved dizi pieces --- tender and expressive. Perfect for practicing vibrato on long notes.
@@ -337,6 +339,8 @@ Andante ♩=72
 
 **Performance notes:** Add vibrato on ALL held notes (every "-" mark). Add grace notes (叠音) before melody notes for authentic Chinese flavor. Play tenderly --- this is a love song. Let phrases breathe naturally.
 
+> **Listen:** [YouTube search: 女儿情 笛子教学](https://www.youtube.com/results?search_query=女儿情+笛子教学) | **Jianpu source:** [dizijun.com](http://www.dizijun.com/jianpu/41.html)
+
 ### Song 3: 彩云追月 (Colorful Clouds Chasing the Moon)
 
 A famous Cantonese music piece by Ren Guang (1935). Elegant, flowing, and dreamy --- like watching clouds drift across a moonlit sky.
@@ -354,6 +358,8 @@ Andante ♩=66
 ```
 
 **Performance notes:** This piece is all about flow. Use legato phrasing (minimal tonguing within phrases). Add subtle slides between notes where natural. Vibrato on held notes. The tempo is slow --- do not rush.
+
+> **Listen:** [YouTube search: 彩云追月 笛子](https://www.youtube.com/results?search_query=彩云追月+笛子) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com)
 
 ### Song 4: 牧羊曲 (Shepherd's Song)
 
@@ -373,6 +379,8 @@ Andante ♩=76
 
 **Performance notes:** Light and gentle throughout. Add 叠音 (upper grace notes) sparingly on downbeat melody notes. Use breath vibrato on held notes. Imagine a peaceful mountainside scene.
 
+> **Listen:** [YouTube search: 牧羊曲 笛子 少林寺](https://www.youtube.com/results?search_query=牧羊曲+笛子+少林寺)
+
 ### Song 5: 天路 (Road to Heaven)
 
 A Tibetan-influenced melody by Qu Yuan (2001). Sweeping and majestic --- celebrating the Qinghai-Tibet railway. Big, open phrases.
@@ -389,6 +397,8 @@ Moderato ♩=96
 ```
 
 **Performance notes:** Play with a sense of grandeur. Full, strong tone. Vibrato on all sustained notes. Each phrase builds slightly, then resolves. Think wide open landscapes and big skies.
+
+> **Listen:** [YouTube search: 天路 笛子](https://www.youtube.com/results?search_query=天路+笛子)
 
 ### Song 6: 沧海一声笑 (Laughing Across the Ocean)
 
@@ -407,6 +417,8 @@ Allegro ♩=132
 ```
 
 **Performance notes:** The descending whole notes should ring out boldly --- full vibrato, strong tone. The faster sections should be crisp and rhythmic. This is a heroic song --- play it with confidence and swagger.
+
+> **Listen:** [YouTube search: 沧海一声笑 笛子 笑傲江湖](https://www.youtube.com/results?search_query=沧海一声笑+笛子+笑傲江湖)
 
 ---
 
@@ -481,6 +493,8 @@ Now go back and play songs from Level 2-3 with your new techniques. The same not
 
 ## Vietnamese-Familiar Chinese Songs (越南常見曲目)
 
+> Note: The jianpu below is approximate. Use the YouTube and jianpu source links to verify the exact melody.
+
 ### Song 7: 一剪梅 (Nhất Tiễn Mai / A Spray of Plum Blossom)
 
 From the 1Mo84 TV drama. Went viral in Vietnam ("Xue Hua Piao Piao" meme). Lyrical melody, perfect for practicing vibrato on long notes.
@@ -499,6 +513,8 @@ Andante ♩=72
 ```
 Add vibrato on all held notes. Grace notes (叠音) before melody peaks.
 
+> **Listen:** [YouTube search: 一剪梅 笛子](https://www.youtube.com/results?search_query=一剪梅+笛子) | **Jianpu source:** [dizijun.com](http://www.dizijun.com)
+
 ### Song 8: 千年等一回 (Thiên Niên Đẳng Nhất Hồi / A Thousand Years of Waiting)
 
 Main theme of "新白娘子传奇" (New Legend of White Snake, 1992). Dramatic and emotional — one of the most iconic Chinese drama themes in Vietnam.
@@ -515,6 +531,7 @@ Moderato ♩=88
 3 - 5 6 | 1̇ - 6 5 | 6 - 5 3 | 2 - - - |
 1 - 6̣ 1 | 2 - 3 2 | 1 - - - | 0 - - - ||
 ```
+> **Listen:** [YouTube search: 千年等一回 笛子](https://www.youtube.com/results?search_query=千年等一回+笛子) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com)
 
 ### Song 9: 铁血丹心 (Thiết Huyết Đan Tâm / Iron Blood, Loyal Heart)
 
@@ -533,6 +550,8 @@ Andante ♩=80
 2 - 3 5 | 6 - 1̇ 6 | 5 - 3 2 | 1 - - - ||
 ```
 Practice with bold, heroic tone. Use dynamics: build to forte in climactic phrases, pull back in tender passages.
+
+> **Listen:** [YouTube search: 铁血丹心 笛子 射雕英雄传](https://www.youtube.com/results?search_query=铁血丹心+笛子+射雕英雄传)
 
 ---
 

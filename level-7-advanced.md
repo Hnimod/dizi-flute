@@ -128,6 +128,8 @@ Allegro ♩=144
 ```
 Spring arrives — energy, joy, rebirth. The contrast with the slow section is dramatic. Clean tonguing, rhythmic precision, building to an exhilarating climax. The orchid blooms at last.
 
+> **Listen:** [YouTube search: 幽兰逢春 赵松庭 笛子](https://www.youtube.com/results?search_query=幽兰逢春+赵松庭+笛子) | **Jianpu source:** [quputu.com](https://www.quputu.com/qiyuequpu/dixiao/3267.html)
+
 ### Song 2: 三五七 (San Wu Qi)
 A Zhejiang opera (婺剧) style piece arranged by Zhao Songting. Named after its rhythmic pattern (groups of 3, 5, and 7). Grade 7.
 
@@ -156,6 +158,8 @@ Vivace ♩=152
 6̣ - | 0 0 ||
 ```
 The rhythmic groups of 3, 5, 7 (三五七) create the unique asymmetric drive of this piece. Fast, brilliant, theatrical. This is opera music — dramatic and extroverted.
+
+> **Listen:** [YouTube search: 三五七 赵松庭 笛子](https://www.youtube.com/results?search_query=三五七+赵松庭+笛子) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/40/40888.htm)
 
 ### Song 3: 秦川抒怀 (Reflections on Qinchuan)
 By Ma Di (马迪). A northern masterpiece evoking the landscapes of Shaanxi province. Grade 8. Uses Shang mode (商调式) — the Shaanxi regional character.
@@ -202,6 +206,8 @@ Vivace ♩=160
 ```
 Northern fire and energy. Double tonguing and flutter tonguing. The fast section captures the vitality of Shaanxi folk life — weddings, festivals, the energy of the people.
 
+> **Listen:** [YouTube search: 秦川抒怀 马迪 笛子](https://www.youtube.com/results?search_query=秦川抒怀+马迪+笛子) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com/htm/tq/16899.htm)
+
 ### Song 4: 愁空山 (Sorrowful Empty Mountain)
 By Guo Wenjing (郭文景, 1992). A contemporary masterwork for dizi and orchestra. Grade 9+. Pushes the instrument to its limits with extended techniques.
 
@@ -223,6 +229,8 @@ pp
 The notation here is a simplified excerpt for familiarization.)
 ```
 This is an aspirational piece. Study the recording by Tang Junqiao (唐俊乔). It represents the frontier of dizi artistry. The opening emerges from near-silence — single notes floating in empty space, like echoes in an empty mountain valley. The piece uses multiphonics, extreme dynamics, flutter tonguing, and techniques that push the dizi beyond its traditional boundaries.
+
+> **Listen:** [YouTube search: 愁空山 唐俊乔 笛子](https://www.youtube.com/results?search_query=愁空山+唐俊乔+笛子)
 
 ### Song 5: 幽兰逢春 — Return to the Reprise
 After learning the full piece, revisit the final section where the slow theme returns transformed:
@@ -335,6 +343,8 @@ At this level, you've gone from knowing nothing about music to playing concert-l
 
 ## Vietnamese-Familiar Chinese Songs (越南常見曲目)
 
+> Note: The jianpu below is approximate. Use the YouTube and jianpu source links to verify the exact melody.
+
 ### Song 5: 梅花三弄 (Mai Hoa Tam Lộng / Three Variations on Plum Blossom)
 
 Ancient guqin piece (古琴曲) dating back to the Jin Dynasty (~300 AD), adapted for dizi. "Three variations" (三弄) refers to the main theme appearing three times in different registers. A classical masterwork representing the noble spirit of the plum blossom blooming in winter.
@@ -363,6 +373,8 @@ Adagio ♩=52
 ```
 The theme must sound the same each time but with different character — fragile in the first variation, bold in the second, peaceful in the return.
 
+> **Listen:** [YouTube search: 梅花三弄 笛子](https://www.youtube.com/results?search_query=梅花三弄+笛子) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/84/84058.htm)
+
 ### Song 6: 二泉映月 (Nhị Tuyền Ánh Nguyệt / Moon Reflected in Two Springs)
 
 By Hua Yanjun / Abing (华彦钧/阿炳), a blind street musician. Originally for erhu, this is one of China's most famous instrumental pieces. Adapted for dizi, it requires extreme emotional depth. The title refers to the Huishan Second Spring in Wuxi.
@@ -381,6 +393,8 @@ Adagio ♩=48
 6̣ - 1 2 | 1 - 6̣ 5̣ | 6̣ - - - | 0 - - - ||
 ```
 This piece is about suffering, perseverance, and beauty in darkness. Play with your deepest emotion. Every note should tell a story.
+
+> **Listen:** [YouTube search: 二泉映月 笛子](https://www.youtube.com/results?search_query=二泉映月+笛子) | **Jianpu source:** [zgmzyq.cn](https://m.zgmzyq.cn/zh/sheet-music/erquan-yingyue-flute.html)
 
 ---
 

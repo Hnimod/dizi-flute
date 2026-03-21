@@ -157,6 +157,7 @@ The perfect Level 2 starter. Uses notes 1-6.
 5 5 4 4 | 3 3 2 - | 5 5 4 4 | 3 3 2 - |
 1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 - ||
 ```
+> **Listen:** [YouTube search: 小星星 笛子教学](https://www.youtube.com/results?search_query=小星星+笛子教学) | **Jianpu source:** [everyonepiano.cn](https://www.everyonepiano.cn)
 
 ### Song 2: 小白菜 (Little White Cabbage)
 A sorrowful Chinese folk song. Pentatonic — uses only 1, 2, 3, 5, 6. Notice: no 4 or 7.
@@ -169,6 +170,7 @@ A sorrowful Chinese folk song. Pentatonic — uses only 1, 2, 3, 5, 6. Notice: n
 3 2 | 1 - | 2 3 | 5 6 |
 5 - | 3 2 | 1 6̣ | 5̣ - ||
 ```
+> **Listen:** [YouTube search: 小白菜 笛子 河北民歌](https://www.youtube.com/results?search_query=小白菜+笛子+河北民歌)
 
 ### Song 3: 世上只有妈妈好 (Only Mama is Good)
 One of the most beloved Chinese songs. From the 1960 film "Mom Loves Me Once More."
@@ -186,6 +188,8 @@ One of the most beloved Chinese songs. From the 1960 film "Mom Loves Me Once Mor
 3 2 | 1 2 | 3 5 | 6 - |
 5 3 | 2 1 | 6̣ - - - ||
 ```
+> **Listen:** [YouTube search: 世上只有妈妈好 笛子](https://www.youtube.com/results?search_query=世上只有妈妈好+笛子)
+
 *Note: This is in 1=C. On a D-key dizi you can play it using 筒音作2 fingering, or just use the same D-key fingerings and it will sound fine for practice.*
 
 ### Song 4: 两只老虎 (Two Tigers / Frère Jacques)
@@ -199,6 +203,7 @@ A well-known children's song. Great for rhythmic confidence.
 5 6 5 4 | 3 - 1 - | 5 6 5 4 | 3 - 1 - |
 1 5̣ 1 - | 1 5̣ 1 - :||
 ```
+> **Listen:** [YouTube search: 两只老虎 笛子](https://www.youtube.com/results?search_query=两只老虎+笛子)
 
 ### Song 5: Ode to Joy (欢乐颂 — Beethoven)
 Uses stepwise motion. Good for smooth finger transitions.
@@ -212,6 +217,7 @@ Ode to Joy (欢乐颂)
 2 2 3 1 | 2 3 4 3 1 | 2 3 4 3 2 | 1 2 5̣ - |
 3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 2 - 1 - ||
 ```
+> **Listen:** [YouTube search: 欢乐颂 笛子 Ode to Joy](https://www.youtube.com/results?search_query=欢乐颂+笛子+Ode+to+Joy)
 
 ### Song 6: 新年好 (Happy New Year)
 Simple and festive.
@@ -225,6 +231,7 @@ Simple and festive.
 4 3 2 | 3 - - | 1 3 2 | 5̣ - - |
 1 3 2 | 5̣ - - | 1 2 3 | 1 - - ||
 ```
+> **Listen:** [YouTube search: 新年好 笛子](https://www.youtube.com/results?search_query=新年好+笛子)
 
 ---
 
@@ -262,6 +269,8 @@ Now that you're playing actual melodies, breath management becomes critical.
 
 Songs popular with Vietnamese sáo trúc players, perfect for beginners.
 
+> Note: The jianpu below is approximate. Use the YouTube and jianpu source links to verify the exact melody.
+
 ### Song 7: 月亮代表我的心 (Nguyệt Lượng Đại Biểu Ngã Đích Tâm / The Moon Represents My Heart)
 
 Teresa Teng (邓丽君), 1977. One of the most beloved Chinese songs worldwide. Simple, pentatonic melody — perfect for Level 2.
@@ -280,6 +289,7 @@ Andante ♩=72
 1 1 1 - | 3 5 6 - | 6 6 5 - | 5 - - - |
 5 5 3 - | 2 3 2 - | 1 1 1 - | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 月亮代表我的心 笛子](https://www.youtube.com/results?search_query=月亮代表我的心+笛子) | **Jianpu source:** [dizijun.com](http://www.dizijun.com)
 
 ### Song 8: 甜蜜蜜 (Điềm Mật Mật / Sweet Honey)
 
@@ -295,6 +305,7 @@ Moderato ♩=96
 3 3 5 6 | 5 - - - | 3 3 2 3 | 5 - - - |
 6 6 5 6 | 1̇ - 6 5 | 3 2 1 2 | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 甜蜜蜜 笛子 邓丽君](https://www.youtube.com/results?search_query=甜蜜蜜+笛子+邓丽君)
 
 ---
 

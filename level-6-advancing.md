@@ -173,6 +173,8 @@ Vivace ♩=160
 ```
 All double tongued (tu-ku-tu-ku). This is the signature fast section. Every note must be clean, even, and precise. Start slow (♩=100) and build speed gradually over weeks.
 
+> **Listen:** [YouTube search: 牧民新歌 简广易 笛子](https://www.youtube.com/results?search_query=牧民新歌+简广易+笛子) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/30/306528.htm)
+
 ### Song 2: 春到湘江 (Spring Arrives at the Xiang River)
 Grade 7-8 by Ning Baosheng (宁保生, 1976). A tour de force depicting the Xiang River in Hunan province awakening in spring. Requires circular breathing for the famous opening cadenza.
 
@@ -199,6 +201,8 @@ Andante ♩=66
 3 5 6 5 | 3 2 1 6̣ | 5̣ - 6̣ 1 | 6̣ - - - ||
 ```
 The river theme — flowing, warm, graceful. Southern-style vibrato (气震音) throughout. Each phrase should feel like the gentle current of a great river. Ornament tastefully with grace notes and slides.
+
+> **Listen:** [YouTube search: 春到湘江 笛子独奏](https://www.youtube.com/results?search_query=春到湘江+笛子独奏) | **Jianpu source:** [jianpuw.com](http://www.jianpuw.com/htm/gi/148208.htm)
 
 ### Song 3: 鹧鸪飞 (Partridge Flying)
 Grade 6-7. A Hunan folk tune depicting partridges in flight. Multiple famous arrangements exist (Zhao Songting's version is most renowned). Southern style.
@@ -229,6 +233,8 @@ Moderato ♩=60
 ```
 The same melody, now ornamented. Each held note from the main theme is now embellished with grace notes and passing tones. This is the liu ban (六板) variation technique in action.
 
+> **Listen:** [YouTube search: 鹧鸪飞 笛子独奏](https://www.youtube.com/results?search_query=鹧鸪飞+笛子独奏) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/48/48520.htm)
+
 ### Song 4: 五梆子 (Wu Bangzi / Five Beats)
 A classic northern piece. Bright, energetic, uses the bangdi. Based on folk melodies from northern opera.
 
@@ -258,6 +264,8 @@ Allegro ♩=140
 ```
 Increased speed and complexity. The development pushes the melody through different registers with rapid scalar passages.
 
+> **Listen:** [YouTube search: 五梆子 笛子独奏](https://www.youtube.com/results?search_query=五梆子+笛子独奏) | **Jianpu source:** [sin80.com](https://www.sin80.com/score/2b5ecc5b)
+
 ### Song 5: 秋湖月夜 (Autumn Lake, Moonlit Night)
 Grade 6 by Yu Xunfa (俞逊发). An atmospheric, introspective piece. Showcases tone color, dynamics, and rubato. Modern classic.
 
@@ -285,6 +293,8 @@ Adagio ♩=48
 ```
 Extremely slow, meditative. Each note is a world of its own. Dynamic range from ppp to mp — never loud. The tone should be pure, clear, like moonlight reflected in still water. This is a piece about atmosphere and yi jing (意境) — artistic conception.
 
+> **Listen:** [YouTube search: 秋湖月夜 俞逊发 笛子](https://www.youtube.com/results?search_query=秋湖月夜+俞逊发+笛子) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/84/84900.htm)
+
 ---
 
 ## Studying the Masters
@@ -306,6 +316,8 @@ At this level, deep listening becomes critical. Study these performers:
 
 ## Vietnamese-Familiar Chinese Songs (越南常見曲目)
 
+> Note: The jianpu below is approximate. Use the YouTube and jianpu source links to verify the exact melody.
+
 ### Song 6: 凉凉 (Lương Lương / Cold Cold)
 
 Theme of "三生三世十里桃花" (Eternal Love, 2017), by Zhang Bichen and Aska Yang. Modern Chinese-style ballad with wide range and dramatic dynamics. Hugely popular on Vietnamese sáo channels.
@@ -323,6 +335,7 @@ Andante ♩=72
 5 - 3 5 | 6 - 5 3 | 2 - 1 6̣ | 5̣ - - - |
 6̣ - 1 2 | 3 - 5 3 | 2 - 1 2 | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 凉凉 笛子](https://www.youtube.com/results?search_query=凉凉+笛子) | **Jianpu source:** [dizijun.com](http://www.dizijun.com/jianpu/182.html)
 
 ### Song 7: 菊花台 (Cúc Hoa Đài / Chrysanthemum Terrace)
 
@@ -341,6 +354,7 @@ Andante ♩=76
 3 - 5 6 | 1̇ - 6 5 | 3 - 2 1 | 2 - - - |
 6̣ - 1 2 | 3 - 2 1 | 6̣ - 5̣ 6̣ | 1 - - - ||
 ```
+> **Listen:** [YouTube search: 菊花台 笛子 周杰伦](https://www.youtube.com/results?search_query=菊花台+笛子+周杰伦) | **Jianpu source:** [jianpu.cn](http://www.jianpu.cn/pu/11/111093.htm)
 
 ### Song 8: 半壶纱 (Bán Hồ Sa / Half Pot of Gauze)
 
@@ -360,6 +374,8 @@ Adagio ♩=66
 5̣ - - - | 0 - - - ||
 ```
 Play with extreme gentleness. Like incense smoke rising — unhurried, floating.
+
+> **Listen:** [YouTube search: 半壶纱 笛子](https://www.youtube.com/results?search_query=半壶纱+笛子) | **Jianpu source:** [dizijun.com](http://www.dizijun.com/jianpu/153.html)
 
 ---
 
