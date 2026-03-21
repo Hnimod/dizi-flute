@@ -4,6 +4,31 @@ Reference audio for all songs and exercises in the Dizi Flute Learning Course. E
 
 ## How to Play MIDI Files
 
+### macOS (Recommended): TiMidity++
+
+Install via Homebrew:
+```bash
+brew install timidity
+```
+
+Play a file:
+```bash
+timidity midi/level-2/05-xiao-xing-xing.mid
+```
+
+Adjust tempo with `-T` (percentage — 100 = normal):
+```bash
+timidity -T 50 midi/level-2/05-xiao-xing-xing.mid   # Half speed (practice)
+timidity -T 150 midi/level-3/06-jasmine-flower.mid    # 1.5x speed
+```
+
+Play all files in a level:
+```bash
+timidity midi/level-1/*.mid
+```
+
+### Other Platforms
+
 | Platform | Player |
 |----------|--------|
 | macOS | GarageBand (built-in), QuickTime, or VLC |
@@ -11,8 +36,6 @@ Reference audio for all songs and exercises in the Dizi Flute Learning Course. E
 | iOS | GarageBand |
 | Android | MIDI Player by Xequte |
 | Web | [Signal (free)](https://signal.vercel.app/) or [Online MIDI Player](https://onlinesequencer.net/import) |
-
-**Tip:** Most MIDI players let you adjust tempo — slow it down for practice, speed up as you improve.
 
 ## File Organization
 
