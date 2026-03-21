@@ -318,6 +318,62 @@ Most songs you've learned so far are in Gong mode (home note = 1) or Yu mode (ho
 
 ---
 
+## Vietnamese-Familiar Chinese Songs (越南常見曲目)
+
+### Song 8: 但愿人长久 (Đản Nguyện Nhân Trường Cửu / Wishing We Last Forever)
+
+Based on Su Shi's (苏轼) Song dynasty poem "水调歌头" (1076 AD). Teresa Teng's 1983 recording made it immortal. Lyrical and beautiful — a must-learn for any Chinese flute player.
+
+```
+但愿人长久 (Wishing We Last Forever)
+1=D  4/4
+Adagio ♩=66
+
+0 0 0 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
+0 0 0 1 | 2 - 3 5 | 5 - 3 2 | 3 - - - |
+0 0 0 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
+0 0 0 5 | 6 - 1̇ 6 | 5 - 3 5 | 6 - - - |
+1̇ - 6 5 | 6 - 5 3 | 2 - 3 2 | 1 - - - |
+0 0 0 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
+0 0 0 5 | 3 - 2 1 | 6̣ - 1 2 | 1 - - - ||
+```
+
+### Song 9: 故乡的原风景 (Cố Hương Đích Nguyên Phong Cảnh / Original Scenery of Hometown)
+
+By Muneyuki Sou (宗次郎), Japanese ocarina piece. Extremely popular among Vietnamese sáo trúc players. Pentatonic, gentle, melancholic — evokes homesickness.
+
+```
+故乡的原风景 (Original Scenery of Hometown)
+1=D  4/4
+Adagio ♩=66
+
+3 - 5 6 | 5 - - - | 3 - 2 3 | 2 - - - |
+6̣ - 1 2 | 1 - - - | 6̣ - 5̣ 6̣ | 1 - - - |
+3 - 5 6 | 5 - - - | 3 - 2 3 | 5 - - - |
+6 - 5 3 | 2 - - - | 1 - 6̣ 1 | 2 - - - |
+3 - 5 6 | 5 - - - | 3 - 2 3 | 2 - - - |
+6̣ - 1 2 | 1 - - - | 6̣ - 5̣ 6̣ | 1 - - - ||
+```
+
+### Song 10: 渡情 (Độ Tình / Crossing Love)
+
+Opening theme of "新白娘子传奇" (New Legend of White Snake, 1992). Joyful, lively. Very well-known across Asia.
+
+```
+渡情 (Crossing Love)
+1=D  2/4
+Moderato ♩=108
+
+3 5 | 6 5 | 3 2 | 1 - |
+6̣ 1 | 2 3 | 5 3 | 2 - |
+2 3 | 5 6 | 5 3 | 2 1 |
+6̣ 1 | 2 1 | 6̣ 5̣ | 6̣ - |
+3 5 | 6 5 | 3 2 | 1 - |
+6̣ 1 | 2 3 | 2 1 | 6̣ - ||
+```
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 茉莉花 jasmine flower tutorial jianpu`

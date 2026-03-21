@@ -296,6 +296,63 @@ See: [Eason — What Keys Should an Amateur Get?](https://www.easonmusicschool.c
 
 ---
 
+## Vietnamese-Familiar Chinese Songs (越南常見曲目)
+
+### Song 7: 上海滩 (Bến Thượng Hải / The Bund)
+
+Theme of the 1Mo80 Hong Kong TVB drama "上海滩." Sung by Frances Yip. Sweeping, dramatic melody — iconic across all of Asia.
+
+```
+上海滩 (The Bund)
+1=D  4/4
+Andante ♩=80
+
+0 0 0 5̣ | 1 - 2 3 | 2 - 1 6̣ | 1 - - - |
+0 0 0 1 | 2 - 3 5 | 5 - 3 2 | 3 - - - |
+0 0 0 3 | 5 - 6 1̇ | 6 - 5 6 | 5 - - - |
+0 0 5 6 | 1̇ - 6 5 | 3 - 2 1 | 2 - - - |
+0 0 0 5̣ | 1 - 2 3 | 2 - 1 6̣ | 1 - - - |
+0 0 0 1 | 3 - 5 6 | 5 - 3 2 | 1 - - - ||
+```
+
+### Song 8: 枉凝眉 (Uổng Ngưng Mi / Vain Knitting of Brows)
+
+From the 1Mo87 TV adaptation of "红楼梦" (Dream of the Red Chamber), composed by Wang Liping (王立平). Hauntingly beautiful, one of the greatest Chinese TV themes. Requires excellent breath control and vibrato.
+
+```
+枉凝眉 (Vain Knitting of Brows)
+1=D  4/4
+Adagio ♩=56
+
+0 0 5̣ 6̣ | 1 - 2 3 | 2 - - 1 | 6̣ - - - |
+5̣ - 6̣ 1 | 2 - 3 2 | 1 - - 6̣ | 5̣ - - - |
+6̣ - 1 2 | 3 - 5 3 | 2 - 1 2 | 3 - - - |
+5 - 6 5 | 3 - 2 1 | 6̣ - 5̣ 6̣ | 1 - - - |
+1 - 2 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
+6̣ - 1 2 | 1 - 6̣ 5̣ | 6̣ - - - | 0 - - - ||
+```
+Very slow, deeply expressive. Rich vibrato on every held note. Think of longing and loss.
+
+### Song 9: 琵琶语 (Tỳ Bà Ngữ / Pipa Language)
+
+By Lin Hai (林海), from the album "琵琶相" (2003). An instrumental piece originally for pipa, beautifully adapted for dizi/sáo. Extremely popular among Vietnamese sáo players on YouTube.
+
+```
+琵琶语 (Pipa Language)
+1=D  4/4
+Adagio ♩=66
+
+0 0 3 5 | 6 - 5 3 | 2 - 3 2 | 1 - - - |
+0 0 1 2 | 3 - 2 1 | 6̣ - 1 6̣ | 5̣ - - - |
+0 0 5̣ 6̣ | 1 - 2 3 | 5 - 3 2 | 3 - - - |
+3 - 5 6 | 5 - 3 2 | 1 - 6̣ 1 | 2 - - - |
+0 0 3 5 | 6 - 1̇ 6 | 5 - 3 5 | 6 - - - |
+5 - 3 2 | 1 - 6̣ 1 | 2 - 1 6̣ | 5̣ - - - ||
+```
+Flowing, meditative. Let each phrase breathe. Slides (滑音) between notes add beauty.
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 姑苏行 tutorial` — learn section by section

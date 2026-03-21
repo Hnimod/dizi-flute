@@ -304,6 +304,65 @@ At this level, deep listening becomes critical. Study these performers:
 
 ---
 
+## Vietnamese-Familiar Chinese Songs (越南常見曲目)
+
+### Song 6: 凉凉 (Lương Lương / Cold Cold)
+
+Theme of "三生三世十里桃花" (Eternal Love, 2017), by Zhang Bichen and Aska Yang. Modern Chinese-style ballad with wide range and dramatic dynamics. Hugely popular on Vietnamese sáo channels.
+
+```
+凉凉 (Cold Cold)
+1=D  4/4
+Andante ♩=72
+
+0 0 3 5 | 6 - - 5 | 3 - 2 3 | 5 - - - |
+0 0 5 6 | 1̇ - - 6 | 5 - 6 5 | 3 - - - |
+0 0 2 3 | 5 - - 3 | 2 - 1 2 | 3 - - - |
+5 - 6 1̇ | 6 - 5 3 | 2 - 3 2 | 1 - - - |
+1̇ - 2̇ 1̇ | 6 - 5 6 | 1̇ - 6 5 | 6 - - - |
+5 - 3 5 | 6 - 5 3 | 2 - 1 6̣ | 5̣ - - - |
+6̣ - 1 2 | 3 - 5 3 | 2 - 1 2 | 1 - - - ||
+```
+
+### Song 7: 菊花台 (Cúc Hoa Đài / Chrysanthemum Terrace)
+
+Jay Chou (周杰伦), 2006, from the film "满城尽带黄金甲" (Curse of the Golden Flower). The quintessential 中国风 (Chinese-style) pop song. Beautiful on dizi — the song was composed with Chinese instruments in mind.
+
+```
+菊花台 (Chrysanthemum Terrace)
+1=D  4/4
+Andante ♩=76
+
+0 0 0 3 | 5 - 5 6 | 5 - 3 2 | 3 - - - |
+0 0 0 2 | 3 - 3 5 | 3 - 2 1 | 2 - - - |
+0 0 0 1 | 2 - 2 3 | 2 - 1 6̣ | 1 - - - |
+0 0 0 6̣ | 1 - 1 2 | 1 - 6̣ 5̣ | 6̣ - - - |
+3 - 5 6 | 1̇ - 6 5 | 6 - 5 3 | 5 - - - |
+3 - 5 6 | 1̇ - 6 5 | 3 - 2 1 | 2 - - - |
+6̣ - 1 2 | 3 - 2 1 | 6̣ - 5̣ 6̣ | 1 - - - ||
+```
+
+### Song 8: 半壶纱 (Bán Hồ Sa / Half Pot of Gauze)
+
+By Liu Ke Yi (刘珂矣), 2015. Chinese-style meditation music (禅意中国风). Extremely popular among Vietnamese sáo players — the flowing, meditative quality suits bamboo flute perfectly.
+
+```
+半壶纱 (Half Pot of Gauze)
+1=D  4/4
+Adagio ♩=66
+
+0 0 5̣ 6̣ | 1 - 2 3 | 2 - 1 6̣ | 1 - - - |
+0 0 6̣ 1 | 2 - 3 5 | 3 - 2 1 | 2 - - - |
+0 0 2 3 | 5 - 6 5 | 3 - 2 3 | 5 - - - |
+6 - 5 3 | 2 - 1 2 | 3 - 2 1 | 6̣ - - - |
+5̣ - 6̣ 1 | 2 - 3 2 | 1 - 6̣ 5̣ | 6̣ - - - |
+1 - 2 3 | 5 - 3 2 | 1 - 6̣ 1 | 2 - 1 6̣ |
+5̣ - - - | 0 - - - ||
+```
+Play with extreme gentleness. Like incense smoke rising — unhurried, floating.
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 牧民新歌 tutorial` — learn section by section

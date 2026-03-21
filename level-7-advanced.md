@@ -333,6 +333,57 @@ At this level, you've gone from knowing nothing about music to playing concert-l
 
 ---
 
+## Vietnamese-Familiar Chinese Songs (越南常見曲目)
+
+### Song 5: 梅花三弄 (Mai Hoa Tam Lộng / Three Variations on Plum Blossom)
+
+Ancient guqin piece (古琴曲) dating back to the Jin Dynasty (~300 AD), adapted for dizi. "Three variations" (三弄) refers to the main theme appearing three times in different registers. A classical masterwork representing the noble spirit of the plum blossom blooming in winter.
+
+```
+梅花三弄 — Main Theme (一弄)
+1=D  4/4
+Adagio ♩=52
+
+5̣ - 6̣ 1 | 2 - - 3 | 2 - 1 6̣ | 5̣ - - - |
+6̣ - 1 2 | 3 - 5 3 | 2 - 1 6̣ | 1 - - - |
+2 - 3 5 | 6 - 5 3 | 5 - 3 2 | 3 - - - |
+2 - 1 6̣ | 5̣ - 6̣ 1 | 6̣ - 5̣ 6̣ | 1 - - - |
+
+梅花三弄 — Second Variation (二弄, one octave higher)
+1=D  4/4
+
+5 - 6 1̇ | 2̇ - - 3̇ | 2̇ - 1̇ 6 | 5 - - - |
+6 - 1̇ 2̇ | 3̇ - 5̇ 3̇ | 2̇ - 1̇ 6 | 1̇ - - - |
+
+梅花三弄 — Return (三弄, back to original)
+1=D  4/4
+
+5̣ - 6̣ 1 | 2 - - 3 | 2 - 1 6̣ | 5̣ - - - |
+6̣ - 1 2 | 3 - 5 3 | 2 - 1 6̣ | 1 - - - ||
+```
+The theme must sound the same each time but with different character — fragile in the first variation, bold in the second, peaceful in the return.
+
+### Song 6: 二泉映月 (Nhị Tuyền Ánh Nguyệt / Moon Reflected in Two Springs)
+
+By Hua Yanjun / Abing (华彦钧/阿炳), a blind street musician. Originally for erhu, this is one of China's most famous instrumental pieces. Adapted for dizi, it requires extreme emotional depth. The title refers to the Huishan Second Spring in Wuxi.
+
+```
+二泉映月 (Moon Reflected in Two Springs)
+1=D  4/4
+Adagio ♩=48
+
+0 0 0 5̣ | 6̣ - 1 2 | 1 - 6̣ 5̣ | 6̣ - - - |
+1 - 2 3 | 5 - 3 2 | 1 - 6̣ 1 | 2 - - - |
+3 - 5 6 | 5 - 3 2 | 3 - 2 1 | 6̣ - - - |
+5̣ - 6̣ 1 | 2 - 1 6̣ | 5̣ - 6̣ 5̣ | 3̣ - - - |
+5̣ - 6̣ 1 | 2 - 3 5 | 3 - 2 1 | 2 - - - |
+6̣ - 1 2 | 3 - 5 6 | 5 - 3 2 | 1 - - - |
+6̣ - 1 2 | 1 - 6̣ 5̣ | 6̣ - - - | 0 - - - ||
+```
+This piece is about suffering, perseverance, and beauty in darkness. Play with your deepest emotion. Every note should tell a story.
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `幽兰逢春 赵松庭` — master performance

@@ -258,6 +258,46 @@ Now that you're playing actual melodies, breath management becomes critical.
 
 ---
 
+## Vietnamese-Familiar Chinese Songs (越南常見曲目)
+
+Songs popular with Vietnamese sáo trúc players, perfect for beginners.
+
+### Song 7: 月亮代表我的心 (Nguyệt Lượng Đại Biểu Ngã Đích Tâm / The Moon Represents My Heart)
+
+Teresa Teng (邓丽君), 1977. One of the most beloved Chinese songs worldwide. Simple, pentatonic melody — perfect for Level 2.
+
+```
+月亮代表我的心 (The Moon Represents My Heart)
+1=D  4/4
+Andante ♩=72
+
+1 1 1 - | 3 5 6 - | 6 6 5 - | 5 - - - |
+5 5 5 - | 6 5 3 - | 2 2 1 - | 1 - - - |
+1 1 1 - | 3 5 6 - | 6 6 5 - | 5 - - - |
+5 5 3 - | 2 3 2 - | 1 1 1 - | 1 - - - |
+3 - 5 - | 6 - 1̇ - | 6 - 5 - | 5 - - - |
+3 - 5 - | 6 - 1̇ - | 6 - 5 - | 5 - - - |
+1 1 1 - | 3 5 6 - | 6 6 5 - | 5 - - - |
+5 5 3 - | 2 3 2 - | 1 1 1 - | 1 - - - ||
+```
+
+### Song 8: 甜蜜蜜 (Điềm Mật Mật / Sweet Honey)
+
+Teresa Teng, 1979. Cheerful and instantly recognizable. Based on an Indonesian folk melody.
+
+```
+甜蜜蜜 (Sweet Honey)
+1=D  4/4
+Moderato ♩=96
+
+3 3 5 6 | 5 - - - | 3 3 2 3 | 5 - - - |
+6 6 5 6 | 1̇ - 6 5 | 3 3 2 1 | 2 - - - |
+3 3 5 6 | 5 - - - | 3 3 2 3 | 5 - - - |
+6 6 5 6 | 1̇ - 6 5 | 3 2 1 2 | 1 - - - ||
+```
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 小星星 tutorial`

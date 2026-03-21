@@ -479,6 +479,63 @@ Now go back and play songs from Level 2-3 with your new techniques. The same not
 
 ---
 
+## Vietnamese-Familiar Chinese Songs (越南常見曲目)
+
+### Song 7: 一剪梅 (Nhất Tiễn Mai / A Spray of Plum Blossom)
+
+From the 1Mo84 TV drama. Went viral in Vietnam ("Xue Hua Piao Piao" meme). Lyrical melody, perfect for practicing vibrato on long notes.
+
+```
+一剪梅 (A Spray of Plum Blossom)
+1=D  4/4
+Andante ♩=72
+
+0 0 3 5 | 6 - - 5 | 3 - 5 6 | 5 - - - |
+0 0 2 3 | 5 - - 3 | 2 - 3 5 | 3 - - - |
+0 0 3 5 | 6 - - 5 | 3 - 2 1 | 2 - - - |
+0 0 6̣ 1 | 2 - - 1 | 6̣ - 1 2 | 1 - - - |
+3 5 6 - | 1̇ 6 5 - | 6 5 3 - | 5 - - - |
+3 5 6 - | 1̇ 6 5 - | 3 2 1 2 | 1 - - - ||
+```
+Add vibrato on all held notes. Grace notes (叠音) before melody peaks.
+
+### Song 8: 千年等一回 (Thiên Niên Đẳng Nhất Hồi / A Thousand Years of Waiting)
+
+Main theme of "新白娘子传奇" (New Legend of White Snake, 1992). Dramatic and emotional — one of the most iconic Chinese drama themes in Vietnam.
+
+```
+千年等一回 (A Thousand Years of Waiting)
+1=D  4/4
+Moderato ♩=88
+
+6̣ - 1 2 | 3 - 2 1 | 2 - 3 5 | 3 - - - |
+6 - 5 3 | 5 - 3 2 | 1 - 6̣ 1 | 2 - - - |
+6̣ - 1 2 | 3 - 2 1 | 2 - 3 5 | 6 - - - |
+5 - 3 5 | 6 - 1̇ 6 | 5 - 3 2 | 1 - - - |
+3 - 5 6 | 1̇ - 6 5 | 6 - 5 3 | 2 - - - |
+1 - 6̣ 1 | 2 - 3 2 | 1 - - - | 0 - - - ||
+```
+
+### Song 9: 铁血丹心 (Thiết Huyết Đan Tâm / Iron Blood, Loyal Heart)
+
+Theme of "射雕英雄传" (Legend of the Condor Heroes, 1983), sung by Roman Tam and Jenny Tseng. The definitive wuxia theme — heroic and sweeping.
+
+```
+铁血丹心 (Iron Blood, Loyal Heart)
+1=D  4/4
+Andante ♩=80
+
+5̣ - 1 2 | 3 - - 2 | 1 - 6̣ 1 | 2 - - - |
+2 - 3 5 | 6 - - 5 | 3 - 2 3 | 5 - - - |
+5 - 6 1̇ | 6 - - 5 | 3 - 5 6 | 5 - - - |
+3 - 2 1 | 2 - - 3 | 1 - 6̣ 5̣ | 6̣ - - - |
+5̣ - 1 2 | 3 - - 2 | 1 - 6̣ 1 | 2 - - - |
+2 - 3 5 | 6 - 1̇ 6 | 5 - 3 2 | 1 - - - ||
+```
+Practice with bold, heroic tone. Use dynamics: build to forte in climactic phrases, pull back in tender passages.
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi vibrato 气震音 tutorial`
