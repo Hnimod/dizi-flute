@@ -18,7 +18,7 @@ export const songs: Song[] = [
 3 2 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5 - |
 3 2 1 2 | 3 3 3 3 | 2 2 3 2 | 1 - - - ||`,
     description: "Uses only notes 1-5. Perfect first song.",
-    audioPath: "/audio/level-1/mary-had-a-little-lamb.ogg",
+    audioPath: "/audio/level-1/08-mary-had-a-little-lamb.ogg",
   },
   {
     id: "level-1-song-2",
@@ -32,7 +32,7 @@ export const songs: Song[] = [
 
 3 2 1 - | 3 2 1 - | 1 1 2 2 | 3 2 1 - ||`,
     description: "Very simple, only 3 notes (1, 2, 3).",
-    audioPath: "/audio/level-1/hot-cross-buns.ogg",
+    audioPath: "/audio/level-1/09-hot-cross-buns.ogg",
   },
   {
     id: "level-1-song-3",
@@ -49,7 +49,7 @@ export const songs: Song[] = [
 2 2 2 2 | 2 3 4 - | 3 3 3 3 | 3 4 5 - |
 5 3 3 3 | 4 2 2 2 | 1 3 5 5 | 1 - - - ||`,
     description: "A classic beginner melody using notes 1-5.",
-    audioPath: "/audio/level-1/lightly-row.ogg",
+    audioPath: "/audio/level-1/10-lightly-row.ogg",
   },
   {
     id: "level-1-song-4",
@@ -67,7 +67,7 @@ export const songs: Song[] = [
 1 1 | 1 3 | 5 5 | 5 3 |
 4 2 | 3 1 | 2 1 | 1 - ||`,
     description: "A well-known Chinese children's song.",
-    audioPath: "/audio/level-1/finding-friends.ogg",
+    audioPath: "/audio/level-1/11-finding-friends.ogg",
     origin: "Chinese children's song",
   },
   {
@@ -86,7 +86,7 @@ export const songs: Song[] = [
 3 4 | 5 5 | 3 4 | 5 - |
 5 4 | 3 1 | 2 3 | 1 - ||`,
     description: "Another Chinese children's classic using notes 1-5.",
-    audioPath: "/audio/level-1/going-to-school.ogg",
+    audioPath: "/audio/level-1/12-going-to-school.ogg",
     origin: "Chinese children's song",
   },
 
@@ -108,7 +108,7 @@ export const songs: Song[] = [
 5 5 4 4 | 3 3 2 - | 5 5 4 4 | 3 3 2 - |
 1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 - ||`,
     description: "The perfect Level 2 starter. Uses notes 1-6.",
-    audioPath: "/audio/level-2/twinkle-twinkle.ogg",
+    audioPath: "/audio/level-2/05-xiao-xing-xing.ogg",
   },
   {
     id: "level-2-song-2",
@@ -126,7 +126,7 @@ export const songs: Song[] = [
 5 - | 3 2 | 1 6\u0323 | 5\u0323 - ||`,
     description:
       "A sorrowful Chinese folk song. Pentatonic \u2014 uses only 1, 2, 3, 5, 6.",
-    audioPath: "/audio/level-2/little-white-cabbage.ogg",
+    audioPath: "/audio/level-2/06-xiao-bai-cai.ogg",
     origin: "Hebei folk song",
   },
   {
@@ -150,7 +150,7 @@ export const songs: Song[] = [
 5 3 | 2 1 | 6\u0323 - - - ||`,
     description:
       'One of the most beloved Chinese songs. From the 1960 film "Mom Loves Me Once More."',
-    audioPath: "/audio/level-2/only-mama-is-good.ogg",
+    audioPath: "/audio/level-2/07-only-mama-is-good.ogg",
     origin: "Chinese film song (1960)",
   },
   {
@@ -169,7 +169,7 @@ export const songs: Song[] = [
 1 5\u0323 1 - | 1 5\u0323 1 - :||`,
     description:
       "A well-known children's song (Fr\u00E8re Jacques). Great for rhythmic confidence.",
-    audioPath: "/audio/level-2/two-tigers.ogg",
+    audioPath: "/audio/level-2/08-two-tigers.ogg",
   },
   {
     id: "level-2-song-5",
@@ -188,7 +188,7 @@ export const songs: Song[] = [
 3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 2 - 1 - ||`,
     description:
       "Beethoven. Uses stepwise motion. Good for smooth finger transitions.",
-    audioPath: "/audio/level-2/ode-to-joy.ogg",
+    audioPath: "/audio/level-2/09-ode-to-joy.ogg",
     origin: "Beethoven",
   },
   {
@@ -207,7 +207,7 @@ export const songs: Song[] = [
 4 3 2 | 3 - - | 1 3 2 | 5\u0323 - - |
 1 3 2 | 5\u0323 - - | 1 2 3 | 1 - - ||`,
     description: "Simple and festive. In 3/4 time.",
-    audioPath: "/audio/level-2/happy-new-year.ogg",
+    audioPath: "/audio/level-2/10-happy-new-year.ogg",
     origin: "Chinese traditional",
   },
   {
@@ -233,7 +233,7 @@ Andante \u2669=72
 5 5 3 - | 2 3 2 - | 1 1 1 - | 1 - - - ||`,
     description:
       "Teresa Teng (1977). One of the most beloved Chinese songs worldwide.",
-    audioPath: "/audio/level-2/moon-represents-my-heart.ogg",
+    audioPath: "/audio/level-2/11-moon-represents-my-heart.ogg",
     origin: "Teresa Teng, 1977",
   },
   {
@@ -278,7 +278,7 @@ Moderato \u2669=100
 5 3 5 3 | 5 3 2 1 | 2 3 2 1 | 5\u0323 - ||`,
     description:
       "A beloved Vietnamese children's song. Simple melody, single octave.",
-    audioPath: "/audio/level-2/chau-len-ba.ogg",
+    audioPath: "/audio/level-2/13-chau-len-ba.ogg",
     origin: "Vietnamese children's song",
   },
   {
@@ -299,7 +299,7 @@ Allegretto \u2669=110
 1 1 3 3 | 5 5 3 - | 4 4 2 2 | 3 3 1 - ||`,
     description:
       "Playful children's song with simple repeating patterns. Every Vietnamese person knows this song.",
-    audioPath: "/audio/level-2/dan-ga-trong-san.ogg",
+    audioPath: "/audio/level-2/14-dan-ga-trong-san.ogg",
     origin: "Vietnamese children's song",
   },
   {
@@ -349,7 +349,7 @@ Andante \u2669=72
 1 6\u0323 | 1 5\u0323 | 6\u0323 - ||`,
     description:
       "The most famous Chinese folk song. Pentatonic, lyrical, beautiful. Jiangsu version.",
-    audioPath: "/audio/level-3/jasmine-flower.ogg",
+    audioPath: "/audio/level-3/06-jasmine-flower.ogg",
     origin: "Jiangsu folk song",
   },
   {
@@ -370,7 +370,7 @@ Moderato \u2669=108
 5 5 | 6 5 | 3 5 | 6 1\u0307 | 5 - |
 3 2 | 1 6\u0323 | 5\u0323 - - ||`,
     description: "A famous Sichuan folk song about love. Lively and joyful.",
-    audioPath: "/audio/level-3/kangding-love-song.ogg",
+    audioPath: "/audio/level-3/07-kangding-love-song.ogg",
     origin: "Sichuan folk song",
   },
   {
@@ -392,7 +392,7 @@ Moderato \u2669=100
 3 2 | 1 6\u0323 | 5\u0323 6\u0323 | 1 - - ||`,
     description:
       "A patriotic folk song from the 1940s. Warm and uplifting melody.",
-    audioPath: "/audio/level-3/nanniwan.ogg",
+    audioPath: "/audio/level-3/08-nanniwan.ogg",
     origin: "Chinese patriotic song, 1940s",
   },
   {
@@ -413,7 +413,7 @@ Andante \u2669=80
 6\u0323 - 1 | 2 - 1 | 6\u0323 - - | 6\u0323 - - ||`,
     description:
       "An English folk ballad that sounds gorgeous on dizi. In 3/4 time.",
-    audioPath: "/audio/level-3/scarborough-fair.ogg",
+    audioPath: "/audio/level-3/09-scarborough-fair.ogg",
     origin: "English folk ballad",
   },
   {
@@ -435,7 +435,7 @@ Andante \u2669=72
 5 2 3 | 1 - - | 1 - - | 0 - - ||`,
     description:
       'Based on "Dreaming of Home and Mother" by J.P. Ordway. One of China\'s most cherished songs.',
-    audioPath: "/audio/level-3/farewell.ogg",
+    audioPath: "/audio/level-3/10-farewell.ogg",
     origin: "Li Shutong / J.P. Ordway",
   },
   {
@@ -455,7 +455,7 @@ Andante \u2669=72
 4 2 | 1 - ||`,
     description:
       "A classic Chinese children's song from the 1950s film. Very singable melody.",
-    audioPath: "/audio/level-3/little-swallow.ogg",
+    audioPath: "/audio/level-3/11-little-swallow.ogg",
     origin: "Chinese film song, 1950s",
   },
   {
@@ -474,7 +474,7 @@ Andante \u2669=72
 3 2 1 | 6\u0323 - 5\u0323 | 6\u0323 1 2 | 1 - - ||`,
     description:
       "A simplified version of a Yi ethnic minority melody. Great introduction to ethnic Chinese music.",
-    audioPath: "/audio/level-3/yi-dance.ogg",
+    audioPath: "/audio/level-3/12-yi-dance.ogg",
     origin: "Yi ethnic minority melody",
   },
   {
@@ -594,7 +594,7 @@ Andante \u2669=72
 5 3 2 1 | 6\u0323 - 5\u0323 - | 6\u0323 1 2 1 | 6\u0323 - - - ||`,
     description:
       "Quan h\u1ECD B\u1EAFc Ninh folk song. UNESCO Intangible Cultural Heritage. Hauntingly lyrical.",
-    audioPath: "/audio/level-3/beo-dat-may-troi.ogg",
+    audioPath: "/audio/level-3/17-beo-dat-may-troi.ogg",
     origin: "Quan h\u1ECD B\u1EAFc Ninh folk song",
   },
   {
@@ -666,7 +666,7 @@ Moderato \u2669=96
 6 - 1\u0307 - | 6 5 3 2 | 1 - - - | 0 0 0 0 ||`,
     description:
       "A powerful anthem by Hou Dejian (1978). Stately and emotional.",
-    audioPath: "/audio/level-4/descendants-of-the-dragon.ogg",
+    audioPath: "/audio/level-4/06-descendants-of-dragon.ogg",
     origin: "Hou Dejian, 1978",
   },
   {
@@ -691,7 +691,7 @@ Andante \u2669=72
 2 2 3 5 | 6 5 3 2 | 1 - - - ||`,
     description:
       'From the 1986 TV series "Journey to the West." Tender and expressive.',
-    audioPath: "/audio/level-4/daughters-love.ogg",
+    audioPath: "/audio/level-4/07-daughters-love.ogg",
     origin: "Journey to the West TV (1986)",
   },
   {
@@ -714,7 +714,7 @@ Andante \u2669=66
 5 - 6 5 | 3 - 2 1 | 6\u0323 - 1 2 | 1 - - - ||`,
     description:
       "A famous Cantonese music piece by Ren Guang (1935). Elegant and dreamy.",
-    audioPath: "/audio/level-4/colorful-clouds-chasing-moon.ogg",
+    audioPath: "/audio/level-4/08-colorful-clouds.ogg",
     origin: "Ren Guang, 1935 (Cantonese)",
   },
   {
@@ -737,7 +737,7 @@ Andante \u2669=76
 6 - - 5 | 3 5 2 3 | 1 - - - | 0 0 0 0 ||`,
     description:
       'From the 1982 film "Shaolin Temple." Pastoral, peaceful melody.',
-    audioPath: "/audio/level-4/shepherds-song.ogg",
+    audioPath: "/audio/level-4/09-shepherds-song.ogg",
     origin: "Shaolin Temple film (1982)",
   },
   {
@@ -759,7 +759,7 @@ Moderato \u2669=96
 6 5 3 5 | 6 - 1\u0307 6 | 5 - 3 2 | 1 - - - ||`,
     description:
       "A Tibetan-influenced melody by Qu Yuan (2001). Sweeping and majestic.",
-    audioPath: "/audio/level-4/road-to-heaven.ogg",
+    audioPath: "/audio/level-4/10-road-to-heaven.ogg",
     origin: "Qu Yuan, 2001",
   },
   {
@@ -782,7 +782,7 @@ Allegro \u2669=132
 5\u0323 1 2 1 | 6\u0323 5\u0323 3\u0323 5\u0323 | 6\u0323 - - - | 0 0 0 0 ||`,
     description:
       'Theme from "Swordsman" film series. Bold, free-spirited, and heroic.',
-    audioPath: "/audio/level-4/laughing-across-ocean.ogg",
+    audioPath: "/audio/level-4/11-laughing-across-ocean.ogg",
     origin: "Swordsman film series",
   },
   {
@@ -807,7 +807,7 @@ Andante \u2669=72
 3 5 6 - | 1\u0307 6 5 - | 3 2 1 2 | 1 - - - ||`,
     description:
       'From the 1984 TV drama. Went viral in Vietnam ("Xue Hua Piao Piao" meme).',
-    audioPath: "/audio/level-4/spray-of-plum-blossom.ogg",
+    audioPath: "/audio/level-4/12-a-spray-of-plum.ogg",
     origin: "TV drama (1984)",
   },
   {
@@ -880,7 +880,7 @@ Adagio \u2669=66
 5\u0323 - 6\u0323 1 | 2 - 3 2 | 1 - 6\u0323 5\u0323 | 6\u0323 - - - ||`,
     description:
       "By Tr\u1ECBnh C\u00F4ng S\u01A1n (1965). THE quintessential nh\u1EA1c Tr\u1ECBnh piece for s\u00E1o tr\u00FAc.",
-    audioPath: "/audio/level-4/diem-xua.ogg",
+    audioPath: "/audio/level-4/15-diem-xua.ogg",
     origin: "Tr\u1ECBnh C\u00F4ng S\u01A1n, 1965",
   },
   {
@@ -989,7 +989,7 @@ Allegro \u2669=132
 2 1 | 6\u0323 5\u0323 | 6\u0323 1 | 2 - ||`,
     description:
       "THE milestone piece. Grade 5, southern style masterpiece by Jiang Xianwei (1962).",
-    audioPath: "/audio/level-5/a-walk-in-gusu.ogg",
+    audioPath: "/audio/level-5/01-gusu-xing.ogg",
     origin: "Jiang Xianwei, 1962",
   },
   {
@@ -1011,7 +1011,7 @@ Allegretto \u2669=120
 6\u0323 1 | 2 3 5 3 | 2 1 6\u0323 5\u0323 | 6\u0323 - ||`,
     description:
       "Grade 3-4, northern style. Playful and lively, based on a Hebei folk melody.",
-    audioPath: "/audio/level-5/little-cowherd.ogg",
+    audioPath: "/audio/level-5/02-little-cowherd.ogg",
     origin: "Hebei folk melody",
   },
   {
@@ -1033,7 +1033,7 @@ Andante \u2669=66
 5 3 2 1 | 6\u0323 5\u0323 6\u0323 1 | 2 - 1 6\u0323 | 5\u0323 - - - ||`,
     description:
       "A lyrical piece by Liu Zhi (1958). Tests tone quality and breath control.",
-    audioPath: "/audio/level-5/shepherds-flute.ogg",
+    audioPath: "/audio/level-5/03-shepherds-flute.ogg",
     origin: "Liu Zhi, 1958",
   },
   {
@@ -1061,7 +1061,7 @@ Allegro \u2669=144
 3 2 1 6\u0323 | 5\u0323 6\u0323 1 2 | 3 5 3 2 | 1 6\u0323 5\u0323 - ||`,
     description:
       "Grade 4-5, northern style by Feng Zicun. Depicts joy of friends reuniting.",
-    audioPath: "/audio/level-5/happy-reunion.ogg",
+    audioPath: "/audio/level-5/04-happy-reunion.ogg",
     origin: "Feng Zicun (Inner Mongolian folk melody)",
   },
   {
@@ -1083,7 +1083,7 @@ Allegro \u2669=144
 6 6 | 5 3 2 1 | 6\u0323 5\u0323 | 6\u0323 - ||`,
     description:
       "Energetic northern piece depicting the busy harvest season. Grade 4-5.",
-    audioPath: "/audio/level-5/whipping-horse-transport-grain.ogg",
+    audioPath: "/audio/level-5/05-whipping-horse.ogg",
     origin: "Northern Chinese",
   },
   {
@@ -1105,7 +1105,7 @@ Andante \u2669=60
 1 - 6\u0323 1 | 2 - 1 6\u0323 | 5\u0323 - - - | 0 - - - ||`,
     description:
       "Traditional Jiangnan silk and bamboo ensemble piece. Elegant southern style.",
-    audioPath: "/audio/level-5/zhonghua-liuban.ogg",
+    audioPath: "/audio/level-5/06-zhonghua-liuban.ogg",
     origin: "Jiangnan silk and bamboo (\u6C5F\u5357\u4E1D\u7AF9)",
   },
   {
@@ -1294,7 +1294,7 @@ Vivace \u2669=160
 3 5 3 2 | 1 2 1 6\u0323 | 5\u0323 6\u0323 5\u0323 3\u0323 | 5\u0323 - ||`,
     description:
       "Grade 7 masterpiece by Jian Guangyi (1966). The most famous dizi piece.",
-    audioPath: "/audio/level-6/herdsmans-new-song.ogg",
+    audioPath: "/audio/level-6/01-herdsmans-new-song.ogg",
     origin: "Jian Guangyi, 1966",
   },
   {
@@ -1323,7 +1323,7 @@ Andante \u2669=66
 3 5 6 5 | 3 2 1 6\u0323 | 5\u0323 - 6\u0323 1 | 6\u0323 - - - ||`,
     description:
       "Grade 7-8 by Ning Baosheng (1976). Requires circular breathing for the opening cadenza.",
-    audioPath: "/audio/level-6/spring-arrives-xiang-river.ogg",
+    audioPath: "/audio/level-6/02-spring-xiang-river.ogg",
     origin: "Ning Baosheng, 1976",
   },
   {
@@ -1354,7 +1354,7 @@ Moderato \u2669=60
 6\u0323 5\u0323 6\u0323 - 1 | 2 1 2 - 1 6\u0323 | 5\u0323 - - - | 0 - - - ||`,
     description:
       "Grade 6-7. Hunan folk tune depicting partridges in flight. Southern style.",
-    audioPath: "/audio/level-6/partridge-flying.ogg",
+    audioPath: "/audio/level-6/03-partridge-flying.ogg",
     origin: "Zhao Songting arrangement (Hunan folk tune)",
   },
   {
@@ -1385,7 +1385,7 @@ Allegro \u2669=140
 3 2 1 6\u0323 | 5\u0323 3\u0323 5\u0323 6\u0323 | 1 - | 0 0 ||`,
     description:
       "Classic northern piece. Bright, energetic, uses the bangdi.",
-    audioPath: "/audio/level-6/wu-bangzi.ogg",
+    audioPath: "/audio/level-6/04-wu-bangzi.ogg",
     origin: "Northern folk melody",
   },
   {
@@ -1414,7 +1414,7 @@ Adagio \u2669=48
 6\u0323 - - 1 | 2 - - 3 | 2 - 1 6\u0323 | 5\u0323 - - - ||`,
     description:
       "Grade 6 by Yu Xunfa. Atmospheric, introspective. Showcases tone color and dynamics.",
-    audioPath: "/audio/level-6/autumn-lake-moonlit-night.ogg",
+    audioPath: "/audio/level-6/05-autumn-lake.ogg",
     origin: "Yu Xunfa",
   },
   {
@@ -1540,7 +1540,7 @@ Allegro \u2669=144
 5\u0323 - 6\u0323 - | 1 - - - ||`,
     description:
       "Grade 8-9. By Zhao Songting and Cao Xing (1979). One of the great dizi concertos.",
-    audioPath: "/audio/level-7/orchid-meets-spring.ogg",
+    audioPath: "/audio/level-7/01-orchid-meets-spring.ogg",
     origin: "Zhao Songting & Cao Xing, 1979",
   },
   {
@@ -1571,7 +1571,7 @@ Vivace \u2669=152
 6\u0323 - | 0 0 ||`,
     description:
       "A Zhejiang opera style piece arranged by Zhao Songting. Named after its rhythmic pattern. Grade 7.",
-    audioPath: "/audio/level-7/san-wu-qi.ogg",
+    audioPath: "/audio/level-7/02-san-wu-qi.ogg",
     origin: "Zhao Songting (Zhejiang opera)",
   },
   {
@@ -1614,7 +1614,7 @@ Vivace \u2669=160
 2 - | 0 0 ||`,
     description:
       "By Ma Di. A northern masterpiece evoking the landscapes of Shaanxi province. Grade 8. Uses Shang mode.",
-    audioPath: "/audio/level-7/reflections-on-qinchuan.ogg",
+    audioPath: "/audio/level-7/03-reflections-qinchuan.ogg",
     origin: "Ma Di",
   },
   {
@@ -1641,7 +1641,7 @@ pp
 The notation here is a simplified excerpt for familiarization.)`,
     description:
       "By Guo Wenjing (1992). A contemporary masterwork for dizi and orchestra. Grade 9+.",
-    audioPath: "/audio/level-7/sorrowful-empty-mountain.ogg",
+    audioPath: "/audio/level-7/04-sorrowful-empty-mountain.ogg",
     origin: "Guo Wenjing, 1992",
   },
   {
@@ -1676,7 +1676,7 @@ Adagio \u2669=52
 6\u0323 - 1 2 | 3 - 5 3 | 2 - 1 6\u0323 | 1 - - - ||`,
     description:
       "Ancient guqin piece (~300 AD), adapted for dizi. A classical masterwork.",
-    audioPath: "/audio/level-7/three-variations-plum-blossom.ogg",
+    audioPath: "/audio/level-7/05-three-variations-plum-blossom.ogg",
     origin: "Jin Dynasty (~300 AD), guqin",
   },
   {
@@ -1702,7 +1702,7 @@ Adagio \u2669=48
 6\u0323 - 1 2 | 1 - 6\u0323 5\u0323 | 6\u0323 - - - | 0 - - - ||`,
     description:
       "By Abing (Hua Yanjun), a blind street musician. Originally for erhu. One of China's most famous instrumental pieces.",
-    audioPath: "/audio/level-7/moon-reflected-two-springs.ogg",
+    audioPath: "/audio/level-7/06-moon-reflected-two-springs.ogg",
     origin: "Abing (Hua Yanjun)",
   },
 ];

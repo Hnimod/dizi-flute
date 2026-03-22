@@ -51,10 +51,10 @@
       "path": "src/features/practice-timer",
       "description": "Guided practice sessions with timer and session log",
       "routes": ["/practice", "/practice-log"],
-      "exports": [],
+      "exports": ["PracticePage", "PracticeLogPage", "usePracticeStore"],
       "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": ["progress-tracking"],
-      "status": "not-started"
+      "crossFeatureDeps": [],
+      "status": "done"
     }
   }
 }

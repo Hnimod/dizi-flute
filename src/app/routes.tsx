@@ -3,6 +3,7 @@ import { App } from "./App";
 import { HomePage } from "@/features/course-navigation";
 import { LevelPage } from "@/features/lesson-viewer";
 import { ReferencePage, ReferenceDetailPage } from "@/features/reference-library";
+import { PracticePage, PracticeLogPage } from "@/features/practice-timer";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +14,8 @@ export const router = createBrowserRouter([
       { path: "level/:id", element: <LevelPage /> },
       { path: "reference", element: <ReferencePage /> },
       { path: "reference/:slug", element: <ReferenceDetailPage /> },
+      { path: "practice", element: <PracticePage /> },
+      { path: "practice-log", element: <PracticeLogPage /> },
     ],
   },
 ]);
