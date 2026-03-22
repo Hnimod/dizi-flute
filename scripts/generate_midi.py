@@ -870,6 +870,100 @@ SONGS = [
         "filename": "06-moon-reflected-two-springs",
         "notes": "0 0 0 5\u0323 6\u0323 - 1 2 1 - 6\u0323 5\u0323 6\u0323 - - - 1 - 2 3 5 - 3 2 1 - 6\u0323 1 2 - - - 3 - 5 6 5 - 3 2 3 - 2 1 6\u0323 - - - 5\u0323 - 6\u0323 1 2 - 1 6\u0323 5\u0323 - 6\u0323 5\u0323 3\u0323 - - - 5\u0323 - 6\u0323 1 2 - 3 5 3 - 2 1 2 - - - 6\u0323 - 1 2 3 - 5 6 5 - 3 2 1 - - - 6\u0323 - 1 2 1 - 6\u0323 5\u0323 6\u0323 - - - 0 - - -"
     },
+
+    # ==================== VIETNAMESE SONGS (NHẠC VIỆT) ====================
+
+    # Level 2
+    {
+        "name": "Cháu Lên Ba", "name_en": "Turning Three",
+        "key": "C", "time_sig": (2, 4), "tempo": 100, "level": 2,
+        "filename": "13-chau-len-ba",
+        "notes": "5 3 5 3 5 3 2 1 2 3 5 3 2 - 5 3 5 3 5 3 2 1 2 3 2 1 5\u0323 - 6\u0323 6\u0323 1 6\u0323 5\u0323 5\u0323 3\u0323 5\u0323 6\u0323 6\u0323 1 2 1 - 5 3 5 3 5 3 2 1 2 3 2 1 5\u0323 -"
+    },
+    {
+        "name": "Đàn Gà Trong Sân", "name_en": "Chickens in the Yard",
+        "key": "C", "time_sig": (2, 4), "tempo": 110, "level": 2,
+        "filename": "14-dan-ga-trong-san",
+        "notes": "1 1 3 3 5 5 3 - 4 4 2 2 3 3 1 - 5 5 3 3 2 2 1 - 5 3 2 1 2 3 1 - 1 1 3 3 5 5 3 - 4 4 2 2 3 3 1 -"
+    },
+    {
+        "name": "Chú Voi Con", "name_en": "Baby Elephant",
+        "key": "C", "time_sig": (2, 4), "tempo": 100, "level": 2,
+        "filename": "15-chu-voi-con",
+        "notes": "5 5 3 5 6 - 5 - 3 3 1 3 5 - 3 - 2 2 3 2 1 - 6\u0323 - 1 2 3 5 3 - 1 - 5 5 3 5 6 - 5 - 3 3 1 3 5 - 3 - 2 3 2 1 6\u0323 - 1 - 2 3 2 1 1 - - -"
+    },
+
+    # Level 3
+    {
+        "name": "Cò Lả", "name_en": "The Stork Song",
+        "key": "C", "time_sig": (2, 4), "tempo": 90, "level": 3,
+        "filename": "16-co-la",
+        "notes": "2 2 3 2 1 - 6\u0323 - 1 2 3 5 3 - 2 - 6\u0323 1 2 3 2 - 1 - 6\u0323 1 6\u0323 5\u0323 6\u0323 - - - 2 2 3 2 1 - 6\u0323 - 1 2 3 5 3 - 2 - 6\u0323 1 2 1 6\u0323 - 5\u0323 - 6\u0323 - - - 0 - - -"
+    },
+    {
+        "name": "Bèo Dạt Mây Trôi", "name_en": "Duckweed Drifts Clouds Float",
+        "key": "C", "time_sig": (4, 4), "tempo": 72, "level": 3,
+        "filename": "17-beo-dat-may-troi",
+        "notes": "1 1 5 4 6 5 5 - 3 3 3 5 1 - - - 5 3 5 6 5 - 3 2 1 6\u0323 1 2 1 - - - 1 1 5 4 6 5 5 - 3 3 3 5 1 - - - 5 3 2 1 6\u0323 - 5\u0323 - 6\u0323 1 2 1 6\u0323 - - -"
+    },
+    {
+        "name": "Lý Cây Đa", "name_en": "The Banyan Tree",
+        "key": "C", "time_sig": (2, 4), "tempo": 110, "level": 3,
+        "filename": "18-ly-cay-da",
+        "notes": "5 3 2 1 2 3 5 - 6 5 3 2 1 - 6\u0323 - 5\u0323 6\u0323 1 2 3 5 3 - 2 1 6\u0323 1 2 - - - 5 3 2 1 2 3 5 - 6 5 3 2 1 - 6\u0323 - 5\u0323 6\u0323 1 2 1 6\u0323 5\u0323 - 6\u0323 - - - 0 - - -"
+    },
+    {
+        "name": "Trống Cơm", "name_en": "Rice Drum Song",
+        "key": "D", "time_sig": (2, 4), "tempo": 120, "level": 3,
+        "filename": "19-trong-com",
+        "notes": "5 5 6 5 3 2 1 - 2 3 5 6 5 3 2 - 1 2 3 5 6 5 3 - 2 1 6\u0323 1 2 - - - 5 5 6 5 3 2 1 - 2 3 5 6 5 3 2 - 1 6\u0323 5\u0323 6\u0323 1 2 1 - 6\u0323 - - - 0 - - -"
+    },
+
+    # Level 4
+    {
+        "name": "Diễm Xưa", "name_en": "Beauty of the Past",
+        "key": "C", "time_sig": (4, 4), "tempo": 66, "level": 4,
+        "filename": "15-diem-xua",
+        "notes": "0 0 0 3 2 - 1 6\u0323 5\u0323 - 6\u0323 1 2 - - - 0 0 0 1 6\u0323 - 5\u0323 3\u0323 5\u0323 - 6\u0323 5\u0323 3\u0323 - - - 0 0 0 3 2 - 1 6\u0323 5\u0323 - 6\u0323 1 2 - - - 3 - 5 3 2 - 1 2 3 - 2 1 6\u0323 - - - 5\u0323 - 6\u0323 1 2 - 3 2 1 - 6\u0323 5\u0323 6\u0323 - - -"
+    },
+    {
+        "name": "Biển Nhớ", "name_en": "Remembering the Sea",
+        "key": "G", "time_sig": (4, 4), "tempo": 60, "level": 4,
+        "filename": "16-bien-nho",
+        "notes": "0 0 6\u0323 1 2 - 3 2 1 - 6\u0323 1 2 - - - 3 - 5 6 5 - 3 2 1 - 2 1 6\u0323 - - - 0 0 6\u0323 1 2 - 3 5 6 - 5 3 5 - - - 3 - 2 1 6\u0323 - 1 6\u0323 5\u0323 - 6\u0323 5\u0323 3\u0323 - - - 5\u0323 - 6\u0323 1 2 - 3 2 1 - 6\u0323 5\u0323 6\u0323 - - -"
+    },
+    {
+        "name": "Lý Kéo Chài", "name_en": "Hauling the Net",
+        "key": "C", "time_sig": (2, 4), "tempo": 108, "level": 4,
+        "filename": "17-ly-keo-chai",
+        "notes": "5 6 5 3 2 1 2 - 3 5 6 5 3 2 1 - 6\u0323 1 2 3 5 3 2 - 1 6\u0323 5\u0323 6\u0323 1 - - - 5 6 5 3 2 1 2 - 3 5 6 5 3 2 1 - 6\u0323 1 2 1 6\u0323 5\u0323 6\u0323 - 1 - - - 0 - - -"
+    },
+    {
+        "name": "Nối Vòng Tay Lớn", "name_en": "Join Hands in a Great Circle",
+        "key": "C", "time_sig": (4, 4), "tempo": 96, "level": 4,
+        "filename": "18-noi-vong-tay-lon",
+        "notes": "5 - 5 6 5 - 3 2 1 - 1 2 3 - - - 5 - 5 6 5 - 3 5 6 - 5 3 2 - - - 1 - 2 3 5 - 6 5 3 - 2 1 2 - - - 3 - 5 6 1\u0307 - 6 5 3 - 2 1 1 - - -"
+    },
+
+    # Level 5
+    {
+        "name": "Hạ Trắng", "name_en": "White Summer",
+        "key": "G", "time_sig": (4, 4), "tempo": 58, "level": 5,
+        "filename": "10-ha-trang",
+        "notes": "0 0 0 5\u0323 6\u0323 - 1 2 3 - 2 1 6\u0323 - - - 5\u0323 - 6\u0323 1 2 - 3 5 3 - 2 1 2 - - - 3 - 5 6 5 - 3 2 1 - 6\u0323 1 2 - - - 6\u0323 - 1 2 1 - 6\u0323 5\u0323 6\u0323 - - - 0 - - - 3 - 5 6 5 - 3 5 6 - 5 3 2 - - - 1 - 2 3 2 - 1 6\u0323 5\u0323 - 6\u0323 5\u0323 3\u0323 - - -"
+    },
+    {
+        "name": "Áo Lụa Hà Đông", "name_en": "Silk Dress of Ha Dong",
+        "key": "C", "time_sig": (4, 4), "tempo": 72, "level": 5,
+        "filename": "11-ao-lua-ha-dong",
+        "notes": "0 0 0 3 5 - 6 5 3 - 2 3 5 - - - 6 - 5 3 2 - 1 2 3 - 2 1 6\u0323 - - - 0 0 0 1 2 - 3 5 6 - 5 3 2 - - - 1 - 2 3 5 - 3 2 1 - 6\u0323 1 2 - - - 3 - 5 6 1\u0307 - 6 5 3 - 5 6 5 - - - 3 - 2 1 6\u0323 - 1 2 1 - - - 0 - - -"
+    },
+    {
+        "name": "Mùa Thu Cho Em", "name_en": "Autumn for You",
+        "key": "G", "time_sig": (4, 4), "tempo": 66, "level": 5,
+        "filename": "12-mua-thu-cho-em",
+        "notes": "0 0 0 3 5 - 6 5 3 - 2 1 2 - - - 0 0 0 5 6 - 1\u0307 6 5 - 3 5 6 - - - 5 - 3 2 1 - 6\u0323 1 2 - 3 2 1 - - - 6\u0323 - 1 2 3 - 5 3 2 - 1 6\u0323 5\u0323 - - - 6\u0323 - 1 2 3 - 5 6 5 - 3 2 3 - - - 2 - 1 6\u0323 5\u0323 - 6\u0323 1 6\u0323 - - - 0 - - -"
+    },
 ]
 
 

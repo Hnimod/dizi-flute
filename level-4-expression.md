@@ -555,6 +555,80 @@ Practice with bold, heroic tone. Use dynamics: build to forte in climactic phras
 
 ---
 
+## Vietnamese Songs (Nhạc Việt)
+
+> Note: The jianpu below is approximate. For accurate cảm âm, visit [hocthoisao.com](https://hocthoisao.com/cam-am/), [camamsao.io.vn](https://camamsao.io.vn/), or [saotrucbuigia.com](https://saotrucbuigia.com/kho-cam-am-mien-phi/).
+
+### Song 10: Diễm Xưa (Beauty of the Past)
+
+By Trịnh Công Sơn (1965). THE quintessential nhạc Trịnh piece for sáo trúc. A masterpiece of Vietnamese music — melancholic, poetic, timeless. Became a hit in Japan in 1970. Perfect for practicing vibrato and emotional expression.
+
+```
+Diễm Xưa (Beauty of the Past)
+1=C  4/4
+Adagio ♩=66
+
+0 0 0 3 | 2 - 1 6̣ | 5̣ - 6̣ 1 | 2 - - - |
+0 0 0 1 | 6̣ - 5̣ 3̣ | 5̣ - 6̣ 5̣ | 3̣ - - - |
+0 0 0 3 | 2 - 1 6̣ | 5̣ - 6̣ 1 | 2 - - - |
+3 - 5 3 | 2 - 1 2 | 3 - 2 1 | 6̣ - - - |
+5̣ - 6̣ 1 | 2 - 3 2 | 1 - 6̣ 5̣ | 6̣ - - - ||
+```
+Deep vibrato on every held note. Play with the weight of memory and longing. This is Vietnam's soul in music.
+
+> **Listen:** [YouTube search: sáo trúc Diễm Xưa Trịnh Công Sơn](https://www.youtube.com/results?search_query=sáo+trúc+Diễm+Xưa+Trịnh+Công+Sơn) | **Cảm âm:** [camamviet.com](https://www.camamviet.com/cam-sao-truc-bai-diem-xua-ban-chuan-full-loi/)
+
+### Song 11: Biển Nhớ (Remembering the Sea)
+
+By Trịnh Công Sơn. Deep, emotional, spanning two octaves. Evokes the vast sea and the ache of separation.
+
+```
+Biển Nhớ (Remembering the Sea)
+1=G  4/4
+Adagio ♩=60
+
+0 0 6̣ 1 | 2 - 3 2 | 1 - 6̣ 1 | 2 - - - |
+3 - 5 6 | 5 - 3 2 | 1 - 2 1 | 6̣ - - - |
+0 0 6̣ 1 | 2 - 3 5 | 6 - 5 3 | 5 - - - |
+3 - 2 1 | 6̣ - 1 6̣ | 5̣ - 6̣ 5̣ | 3̣ - - - |
+5̣ - 6̣ 1 | 2 - 3 2 | 1 - 6̣ 5̣ | 6̣ - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Biển Nhớ](https://www.youtube.com/results?search_query=sáo+trúc+Biển+Nhớ+Trịnh+Công+Sơn) | **Cảm âm:** [camamsao.io.vn](https://camamsao.io.vn/)
+
+### Song 12: Lý Kéo Chài (Hauling the Net)
+
+Southern Vietnamese folk song (dân ca Nam Bộ). Energetic fishing song from the Mekong Delta. Develops dynamic contrast and Southern ornamentation style.
+
+```
+Lý Kéo Chài (Hauling the Net)
+1=C  2/4
+Moderato ♩=108
+
+5 6 5 3 | 2 1 2 - | 3 5 6 5 | 3 2 1 - |
+6̣ 1 2 3 | 5 3 2 - | 1 6̣ 5̣ 6̣ | 1 - - - |
+5 6 5 3 | 2 1 2 - | 3 5 6 5 | 3 2 1 - |
+6̣ 1 2 1 | 6̣ 5̣ 6̣ - | 1 - - - | 0 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Lý Kéo Chài](https://www.youtube.com/results?search_query=sáo+trúc+Lý+Kéo+Chài) | **Cảm âm:** [1000camamsaotruchay.com](https://www.1000camamsaotruchay.com/)
+
+### Song 13: Nối Vòng Tay Lớn (Join Hands in a Great Circle)
+
+By Trịnh Công Sơn — the unity anthem of Vietnam, famously sung live on April 30, 1975. Uplifting, powerful, deeply meaningful. Requires sustain and emotional projection.
+
+```
+Nối Vòng Tay Lớn (Join Hands in a Great Circle)
+1=C  4/4
+Moderato ♩=96
+
+5 - 5 6 | 5 - 3 2 | 1 - 1 2 | 3 - - - |
+5 - 5 6 | 5 - 3 5 | 6 - 5 3 | 2 - - - |
+1 - 2 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
+3 - 5 6 | 1̇ - 6 5 | 3 - 2 1 | 1 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Nối Vòng Tay Lớn](https://www.youtube.com/results?search_query=sáo+trúc+Nối+Vòng+Tay+Lớn) | **Cảm âm:** [hocthoisao.com](https://hocthoisao.com/cam-am/)
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi vibrato 气震音 tutorial`

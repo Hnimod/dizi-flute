@@ -389,6 +389,76 @@ Moderato ♩=108
 
 ---
 
+## Vietnamese Songs (Nhạc Việt)
+
+> Note: The jianpu below is approximate. For accurate cảm âm, visit [hocthoisao.com](https://hocthoisao.com/cam-am/), [camamsao.io.vn](https://camamsao.io.vn/), or [saotrucbuigia.com](https://saotrucbuigia.com/kho-cam-am-mien-phi/).
+
+### Song 11: Cò Lả (The Stork Song)
+
+Northern Vietnamese folk song (dân ca Bắc Bộ). An iconic pentatonic melody that every Vietnamese person knows. The stork imagery represents grace and the Vietnamese countryside.
+
+```
+Cò Lả (The Stork Song)
+1=C  2/4
+Andante ♩=90
+
+2 2 3 2 | 1 - 6̣ - | 1 2 3 5 | 3 - 2 - |
+6̣ 1 2 3 | 2 - 1 - | 6̣ 1 6̣ 5̣ | 6̣ - - - |
+2 2 3 2 | 1 - 6̣ - | 1 2 3 5 | 3 - 2 - |
+6̣ 1 2 1 | 6̣ - 5̣ - | 6̣ - - - | 0 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Cò Lả dân ca](https://www.youtube.com/results?search_query=sáo+trúc+Cò+Lả+dân+ca) | **Cảm âm:** [saotrucbuigia.com](https://saotrucbuigia.com/kho-cam-am-mien-phi/)
+
+### Song 12: Bèo Dạt Mây Trôi (Duckweed Drifts, Clouds Float)
+
+Quan họ Bắc Ninh folk song — one of the most beautiful Vietnamese melodies. Hauntingly lyrical, evoking longing and the gentle flow of water. UNESCO Intangible Cultural Heritage.
+
+```
+Bèo Dạt Mây Trôi (Duckweed Drifts, Clouds Float)
+1=C  4/4
+Andante ♩=72
+
+1 1 5 4 | 6 5 5 - | 3 3 3 5 | 1 - - - |
+5 3 5 6 | 5 - 3 2 | 1 6̣ 1 2 | 1 - - - |
+1 1 5 4 | 6 5 5 - | 3 3 3 5 | 1 - - - |
+5 3 2 1 | 6̣ - 5̣ - | 6̣ 1 2 1 | 6̣ - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Bèo Dạt Mây Trôi](https://www.youtube.com/results?search_query=sáo+trúc+Bèo+Dạt+Mây+Trôi) | **Cảm âm:** [saotrucbuigia.com](https://saotrucbuigia.com/cam-am-beo-dat-may-troi/)
+
+### Song 13: Lý Cây Đa (The Banyan Tree Song)
+
+Northern Vietnamese folk song. Lively, cheerful, widely known. Good for developing rhythmic confidence.
+
+```
+Lý Cây Đa (The Banyan Tree Song)
+1=C  2/4
+Allegretto ♩=110
+
+5 3 2 1 | 2 3 5 - | 6 5 3 2 | 1 - 6̣ - |
+5̣ 6̣ 1 2 | 3 5 3 - | 2 1 6̣ 1 | 2 - - - |
+5 3 2 1 | 2 3 5 - | 6 5 3 2 | 1 - 6̣ - |
+5̣ 6̣ 1 2 | 1 6̣ 5̣ - | 6̣ - - - | 0 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Lý Cây Đa](https://www.youtube.com/results?search_query=sáo+trúc+Lý+Cây+Đa) | **Cảm âm:** [camamsao.io.vn](https://camamsao.io.vn/)
+
+### Song 14: Trống Cơm (Rice Drum Song)
+
+Traditional Vietnamese folk song. Unusually fast and cheerful for Vietnamese folk music. Great for developing articulation and speed.
+
+```
+Trống Cơm (Rice Drum Song)
+1=D  2/4
+Allegro ♩=120
+
+5 5 6 5 | 3 2 1 - | 2 3 5 6 | 5 3 2 - |
+1 2 3 5 | 6 5 3 - | 2 1 6̣ 1 | 2 - - - |
+5 5 6 5 | 3 2 1 - | 2 3 5 6 | 5 3 2 - |
+1 6̣ 5̣ 6̣ | 1 2 1 - | 6̣ - - - | 0 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Trống Cơm](https://www.youtube.com/results?search_query=sáo+trúc+Trống+Cơm) | **Cảm âm:** [1000camamsaotruchay.com](https://www.1000camamsaotruchay.com/)
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 茉莉花 jasmine flower tutorial jianpu`

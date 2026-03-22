@@ -309,6 +309,59 @@ Moderato ♩=96
 
 ---
 
+## Vietnamese Songs (Nhạc Việt)
+
+> Note: The jianpu below is approximate. For accurate cảm âm, visit [hocthoisao.com](https://hocthoisao.com/cam-am/), [camamsao.io.vn](https://camamsao.io.vn/), or [saotrucbuigia.com](https://saotrucbuigia.com/kho-cam-am-mien-phi/).
+
+### Song 9: Cháu Lên Ba (Turning Three)
+
+A beloved Vietnamese children's song. Simple melody, single octave — perfect for beginners.
+
+```
+Cháu Lên Ba (Turning Three)
+1=C  2/4
+Moderato ♩=100
+
+5 3 5 3 | 5 3 2 1 | 2 3 5 3 | 2 - |
+5 3 5 3 | 5 3 2 1 | 2 3 2 1 | 5̣ - |
+6̣ 6̣ 1 6̣ | 5̣ 5̣ 3̣ 5̣ | 6̣ 6̣ 1 2 | 1 - |
+5 3 5 3 | 5 3 2 1 | 2 3 2 1 | 5̣ - ||
+```
+> **Listen:** [YouTube search: sáo trúc Cháu Lên Ba](https://www.youtube.com/results?search_query=sáo+trúc+Cháu+Lên+Ba) | **Cảm âm:** [hocthoisao.com](https://hocthoisao.com/cam-am/)
+
+### Song 10: Đàn Gà Trong Sân (Chickens in the Yard)
+
+Playful children's song with simple repeating patterns. Every Vietnamese person knows this song.
+
+```
+Đàn Gà Trong Sân (Chickens in the Yard)
+1=C  2/4
+Allegretto ♩=110
+
+1 1 3 3 | 5 5 3 - | 4 4 2 2 | 3 3 1 - |
+5 5 3 3 | 2 2 1 - | 5 3 2 1 | 2 3 1 - |
+1 1 3 3 | 5 5 3 - | 4 4 2 2 | 3 3 1 - ||
+```
+> **Listen:** [YouTube search: sáo trúc Đàn Gà Trong Sân](https://www.youtube.com/results?search_query=sáo+trúc+Đàn+Gà+Trong+Sân) | **Cảm âm:** [camamsao.io.vn](https://camamsao.io.vn/)
+
+### Song 11: Chú Voi Con Ở Bản Đôn (Baby Elephant)
+
+By Phạm Tuyên. A happy, bouncy melody beloved by Vietnamese children.
+
+```
+Chú Voi Con Ở Bản Đôn (Baby Elephant)
+1=C  2/4
+Moderato ♩=100
+
+5 5 3 5 | 6 - 5 - | 3 3 1 3 | 5 - 3 - |
+2 2 3 2 | 1 - 6̣ - | 1 2 3 5 | 3 - 1 - |
+5 5 3 5 | 6 - 5 - | 3 3 1 3 | 5 - 3 - |
+2 3 2 1 | 6̣ - 1 - | 2 3 2 1 | 1 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Chú Voi Con Ở Bản Đôn](https://www.youtube.com/results?search_query=sáo+trúc+Chú+Voi+Con+Ở+Bản+Đôn) | **Cảm âm:** [camamsao.io.vn](https://camamsao.io.vn/)
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 小星星 tutorial`

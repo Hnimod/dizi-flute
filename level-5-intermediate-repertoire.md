@@ -369,6 +369,66 @@ Flowing, meditative. Let each phrase breathe. Slides (滑音) between notes add 
 
 ---
 
+## Vietnamese Songs (Nhạc Việt)
+
+> Note: The jianpu below is approximate. For accurate cảm âm, visit [hocthoisao.com](https://hocthoisao.com/cam-am/), [camamsao.io.vn](https://camamsao.io.vn/), or [saotrucbuigia.com](https://saotrucbuigia.com/kho-cam-am-mien-phi/).
+
+### Song 10: Hạ Trắng (White Summer)
+
+By Trịnh Công Sơn (1961). A complex, dreamy melody evoking the summers of Huế. Wide intervals, rubato phrasing. Requires excellent vibrato control and subtle ornamentation.
+
+```
+Hạ Trắng (White Summer)
+1=G  4/4
+Adagio ♩=58
+
+0 0 0 5̣ | 6̣ - 1 2 | 3 - 2 1 | 6̣ - - - |
+5̣ - 6̣ 1 | 2 - 3 5 | 3 - 2 1 | 2 - - - |
+3 - 5 6 | 5 - 3 2 | 1 - 6̣ 1 | 2 - - - |
+6̣ - 1 2 | 1 - 6̣ 5̣ | 6̣ - - - | 0 - - - |
+3 - 5 6 | 5 - 3 5 | 6 - 5 3 | 2 - - - |
+1 - 2 3 | 2 - 1 6̣ | 5̣ - 6̣ 5̣ | 3̣ - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Hạ Trắng](https://www.youtube.com/results?search_query=sáo+trúc+Hạ+Trắng+Trịnh+Công+Sơn) | **Cảm âm:** [camamviet.com](https://www.camamviet.com/)
+
+### Song 11: Áo Lụa Hà Đông (Silk Dress of Hà Đông)
+
+By Ngô Thụy Miên, lyrics by Nguyên Sa (1971). One of the most elegant Vietnamese romantic songs. Smooth legato, expressive phrasing — like silk flowing in the wind.
+
+```
+Áo Lụa Hà Đông (Silk Dress of Hà Đông)
+1=C  4/4
+Andante ♩=72
+
+0 0 0 3 | 5 - 6 5 | 3 - 2 3 | 5 - - - |
+6 - 5 3 | 2 - 1 2 | 3 - 2 1 | 6̣ - - - |
+0 0 0 1 | 2 - 3 5 | 6 - 5 3 | 2 - - - |
+1 - 2 3 | 5 - 3 2 | 1 - 6̣ 1 | 2 - - - |
+3 - 5 6 | 1̇ - 6 5 | 3 - 5 6 | 5 - - - |
+3 - 2 1 | 6̣ - 1 2 | 1 - - - | 0 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Áo Lụa Hà Đông](https://www.youtube.com/results?search_query=sáo+trúc+Áo+Lụa+Hà+Đông) | **Cảm âm:** [camamsao.io.vn](https://camamsao.io.vn/)
+
+### Song 12: Mùa Thu Cho Em (Autumn for You)
+
+By Ngô Thụy Miên. A lush romantic ballad with wide melodic range. Requires excellent sustain and dynamic control. One of the masterpieces of nhạc tiền chiến.
+
+```
+Mùa Thu Cho Em (Autumn for You)
+1=G  4/4
+Adagio ♩=66
+
+0 0 0 3 | 5 - 6 5 | 3 - 2 1 | 2 - - - |
+0 0 0 5 | 6 - 1̇ 6 | 5 - 3 5 | 6 - - - |
+5 - 3 2 | 1 - 6̣ 1 | 2 - 3 2 | 1 - - - |
+6̣ - 1 2 | 3 - 5 3 | 2 - 1 6̣ | 5̣ - - - |
+6̣ - 1 2 | 3 - 5 6 | 5 - 3 2 | 3 - - - |
+2 - 1 6̣ | 5̣ - 6̣ 1 | 6̣ - - - | 0 - - - ||
+```
+> **Listen:** [YouTube search: sáo trúc Mùa Thu Cho Em](https://www.youtube.com/results?search_query=sáo+trúc+Mùa+Thu+Cho+Em+Ngô+Thụy+Miên) | **Cảm âm:** [camamsao.io.vn](https://camamsao.io.vn/)
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 姑苏行 tutorial` — learn section by section
