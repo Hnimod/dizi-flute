@@ -9,9 +9,9 @@ export function App() {
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
-      <div className="flex h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+      <div className="flex h-screen bg-(--color-bg) text-(--color-text)">
         {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-[var(--color-border)] bg-[var(--color-bg)] md:block">
+        <aside className="hidden w-64 shrink-0 border-r border-(--color-border) bg-(--color-bg) md:block">
           <Sidebar />
         </aside>
 
@@ -22,7 +22,7 @@ export function App() {
               className="absolute inset-0 bg-black/50"
               onClick={() => setSidebarOpen(false)}
             />
-            <aside className="relative z-50 h-full w-64 bg-[var(--color-bg)] shadow-xl">
+            <aside className="relative z-50 h-full w-64 bg-(--color-bg) shadow-xl">
               <Sidebar onClose={() => setSidebarOpen(false)} />
             </aside>
           </div>
@@ -31,10 +31,10 @@ export function App() {
         {/* Main content */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Top bar */}
-          <header className="flex h-14 items-center justify-between border-b border-[var(--color-border)] px-4">
+          <header className="flex h-14 items-center justify-between border-b border-(--color-border) px-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="rounded-lg p-2 hover:bg-[var(--color-bg-secondary)] md:hidden"
+              className="rounded-lg p-2 hover:bg-(--color-bg-secondary) md:hidden"
               aria-label="Open sidebar"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

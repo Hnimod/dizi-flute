@@ -17,7 +17,7 @@ export function ReferenceDetailPage() {
           &larr; Back to Reference Library
         </Link>
         <h1 className="mt-4 text-2xl font-bold">Reference Not Found</h1>
-        <p className="mt-2 text-[var(--color-text-secondary)]">
+        <p className="mt-2 text-(--color-text-secondary)">
           No reference document matches "{slug}".
         </p>
       </div>

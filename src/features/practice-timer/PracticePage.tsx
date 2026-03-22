@@ -31,13 +31,13 @@ export function PracticePage() {
     <div className="mx-auto max-w-3xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Practice Timer</h1>
-        <p className="mt-2 text-[var(--color-text-secondary)]">
+        <p className="mt-2 text-(--color-text-secondary)">
           Track your daily practice sessions and build consistency.
         </p>
       </div>
 
       {/* Timer display */}
-      <div className="mb-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-8 text-center">
+      <div className="mb-8 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-8 text-center">
         <div className="font-mono text-6xl font-bold tracking-wider">
           {formatDuration(elapsed)}
         </div>
@@ -46,39 +46,39 @@ export function PracticePage() {
           {!isRunning ? (
             <button
               onClick={start}
-              className="rounded-lg bg-[var(--color-accent)] px-6 py-2 font-medium text-white transition-opacity hover:opacity-90"
+              className="rounded-lg bg-(--color-accent) px-6 py-2 font-medium text-white transition-opacity hover:opacity-90"
             >
               {elapsed > 0 ? "Resume" : "Start"}
             </button>
           ) : (
             <button
               onClick={pause}
-              className="rounded-lg border border-[var(--color-border)] px-6 py-2 font-medium transition-colors hover:bg-[var(--color-bg-secondary)]"
+              className="rounded-lg border border-(--color-border) px-6 py-2 font-medium transition-colors hover:bg-(--color-bg-secondary)"
             >
               Pause
             </button>
           )}
           <button
             onClick={reset}
-            className="rounded-lg border border-[var(--color-border)] px-6 py-2 font-medium transition-colors hover:bg-[var(--color-bg-secondary)]"
+            className="rounded-lg border border-(--color-border) px-6 py-2 font-medium transition-colors hover:bg-(--color-bg-secondary)"
           >
             Reset
           </button>
         </div>
 
         {/* Save session */}
-        <div className="mt-6 border-t border-[var(--color-border)] pt-6">
+        <div className="mt-6 border-t border-(--color-border) pt-6">
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Session notes (optional)..."
             rows={2}
-            className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2 text-sm focus:border-[var(--color-accent)] focus:outline-none"
+            className="w-full rounded-lg border border-(--color-border) bg-(--color-bg) px-4 py-2 text-sm focus:border-(--color-accent) focus:outline-none"
           />
           <button
             onClick={handleSave}
             disabled={elapsed === 0}
-            className="mt-3 rounded-lg bg-[var(--color-accent)] px-6 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="mt-3 rounded-lg bg-(--color-accent) px-6 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
           >
             Save Session
           </button>
@@ -92,14 +92,14 @@ export function PracticePage() {
           {course.dailyPractice.map((item, i) => (
             <div
               key={i}
-              className="flex items-start gap-3 rounded-lg border border-[var(--color-border)] p-4"
+              className="flex items-start gap-3 rounded-lg border border-(--color-border) p-4"
             >
-              <span className="shrink-0 rounded bg-[var(--color-accent-light)] px-2 py-0.5 text-xs font-medium text-[var(--color-accent)]">
+              <span className="shrink-0 rounded bg-(--color-accent-light) px-2 py-0.5 text-xs font-medium text-(--color-accent)">
                 {item.duration}
               </span>
               <div>
                 <p className="font-medium">{item.activity}</p>
-                <p className="mt-0.5 text-sm text-[var(--color-text-secondary)]">
+                <p className="mt-0.5 text-sm text-(--color-text-secondary)">
                   {item.notes}
                 </p>
               </div>

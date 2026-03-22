@@ -10,7 +10,7 @@ export function HomePage() {
     <div className="mx-auto max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Learn Dizi Flute</h1>
-        <p className="mt-2 text-[var(--color-text-secondary)]">
+        <p className="mt-2 text-(--color-text-secondary)">
           A structured self-study course from absolute beginner to advanced level.
         </p>
       </div>
@@ -26,37 +26,37 @@ export function HomePage() {
             <Link
               key={level.id}
               to={`/level/${level.id}`}
-              className="group rounded-xl border border-[var(--color-border)] p-5 transition-all hover:border-[var(--color-accent)] hover:shadow-md"
+              className="group rounded-xl border border-(--color-border) p-5 transition-all hover:border-(--color-accent) hover:shadow-md"
             >
               <div className="flex items-start justify-between">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] text-sm font-bold text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--color-accent) text-sm font-bold text-white">
                   {level.id}
                 </span>
-                <span className="text-xs text-[var(--color-text-secondary)]">
+                <span className="text-xs text-(--color-text-secondary)">
                   {level.ccomGrade}
                 </span>
               </div>
-              <h2 className="mt-3 text-lg font-semibold group-hover:text-[var(--color-accent)]">
+              <h2 className="mt-3 text-lg font-semibold group-hover:text-(--color-accent)">
                 {level.title}
               </h2>
-              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{level.subtitle}</p>
-              <div className="mt-3 text-xs font-medium text-[var(--color-text-secondary)]">
+              <p className="mt-1 text-sm text-(--color-text-secondary)">{level.subtitle}</p>
+              <div className="mt-3 text-xs font-medium text-(--color-text-secondary)">
                 {level.timeline}
               </div>
               {totalItems > 0 && (
                 <div className="mt-3">
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-border)]">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-(--color-border)">
                     <div
-                      className="h-full rounded-full bg-[var(--color-accent)] transition-all"
+                      className="h-full rounded-full bg-(--color-accent) transition-all"
                       style={{ width: `${percent}%` }}
                     />
                   </div>
                   <div className="mt-1 flex items-center justify-between">
-                    <span className="text-xs text-[var(--color-text-secondary)]">
+                    <span className="text-xs text-(--color-text-secondary)">
                       {completedCount} / {totalItems}
                     </span>
                     {isComplete && (
-                      <span className="rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[10px] font-semibold text-white">
+                      <span className="rounded-full bg-(--color-accent) px-2 py-0.5 text-[10px] font-semibold text-white">
                         Complete
                       </span>
                     )}
