@@ -15,15 +15,15 @@
 }
 
 .dark {
-  --color-bg: #0c0a09;
-  --color-bg-secondary: #1c1917;
-  --color-bg-tertiary: #292524;
-  --color-text: #fafaf9;
-  --color-text-secondary: #a8a29e;
-  --color-border: #292524;
-  --color-accent: #ef4444;
-  --color-accent-light: #1a0a0a;
-  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-bg: #141218;
+  --color-bg-secondary: #1d1b22;
+  --color-bg-tertiary: #2b2930;
+  --color-text: #e6e1e8;
+  --color-text-secondary: #9d97a3;
+  --color-border: #302e36;
+  --color-accent: #f87171;
+  --color-accent-light: #2a1520;
+  --color-shadow: rgba(0, 0, 0, 0.4);
 }
 
 body {
