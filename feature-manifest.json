@@ -12,19 +12,17 @@
       "path": "src/features/audio-playback",
       "description": "Audio player with speed control — Zustand store for playback state",
       "routes": [],
-      "exports": [],
+      "exports": ["useAudioStore"],
       "dependsOn": ["shared"],
-      "crossFeatureDeps": [],
-      "status": "not-started"
+      "crossFeatureDeps": []
     },
     "progress-tracking": {
       "path": "src/features/progress-tracking",
       "description": "Completion tracking — Zustand store with persist middleware",
       "routes": [],
-      "exports": [],
+      "exports": ["useProgressStore"],
       "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": [],
-      "status": "not-started"
+      "crossFeatureDeps": []
     },
     "course-navigation": {
       "path": "src/features/course-navigation",

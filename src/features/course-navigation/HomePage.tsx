@@ -1,15 +1,5 @@
 import { Link } from "react-router";
-
-const levels = [
-  { id: 0, title: "Setup & Foundations", subtitle: "Equipment, jianpu notation, breathing", timeline: "Week 0", ccomGrade: "Pre-Grade" },
-  { id: 1, title: "First Sounds", subtitle: "First tones, notes 1-5, embouchure", timeline: "Weeks 1-4", ccomGrade: "Grade 1" },
-  { id: 2, title: "First Songs", subtitle: "Full scale, simple songs, tonguing", timeline: "Weeks 5-8", ccomGrade: "Grade 1-2" },
-  { id: 3, title: "Folk Repertoire", subtitle: "Folk songs, grace notes, dynamics", timeline: "Months 3-4", ccomGrade: "Grade 2-3" },
-  { id: 4, title: "Expression", subtitle: "Vibrato, double tonguing, ornaments", timeline: "Months 5-7", ccomGrade: "Grade 3-4" },
-  { id: 5, title: "Intermediate Repertoire", subtitle: "Graded pieces, regional styles", timeline: "Months 8-12", ccomGrade: "Grade 4-5" },
-  { id: 6, title: "Advancing", subtitle: "Multi-key, modal theory, chromatics", timeline: "Year 2", ccomGrade: "Grade 5-7" },
-  { id: 7, title: "Advanced", subtitle: "Concert repertoire, aesthetics", timeline: "Year 2-3+", ccomGrade: "Grade 7-9" },
-];
+import { levels } from "@/data";
 
 export function HomePage() {
   return (
