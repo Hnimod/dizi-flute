@@ -39,17 +39,21 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
                     }`
                   }
                 >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-xs font-bold bg-[var(--color-bg-secondary)]">
-                    {level.id}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate font-medium">{level.title}</div>
-                    <div className="text-xs text-[var(--color-text-secondary)]">{level.timeline}</div>
-                  </div>
-                  {totalItems > 0 && (
-                    <span className="shrink-0 text-[10px] tabular-nums text-[var(--color-text-secondary)]">
-                      {completed === totalItems ? "✓" : `${completed}/${totalItems}`}
-                    </span>
+                  {({ isActive }) => (
+                    <>
+                      <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-xs font-bold ${isActive ? "bg-white/20 text-white" : "bg-[var(--color-bg-secondary)]"}`}>
+                        {level.id}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate font-medium">{level.title}</div>
+                        <div className={`text-xs ${isActive ? "text-white/70" : "text-[var(--color-text-secondary)]"}`}>{level.timeline}</div>
+                      </div>
+                      {totalItems > 0 && (
+                        <span className={`shrink-0 text-[10px] tabular-nums ${isActive ? "text-white/70" : "text-[var(--color-text-secondary)]"}`}>
+                          {completed === totalItems ? "✓" : `${completed}/${totalItems}`}
+                        </span>
+                      )}
+                    </>
                   )}
                 </NavLink>
               </li>
