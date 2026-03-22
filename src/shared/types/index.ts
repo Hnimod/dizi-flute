@@ -46,6 +46,7 @@ export interface Song {
   jianpu: string;
   description?: string;
   audioPath?: string;
+  videoUrl?: string;
   origin?: string;
 }
 
@@ -60,6 +61,7 @@ export interface Exercise {
   jianpu: string;
   description?: string;
   audioPath?: string;
+  videoUrl?: string;
 }
 
 export interface ReferenceDoc {

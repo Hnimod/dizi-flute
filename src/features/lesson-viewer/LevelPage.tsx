@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router";
 import { levels } from "@/data";
-import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar } from "@/shared/ui";
+import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed } from "@/shared/ui";
 import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
+import { PracticeView } from "./PracticeView";
 import type { Song, Exercise } from "@/shared/types";
 
 /* ─── Helpers ─── */
@@ -16,7 +17,7 @@ function getItemTitle(item: Song | Exercise): string {
   return item.title;
 }
 
-/* ─── Desktop: full cards (unchanged from before) ─── */
+/* ─── Desktop: full cards ─── */
 
 function SongCard({ song }: { song: Song }) {
   const toggleItem = useProgressStore((s) => s.toggleItem);
@@ -45,6 +46,7 @@ function SongCard({ song }: { song: Song }) {
           {song.description}
         </p>
       )}
+      {song.videoUrl && <VideoEmbed url={song.videoUrl} className="my-3" />}
       <pre
         className="jianpu rounded-lg p-4 overflow-x-auto text-sm my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
@@ -81,6 +83,7 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
           {exercise.description}
         </p>
       )}
+      {exercise.videoUrl && <VideoEmbed url={exercise.videoUrl} className="my-3" />}
       <pre
         className="jianpu rounded-lg p-4 overflow-x-auto text-sm my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
@@ -96,25 +99,18 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
 
 function CompactItemRow({
   item,
-  isExpanded,
-  onToggleExpand,
+  onTap,
 }: {
   item: Song | Exercise;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
+  onTap: () => void;
 }) {
   const toggleItem = useProgressStore((s) => s.toggleItem);
   const completed = useProgressStore(selectIsCompleted(item.id));
 
   return (
     <button
-      onClick={onToggleExpand}
-      className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors ${
-        isExpanded
-          ? "bg-(--color-accent-light) border-l-3 border-l-(--color-accent)"
-          : "hover:bg-(--color-bg-secondary)"
-      }`}
-      style={{ border: isExpanded ? undefined : "1px solid transparent" }}
+      onClick={onTap}
+      className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-(--color-bg-secondary) active:bg-(--color-accent-light)"
     >
       <span
         className={`shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase ${
@@ -157,112 +153,6 @@ function CompactItemRow({
   );
 }
 
-/* ─── Mobile: expanded item view ─── */
-
-function ExpandedItemView({
-  item,
-  index,
-  total,
-  onPrev,
-  onNext,
-}: {
-  item: Song | Exercise;
-  index: number;
-  total: number;
-  onPrev: (() => void) | null;
-  onNext: (() => void) | null;
-}) {
-  const toggleItem = useProgressStore((s) => s.toggleItem);
-  const completed = useProgressStore(selectIsCompleted(item.id));
-
-  const navBar = (
-    <div className="flex items-center justify-between">
-      <button
-        onClick={onPrev ?? undefined}
-        disabled={!onPrev}
-        className="min-h-[44px] rounded-lg px-3 py-2 text-sm font-medium transition-opacity disabled:opacity-30"
-        style={{ color: "var(--color-accent)" }}
-      >
-        &larr; Prev
-      </button>
-      <span className="text-xs font-medium text-(--color-text-secondary)">
-        {index + 1} of {total}
-      </span>
-      <button
-        onClick={onNext ?? undefined}
-        disabled={!onNext}
-        className="min-h-[44px] rounded-lg px-3 py-2 text-sm font-medium transition-opacity disabled:opacity-30"
-        style={{ color: "var(--color-accent)" }}
-      >
-        Next &rarr;
-      </button>
-    </div>
-  );
-
-  return (
-    <div
-      className="my-2 rounded-xl bg-(--color-bg-secondary) shadow-sm overflow-hidden"
-      style={{ border: "1px solid var(--color-border)" }}
-    >
-      {/* Top nav */}
-      <div className="border-b border-(--color-border) px-3">{navBar}</div>
-
-      {/* Content */}
-      <div className="p-4">
-        {item.type === "song" && item.description && (
-          <p className="text-sm mb-3 leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-            {item.description}
-          </p>
-        )}
-        {item.type === "exercise" && item.description && (
-          <p className="text-sm mb-3 leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-            {item.description}
-          </p>
-        )}
-        <pre
-          className="jianpu rounded-lg p-3 overflow-x-auto text-xs my-2"
-          style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
-        >
-          {item.jianpu}
-        </pre>
-        {item.audioPath && <AudioPlayer src={item.audioPath} className="mt-3" />}
-      </div>
-
-      {/* Bottom nav + complete */}
-      <div className="border-t border-(--color-border) px-3 pb-2">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={onPrev ?? undefined}
-            disabled={!onPrev}
-            className="min-h-[44px] rounded-lg px-3 py-2 text-sm font-medium transition-opacity disabled:opacity-30"
-            style={{ color: "var(--color-accent)" }}
-          >
-            &larr; Prev
-          </button>
-          <button
-            onClick={() => toggleItem(item.id)}
-            className={`min-h-[44px] rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              completed
-                ? "bg-(--color-bg-tertiary) text-(--color-text-secondary)"
-                : "bg-(--color-accent) text-white"
-            }`}
-          >
-            {completed ? "Completed ✓" : "Mark Complete"}
-          </button>
-          <button
-            onClick={onNext ?? undefined}
-            disabled={!onNext}
-            className="min-h-[44px] rounded-lg px-3 py-2 text-sm font-medium transition-opacity disabled:opacity-30"
-            style={{ color: "var(--color-accent)" }}
-          >
-            Next &rarr;
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── Main page ─── */
 
 export function LevelPage() {
@@ -272,8 +162,11 @@ export function LevelPage() {
   const completedCount = useProgressStore(selectCompletedCount(levelId));
   const setCurrentLevel = useProgressStore((s) => s.setCurrentLevel);
 
-  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
-  const expandedRef = useRef<HTMLDivElement>(null);
+  // Practice view state: which section's items and starting index
+  const [practiceState, setPracticeState] = useState<{
+    items: (Song | Exercise)[];
+    index: number;
+  } | null>(null);
 
   const totalItems = useMemo(
     () => (level ? level.sections.reduce((sum, s) => sum + s.items.length, 0) : 0),
@@ -287,27 +180,10 @@ export function LevelPage() {
     }
   }, [level, levelId, setCurrentLevel]);
 
-  // Reset expanded item when navigating to a different level
+  // Reset practice view when navigating to a different level
   useEffect(() => {
-    setExpandedItemId(null);
+    setPracticeState(null);
   }, [levelId]);
-
-  // Auto-scroll to expanded item
-  useEffect(() => {
-    if (expandedItemId && expandedRef.current) {
-      // Small delay to allow DOM to update
-      requestAnimationFrame(() => {
-        expandedRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    }
-  }, [expandedItemId]);
-
-  const handleToggleExpand = useCallback(
-    (itemId: string) => {
-      setExpandedItemId((prev) => (prev === itemId ? null : itemId));
-    },
-    [],
-  );
 
   if (!level) {
     return (
@@ -329,119 +205,109 @@ export function LevelPage() {
   const nextLevel = levels.find((l) => l.id === levelId + 1);
 
   return (
-    <div className="mx-auto max-w-3xl">
-      {/* Header */}
-      <header className="mb-6 md:mb-8">
-        <p className="text-xs font-medium mb-1 md:text-sm" style={{ color: "var(--color-accent)" }}>
-          Level {level.id} &middot; {level.timeline} &middot; CCOM {level.ccomGrade}
-        </p>
-        <h1 className="text-2xl font-bold mb-1 md:text-3xl" style={{ color: "var(--color-text)" }}>
-          {level.title}
-        </h1>
-        <p className="text-base md:text-lg" style={{ color: "var(--color-text-secondary)" }}>
-          {level.subtitle}
-        </p>
-      </header>
-
-      {/* Progress summary */}
-      {totalItems > 0 && (
-        <div className="mb-6 md:mb-8">
-          <p className="text-sm mb-2" style={{ color: "var(--color-text-secondary)" }}>
-            {completedCount} of {totalItems} items completed
-          </p>
-          <ProgressBar value={progressPercent} />
-        </div>
+    <>
+      {/* Full-screen practice view overlay */}
+      {practiceState && (
+        <PracticeView
+          items={practiceState.items}
+          initialIndex={practiceState.index}
+          levelTitle={level.title}
+          onClose={() => setPracticeState(null)}
+        />
       )}
 
-      {/* Sections */}
-      {level.sections.map((section) => (
-        <section key={section.id} className="mb-8 md:mb-10">
-          <h2
-            className="text-xl font-bold mb-3 pb-2 md:text-2xl md:mb-4"
-            style={{
-              color: "var(--color-text)",
-              borderBottom: "1px solid var(--color-border)",
-            }}
-          >
-            {section.title}
-          </h2>
+      <div className="mx-auto max-w-3xl">
+        {/* Header */}
+        <header className="mb-6 md:mb-8">
+          <p className="text-xs font-medium mb-1 md:text-sm" style={{ color: "var(--color-accent)" }}>
+            Level {level.id} &middot; {level.timeline} &middot; CCOM {level.ccomGrade}
+          </p>
+          <h1 className="text-2xl font-bold mb-1 md:text-3xl" style={{ color: "var(--color-text)" }}>
+            {level.title}
+          </h1>
+          <p className="text-base md:text-lg" style={{ color: "var(--color-text-secondary)" }}>
+            {level.subtitle}
+          </p>
+        </header>
 
-          {section.content && <MarkdownRenderer content={section.content} />}
-
-          {/* Desktop: full cards */}
-          <div className="hidden md:block">
-            {section.items.map((item) =>
-              item.type === "song" ? (
-                <SongCard key={item.id} song={item} />
-              ) : (
-                <ExerciseCard key={item.id} exercise={item} />
-              ),
-            )}
+        {/* Progress summary */}
+        {totalItems > 0 && (
+          <div className="mb-6 md:mb-8">
+            <p className="text-sm mb-2" style={{ color: "var(--color-text-secondary)" }}>
+              {completedCount} of {totalItems} items completed
+            </p>
+            <ProgressBar value={progressPercent} />
           </div>
-
-          {/* Mobile: compact list + expanded view */}
-          <div className="md:hidden space-y-1 mt-3">
-            {section.items.map((item, idx) => {
-              const isExpanded = expandedItemId === item.id;
-              return (
-                <div key={item.id} ref={isExpanded ? expandedRef : undefined}>
-                  <CompactItemRow
-                    item={item}
-                    isExpanded={isExpanded}
-                    onToggleExpand={() => handleToggleExpand(item.id)}
-                  />
-                  {isExpanded && (
-                    <ExpandedItemView
-                      item={item}
-                      index={idx}
-                      total={section.items.length}
-                      onPrev={
-                        idx > 0
-                          ? () => handleToggleExpand(section.items[idx - 1]!.id)
-                          : null
-                      }
-                      onNext={
-                        idx < section.items.length - 1
-                          ? () => handleToggleExpand(section.items[idx + 1]!.id)
-                          : null
-                      }
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      ))}
-
-      {/* Navigation */}
-      <nav
-        className="flex justify-between items-center py-4 mt-6 gap-4 md:py-6 md:mt-8"
-        style={{ borderTop: "1px solid var(--color-border)" }}
-      >
-        {prevLevel ? (
-          <Link
-            to={`/level/${prevLevel.id}`}
-            className="text-sm hover:opacity-80 transition-opacity md:text-base"
-            style={{ color: "var(--color-accent)" }}
-          >
-            &larr; {prevLevel.title}
-          </Link>
-        ) : (
-          <span />
         )}
-        {nextLevel ? (
-          <Link
-            to={`/level/${nextLevel.id}`}
-            className="text-sm hover:opacity-80 transition-opacity text-right md:text-base"
-            style={{ color: "var(--color-accent)" }}
-          >
-            {nextLevel.title} &rarr;
-          </Link>
-        ) : (
-          <span />
-        )}
-      </nav>
-    </div>
+
+        {/* Sections */}
+        {level.sections.map((section) => (
+          <section key={section.id} className="mb-8 md:mb-10">
+            <h2
+              className="text-xl font-bold mb-3 pb-2 md:text-2xl md:mb-4"
+              style={{
+                color: "var(--color-text)",
+                borderBottom: "1px solid var(--color-border)",
+              }}
+            >
+              {section.title}
+            </h2>
+
+            {section.content && <MarkdownRenderer content={section.content} />}
+
+            {/* Desktop: full cards */}
+            <div className="hidden md:block">
+              {section.items.map((item) =>
+                item.type === "song" ? (
+                  <SongCard key={item.id} song={item} />
+                ) : (
+                  <ExerciseCard key={item.id} exercise={item} />
+                ),
+              )}
+            </div>
+
+            {/* Mobile: compact list → tap opens full-screen practice view */}
+            <div className="md:hidden space-y-1 mt-3">
+              {section.items.map((item, idx) => (
+                <CompactItemRow
+                  key={item.id}
+                  item={item}
+                  onTap={() => setPracticeState({ items: section.items, index: idx })}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+
+        {/* Navigation */}
+        <nav
+          className="flex justify-between items-center py-4 mt-6 gap-4 md:py-6 md:mt-8"
+          style={{ borderTop: "1px solid var(--color-border)" }}
+        >
+          {prevLevel ? (
+            <Link
+              to={`/level/${prevLevel.id}`}
+              className="text-sm hover:opacity-80 transition-opacity md:text-base"
+              style={{ color: "var(--color-accent)" }}
+            >
+              &larr; {prevLevel.title}
+            </Link>
+          ) : (
+            <span />
+          )}
+          {nextLevel ? (
+            <Link
+              to={`/level/${nextLevel.id}`}
+              className="text-sm hover:opacity-80 transition-opacity text-right md:text-base"
+              style={{ color: "var(--color-accent)" }}
+            >
+              {nextLevel.title} &rarr;
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
+      </div>
+    </>
   );
 }
