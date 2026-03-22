@@ -3,11 +3,7 @@ import { levels } from "@/data";
 import { useProgressStore } from "@/features/progress-tracking";
 
 export function Sidebar({ onClose }: { onClose?: () => void }) {
-  // completedItems included in selector for reactivity when items are toggled
-  const getCompletedCount = useProgressStore((s) => {
-    void s.completedItems;
-    return s.getCompletedCount;
-  });
+  const completedItems = useProgressStore((s) => s.completedItems);
 
   return (
     <nav className="flex h-full flex-col overflow-y-auto">
@@ -24,7 +20,9 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
         <ul className="space-y-0.5">
           {levels.map((level) => {
             const totalItems = level.sections.flatMap((s) => s.items).length;
-            const completed = getCompletedCount(level.id);
+            const completed = Object.entries(completedItems).filter(
+              ([key, done]) => done && key.startsWith(`level-${level.id}-`),
+            ).length;
 
             return (
               <li key={level.id}>

@@ -4,8 +4,13 @@ import { formatDuration } from "@/shared/utils";
 import { usePracticeStore } from "./store";
 
 export function PracticePage() {
-  const { isRunning, elapsed, start, pause, reset, tick, saveSession } =
-    usePracticeStore();
+  const isRunning = usePracticeStore((s) => s.isRunning);
+  const elapsed = usePracticeStore((s) => s.elapsed);
+  const start = usePracticeStore((s) => s.start);
+  const pause = usePracticeStore((s) => s.pause);
+  const reset = usePracticeStore((s) => s.reset);
+  const tick = usePracticeStore((s) => s.tick);
+  const saveSession = usePracticeStore((s) => s.saveSession);
   const [notes, setNotes] = useState("");
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 

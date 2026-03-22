@@ -2,12 +2,12 @@ import { useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router";
 import { levels } from "@/data";
 import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar } from "@/shared/ui";
-import { useProgressStore } from "@/features/progress-tracking";
+import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
 
 function SongCard({ song }: { song: Song }) {
-  const { toggleItem, isCompleted } = useProgressStore();
-  const completed = isCompleted(song.id);
+  const toggleItem = useProgressStore((s) => s.toggleItem);
+  const completed = useProgressStore(selectIsCompleted(song.id));
   const titles = [
     song.titleChinese,
     song.titleVietnamese,
@@ -67,8 +67,8 @@ function SongCard({ song }: { song: Song }) {
 }
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
-  const { toggleItem, isCompleted } = useProgressStore();
-  const completed = isCompleted(exercise.id);
+  const toggleItem = useProgressStore((s) => s.toggleItem);
+  const completed = useProgressStore(selectIsCompleted(exercise.id));
 
   return (
     <div
@@ -127,13 +127,13 @@ export function LevelPage() {
   const { id } = useParams();
   const levelId = Number(id);
   const level = levels.find((l) => l.id === levelId);
-  const { getCompletedCount, setCurrentLevel } = useProgressStore();
+  const completedCount = useProgressStore(selectCompletedCount(levelId));
+  const setCurrentLevel = useProgressStore((s) => s.setCurrentLevel);
 
   const totalItems = useMemo(
     () => (level ? level.sections.reduce((sum, s) => sum + s.items.length, 0) : 0),
     [level],
   );
-  const completedCount = getCompletedCount(levelId);
   const progressPercent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
 
   useEffect(() => {

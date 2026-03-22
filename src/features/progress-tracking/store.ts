@@ -7,13 +7,11 @@ interface ProgressState {
   lastVisited: string;
   toggleItem: (id: string) => void;
   setCurrentLevel: (level: number) => void;
-  getCompletedCount: (levelId: number) => number;
-  isCompleted: (id: string) => boolean;
 }
 
 export const useProgressStore = create<ProgressState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       completedItems: {},
       currentLevel: 1,
       lastVisited: new Date().toISOString(),
@@ -26,14 +24,18 @@ export const useProgressStore = create<ProgressState>()(
           lastVisited: new Date().toISOString(),
         })),
       setCurrentLevel: (level: number) => set({ currentLevel: level }),
-      getCompletedCount: (levelId: number) => {
-        const { completedItems } = get();
-        return Object.entries(completedItems).filter(
-          ([key, completed]) => completed && key.startsWith(`level-${levelId}-`),
-        ).length;
-      },
-      isCompleted: (id: string) => !!get().completedItems[id],
     }),
     { name: "dizi-progress" },
   ),
 );
+
+export function selectIsCompleted(id: string) {
+  return (s: ProgressState) => !!s.completedItems[id];
+}
+
+export function selectCompletedCount(levelId: number) {
+  return (s: ProgressState) =>
+    Object.entries(s.completedItems).filter(
+      ([key, done]) => done && key.startsWith(`level-${levelId}-`),
+    ).length;
+}
