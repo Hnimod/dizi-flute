@@ -1,0 +1,62 @@
+{
+  "features": {
+    "theme": {
+      "path": "src/features/theme",
+      "description": "Dark/light mode toggle — Zustand store with persist middleware",
+      "routes": [],
+      "exports": ["ThemeToggle", "useThemeStore"],
+      "dependsOn": ["shared"],
+      "crossFeatureDeps": []
+    },
+    "audio-playback": {
+      "path": "src/features/audio-playback",
+      "description": "Audio player with speed control — Zustand store for playback state",
+      "routes": [],
+      "exports": [],
+      "dependsOn": ["shared"],
+      "crossFeatureDeps": [],
+      "status": "not-started"
+    },
+    "progress-tracking": {
+      "path": "src/features/progress-tracking",
+      "description": "Completion tracking — Zustand store with persist middleware",
+      "routes": [],
+      "exports": [],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": [],
+      "status": "not-started"
+    },
+    "course-navigation": {
+      "path": "src/features/course-navigation",
+      "description": "Home page, level cards, sidebar navigation",
+      "routes": ["/"],
+      "exports": ["HomePage", "Sidebar"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["progress-tracking"]
+    },
+    "lesson-viewer": {
+      "path": "src/features/lesson-viewer",
+      "description": "Renders level content: prose, songs, exercises with audio",
+      "routes": ["/level/:id"],
+      "exports": ["LevelPage"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["audio-playback", "progress-tracking"]
+    },
+    "reference-library": {
+      "path": "src/features/reference-library",
+      "description": "Reference docs viewer: fingering charts, jianpu guide, theory",
+      "routes": ["/reference", "/reference/:slug"],
+      "exports": ["ReferencePage", "ReferenceDetailPage"],
+      "dependsOn": ["shared", "data"]
+    },
+    "practice-timer": {
+      "path": "src/features/practice-timer",
+      "description": "Guided practice sessions with timer and session log",
+      "routes": ["/practice", "/practice-log"],
+      "exports": [],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["progress-tracking"],
+      "status": "not-started"
+    }
+  }
+}

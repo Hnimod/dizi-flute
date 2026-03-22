@@ -1,0 +1,18 @@
+import { createBrowserRouter } from "react-router";
+import { App } from "./App";
+import { HomePage } from "@/features/course-navigation";
+import { LevelPage } from "@/features/lesson-viewer";
+import { ReferencePage, ReferenceDetailPage } from "@/features/reference-library";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "level/:id", element: <LevelPage /> },
+      { path: "reference", element: <ReferencePage /> },
+      { path: "reference/:slug", element: <ReferenceDetailPage /> },
+    ],
+  },
+]);
