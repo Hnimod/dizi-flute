@@ -49,7 +49,7 @@ html {
 
 .jianpu-line {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   min-height: 2.2em;
   gap: 0;
@@ -60,7 +60,8 @@ html {
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 1.6em;
+  flex: 1 1 1.2em;
+  min-width: 0;
   height: 2.2em;
   font-family: "Courier New", Courier, monospace;
   font-size: 1.2rem;
@@ -92,7 +93,8 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.6em;
+  flex: 1 1 1.2em;
+  min-width: 0;
   height: 2.2em;
   font-family: "Courier New", Courier, monospace;
   font-size: 1.2rem;
@@ -104,7 +106,8 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.6em;
+  flex: 1 1 1.2em;
+  min-width: 0;
   height: 2.2em;
   font-family: "Courier New", Courier, monospace;
   font-size: 1.2rem;
@@ -116,7 +119,8 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1em;
+  flex: 0 1 0.8em;
+  min-width: 0;
   height: 2.2em;
   font-family: "Courier New", Courier, monospace;
   font-size: 1.2rem;
@@ -126,6 +130,8 @@ html {
 .jianpu-text {
   display: inline-flex;
   align-items: center;
+  flex: 0 1 auto;
+  min-width: 0;
   height: 2.2em;
   font-family: "Courier New", Courier, monospace;
   font-size: 1rem;
