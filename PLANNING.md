@@ -390,9 +390,152 @@ interface UserProgress {
 
 ---
 
+## Collaboration Workflow (PM → Agent → Tech Review → Implementation)
+
+This project supports a **3-role pipeline** where non-technical people define what to build, Claude Code translates intent into technical plans, and a technical reviewer approves before agents implement.
+
+### Roles
+
+| Role | Person | Touches | Never touches |
+|------|--------|---------|---------------|
+| **PM / Content Owner** | Non-technical | Source `.md` files, `UI_GUIDE.md` sketches, natural language requests | `src/` code, `feature-manifest.json` |
+| **Claude Code (Planner)** | AI agent | Reads everything, produces task breakdown document | Does not write code yet |
+| **Tech Reviewer** | Technical person | Reviews task breakdown, approves/adjusts approach | Does not implement |
+| **Claude Code (Implementer)** | AI subagents | `src/` code, `feature-manifest.json`, `UI_GUIDE.md` | Source `.md` (unless task includes content change) |
+
+### Workflow Steps
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Step 1: PM describes feature request                        │
+│                                                             │
+│ PM opens Claude Code and describes what they want in        │
+│ natural language. They may also edit source .md files        │
+│ directly or sketch UI changes in UI_GUIDE.md.               │
+│                                                             │
+│ Example: "I want students to be able to bookmark songs      │
+│ they find difficult and see them on a separate page"        │
+├─────────────────────────────────────────────────────────────┤
+│ Step 2: Claude Code (Planner) produces a task breakdown     │
+│                                                             │
+│ Agent reads:                                                │
+│ ├── CLAUDE.md          (architecture + conventions)         │
+│ ├── UI_GUIDE.md        (current UI state)                   │
+│ ├── feature-manifest   (existing features + deps)           │
+│ └── src/data/           (current content shape)             │
+│                                                             │
+│ Agent outputs a TASK_BREAKDOWN.md containing:               │
+│ ├── Summary: what this feature does (PM-readable)           │
+│ ├── UI Impact: ASCII sketch of new/changed screens          │
+│ ├── Data Impact: new types, store changes                   │
+│ ├── Tasks: numbered list with files, deps, parallel hints   │
+│ └── Verification: how to test end-to-end                    │
+│                                                             │
+│ The PM can review the Summary and UI Impact sections to     │
+│ confirm the agent understood their request correctly.        │
+├─────────────────────────────────────────────────────────────┤
+│ Step 3: Tech Reviewer approves the breakdown                │
+│                                                             │
+│ Reviewer reads TASK_BREAKDOWN.md and checks:                │
+│ ├── Is the feature in the right module? (or new module?)    │
+│ ├── Are dependency directions correct?                      │
+│ ├── Is the data model right?                                │
+│ ├── Are there edge cases or conflicts?                      │
+│ └── Is the task split safe for parallel subagents?          │
+│                                                             │
+│ Reviewer approves, requests changes, or adds constraints.   │
+├─────────────────────────────────────────────────────────────┤
+│ Step 4: Claude Code (Implementer) executes tasks            │
+│                                                             │
+│ Agent follows the approved TASK_BREAKDOWN.md:               │
+│ ├── Launches parallel subagents where marked                │
+│ ├── Each subagent works in its feature directory             │
+│ ├── Updates feature-manifest.json                           │
+│ ├── Updates UI_GUIDE.md with new/changed screen sketches    │
+│ └── Runs verification steps                                 │
+│                                                             │
+│ On completion, agent produces a summary for PM to review.   │
+├─────────────────────────────────────────────────────────────┤
+│ Step 5: PM verifies the result                              │
+│                                                             │
+│ PM reads the summary + updated UI_GUIDE.md sketches,        │
+│ then tests the app in browser. If changes needed,           │
+│ loop back to Step 1.                                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Task Breakdown Document (`TASK_BREAKDOWN.md`)
+
+This is the handoff artifact between planner and reviewer. Created fresh per feature request (not persistent — lives in working branch or conversation).
+
+```markdown
+# Feature: Bookmark Difficult Songs
+
+## Summary (PM-readable)
+Students can click a bookmark icon on any song to mark it as "needs practice".
+A new "Bookmarks" page shows all bookmarked songs across levels.
+
+## UI Impact
+### Changed: Song Card (within Level Page)
+┌──────────────────────────────────┐
+│ ☐ 🔖 小星星 — Twinkle Twinkle    │  ← bookmark icon added
+│   Key: D  Time: 4/4  ♫ Chinese  │
+│   ...                            │
+└──────────────────────────────────┘
+
+### New: Bookmarks Page (`/bookmarks`)
+┌──────────────────────────────────────┐
+│ Bookmarked Songs (3)                 │
+│                                      │
+│ ┌─ Level 2 ──────────────────────┐  │
+│ │ 🔖 小星星 — Twinkle Twinkle     │  │
+│ │ [▶ ━━━━━━━━━━ 0:45]           │  │
+│ └────────────────────────────────┘  │
+│ ┌─ Level 3 ──────────────────────┐  │
+│ │ 🔖 茉莉花 — Jasmine Flower     │  │
+│ └────────────────────────────────┘  │
+└──────────────────────────────────────┘
+
+## Data Impact
+- New Zustand store: `useBookmarkStore` (persist middleware)
+- Type: `{ bookmarkedSongIds: string[], toggle, isBookmarked }`
+- No changes to existing types or data files
+
+## Tasks
+1. [PARALLEL] Create feature module: src/features/bookmarks/
+   - store.ts (Zustand + persist)
+   - BookmarksPage.tsx
+   - BookmarkButton.tsx
+   - index.ts
+2. [PARALLEL] Add route: /bookmarks in src/app/routes.tsx
+3. [SEQUENTIAL after 1] Integrate BookmarkButton into lesson-viewer/SongCard.tsx
+4. [SEQUENTIAL after 1] Register in feature-manifest.json
+5. [SEQUENTIAL after all] Update UI_GUIDE.md with new screen sketch
+6. [SEQUENTIAL after all] Verify: bookmark 2 songs → navigate to /bookmarks → see them listed
+
+## Verification
+- Bookmark a song in Level 2 → icon fills in
+- Navigate to /bookmarks → song appears
+- Reload → bookmark persisted
+- Remove bookmark → song disappears from page
+```
+
+### What Each Role Reads
+
+| Artifact | PM reads | Tech reads | Agent reads |
+|----------|----------|------------|-------------|
+| Source `.md` files (PRD) | Writes these | Skims for context | Reads for data extraction |
+| `UI_GUIDE.md` | Reviews sketches, may edit | Skims | Reads for current UI state, updates after changes |
+| `TASK_BREAKDOWN.md` | Summary + UI Impact sections | Full document — approves | Follows as implementation spec |
+| `CLAUDE.md` | Never | Reference | Reads first for architecture context |
+| `feature-manifest.json` | Never | Reviews changes | Reads for feature map, updates |
+| `src/` code | Never | Reviews diffs | Writes |
+
+---
+
 ## Agent Task Decomposition Templates
 
-These templates guide the orchestrator agent when breaking feature requests into subagent tasks.
+These templates guide the orchestrator agent when breaking feature requests into subagent tasks. The output follows the `TASK_BREAKDOWN.md` format above.
 
 ### Template A: Content Change
 
