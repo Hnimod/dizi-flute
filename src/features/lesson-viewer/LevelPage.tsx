@@ -1,9 +1,13 @@
+import { useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router";
 import { levels } from "@/data";
-import { MarkdownRenderer, AudioPlayer } from "@/shared/ui";
+import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar } from "@/shared/ui";
+import { useProgressStore } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
 
 function SongCard({ song }: { song: Song }) {
+  const { toggleItem, isCompleted } = useProgressStore();
+  const completed = isCompleted(song.id);
   const titles = [
     song.titleChinese,
     song.titleVietnamese,
@@ -18,12 +22,19 @@ function SongCard({ song }: { song: Song }) {
         border: "1px solid var(--color-border)",
       }}
     >
-      <h4
-        className="text-lg font-semibold mb-1"
-        style={{ color: "var(--color-text)" }}
-      >
-        {titles.join(" / ")}
-      </h4>
+      <div className="flex items-center justify-between mb-1">
+        <h4
+          className="text-lg font-semibold"
+          style={{ color: "var(--color-text)" }}
+        >
+          {titles.join(" / ")}
+        </h4>
+        <Checkbox
+          checked={completed}
+          onChange={() => toggleItem(song.id)}
+          label="Completed"
+        />
+      </div>
       <div
         className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3"
         style={{ color: "var(--color-text-secondary)" }}
@@ -56,6 +67,9 @@ function SongCard({ song }: { song: Song }) {
 }
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
+  const { toggleItem, isCompleted } = useProgressStore();
+  const completed = isCompleted(exercise.id);
+
   return (
     <div
       className="rounded-lg p-5 my-4"
@@ -64,12 +78,19 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
         border: "1px solid var(--color-border)",
       }}
     >
-      <h4
-        className="text-lg font-semibold mb-1"
-        style={{ color: "var(--color-text)" }}
-      >
-        {exercise.title}
-      </h4>
+      <div className="flex items-center justify-between mb-1">
+        <h4
+          className="text-lg font-semibold"
+          style={{ color: "var(--color-text)" }}
+        >
+          {exercise.title}
+        </h4>
+        <Checkbox
+          checked={completed}
+          onChange={() => toggleItem(exercise.id)}
+          label="Completed"
+        />
+      </div>
       <div
         className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3"
         style={{ color: "var(--color-text-secondary)" }}
@@ -106,6 +127,20 @@ export function LevelPage() {
   const { id } = useParams();
   const levelId = Number(id);
   const level = levels.find((l) => l.id === levelId);
+  const { getCompletedCount, setCurrentLevel } = useProgressStore();
+
+  const totalItems = useMemo(
+    () => (level ? level.sections.reduce((sum, s) => sum + s.items.length, 0) : 0),
+    [level],
+  );
+  const completedCount = getCompletedCount(levelId);
+  const progressPercent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+
+  useEffect(() => {
+    if (level) {
+      setCurrentLevel(levelId);
+    }
+  }, [level, levelId, setCurrentLevel]);
 
   if (!level) {
     return (
@@ -160,6 +195,19 @@ export function LevelPage() {
           {level.subtitle}
         </p>
       </header>
+
+      {/* Progress summary */}
+      {totalItems > 0 && (
+        <div className="mb-8">
+          <p
+            className="text-sm mb-2"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            {completedCount} of {totalItems} items completed
+          </p>
+          <ProgressBar value={progressPercent} />
+        </div>
+      )}
 
       {/* Sections */}
       {level.sections.map((section) => (
