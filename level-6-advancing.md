@@ -379,6 +379,24 @@ Play with extreme gentleness. Like incense smoke rising — unhurried, floating.
 
 ---
 
+## Vietnamese Songs (Nhạc Việt)
+
+> For these advanced Vietnamese sáo pieces, study from recordings and published scores rather than simplified notation.
+
+### Song 9: Tiếng Gọi Mùa Xuân (The Call of Spring)
+
+By Đinh Thìn (1940-2000), legendary Vietnamese sáo trúc virtuoso. This is THE masterpiece of Vietnamese sáo repertoire — used as the Voice of Vietnam radio theme. Complex ornamentation, rapid passages, cadenza sections. The equivalent of 牧民新歌 for Vietnamese flute.
+
+> **Listen:** [YouTube search: Tiếng Gọi Mùa Xuân Đinh Thìn sáo trúc](https://www.youtube.com/results?search_query=Tiếng+Gọi+Mùa+Xuân+Đinh+Thìn+sáo+trúc)
+
+### Song 10: Trăng Sáng Trên Quê Hương (Moonlight on My Homeland)
+
+By Đinh Thìn. Another iconic concert piece, also used as Voice of Vietnam program theme. Requires mastery of Vietnamese folk ornamentation — slides (luyến), trills, pitch bends unique to Vietnamese sáo tradition.
+
+> **Listen:** [YouTube search: Trăng Sáng Trên Quê Hương Đinh Thìn](https://www.youtube.com/results?search_query=Trăng+Sáng+Trên+Quê+Hương+Đinh+Thìn+sáo+trúc)
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `dizi 牧民新歌 tutorial` — learn section by section

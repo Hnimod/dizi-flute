@@ -398,6 +398,24 @@ This piece is about suffering, perseverance, and beauty in darkness. Play with y
 
 ---
 
+## Vietnamese Songs (Nhạc Việt)
+
+> For these concert-level Vietnamese pieces, study from recordings and seek guidance from a teacher.
+
+### Song 7: Tình Quê (Love for the Country)
+
+By Hoàng Đạm. A celebrated concert composition for sáo trúc. Demands full command of the instrument: extensive slides, trills, pitch bends, dynamic contrast. This is Vietnam's answer to 幽兰逢春.
+
+> **Listen:** [YouTube search: Tình Quê Hoàng Đạm sáo trúc](https://www.youtube.com/results?search_query=Tình+Quê+Hoàng+Đạm+sáo+trúc)
+
+### Song 8: Lý Hoài Nam (Southern Nostalgia)
+
+Traditional Southern Vietnamese folk song in virtuosic concert arrangement. Combines multiple Southern folk melodies (lý). Requires mastery of Southern ornamentation, grace notes, microtonal bends, and the full expressive vocabulary of Vietnamese sáo.
+
+> **Listen:** [YouTube search: Lý Hoài Nam sáo trúc độc tấu](https://www.youtube.com/results?search_query=Lý+Hoài+Nam+sáo+trúc+độc+tấu)
+
+---
+
 ## Learning Resources for This Level
 
 - YouTube: search `幽兰逢春 赵松庭` — master performance
