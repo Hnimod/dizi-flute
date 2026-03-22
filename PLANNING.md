@@ -60,6 +60,7 @@ No backend. Zustand stores replace React context for global state.
 ```
 dizi-flute/
 ├── CLAUDE.md                          # Agent entry point (architecture + task decomposition)
+├── UI_GUIDE.md                        # Agent-readable UI context (ASCII sketches of every screen)
 ├── PLANNING.md                        # This file
 ├── feature-manifest.json              # Machine-readable feature registry
 ├── README.md                          # Course intro (source content)
@@ -302,9 +303,76 @@ interface UserProgress {
 
 ---
 
+## UI Guide (`UI_GUIDE.md`) — Agent-Readable UI Context
+
+`UI_GUIDE.md` is a living document that describes what the user sees on every screen. It is the **UI source of truth for agents** — an agent reads this one file to understand the full app UX without reading any frontend code.
+
+**Maintained by the implementing agent:** after each phase that changes UI, the agent updates `UI_GUIDE.md` with ASCII sketches of affected screens. This is a hard rule in the content sync table below.
+
+**Structure:**
+
+```markdown
+# UI Guide — Dizi Flute Learning Platform
+
+## Screen: Home Page (`/`)
+**Feature:** course-navigation
+**Purpose:** Course overview and entry point
+
+┌─────────────────────────────────────────────┐
+│ [☰]  Dizi Flute Course           [🌙/☀️]  │
+├──────────┬──────────────────────────────────┤
+│ Sidebar  │                                  │
+│          │  ┌─────────┐  ┌─────────┐       │
+│ Level 0  │  │ Level 0 │  │ Level 1 │       │
+│ Level 1  │  │ Setup   │  │ First   │       │
+│ Level 2  │  │ Week 0  │  │ Sounds  │       │
+│ ...      │  │ ████░░  │  │ ░░░░░░  │       │
+│ Level 7  │  └─────────┘  └─────────┘       │
+│          │                                  │
+│ Reference│  ┌─────────┐  ┌─────────┐       │
+│ Practice │  │ Level 2 │  │ Level 3 │       │
+│          │  │ ...     │  │ ...     │       │
+└──────────┴──────────────────────────────────┘
+
+**Interactions:**
+- Click level card → navigates to /level/:id
+- Sidebar links → same navigation
+- Progress bar on each card shows completion %
+- Theme toggle switches dark/light
+
+## Screen: Level Page (`/level/:id`)
+...
+
+## Screen: Reference Hub (`/reference`)
+...
+
+## Component: Audio Player (inline)
+┌──────────────────────────────────┐
+│ ▶ advancement ━━━━━━━━●━━━ 2:34 │
+│   0.5x  0.75x [1x]  1.25x 1.5x │
+└──────────────────────────────────┘
+**Interactions:** play/pause, seek, speed control
+
+## Component: Song Card (within Level Page)
+┌──────────────────────────────────┐
+│ ☐ 小星星 — Twinkle Twinkle       │
+│   Key: D  Time: 4/4  ♫ Chinese  │
+│   1  1  5  5 | 6  6  5  - |     │
+│   [▶ ━━━━━━━━━━━━━━━━━ 0:45]    │
+└──────────────────────────────────┘
+```
+
+**Why ASCII sketches, not screenshots:**
+- Agent generates them after implementing — always in sync
+- Text-diffable in git — changes are reviewable
+- Any agent can read without image processing
+- No manual screenshot capture needed
+
+---
+
 ## Content Sync Rules (for Claude Code agent)
 
-**Source markdown files and `src/data/` are a paired system.** Any change to source content must also update the webapp data layer.
+**Source markdown files, `src/data/`, and `UI_GUIDE.md` are a paired system.** Any change to source content or UI must keep all three in sync.
 
 | When you change... | Also update... |
 |---------------------|---------------|
@@ -316,8 +384,9 @@ interface UserProgress {
 | Add new `.ogg` audio file | Copy to `public/audio/level-{N}/` + set `audioPath` on Song/Exercise |
 | Add a new level file | Add to `src/data/levels.ts` + extract songs/exercises |
 | Add a new feature module | Create in `src/features/`, register in `feature-manifest.json`, add route to `src/app/routes.tsx` |
+| Any UI change (new screen, layout change, new component) | Update `UI_GUIDE.md` — add/update the ASCII sketch for affected screens |
 
-**Hard rule:** never update a source `.md` without updating `src/data/`, and vice versa.
+**Hard rule:** never update a source `.md` without updating `src/data/`, and never change UI without updating `UI_GUIDE.md`. All must stay in sync in the same commit.
 
 ---
 
@@ -391,6 +460,7 @@ Touch points: course-navigation/Sidebar.tsx, feature-manifest.json
 
 **Files to create:**
 - `CLAUDE.md` — architecture overview, feature module convention, content sync rules, task decomposition templates, commands
+- `UI_GUIDE.md` — initial skeleton with planned screens (populated with ASCII sketches as phases complete)
 - `feature-manifest.json` — empty feature registry (populated in later phases)
 - `package.json`, `vite.config.ts`, `tsconfig.json`, `tailwind.config.ts`, `postcss.config.js`
 - `index.html`
@@ -402,6 +472,7 @@ npm install && npm run dev
 ```
 - App loads with empty shell
 - CLAUDE.md is comprehensive enough for an agent to understand the full architecture without reading any other file
+- UI_GUIDE.md lists all planned screens (sketches added in later phases)
 
 ---
 
@@ -547,6 +618,7 @@ No providers.tsx needed — Zustand stores are self-contained, no wrapper compon
 | OGG only, no browser MIDI | OGG plays natively; MIDI synthesis adds major complexity |
 | Content as TypeScript imports | Type safety, zero-latency navigation, ~130KB total |
 | Zustand for state | Each feature owns its store — no provider tree, no context boilerplate. `persist` middleware handles localStorage. |
+| `UI_GUIDE.md` with ASCII sketches | Agent generates sketches after implementing UI — always in sync, text-diffable, no screenshots needed. Any agent can understand the full UX from one file. |
 
 ---
 
