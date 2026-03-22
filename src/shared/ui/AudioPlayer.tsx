@@ -21,7 +21,7 @@ export function AudioPlayer({ src, title, className = "" }: AudioPlayerProps) {
 
   return (
     <div
-      className={`rounded-lg p-4 ${className}`}
+      className={`rounded-xl p-3.5 md:p-4 ${className}`}
       style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
     >
       {title && (
@@ -33,7 +33,7 @@ export function AudioPlayer({ src, title, className = "" }: AudioPlayerProps) {
         <source src={src} type="audio/ogg" />
         Your browser does not support the audio element.
       </audio>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1.5">
         <span className="text-xs mr-1" style={{ color: "var(--color-text-secondary)" }}>
           Speed:
         </span>
@@ -41,7 +41,7 @@ export function AudioPlayer({ src, title, className = "" }: AudioPlayerProps) {
           <button
             key={s}
             onClick={() => handleSpeedChange(s)}
-            className="px-2 py-0.5 rounded text-xs font-medium transition-colors cursor-pointer"
+            className="min-h-[36px] min-w-[40px] rounded-lg text-xs font-medium transition-colors cursor-pointer md:min-h-[32px] md:min-w-[36px]"
             style={{
               backgroundColor: speed === s ? "var(--color-accent)" : "transparent",
               color: speed === s ? "#ffffff" : "var(--color-text-secondary)",

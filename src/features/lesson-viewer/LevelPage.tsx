@@ -15,18 +15,11 @@ function SongCard({ song }: { song: Song }) {
   ].filter(Boolean);
 
   return (
-    <div
-      className="rounded-lg p-5 my-4"
-      style={{
-        backgroundColor: "var(--color-bg-secondary)",
-        border: "1px solid var(--color-border)",
-      }}
+    <div className="my-3 rounded-xl bg-(--color-bg-secondary) p-4 shadow-sm md:my-4 md:p-5"
+      style={{ border: "1px solid var(--color-border)" }}
     >
       <div className="flex items-center justify-between mb-1">
-        <h4
-          className="text-lg font-semibold"
-          style={{ color: "var(--color-text)" }}
-        >
+        <h4 className="text-base font-semibold md:text-lg" style={{ color: "var(--color-text)" }}>
           {titles.join(" / ")}
         </h4>
         <Checkbox
@@ -35,25 +28,19 @@ function SongCard({ song }: { song: Song }) {
           label="Completed"
         />
       </div>
-      <div
-        className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3"
-        style={{ color: "var(--color-text-secondary)" }}
-      >
+      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs mb-3 md:text-sm md:gap-x-4" style={{ color: "var(--color-text-secondary)" }}>
         <span>Key: {song.key}</span>
         <span>Time: {song.timeSignature}</span>
         {song.tempo && <span>Tempo: {song.tempo} BPM</span>}
         {song.origin && <span>Origin: {song.origin}</span>}
       </div>
       {song.description && (
-        <p
-          className="text-sm mb-3 leading-relaxed"
-          style={{ color: "var(--color-text-secondary)" }}
-        >
+        <p className="text-sm mb-3 leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
           {song.description}
         </p>
       )}
       <pre
-        className="jianpu rounded-lg p-4 overflow-x-auto text-sm my-3"
+        className="jianpu rounded-lg p-3 overflow-x-auto text-xs my-3 md:p-4 md:text-sm"
         style={{
           backgroundColor: "var(--color-bg)",
           border: "1px solid var(--color-border)",
@@ -71,18 +58,11 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
   const completed = useProgressStore(selectIsCompleted(exercise.id));
 
   return (
-    <div
-      className="rounded-lg p-5 my-4"
-      style={{
-        backgroundColor: "var(--color-bg-secondary)",
-        border: "1px solid var(--color-border)",
-      }}
+    <div className="my-3 rounded-xl bg-(--color-bg-secondary) p-4 shadow-sm md:my-4 md:p-5"
+      style={{ border: "1px solid var(--color-border)" }}
     >
       <div className="flex items-center justify-between mb-1">
-        <h4
-          className="text-lg font-semibold"
-          style={{ color: "var(--color-text)" }}
-        >
+        <h4 className="text-base font-semibold md:text-lg" style={{ color: "var(--color-text)" }}>
           {exercise.title}
         </h4>
         <Checkbox
@@ -91,24 +71,18 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
           label="Completed"
         />
       </div>
-      <div
-        className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3"
-        style={{ color: "var(--color-text-secondary)" }}
-      >
+      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs mb-3 md:text-sm md:gap-x-4" style={{ color: "var(--color-text-secondary)" }}>
         <span>Key: {exercise.key}</span>
         <span>Time: {exercise.timeSignature}</span>
         {exercise.tempo && <span>Tempo: {exercise.tempo} BPM</span>}
       </div>
       {exercise.description && (
-        <p
-          className="text-sm mb-3 leading-relaxed"
-          style={{ color: "var(--color-text-secondary)" }}
-        >
+        <p className="text-sm mb-3 leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
           {exercise.description}
         </p>
       )}
       <pre
-        className="jianpu rounded-lg p-4 overflow-x-auto text-sm my-3"
+        className="jianpu rounded-lg p-3 overflow-x-auto text-xs my-3 md:p-4 md:text-sm"
         style={{
           backgroundColor: "var(--color-bg)",
           border: "1px solid var(--color-border)",
@@ -145,16 +119,10 @@ export function LevelPage() {
   if (!level) {
     return (
       <div className="mx-auto max-w-3xl py-12 text-center">
-        <h1
-          className="text-2xl font-bold mb-2"
-          style={{ color: "var(--color-text)" }}
-        >
+        <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--color-text)" }}>
           Level not found
         </h1>
-        <p
-          className="mb-6"
-          style={{ color: "var(--color-text-secondary)" }}
-        >
+        <p className="mb-6" style={{ color: "var(--color-text-secondary)" }}>
           There is no level with id "{id}".
         </p>
         <Link
@@ -174,35 +142,22 @@ export function LevelPage() {
   return (
     <div className="mx-auto max-w-3xl">
       {/* Header */}
-      <header className="mb-8">
-        <p
-          className="text-sm font-medium mb-1"
-          style={{ color: "var(--color-accent)" }}
-        >
-          Level {level.id} &middot; {level.timeline} &middot; CCOM{" "}
-          {level.ccomGrade}
+      <header className="mb-6 md:mb-8">
+        <p className="text-xs font-medium mb-1 md:text-sm" style={{ color: "var(--color-accent)" }}>
+          Level {level.id} &middot; {level.timeline} &middot; CCOM {level.ccomGrade}
         </p>
-        <h1
-          className="text-3xl font-bold mb-1"
-          style={{ color: "var(--color-text)" }}
-        >
+        <h1 className="text-2xl font-bold mb-1 md:text-3xl" style={{ color: "var(--color-text)" }}>
           {level.title}
         </h1>
-        <p
-          className="text-lg"
-          style={{ color: "var(--color-text-secondary)" }}
-        >
+        <p className="text-base md:text-lg" style={{ color: "var(--color-text-secondary)" }}>
           {level.subtitle}
         </p>
       </header>
 
       {/* Progress summary */}
       {totalItems > 0 && (
-        <div className="mb-8">
-          <p
-            className="text-sm mb-2"
-            style={{ color: "var(--color-text-secondary)" }}
-          >
+        <div className="mb-6 md:mb-8">
+          <p className="text-sm mb-2" style={{ color: "var(--color-text-secondary)" }}>
             {completedCount} of {totalItems} items completed
           </p>
           <ProgressBar value={progressPercent} />
@@ -211,9 +166,9 @@ export function LevelPage() {
 
       {/* Sections */}
       {level.sections.map((section) => (
-        <section key={section.id} className="mb-10">
+        <section key={section.id} className="mb-8 md:mb-10">
           <h2
-            className="text-2xl font-bold mb-4 pb-2"
+            className="text-xl font-bold mb-3 pb-2 md:text-2xl md:mb-4"
             style={{
               color: "var(--color-text)",
               borderBottom: "1px solid var(--color-border)",
@@ -238,16 +193,16 @@ export function LevelPage() {
 
       {/* Navigation */}
       <nav
-        className="flex justify-between items-center py-6 mt-8"
+        className="flex justify-between items-center py-4 mt-6 gap-4 md:py-6 md:mt-8"
         style={{ borderTop: "1px solid var(--color-border)" }}
       >
         {prevLevel ? (
           <Link
             to={`/level/${prevLevel.id}`}
-            className="hover:opacity-80 transition-opacity"
+            className="text-sm hover:opacity-80 transition-opacity md:text-base"
             style={{ color: "var(--color-accent)" }}
           >
-            &larr; Previous: {prevLevel.title}
+            &larr; {prevLevel.title}
           </Link>
         ) : (
           <span />
@@ -255,10 +210,10 @@ export function LevelPage() {
         {nextLevel ? (
           <Link
             to={`/level/${nextLevel.id}`}
-            className="hover:opacity-80 transition-opacity"
+            className="text-sm hover:opacity-80 transition-opacity text-right md:text-base"
             style={{ color: "var(--color-accent)" }}
           >
-            Next: {nextLevel.title} &rarr;
+            {nextLevel.title} &rarr;
           </Link>
         ) : (
           <span />

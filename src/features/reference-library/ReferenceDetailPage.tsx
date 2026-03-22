@@ -16,8 +16,8 @@ export function ReferenceDetailPage() {
         >
           &larr; Back to Reference Library
         </Link>
-        <h1 className="mt-4 text-2xl font-bold">Reference Not Found</h1>
-        <p className="mt-2 text-(--color-text-secondary)">
+        <h1 className="mt-4 text-xl font-bold md:text-2xl">Reference Not Found</h1>
+        <p className="mt-2 text-sm text-(--color-text-secondary) md:text-base">
           No reference document matches "{slug}".
         </p>
       </div>
@@ -35,11 +35,11 @@ export function ReferenceDetailPage() {
       </Link>
 
       <div className="mt-4 flex items-center gap-3">
-        <span className="text-3xl">{doc.icon}</span>
-        <h1 className="text-3xl font-bold">{doc.title}</h1>
+        <span className="text-2xl md:text-3xl">{doc.icon}</span>
+        <h1 className="text-2xl font-bold md:text-3xl">{doc.title}</h1>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-5 md:mt-6">
         <MarkdownRenderer content={doc.content} />
       </div>
     </div>

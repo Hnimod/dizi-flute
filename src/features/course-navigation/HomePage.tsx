@@ -7,14 +7,14 @@ export function HomePage() {
 
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Learn Dizi Flute</h1>
-        <p className="mt-2 text-(--color-text-secondary)">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl font-bold md:text-3xl">Learn Dizi Flute</h1>
+        <p className="mt-1.5 text-sm text-(--color-text-secondary) md:mt-2 md:text-base">
           A structured self-study course from absolute beginner to advanced level.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
         {levels.map((level) => {
           const totalItems = level.sections.flatMap((s) => s.items).length;
           const completedCount = Object.entries(completedItems).filter(
@@ -27,7 +27,7 @@ export function HomePage() {
             <Link
               key={level.id}
               to={`/level/${level.id}`}
-              className="group rounded-xl border border-(--color-border) p-5 transition-all hover:border-(--color-accent) hover:shadow-md"
+              className="group rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-4 shadow-sm transition-all hover:border-(--color-accent) hover:shadow-md active:scale-[0.98] md:p-5"
             >
               <div className="flex items-start justify-between">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--color-accent) text-sm font-bold text-white">
@@ -37,11 +37,11 @@ export function HomePage() {
                   {level.ccomGrade}
                 </span>
               </div>
-              <h2 className="mt-3 text-lg font-semibold group-hover:text-(--color-accent)">
+              <h2 className="mt-3 text-base font-semibold group-hover:text-(--color-accent) md:text-lg">
                 {level.title}
               </h2>
-              <p className="mt-1 text-sm text-(--color-text-secondary)">{level.subtitle}</p>
-              <div className="mt-3 text-xs font-medium text-(--color-text-secondary)">
+              <p className="mt-1 text-sm text-(--color-text-secondary) leading-snug">{level.subtitle}</p>
+              <div className="mt-2.5 text-xs font-medium text-(--color-text-secondary)">
                 {level.timeline}
               </div>
               {totalItems > 0 && (

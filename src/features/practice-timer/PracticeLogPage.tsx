@@ -10,19 +10,19 @@ export function PracticeLogPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Practice Log</h1>
-        <p className="mt-2 text-(--color-text-secondary)">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl font-bold md:text-3xl">Practice Log</h1>
+        <p className="mt-1.5 text-sm text-(--color-text-secondary) md:mt-2 md:text-base">
           Your practice history and total time invested.
         </p>
       </div>
 
       {/* Summary */}
-      <div className="mb-8 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-6 text-center">
+      <div className="mb-6 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-5 text-center shadow-sm md:mb-8 md:p-6">
         <p className="text-sm text-(--color-text-secondary)">
           Total Practice Time
         </p>
-        <p className="mt-1 text-3xl font-bold">{formatDuration(totalSeconds)}</p>
+        <p className="mt-1 text-2xl font-bold md:text-3xl">{formatDuration(totalSeconds)}</p>
         <p className="mt-1 text-sm text-(--color-text-secondary)">
           across {sessions.length} session{sessions.length !== 1 ? "s" : ""}
         </p>
@@ -30,19 +30,19 @@ export function PracticeLogPage() {
 
       {/* Session list */}
       {sorted.length === 0 ? (
-        <div className="rounded-xl border border-(--color-border) p-8 text-center">
-          <p className="text-lg font-medium">No sessions yet</p>
+        <div className="rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-8 text-center shadow-sm">
+          <p className="text-base font-medium md:text-lg">No sessions yet</p>
           <p className="mt-2 text-sm text-(--color-text-secondary)">
             Start your first practice session and it will appear here. Every
             journey begins with a single breath.
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5 md:space-y-3">
           {sorted.map((session) => (
             <div
               key={session.id}
-              className="rounded-lg border border-(--color-border) p-4"
+              className="rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-3.5 shadow-sm md:p-4"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm text-(--color-text-secondary)">
@@ -53,7 +53,7 @@ export function PracticeLogPage() {
                     day: "numeric",
                   })}
                 </span>
-                <span className="rounded bg-(--color-accent-light) px-2 py-0.5 text-xs font-medium text-(--color-accent)">
+                <span className="rounded-lg bg-(--color-accent-light) px-2.5 py-1 text-xs font-medium text-(--color-accent)">
                   {formatDuration(session.duration)}
                 </span>
               </div>

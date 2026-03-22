@@ -10,7 +10,7 @@ export function ProgressBar({ value, className = "", label }: ProgressBarProps) 
   return (
     <div className={className}>
       {label && (
-        <div className="flex justify-between items-center mb-1">
+        <div className="flex justify-between items-center mb-1.5">
           <span className="text-sm font-medium" style={{ color: "var(--color-text)" }}>
             {label}
           </span>
@@ -20,14 +20,14 @@ export function ProgressBar({ value, className = "", label }: ProgressBarProps) 
         </div>
       )}
       {!label && (
-        <div className="text-right mb-1">
+        <div className="text-right mb-1.5">
           <span className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
             {Math.round(clamped)}%
           </span>
         </div>
       )}
       <div
-        className="w-full h-2 rounded-full overflow-hidden"
+        className="w-full h-2.5 rounded-full overflow-hidden md:h-2"
         style={{ backgroundColor: "var(--color-border)" }}
       >
         <div
