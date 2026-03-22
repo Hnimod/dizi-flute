@@ -171,9 +171,9 @@ Tempo: 60 BPM
     jianpu: `1=D  4/4
 Tempo: 60 BPM
 
-5\u0323 - - - | 6\u0323 - - - | 7\u0323 - - - | 1 - - - |
+5, - - - | 6, - - - | 7, - - - | 1 - - - |
 2 - - - | 3 - - - | 4 - - - | 5 - - - |
-6 - - - | 7 - - - | 1\u0307 - - - | 0 - - - ||`,
+6 - - - | 7 - - - | 1' - - - | 0 - - - ||`,
     description: "Long tones through the full scale from low Sol to high Do.",
     audioPath: "/audio/level-2/01-full-scale-long-tones.ogg",
   },
@@ -200,8 +200,8 @@ Tempo: 60 BPM
     timeSignature: "4/4",
     jianpu: `1=D  4/4
 
-5\u0323 - 5 - | 6\u0323 - 6 - | 7\u0323 - 7 - | 1 - 1\u0307 - |
-1\u0307 - 1 - | 7 - 7\u0323 - | 6 - 6\u0323 - | 5 - 5\u0323 - ||`,
+5, - 5 - | 6, - 6 - | 7, - 7 - | 1 - 1' - |
+1' - 1 - | 7 - 7, - | 6 - 6, - | 5 - 5, - ||`,
     description: "Practice jumping between octaves on the same note.",
     audioPath: "/audio/level-2/03-octave-jumps.ogg",
   },
@@ -214,8 +214,8 @@ Tempo: 60 BPM
     timeSignature: "2/4",
     jianpu: `1=D  2/4
 
-1 2 | 3 4 | 5 6 | 7 1\u0307 |
-1\u0307 7 | 6 5 | 4 3 | 2 1 ||`,
+1 2 | 3 4 | 5 6 | 7 1' |
+1' 7 | 6 5 | 4 3 | 2 1 ||`,
     description:
       'Tongue each note with "tu". Two notes per beat.',
     audioPath: "/audio/level-2/04-tonguing-eighth-notes.ogg",
@@ -250,7 +250,7 @@ pp        mf        ff        mf        pp
 
 1 2 | 3 5 | 6 5 | 3 2 |
 1 3 | 5 6 | 5 3 | 2 1 |
-6\u0323 1 | 2 3 | 5 6 | 5 - ||`,
+6, 1 | 2 3 | 5 6 | 5 - ||`,
     description: "Practice pentatonic patterns in 2/4 time.",
     audioPath: "/audio/level-3/02-pentatonic-patterns.ogg",
   },
@@ -263,8 +263,8 @@ pp        mf        ff        mf        pp
     timeSignature: "4/4",
     jianpu: `1=D  4/4
 
-5\u0323 6\u0323 7\u0323 1 | 2 3 4 5 | 6 7 1\u0307 - | 0 0 0 0 |
-1\u0307 7 6 5 | 4 3 2 1 | 7\u0323 6\u0323 5\u0323 - | 0 0 0 0 ||`,
+5, 6, 7, 1 | 2 3 4 5 | 6 7 1' - | 0 0 0 0 |
+1' 7 6 5 | 4 3 2 1 | 7, 6, 5, - | 0 0 0 0 ||`,
     description: "Full two-octave scale ascending and descending.",
     audioPath: "/audio/level-3/03-two-octave-scale.ogg",
   },
@@ -278,7 +278,7 @@ pp        mf        ff        mf        pp
     jianpu: `1=D  2/4
 
 1. 2 | 3. 5 | 6. 5 | 3 - |
-5. 6 | 5. 3 | 2. 1 | 6\u0323 - ||`,
+5. 6 | 5. 3 | 2. 1 | 6, - ||`,
     description:
       'Practice dotted rhythms creating a "long-short" swing feel.',
     audioPath: "/audio/level-3/04-dotted-rhythms.ogg",
@@ -312,7 +312,7 @@ Hold each note for 2 full bars. Add vibrato (~4 pulses/sec):
 
 1 - - - - - - - | 2 - - - - - - - |
 3 - - - - - - - | 5 - - - - - - - |
-6 - - - - - - - | 1\u0307 - - - - - - - ||`,
+6 - - - - - - - | 1' - - - - - - - ||`,
     description:
       "Start each note plain for the first beat, then add vibrato for the remaining 7 beats.",
     audioPath: "/audio/level-4/01-vibrato-long-tones.ogg",
@@ -378,7 +378,7 @@ tr = trill between the written note and the note above:
     jianpu: `1=D  2/4
 
 1 2 3 2 | 1 - | 3 5 6 5 | 3 - |
-5 6 1\u0307 6 | 5 3 | 2 3 5 3 | 2 - ||`,
+5 6 1' 6 | 5 3 | 2 3 5 3 | 2 - ||`,
     description:
       "Groups of four sixteenth notes per beat. Keep fingers close to the holes for speed.",
     audioPath: "/audio/level-4/05-sixteenth-notes.ogg",
@@ -425,8 +425,8 @@ tu-tu-ku pattern on triplets:
     jianpu: `1=D  \u6563\u677F
 Play freely, stretch and compress time:
 
-5\u0323 - - 6\u0323 1 | 2 3 - - - | 5 - 6 5 3 | 2 - - - |
-1 - - - 6\u0323 | 5\u0323 - - - - ||`,
+5, - - 6, 1 | 2 3 - - - | 5 - 6 5 3 | 2 - - - |
+1 - - - 6, | 5, - - - - ||`,
     description:
       "No metronome. Feel each note. Breathe naturally.",
     audioPath: "/audio/level-5/sanban-free-time.ogg",

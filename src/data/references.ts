@@ -31,9 +31,9 @@ If you are starting out, learn this chart first. A D-key qudi is the standard be
 
 | Note | Jianpu | Western | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air |
 |------|--------|---------|--------|--------|--------|--------|--------|--------|-----|
-| Low Sol | 5\u0323 | A3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Gentle |
-| Low La | 6\u0323 | B3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Gentle |
-| Low Ti | 7\u0323 | C#4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Gentle |
+| Low Sol | 5, | A3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Gentle |
+| Low La | 6, | B3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Gentle |
+| Low Ti | 7, | C#4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Gentle |
 
 ### Middle Register (\u4E2D\u97F3)
 
@@ -52,12 +52,12 @@ If you are starting out, learn this chart first. A D-key qudi is the standard be
 
 | Note | Jianpu | Western | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air |
 |------|--------|---------|--------|--------|--------|--------|--------|--------|-----|
-| High Do | 1\u0307 | D5 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
-| High Re | 2\u0307 | E5 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
-| High Mi | 3\u0307 | F#5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
-| High Fa | 4\u0307 | G5 | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
-| High Sol | 5\u0307 | A5 | \u25CB | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Very strong |
-| High La | 6\u0307 | B5 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Very strong |
+| High Do | 1' | D5 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
+| High Re | 2' | E5 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
+| High Mi | 3' | F#5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
+| High Fa | 4' | G5 | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
+| High Sol | 5' | A5 | \u25CB | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Very strong |
+| High La | 6' | B5 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Very strong |
 
 ---
 
@@ -69,9 +69,9 @@ Same fingering pattern as above but all notes are a 4th higher. Used for norther
 
 | Note | Jianpu | Western | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air |
 |------|--------|---------|--------|--------|--------|--------|--------|--------|-----|
-| Low Sol | 5\u0323 | D4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Gentle |
-| Low La | 6\u0323 | E4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Gentle |
-| Low Ti | 7\u0323 | F#4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Gentle |
+| Low Sol | 5, | D4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Gentle |
+| Low La | 6, | E4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Gentle |
+| Low Ti | 7, | F#4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Gentle |
 | Do | 1 | G4 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Gentle |
 | Re | 2 | A4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Gentle |
 | Mi | 3 | B4 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Gentle |
@@ -79,9 +79,9 @@ Same fingering pattern as above but all notes are a 4th higher. Used for norther
 | Sol | 5 | D5 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Overblow |
 | La | 6 | E5 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Overblow |
 | Ti | 7 | F#5 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Overblow |
-| High Do | 1\u0307 | G5 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
-| High Re | 2\u0307 | A5 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
-| High Mi | 3\u0307 | B5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
+| High Do | 1' | G5 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
+| High Re | 2' | A5 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
+| High Mi | 3' | B5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
 
 ---
 
@@ -93,9 +93,9 @@ For southern lyrical pieces. Larger instrument with wider finger stretch. Rich, 
 
 | Note | Jianpu | Western | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air |
 |------|--------|---------|--------|--------|--------|--------|--------|--------|-----|
-| Low Sol | 5\u0323 | G3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Gentle |
-| Low La | 6\u0323 | A3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Gentle |
-| Low Ti | 7\u0323 | B3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Gentle |
+| Low Sol | 5, | G3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Gentle |
+| Low La | 6, | A3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Gentle |
+| Low Ti | 7, | B3 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Gentle |
 | Do | 1 | C4 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Gentle |
 | Re | 2 | D4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Gentle |
 | Mi | 3 | E4 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Gentle |
@@ -103,11 +103,11 @@ For southern lyrical pieces. Larger instrument with wider finger stretch. Rich, 
 | Sol | 5 | G4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Overblow |
 | La | 6 | A4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | Overblow |
 | Ti | 7 | B4 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | Overblow |
-| High Do | 1\u0307 | C5 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
-| High Re | 2\u0307 | D5 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
-| High Mi | 3\u0307 | E5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
-| High Fa | 4\u0307 | F5 | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
-| High Sol | 5\u0307 | G5 | \u25CB | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Very strong |
+| High Do | 1' | C5 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
+| High Re | 2' | D5 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
+| High Mi | 3' | E5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | Strong |
+| High Fa | 4' | F5 | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | Strong |
+| High Sol | 5' | G5 | \u25CB | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | Very strong |
 
 ---
 
@@ -121,20 +121,20 @@ The physical fingerings are identical -- only the jianpu note names change.
 
 | Fingering | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | \u7B52\u97F3\u4F5C5 Name | \u7B52\u97F3\u4F5C2 Name | Western |
 |-----------|--------|--------|--------|--------|--------|--------|-------------|-------------|---------|
-| All closed | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | 5\u0323 | 2\u0323 | A3 |
-| Open 1 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | 6\u0323 | 3\u0323 | B3 |
-| Open 1,2 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | 7\u0323 | #4\u0323 | C#4 |
-| Open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1 | 5\u0323 | D4 |
-| Open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2 | 6\u0323 | E4 |
-| Open 1,2,3,4,5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | 3 | 7\u0323 | F#4 |
+| All closed | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | 5, | 2, | A3 |
+| Open 1 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | 6, | 3, | B3 |
+| Open 1,2 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | 7, | #4, | C#4 |
+| Open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1 | 5, | D4 |
+| Open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2 | 6, | E4 |
+| Open 1,2,3,4,5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | 3 | 7, | F#4 |
 | Fork (6 open) | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 4 | 1 | G4 |
 | Overblow all closed | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | 5 | 2 | A4 |
 | Overblow open 1 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | 6 | 3 | B4 |
 | Overblow open 1,2 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | 7 | #4 | C#5 |
-| Strong open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1\u0307 | 5 | D5 |
-| Strong open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2\u0307 | 6 | E5 |
+| Strong open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1' | 5 | D5 |
+| Strong open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2' | 6 | E5 |
 
-**Key point**: In \u7B52\u97F3\u4F5C2, the note 4\u0323 (Fa) naturally becomes #4\u0323. To get a natural 4\u0323, you need half-holing or cross-fingering.
+**Key point**: In \u7B52\u97F3\u4F5C2, the note 4, (Fa) naturally becomes #4,. To get a natural 4,, you need half-holing or cross-fingering.
 
 ---
 
@@ -146,21 +146,21 @@ Another alternative system. On a D-key dizi, this produces notes in the key of A
 
 | Fingering | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | \u7B52\u97F3\u4F5C5 Name | \u7B52\u97F3\u4F5C1 Name | Western |
 |-----------|--------|--------|--------|--------|--------|--------|-------------|-------------|---------|
-| All closed | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | 5\u0323 | 1\u0323 | A3 |
-| Open 1 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | 6\u0323 | 2\u0323 | B3 |
-| Open 1,2 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | 7\u0323 | #3\u0323 | C#4 |
-| Open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1 | 4\u0323 | D4 |
-| Open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2 | 5\u0323 | E4 |
-| Open 1,2,3,4,5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | 3 | 6\u0323 | F#4 |
-| Fork (6 open) | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 4 | b7\u0323 | G4 |
+| All closed | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | 5, | 1, | A3 |
+| Open 1 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | 6, | 2, | B3 |
+| Open 1,2 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | 7, | #3, | C#4 |
+| Open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1 | 4, | D4 |
+| Open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2 | 5, | E4 |
+| Open 1,2,3,4,5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | 3 | 6, | F#4 |
+| Fork (6 open) | \u25CB | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 4 | b7, | G4 |
 | Overblow all closed | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | 5 | 1 | A4 |
 | Overblow open 1 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | 6 | 2 | B4 |
 | Overblow open 1,2 | \u25CF | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | 7 | #3 | C#5 |
-| Strong open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1\u0307 | 4 | D5 |
-| Strong open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2\u0307 | 5 | E5 |
-| Strong open 1,2,3,4,5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | 3\u0307 | 6 | F#5 |
+| Strong open 1,2,3 | \u25CF | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | 1' | 4 | D5 |
+| Strong open 1,2,3,4 | \u25CF | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | 2' | 5 | E5 |
+| Strong open 1,2,3,4,5 | \u25CF | \u25CB | \u25CB | \u25CB | \u25CB | \u25CB | 3' | 6 | F#5 |
 
-**Key point**: In \u7B52\u97F3\u4F5C1, the note 3 naturally becomes #3 and note 7\u0323 becomes b7\u0323. These require embouchure or cross-fingering adjustments.
+**Key point**: In \u7B52\u97F3\u4F5C1, the note 3 naturally becomes #3 and note 7, becomes b7,. These require embouchure or cross-fingering adjustments.
 
 ---
 
@@ -199,8 +199,8 @@ Trills (\u98A4\u97F3) are a signature dizi ornament. Rapidly alternate between t
 | 3 tr 4 | Mi fingering | Trill hole 5 + open/close hole 6 | Two-finger coordination |
 | 5 tr 6 | Sol fingering (overblow) | Trill hole 1 | Rapidly open/close hole 1 |
 | 6 tr 7 | La fingering (overblow) | Trill hole 2 | Rapidly open/close hole 2 |
-| 1\u0307 tr 2\u0307 | High Do fingering | Trill hole 4 | Same as low register, strong air |
-| 2\u0307 tr 3\u0307 | High Re fingering | Trill hole 5 | Same as low register, strong air |
+| 1' tr 2' | High Do fingering | Trill hole 4 | Same as low register, strong air |
+| 2' tr 3' | High Re fingering | Trill hole 5 | Same as low register, strong air |
 
 ### Trill Practice Tips
 
@@ -327,10 +327,10 @@ Dots above or below a number shift it up or down by one octave.
 
 | Notation | Name | Chinese | Meaning |
 |----------|------|---------|---------|
-| 1\u0323 2\u0323 3\u0323 | Low octave | \u4F4E\u97F3 (d\u012By\u012Bn) | Dot **below** the number \u2014 one octave lower |
+| 1, 2, 3, | Low octave | \u4F4E\u97F3 (d\u012By\u012Bn) | Dot **below** the number \u2014 one octave lower |
 | 1 2 3 | Middle octave | \u4E2D\u97F3 (zh\u014Dngy\u012Bn) | Plain number \u2014 the default octave |
-| 1\u0307 2\u0307 3\u0307 | High octave | \u9AD8\u97F3 (g\u0101oy\u012Bn) | Dot **above** the number \u2014 one octave higher |
-| 1\u0323\u0323 | Very low | \u500D\u4F4E\u97F3 | Two dots below \u2014 two octaves lower (rare) |
+| 1' 2' 3' | High octave | \u9AD8\u97F3 (g\u0101oy\u012Bn) | Dot **above** the number \u2014 one octave higher |
+| 1,, | Very low | \u500D\u4F4E\u97F3 | Two dots below \u2014 two octaves lower (rare) |
 | 1\u0308 | Very high | \u500D\u9AD8\u97F3 | Two dots above \u2014 two octaves higher (rare) |
 
 **How to read dots:** In printed jianpu, the dots are directly above or below the number. When you see a dot underneath \`5\`, read it as "low Sol." When you see a dot on top of \`1\`, read it as "high Do."
@@ -340,18 +340,18 @@ Dots above or below a number shift it up or down by one octave.
 This is the standard range when the lowest note (all holes covered) is Sol (5):
 
 \`\`\`
-Low octave:    5\u0323  6\u0323  7\u0323
+Low octave:    5,  6,  7,
 Middle octave: 1  2  3  4  5  6  7
-High octave:   1\u0307  2\u0307  3\u0307  4\u0307  5\u0307
+High octave:   1'  2'  3'  4'  5'
 \`\`\`
 
 In actual pitches for a D-key dizi (1=D, \u7B52\u97F3\u4F5C5):
 
 | Jianpu | Solfege | Pitch | Register |
 |--------|---------|-------|----------|
-| 5\u0323 | Low Sol | A3 | Low (\u4F4E\u97F3) |
-| 6\u0323 | Low La | B3 | Low |
-| 7\u0323 | Low Ti | C#4 | Low |
+| 5, | Low Sol | A3 | Low (\u4F4E\u97F3) |
+| 6, | Low La | B3 | Low |
+| 7, | Low Ti | C#4 | Low |
 | 1 | Do | D4 | Middle (\u4E2D\u97F3) |
 | 2 | Re | E4 | Middle |
 | 3 | Mi | F#4 | Middle |
@@ -359,13 +359,13 @@ In actual pitches for a D-key dizi (1=D, \u7B52\u97F3\u4F5C5):
 | 5 | Sol | A4 | Middle |
 | 6 | La | B4 | Middle |
 | 7 | Ti | C#5 | Middle |
-| 1\u0307 | High Do | D5 | High (\u9AD8\u97F3) |
-| 2\u0307 | High Re | E5 | High |
-| 3\u0307 | High Mi | F#5 | High |
-| 4\u0307 | High Fa | G5 | High |
-| 5\u0307 | High Sol | A5 | High |
+| 1' | High Do | D5 | High (\u9AD8\u97F3) |
+| 2' | High Re | E5 | High |
+| 3' | High Mi | F#5 | High |
+| 4' | High Fa | G5 | High |
+| 5' | High Sol | A5 | High |
 
-Notes: The low register (5\u0323 6\u0323 7\u0323) requires gentle breath. The high register (1\u0307 and above) requires overblowing. Notes above 3\u0307 are increasingly difficult for beginners.
+Notes: The low register (5, 6, 7,) requires gentle breath. The high register (1' and above) requires overblowing. Notes above 3' are increasingly difficult for beginners.
 
 ---
 
@@ -457,13 +457,13 @@ This means: "The number 1 is the note D." Every other number is calculated relat
 
 | Dizi Key | Standard Key Signature | 1 (Do) = | \u7B52\u97F3 (lowest note) |
 |----------|----------------------|----------|-------------------|
-| C dizi | 1=C | C | Sol (5\u0323) = G |
-| D dizi | 1=D | D | Sol (5\u0323) = A |
-| E dizi | 1=E | E | Sol (5\u0323) = B |
-| F dizi | 1=F | F | Sol (5\u0323) = C |
-| G dizi | 1=G | G | Sol (5\u0323) = D |
-| A dizi | 1=A | A | Sol (5\u0323) = E |
-| bB dizi | 1=bB | Bb | Sol (5\u0323) = F |
+| C dizi | 1=C | C | Sol (5,) = G |
+| D dizi | 1=D | D | Sol (5,) = A |
+| E dizi | 1=E | E | Sol (5,) = B |
+| F dizi | 1=F | F | Sol (5,) = C |
+| G dizi | 1=G | G | Sol (5,) = D |
+| A dizi | 1=A | A | Sol (5,) = E |
+| bB dizi | 1=bB | Bb | Sol (5,) = F |
 
 ### Why This Matters for Dizi
 
@@ -712,8 +712,8 @@ Let us walk through reading a real piece of music step by step.
 1=D  2/4
 Andante \u2669=72
 
-  3   3 | 5  6\u0332 1\u0332\u0307 6\u0332 | 5   - | 5  6\u0332 1\u0332\u0307  6\u0332 | 5  -  |
-  3  5\u0332 6\u0332 | 1\u0307   6\u0332 5\u0332 | 6   - | 5\u0332 3\u0332 2\u0332 1\u0332 | 2  -  |
+  3   3 | 5  6\u0332 1\u0332' 6\u0332 | 5   - | 5  6\u0332 1\u0332'  6\u0332 | 5  -  |
+  3  5\u0332 6\u0332 | 1'   6\u0332 5\u0332 | 6   - | 5\u0332 3\u0332 2\u0332 1\u0332 | 2  -  |
 \`\`\`
 
 ### Element-by-Element Breakdown
@@ -730,9 +730,9 @@ Andante \u2669=72
 | Measure | Notes | Meaning |
 |---------|-------|---------|
 | \`3  3\` | Two quarter notes: Mi, Mi | Two beats, one Mi per beat |
-| \`5  6\u0332 1\u0332\u0307 6\u0332\` | Quarter Sol, then three eighth notes La-high Do-La | Sol gets 1 beat; La, high Do, La share 1 beat |
+| \`5  6\u0332 1\u0332' 6\u0332\` | Quarter Sol, then three eighth notes La-high Do-La | Sol gets 1 beat; La, high Do, La share 1 beat |
 | \`5  -\` | Half note Sol | Sol held for 2 full beats (fills the whole measure) |
-| \`5  6\u0332 1\u0332\u0307 6\u0332\` | Same as measure 2 | Same rhythmic pattern |
+| \`5  6\u0332 1\u0332' 6\u0332\` | Same as measure 2 | Same rhythmic pattern |
 | \`5  -\` | Half note Sol | Sol held for 2 beats |
 
 **What you would do:**
@@ -781,7 +781,7 @@ Andante \u2669=72
 
 5. **Learn to recognize common patterns:**
    - \`1 3 5\` \u2014 ascending arpeggio (Do-Mi-Sol), bright and upward
-   - \`5 6 1\u0307\` \u2014 ascending pentatonic ending, common phrase ender going up
+   - \`5 6 1'\` \u2014 ascending pentatonic ending, common phrase ender going up
    - \`6 5 3\` \u2014 descending pentatonic, common phrase ender going down
    - \`5 - - -\` \u2014 long held Sol, a resting point
    - \`3 2 1\` \u2014 stepwise descent to home (Mi-Re-Do), classic resolution
@@ -823,9 +823,9 @@ A cumulative reference of all music theory concepts covered in this course, orga
 ### Octave Designations
 | Notation | Name | Chinese | Register |
 |----------|------|---------|----------|
-| 5\u0323 (dot below) | Low octave | \u4F4E\u97F3 | Low |
+| 5, (dot below) | Low octave | \u4F4E\u97F3 | Low |
 | 5 (plain) | Middle octave | \u4E2D\u97F3 | Middle |
-| 5\u0307 (dot above) | High octave | \u9AD8\u97F3 | High |
+| 5' (dot above) | High octave | \u9AD8\u97F3 | High |
 
 ### Sharps and Flats
 - \`#5\` = sharp 5 (raised by a half step)
@@ -846,7 +846,7 @@ An interval is the distance between two notes.
 | 5th | 1\u21925 | Strong, stable |
 | 6th | 1\u21926 | Wide, warm |
 | 7th | 1\u21927 | Tense, wants to resolve |
-| Octave | 1\u21921\u0307 | Same note, higher |
+| Octave | 1\u21921' | Same note, higher |
 
 ---
 
@@ -888,10 +888,10 @@ Any of the 5 pentatonic notes can be the tonic (home note), creating distinct mo
 | Mode | Tonic | Scale (from tonic) | Character | Common In |
 |------|-------|--------------------|-----------|-----------|
 | Gong (\u5BAB\u8C03\u5F0F) | 1 | 1 2 3 5 6 | Bright, major | Most folk songs |
-| Shang (\u5546\u8C03\u5F0F) | 2 | 2 3 5 6 1\u0307 | Open, spacious | Northwest (Shaanxi) |
-| Jue (\u89D2\u8C03\u5F0F) | 3 | 3 5 6 1\u0307 2\u0307 | Gentle, tender | Jiangnan |
-| Zhi (\u5FB5\u8C03\u5F0F) | 5 | 5 6 1\u0307 2\u0307 3\u0307 | Strong, warm | Northern folk |
-| Yu (\u7FBD\u8C03\u5F0F) | 6 | 6 1\u0307 2\u0307 3\u0307 5\u0307 | Sad, minor feel | Sorrow songs |
+| Shang (\u5546\u8C03\u5F0F) | 2 | 2 3 5 6 1' | Open, spacious | Northwest (Shaanxi) |
+| Jue (\u89D2\u8C03\u5F0F) | 3 | 3 5 6 1' 2' | Gentle, tender | Jiangnan |
+| Zhi (\u5FB5\u8C03\u5F0F) | 5 | 5 6 1' 2' 3' | Strong, warm | Northern folk |
+| Yu (\u7FBD\u8C03\u5F0F) | 6 | 6 1' 2' 3' 5' | Sad, minor feel | Sorrow songs |
 
 ### Identifying a Mode
 1. Find the last note of the piece \u2014 usually the tonic
@@ -1364,9 +1364,9 @@ Parsed from the printed chart (\u7AF9\u7B1B\u6307\u6CD5\u8868) that came with th
 
 | Note    | Jianpu | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air    |
 | ------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| Low Sol | 5\u0323      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Gentle |
-| Low La  | 6\u0323      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | Gentle |
-| Low Ti  | 7\u0323      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | Gentle |
+| Low Sol | 5,      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Gentle |
+| Low La  | 6,      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | Gentle |
+| Low Ti  | 7,      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | Gentle |
 
 ## Middle Register (\u4E2D\u97F3)
 
@@ -1386,16 +1386,16 @@ Parsed from the printed chart (\u7AF9\u7B1B\u6307\u6CD5\u8868) that came with th
 
 | Note                | Jianpu | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air         |
 | ------------------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ----------- |
-| High Do             | 1\u0307      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Re             | 2\u0307      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Mi             | 3\u0307      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Fa (method 2)  | 4\u0307      | \u25D0      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Fa (method 1)  | 4\u0307      | \u25CB      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CF      | Strong      |
-| High Sol (method 1) | 5\u0307      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Very strong |
-| High Sol (method 3) | 5\u0307      | \u25CB      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Very strong |
-| High Sol (method 2) | 5\u0307      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Very strong |
-| High La             | 6\u0307      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | Very strong |
-| High Ti             | 7\u0307      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | Very strong |
+| High Do             | 1'      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Re             | 2'      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Mi             | 3'      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Fa (method 2)  | 4'      | \u25D0      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Fa (method 1)  | 4'      | \u25CB      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CF      | Strong      |
+| High Sol (method 1) | 5'      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Very strong |
+| High Sol (method 3) | 5'      | \u25CB      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Very strong |
+| High Sol (method 2) | 5'      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Very strong |
+| High La             | 6'      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | Very strong |
+| High Ti             | 7'      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | Very strong |
 | Highest Do          | 1\u0308      | \u25CF      | \u25CB      | \u25CF      | \u25CB      | \u25CB      | \u25CF      | Very strong |
 
 ---
@@ -1407,9 +1407,9 @@ Learn these first; the alternatives are for advanced technique later.
 
 | Note      | Jianpu | Hole 6 | Hole 5 | Hole 4 | Hole 3 | Hole 2 | Hole 1 | Air         |
 | --------- | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ----------- |
-| Low Sol   | 5\u0323      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Gentle      |
-| Low La    | 6\u0323      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | Gentle      |
-| Low Ti    | 7\u0323      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | Gentle      |
+| Low Sol   | 5,      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Gentle      |
+| Low La    | 6,      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | Gentle      |
+| Low Ti    | 7,      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | Gentle      |
 | Do        | 1      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Gentle      |
 | Re        | 2      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Gentle      |
 | Mi        | 3      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Gentle      |
@@ -1417,13 +1417,13 @@ Learn these first; the alternatives are for advanced technique later.
 | Sol       | 5      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Overblow    |
 | La        | 6      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | Overblow    |
 | Ti        | 7      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | Overblow    |
-| High Do   | 1\u0307      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Re   | 2\u0307      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Mi   | 3\u0307      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
-| High Fa   | 4\u0307      | \u25CB      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CF      | Strong      |
-| High Sol  | 5\u0307      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Very strong |
-| High La   | 6\u0307      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | Very strong |
-| High Ti   | 7\u0307      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | Very strong |
+| High Do   | 1'      | \u25CF      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Re   | 2'      | \u25CF      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Mi   | 3'      | \u25CF      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | \u25CB      | Strong      |
+| High Fa   | 4'      | \u25CB      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CF      | Strong      |
+| High Sol  | 5'      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | \u25CF      | Very strong |
+| High La   | 6'      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | Very strong |
+| High Ti   | 7'      | \u25CF      | \u25CB      | \u25CF      | \u25CF      | \u25CB      | \u25CF      | Very strong |
 | Highest Do| 1\u0308      | \u25CF      | \u25CB      | \u25CF      | \u25CB      | \u25CB      | \u25CF      | Very strong |
 
 ---
@@ -1434,9 +1434,9 @@ D-key dizi: all holes closed = D. Use this to check your pitch with a tuner.
 
 | Jianpu | Dizi Name  | Western Note | Octave | Frequency (Hz) |
 | ------ | ---------- | ------------ | ------ | --------------- |
-| 5\u0323      | Low Sol    | **D4**       | 4      | 293.66          |
-| 6\u0323      | Low La     | **E4**       | 4      | 329.63          |
-| 7\u0323      | Low Ti     | **F#4**      | 4      | 369.99          |
+| 5,      | Low Sol    | **D4**       | 4      | 293.66          |
+| 6,      | Low La     | **E4**       | 4      | 329.63          |
+| 7,      | Low Ti     | **F#4**      | 4      | 369.99          |
 | 1      | Do         | **G4**       | 4      | 392.00          |
 | 2      | Re         | **A4**       | 4      | 440.00          |
 | 3      | Mi         | **B4**       | 4      | 493.88          |
@@ -1444,13 +1444,13 @@ D-key dizi: all holes closed = D. Use this to check your pitch with a tuner.
 | 5      | Sol        | **D5**       | 5      | 587.33          |
 | 6      | La         | **E5**       | 5      | 659.26          |
 | 7      | Ti         | **F#5**      | 5      | 739.99          |
-| 1\u0307      | High Do    | **G5**       | 5      | 783.99          |
-| 2\u0307      | High Re    | **A5**       | 5      | 880.00          |
-| 3\u0307      | High Mi    | **B5**       | 5      | 987.77          |
-| 4\u0307      | High Fa    | **C6**       | 6      | 1046.50         |
-| 5\u0307      | High Sol   | **D6**       | 6      | 1174.66         |
-| 6\u0307      | High La    | **E6**       | 6      | 1318.51         |
-| 7\u0307      | High Ti    | **F#6**      | 6      | 1396.91         |
+| 1'      | High Do    | **G5**       | 5      | 783.99          |
+| 2'      | High Re    | **A5**       | 5      | 880.00          |
+| 3'      | High Mi    | **B5**       | 5      | 987.77          |
+| 4'      | High Fa    | **C6**       | 6      | 1046.50         |
+| 5'      | High Sol   | **D6**       | 6      | 1174.66         |
+| 6'      | High La    | **E6**       | 6      | 1318.51         |
+| 7'      | High Ti    | **F#6**      | 6      | 1396.91         |
 | 1\u0308      | Highest Do | **G6**       | 6      | 1567.98         |
 
 **Tip**: When your tuner shows the note letter, match it to the Western Note column. If it's sharp/flat, adjust your embouchure (lip angle) or air pressure. A4 = 440 Hz is the standard tuning reference \u2014 you can check this with Re (2) in the middle register.
@@ -1459,7 +1459,7 @@ D-key dizi: all holes closed = D. Use this to check your pitch with a tuner.
 
 - **Fa (4)**: Cross-fingering \`\u25CB\u25CF\u25CF\u25CB\u25CB\u25CB\` is the standard. The half-hole alternative is for smooth legato in advanced passages.
 - **Sol (5)**: All-closed \`\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\` across all three registers \u2014 same fingering, just change air pressure (gentle \u2192 overblow \u2192 very strong). Simplest to learn.
-- **High Fa (4\u0307)**: Cross-fingering \`\u25CB\u25CF\u25CB\u25CF\u25CF\u25CF\` is the standard. Half-hole is trickier for beginners.
-- **High Sol (5\u0307)**: All-closed \`\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\` with very strong air. The other methods are for fine intonation tuning in advanced playing.`,
+- **High Fa (4')**: Cross-fingering \`\u25CB\u25CF\u25CB\u25CF\u25CF\u25CF\` is the standard. Half-hole is trickier for beginners.
+- **High Sol (5')**: All-closed \`\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\` with very strong air. The other methods are for fine intonation tuning in advanced playing.`,
   },
 ];

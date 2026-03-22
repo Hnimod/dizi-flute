@@ -38,11 +38,18 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Jianpu notation should always be monospace */
+/* Jianpu ASCII font — renders proper numbered notation via OpenType ligatures */
+@font-face {
+  font-family: "Jianpu";
+  src: url("/fonts/JianpuASCII.ttf") format("truetype");
+  font-display: swap;
+}
+
 .jianpu {
-  font-family: "Courier New", Courier, monospace;
-  line-height: 1.8;
-  letter-spacing: 0.05em;
+  font-family: "Jianpu", "Courier New", Courier, monospace;
+  font-size: 1.25rem;
+  line-height: 2.2;
+  letter-spacing: 0.08em;
 }
 
 /* Better focus rings */

@@ -122,7 +122,7 @@ export const levels: Level[] = [
         id: "level-2-fingerings",
         title: "New Fingerings: Complete First Octave and Beyond",
         content:
-          "You now learn the full range from low 5\u0323 through high 1\u0307. **Overblowing:** Notes 5, 6, 7, and high 1\u0307 use the same fingerings as 5\u0323, 6\u0323, 7\u0323, and 1 but with increased air speed.",
+          "You now learn the full range from low 5, through high 1'. **Overblowing:** Notes 5, 6, 7, and high 1' use the same fingerings as 5,, 6,, 7,, and 1 but with increased air speed.",
         items: [],
       },
       {
