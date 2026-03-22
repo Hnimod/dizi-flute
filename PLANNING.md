@@ -2,7 +2,7 @@
 
 ## Context
 
-The `dizi-flute/` project contains a comprehensive 8-level dizi learning curriculum as markdown files, 62 MIDI/OGG practice audio files, and reference materials. This plan restructures it into an interactive React web application — a self-paced learning platform — while preserving the existing files as domain knowledge source.
+The `dizi-flute/` project contains a comprehensive 8-level dizi learning curriculum as markdown files, 62 MIDI/OGG practice audio files, and reference materials. This plan restructures it into an interactive React web application designed for **autonomous AI agent development** — the source markdown files serve as the PRD, the codebase is organized into isolated feature modules, and the CLAUDE.md provides instant agent context for task decomposition.
 
 ---
 
@@ -15,126 +15,263 @@ The `dizi-flute/` project contains a comprehensive 8-level dizi learning curricu
 | React Router v7 | Client-side routing |
 | Tailwind CSS v4 | Styling (dark mode via class strategy) |
 | react-markdown + remark-gfm | Markdown rendering with table support |
-| localStorage | Progress persistence |
+| Zustand | State management (theme, progress, audio) |
+| localStorage | Persistence (via Zustand persist middleware) |
 
-No backend. No state management library. Hooks + context only.
+No backend. Zustand stores replace React context for global state.
 
 ---
 
-## Target Project Structure
+## Architecture: Three-Layer + Feature Modules
+
+```
+┌─────────────────────────────────────────────┐
+│  app/          (thin shell: routes + providers) │
+├─────────────────────────────────────────────┤
+│  features/     (self-contained modules)         │
+│  ┌──────────┐ ┌──────────┐ ┌──────────────┐   │
+│  │ course-  │ │ lesson-  │ │ reference-   │   │
+│  │ nav      │ │ viewer   │ │ library      │   │
+│  └──────────┘ └──────────┘ └──────────────┘   │
+│  ┌──────────┐ ┌──────────┐ ┌──────────────┐   │
+│  │ audio-   │ │ progress-│ │ practice-    │   │
+│  │ playback │ │ tracking │ │ timer        │   │
+│  └──────────┘ └──────────┘ └──────────────┘   │
+│  ┌──────────┐                                   │
+│  │ theme    │                                   │
+│  └──────────┘                                   │
+├─────────────────────────────────────────────┤
+│  data/         (content layer from source .md)  │
+├─────────────────────────────────────────────┤
+│  shared/       (primitives, zero business logic)│
+└─────────────────────────────────────────────┘
+```
+
+**Dependency rules (strict, one-way):**
+- `shared/` → depends on nothing
+- `data/` → depends on `shared/types/` only
+- `features/*` → depends on `shared/` and `data/`; may import other features ONLY via their `index.ts`
+- `app/` → imports from `features/` (route components); no providers needed (Zustand stores are self-contained)
+
+---
+
+## Project Structure
 
 ```
 dizi-flute/
-├── (existing .md, midi/, reference/, scripts/ — preserved as source)
+├── CLAUDE.md                          # Agent entry point (architecture + task decomposition)
+├── PLANNING.md                        # This file
+├── feature-manifest.json              # Machine-readable feature registry
+├── README.md                          # Course intro (source content)
+│
+├── level-0-setup.md ... level-7-advanced.md   # Source PRD (preserved)
+├── reference/                                  # Source reference docs
+├── midi/                                       # Source audio files
+├── scripts/                                    # MIDI generation
 │
 ├── index.html
 ├── package.json
 ├── vite.config.ts
 ├── tailwind.config.ts
 ├── postcss.config.js
-├── tsconfig.json / tsconfig.app.json / tsconfig.node.json
+├── tsconfig.json
 │
 ├── public/
-│   ├── audio/
-│   │   ├── level-1/  *.ogg
-│   │   ├── level-2/  *.ogg
-│   │   └── ...through level-7/
-│   └── images/
-│       └── d-key-dizi-included-chart.png
+│   ├── audio/level-{1..7}/*.ogg
+│   └── images/*.png
 │
 └── src/
-    ├── main.tsx                    # Entry point, router setup
-    ├── App.tsx                     # Root layout (sidebar + outlet)
-    ├── index.css                   # Tailwind directives + globals
+    ├── main.tsx                        # Entry: mounts App
+    ├── index.css                       # Tailwind directives only
     │
-    ├── types/
-    │   └── index.ts                # All TypeScript interfaces
+    ├── app/                            # Thin orchestration shell
+    │   ├── App.tsx                     # Root layout: sidebar + <Outlet/>
+    │   └── routes.tsx                  # All route definitions
     │
-    ├── data/
-    │   ├── course.ts               # Philosophy, daily practice template, milestones
-    │   ├── levels.ts               # 8 levels with metadata + markdown sections
-    │   ├── songs.ts                # All 60+ songs: jianpu, audio paths, metadata
-    │   ├── exercises.ts            # All exercises: jianpu, audio paths
-    │   └── references.ts           # Reference doc content as markdown strings
+    ├── shared/                         # Shared primitives (NO business logic)
+    │   ├── types/
+    │   │   └── index.ts                # Level, Song, Exercise, ReferenceDoc, UserProgress
+    │   ├── ui/
+    │   │   ├── AudioPlayer.tsx         # Reusable audio player
+    │   │   ├── MarkdownRenderer.tsx    # react-markdown wrapper
+    │   │   ├── ProgressBar.tsx         # Generic progress bar
+    │   │   └── Checkbox.tsx            # Styled checkbox
+    │   └── utils/
+    │       └── markdown.ts             # Markdown processing helpers
     │
-    ├── components/
-    │   ├── Layout.tsx              # Shell: sidebar + main content area
-    │   ├── Sidebar.tsx             # Level navigation + reference links
-    │   ├── Breadcrumb.tsx          # Breadcrumb navigation
-    │   ├── ThemeToggle.tsx         # Dark/light mode switch
-    │   ├── LevelCard.tsx           # Level overview card for home page
-    │   ├── ProgressBar.tsx         # Completion indicator bar
-    │   ├── MarkdownRenderer.tsx    # react-markdown with custom components
-    │   ├── AudioPlayer.tsx         # OGG playback: play/pause, speed, seek
-    │   ├── SongCard.tsx            # Song display with embedded player
-    │   ├── ExerciseBlock.tsx       # Jianpu display with embedded player
-    │   ├── FingeringChart.tsx      # Fingering table/image display
-    │   └── PracticeTimer.tsx       # Session timer (Phase 8)
+    ├── data/                           # Content layer (derived from source .md)
+    │   ├── course.ts                   # Philosophy, practice template, milestones
+    │   ├── levels.ts                   # 8 levels: metadata + prose sections
+    │   ├── songs.ts                    # All songs: jianpu + audio paths
+    │   ├── exercises.ts                # All exercises: jianpu + audio paths
+    │   └── references.ts              # Reference doc content
     │
-    ├── pages/
-    │   ├── HomePage.tsx            # Course overview, level card grid
-    │   ├── LevelPage.tsx           # Single level content view
-    │   ├── ReferencePage.tsx       # Reference hub
-    │   ├── ReferenceDetailPage.tsx # Individual reference doc
-    │   └── PracticeLogPage.tsx     # Practice history (Phase 8)
-    │
-    ├── hooks/
-    │   ├── useTheme.ts             # Dark/light theme state + localStorage
-    │   ├── useProgress.ts          # Completion tracking + localStorage
-    │   └── useAudioPlayer.ts       # Audio playback state
-    │
-    └── utils/
-        ├── markdown.ts             # Markdown processing helpers
-        └── progress.ts             # Progress calculation utilities
+    └── features/
+        ├── course-navigation/
+        │   ├── index.ts                # Exports: HomePage, LevelCard, Sidebar
+        │   ├── HomePage.tsx
+        │   ├── LevelCard.tsx
+        │   └── Sidebar.tsx
+        │
+        ├── lesson-viewer/
+        │   ├── index.ts                # Exports: LevelPage, SongCard, ExerciseBlock
+        │   ├── LevelPage.tsx
+        │   ├── SongCard.tsx
+        │   ├── ExerciseBlock.tsx
+        │   └── SectionRenderer.tsx
+        │
+        ├── audio-playback/
+        │   ├── index.ts                # Exports: InlinePlayer, SpeedControl, useAudioStore
+        │   ├── store.ts                # Zustand store (current track, playing state, speed)
+        │   ├── InlinePlayer.tsx
+        │   └── SpeedControl.tsx
+        │
+        ├── reference-library/
+        │   ├── index.ts                # Exports: ReferencePage, ReferenceDetailPage
+        │   ├── ReferencePage.tsx
+        │   ├── ReferenceDetailPage.tsx
+        │   └── ReferenceCard.tsx
+        │
+        ├── progress-tracking/
+        │   ├── index.ts                # Exports: CompletionCheckbox, LevelProgressBar, useProgressStore
+        │   ├── store.ts                # Zustand store (persist middleware → localStorage)
+        │   ├── CompletionCheckbox.tsx
+        │   ├── LevelProgressBar.tsx
+        │   ├── CourseProgressSummary.tsx
+        │   └── utils.ts
+        │
+        ├── practice-timer/
+        │   ├── index.ts                # Exports: PracticeTimerPage, PracticeLogPage
+        │   ├── PracticeTimerPage.tsx
+        │   ├── TimerDisplay.tsx
+        │   ├── SessionConfig.tsx
+        │   └── PracticeLogPage.tsx
+        │
+        └── theme/
+            ├── index.ts                # Exports: ThemeToggle, useThemeStore
+            ├── store.ts                # Zustand store (persist middleware → localStorage)
+            └── ThemeToggle.tsx
+```
+
+---
+
+## Feature Manifest (`feature-manifest.json`)
+
+Machine-readable registry — the agent reads this to instantly understand features, ownership, and dependencies.
+
+```json
+{
+  "features": {
+    "theme": {
+      "path": "src/features/theme",
+      "description": "Dark/light mode toggle — Zustand store with persist middleware",
+      "routes": [],
+      "exports": ["ThemeToggle", "useThemeStore"],
+      "dependsOn": ["shared"],
+      "crossFeatureDeps": []
+    },
+    "audio-playback": {
+      "path": "src/features/audio-playback",
+      "description": "Audio player with speed control — Zustand store for playback state",
+      "routes": [],
+      "exports": ["InlinePlayer", "SpeedControl", "useAudioStore"],
+      "dependsOn": ["shared"],
+      "crossFeatureDeps": []
+    },
+    "progress-tracking": {
+      "path": "src/features/progress-tracking",
+      "description": "Completion tracking — Zustand store with persist middleware",
+      "routes": [],
+      "exports": ["CompletionCheckbox", "LevelProgressBar", "CourseProgressSummary", "useProgressStore"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": []
+    },
+    "course-navigation": {
+      "path": "src/features/course-navigation",
+      "description": "Home page, level cards, sidebar navigation",
+      "routes": ["/"],
+      "exports": ["HomePage", "LevelCard", "Sidebar"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["progress-tracking"]
+    },
+    "lesson-viewer": {
+      "path": "src/features/lesson-viewer",
+      "description": "Renders level content: prose, songs, exercises with audio",
+      "routes": ["/level/:id"],
+      "exports": ["LevelPage", "SongCard", "ExerciseBlock"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["audio-playback", "progress-tracking"]
+    },
+    "reference-library": {
+      "path": "src/features/reference-library",
+      "description": "Reference docs viewer: fingering charts, jianpu guide, theory",
+      "routes": ["/reference", "/reference/:slug"],
+      "exports": ["ReferencePage", "ReferenceDetailPage"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": []
+    },
+    "practice-timer": {
+      "path": "src/features/practice-timer",
+      "description": "Guided practice sessions with timer and session log",
+      "routes": ["/practice", "/practice-log"],
+      "exports": ["PracticeTimerPage", "PracticeLogPage"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["progress-tracking"]
+    }
+  }
+}
 ```
 
 ---
 
 ## Routes
 
-| Path | Page | Description |
-|------|------|-------------|
-| `/` | HomePage | Course overview with 8 level cards + progress |
-| `/level/:id` | LevelPage | Full level content: prose, songs, exercises, audio |
-| `/reference` | ReferencePage | Hub listing all reference documents |
-| `/reference/:slug` | ReferenceDetailPage | Individual reference (fingering, jianpu, theory) |
-| `/practice-log` | PracticeLogPage | Practice session history (Phase 8) |
+| Path | Feature | Component |
+|------|---------|-----------|
+| `/` | course-navigation | HomePage |
+| `/level/:id` | lesson-viewer | LevelPage |
+| `/reference` | reference-library | ReferencePage |
+| `/reference/:slug` | reference-library | ReferenceDetailPage |
+| `/practice` | practice-timer | PracticeTimerPage |
+| `/practice-log` | practice-timer | PracticeLogPage |
 
 ---
 
 ## Data Model
 
 ```typescript
+// shared/types/index.ts
+
 interface Level {
   id: number;                  // 0-7
   slug: string;                // "level-0-setup"
   title: string;               // "Setup & Foundations"
-  subtitle: string;            // Short description
+  subtitle: string;
   timeline: string;            // "Week 0", "Months 3-4"
-  ccomGrade: string;           // "Pre-Grade", "Grade 1-2", etc.
+  ccomGrade: string;           // "Pre-Grade", "Grade 1-2"
   sections: LevelSection[];
 }
 
 interface LevelSection {
-  id: string;                  // "techniques", "songs", "exercises"
+  id: string;
   title: string;
-  content: string;             // Markdown prose for this section
-  items: (Song | Exercise)[];  // Trackable items within
+  content: string;             // Markdown prose
+  items: (Song | Exercise)[];
 }
 
 interface Song {
-  id: string;                  // "level-2-song-05-xiao-xing-xing"
+  id: string;
   type: 'song';
   levelId: number;
-  titleChinese?: string;       // "小星星"
-  titleEnglish: string;        // "Twinkle Twinkle Little Star"
-  key: string;                 // "D"
-  timeSignature: string;       // "4/4"
+  titleChinese?: string;
+  titleEnglish: string;
+  key: string;
+  timeSignature: string;
   tempo?: number;
-  jianpu: string;              // Raw jianpu notation
+  jianpu: string;
   description?: string;
-  audioPath?: string;          // "/audio/level-2/05-xiao-xing-xing.ogg"
-  origin?: string;             // "Chinese folk", "Vietnamese folk", "Western"
+  audioPath?: string;
+  origin?: string;
 }
 
 interface Exercise {
@@ -149,10 +286,10 @@ interface Exercise {
 }
 
 interface ReferenceDoc {
-  slug: string;                // "fingering-charts"
+  slug: string;
   title: string;
   description: string;
-  content: string;             // Full markdown
+  content: string;
 }
 
 interface UserProgress {
@@ -165,231 +302,236 @@ interface UserProgress {
 
 ---
 
-## Content Strategy
+## Content Sync Rules (for Claude Code agent)
 
-**Hybrid approach:**
-- **Prose/theory** → kept as markdown strings in `LevelSection.content`, rendered by `react-markdown` at runtime
-- **Songs/exercises** → extracted as typed objects (`Song`, `Exercise`) with jianpu in a dedicated field — enables progress tracking + audio embedding
-- **References** → full markdown strings in `references.ts`
-- **Audio** → OGG files served from `public/audio/` (no browser MIDI playback — too complex, OGG plays natively)
+**Source markdown files and `src/data/` are a paired system.** Any change to source content must also update the webapp data layer.
+
+| When you change... | Also update... |
+|---------------------|---------------|
+| `README.md` (philosophy, milestones, practice template) | `src/data/course.ts` |
+| `level-{N}-*.md` (prose, theory sections) | `src/data/levels.ts` — matching level's section content |
+| `level-{N}-*.md` (add/edit/remove a song) | `src/data/songs.ts` — corresponding `Song` object |
+| `level-{N}-*.md` (add/edit/remove an exercise) | `src/data/exercises.ts` — corresponding `Exercise` object |
+| `reference/*.md` (any reference doc) | `src/data/references.ts` — matching `ReferenceDoc.content` |
+| Add new `.ogg` audio file | Copy to `public/audio/level-{N}/` + set `audioPath` on Song/Exercise |
+| Add a new level file | Add to `src/data/levels.ts` + extract songs/exercises |
+| Add a new feature module | Create in `src/features/`, register in `feature-manifest.json`, add route to `src/app/routes.tsx` |
+
+**Hard rule:** never update a source `.md` without updating `src/data/`, and vice versa.
+
+---
+
+## Agent Task Decomposition Templates
+
+These templates guide the orchestrator agent when breaking feature requests into subagent tasks.
+
+### Template A: Content Change
+
+Example: "Add a new song to level 3"
+
+```
+1. [SEQUENTIAL] Update source: edit level-3-folk-repertoire.md
+2. [PARALLEL after 1] Update data: add Song object to src/data/songs.ts
+3. [PARALLEL after 1] Add audio: copy .ogg to public/audio/level-3/
+4. [SEQUENTIAL after 2,3] Verify: dev server → level 3 → song renders with player
+
+Files touched: level-3-folk-repertoire.md, src/data/songs.ts, public/audio/level-3/
+Features affected: none (data layer change only, lesson-viewer reads data dynamically)
+```
+
+### Template B: New Feature Module
+
+Example: "Add a metronome feature"
+
+```
+1. [PARALLEL] Create feature: src/features/metronome/ with index.ts + components
+2. [PARALLEL] Add shared primitive if needed: e.g., src/shared/ui/TempoSlider.tsx
+3. [SEQUENTIAL after 1] Register: add to feature-manifest.json
+4. [SEQUENTIAL after 1] Add route: update src/app/routes.tsx
+5. [SEQUENTIAL after 1,2] Integrate into consuming feature (e.g., lesson-viewer)
+6. [SEQUENTIAL after all] Verify end-to-end
+
+Parallel-safe: steps 1 and 2 touch separate directories, zero conflict
+Serialization points: routes.tsx, feature-manifest.json (small, append-only)
+```
+
+### Template C: UI Enhancement
+
+Example: "Make audio player show waveform"
+
+```
+1. [SEQUENTIAL] Update shared primitive: src/shared/ui/AudioPlayer.tsx
+2. [SEQUENTIAL after 1] Verify all consumers: audio-playback InlinePlayer, lesson-viewer SongCard
+3. [SEQUENTIAL after 2] Visual test across levels
+
+Touch point: shared/ui/ only — no feature internals change
+```
+
+### Template D: Cross-Feature Change
+
+Example: "Show progress on sidebar level links"
+
+```
+1. [SEQUENTIAL] Identify features: course-navigation (Sidebar), progress-tracking (useProgress)
+2. [PARALLEL] Check Sidebar currently imports from progress-tracking index.ts
+3. [SEQUENTIAL] If not already imported, add crossFeatureDep to feature-manifest.json
+4. [SEQUENTIAL] Update Sidebar.tsx to use useProgress hook
+5. [SEQUENTIAL] Verify: sidebar shows progress indicators
+
+Touch points: course-navigation/Sidebar.tsx, feature-manifest.json
+```
 
 ---
 
 ## Implementation Phases
 
----
+### Phase 0: Agent Foundation
 
-### Phase 1: Project Scaffolding
-
-**Goal:** Vite app running with Tailwind, routing, and a visible layout shell.
+**Goal:** CLAUDE.md, feature-manifest.json, and project config — the agent context layer.
 
 **Files to create:**
-- `package.json` — deps: react, react-dom, react-router, react-markdown, remark-gfm; devDeps: vite, typescript, tailwindcss, postcss, autoprefixer
-- `vite.config.ts`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
-- `tailwind.config.ts`, `postcss.config.js`
+- `CLAUDE.md` — architecture overview, feature module convention, content sync rules, task decomposition templates, commands
+- `feature-manifest.json` — empty feature registry (populated in later phases)
+- `package.json`, `vite.config.ts`, `tsconfig.json`, `tailwind.config.ts`, `postcss.config.js`
 - `index.html`
-- `src/main.tsx` — router setup with all routes
-- `src/App.tsx` — root layout wrapper
-- `src/index.css` — Tailwind directives
-- `src/types/index.ts` — all interfaces
-- `src/components/Layout.tsx` — sidebar + content area shell
-- `src/components/Sidebar.tsx` — level list + reference links
-- `src/components/ThemeToggle.tsx` — dark/light toggle
-- `src/components/Breadcrumb.tsx`
-- `src/hooks/useTheme.ts` — theme state + localStorage
-- `src/pages/HomePage.tsx` — placeholder with level list
-- `src/pages/LevelPage.tsx` — placeholder showing level ID
+- `src/main.tsx`, `src/index.css`
 
 **How to verify:**
 ```bash
 npm install && npm run dev
 ```
-- App loads at `localhost:5173`
-- Sidebar shows all 8 levels (0-7) as navigation links
-- Clicking a level navigates to `/level/0`, `/level/1`, etc.
-- Theme toggle switches between dark and light mode
-- Browser refresh preserves theme choice
+- App loads with empty shell
+- CLAUDE.md is comprehensive enough for an agent to understand the full architecture without reading any other file
+
+---
+
+### Phase 1: Shared Layer
+
+**Goal:** All shared primitives that features will compose.
+
+**Files to create:**
+- `src/shared/types/index.ts` — all TypeScript interfaces
+- `src/shared/ui/AudioPlayer.tsx` — HTML5 audio with play/pause, speed (0.5x–1.5x), seek
+- `src/shared/ui/MarkdownRenderer.tsx` — react-markdown + remark-gfm, custom heading IDs, styled tables, external links in new tab
+- `src/shared/ui/ProgressBar.tsx` — generic completion bar
+- `src/shared/ui/Checkbox.tsx` — styled checkbox
+- `src/shared/hooks/useLocalStorage.ts` — generic localStorage hook
+- `src/shared/hooks/useAudioPlayer.ts` — audio playback state
+- `src/shared/utils/markdown.ts` — markdown helpers
+
+**How to verify:**
+- Import and render each shared component in isolation (Storybook-style or temp route)
+- AudioPlayer plays a test OGG file with speed control
+- MarkdownRenderer renders a table-heavy markdown string correctly
 
 ---
 
 ### Phase 2: Data Layer
 
-**Goal:** All course content extracted into typed TypeScript data files.
+**Goal:** All course content extracted from source markdown into typed data files.
 
 **Files to create:**
-- `src/data/course.ts` — extracted from `README.md`: philosophy points, daily practice template, milestones
-- `src/data/levels.ts` — extracted from `level-0-setup.md` through `level-7-advanced.md`: metadata + sections with markdown prose
-- `src/data/songs.ts` — all 60+ songs extracted with jianpu, audio paths, metadata, origin
-- `src/data/exercises.ts` — all exercises extracted with jianpu, audio paths
-- `src/data/references.ts` — extracted from `reference/*.md`: fingering charts, jianpu guide, music theory, maintenance, resources
-
-**Source files to parse:**
-| Data file | Source markdown |
-|-----------|---------------|
-| `course.ts` | `README.md` |
-| `levels.ts` | `level-0-setup.md` through `level-7-advanced.md` |
-| `songs.ts` | Song sections from each level file |
-| `exercises.ts` | Exercise sections from each level file |
-| `references.ts` | `reference/fingering-charts.md`, `jianpu-guide.md`, `music-theory.md`, `maintenance.md`, `resources.md` |
+- `src/data/course.ts` — from `README.md`
+- `src/data/levels.ts` — from `level-0-setup.md` through `level-7-advanced.md`
+- `src/data/songs.ts` — all 60+ songs with jianpu, audio paths, metadata
+- `src/data/exercises.ts` — all exercises
+- `src/data/references.ts` — from `reference/*.md`
 
 **How to verify:**
-- Add a temporary debug route or use browser console:
-  ```javascript
-  import { levels } from './data/levels';
-  console.log(levels.length);        // → 8
-  console.log(levels[2].title);      // → "First Songs"
-  ```
-- Song count across all levels matches the ~60+ songs in the markdown files
-- Exercise audio paths map to real files in `midi/` directories
+- Console: `levels.length === 8`
+- Song count matches source markdown
+- Audio paths resolve to real files
 
 ---
 
-### Phase 3: Home Page + Level Pages
+### Phase 3: Feature Modules (parallelizable)
 
-**Goal:** Full course navigation with rendered markdown content.
+**Goal:** All 7 feature modules built. Subagents can build these in parallel.
 
-**Files to create/update:**
-- `src/components/LevelCard.tsx` — card displaying: level number, title, timeline, CCOM grade, subtitle
-- `src/components/MarkdownRenderer.tsx` — `react-markdown` with `remark-gfm`, custom renderers for: headings (anchor IDs), tables (styled + scrollable), code blocks (monospace), links (external → new tab)
-- Update `src/pages/HomePage.tsx` — grid of 8 `LevelCard` components
-- Update `src/pages/LevelPage.tsx` — fetches level by ID from data, renders sections with `MarkdownRenderer`
+**Parallel group A** (zero cross-feature deps):
+- **Subagent 1:** `theme/` — ThemeProvider, ThemeToggle, useTheme
+- **Subagent 2:** `audio-playback/` — InlinePlayer, SpeedControl, usePlaybackState
+- **Subagent 3:** `progress-tracking/` — ProgressContext, CompletionCheckbox, LevelProgressBar, utils
+- **Subagent 4:** `reference-library/` — ReferencePage, ReferenceDetailPage, ReferenceCard
 
-**How to verify:**
-- Home page shows 8 level cards in a responsive grid
-- Each card shows: level number, title, timeline (e.g., "Weeks 1-4"), CCOM grade
-- Click Level 2 → navigates to `/level/2`
-- Level page shows all sections with properly formatted:
-  - Headings with correct hierarchy
-  - Tables (fingering tables, song lists) — rendered with borders, readable
-  - Code blocks (jianpu notation) — monospace, properly spaced
-  - Links working
+**Sequential group B** (depends on group A outputs):
+- **Subagent 5:** `course-navigation/` — HomePage, LevelCard, Sidebar (uses progress-tracking)
+- **Subagent 6:** `lesson-viewer/` — LevelPage, SongCard, ExerciseBlock (uses audio-playback + progress-tracking)
 
----
+**Deferred:**
+- `practice-timer/` — built in Phase 6
 
-### Phase 4: Audio Playback
-
-**Goal:** Every song/exercise with an OGG file has a working audio player inline.
-
-**Pre-requisite:** Generate any missing OGG files using `scripts/generate_midi.py` + timidity.
-
-**Files to create/update:**
-- Copy all `.ogg` files from `midi/level-*/` to `public/audio/level-*/`
-- `src/components/AudioPlayer.tsx` — HTML5 `<audio>` wrapper with:
-  - Play/pause button
-  - Progress bar with seek (click to jump)
-  - Current time / duration display
-  - Speed control: 0.5x, 0.75x, 1x, 1.25x, 1.5x buttons
-- `src/hooks/useAudioPlayer.ts` — playback state management
-- `src/components/SongCard.tsx` — displays song: Chinese title, English title, origin, jianpu notation, embedded `AudioPlayer`
-- `src/components/ExerciseBlock.tsx` — displays exercise: title, jianpu, embedded `AudioPlayer`
-- Update `LevelPage.tsx` to render `SongCard` and `ExerciseBlock` for items in each section
-
-**How to verify:**
-- Navigate to Level 2
-- Find 小星星 (Twinkle Twinkle Little Star)
-- Press play → hear pan flute audio
-- Click 0.5x speed → audio plays at half speed
-- Seek bar works — click middle → jumps to middle
-- Songs without OGG files show no player (graceful absence)
+**How to verify per feature:**
+- Each feature's `index.ts` exports all declared components
+- Feature renders correctly when mounted in a test route
+- No imports from other features' internal files (only via `index.ts`)
 
 ---
 
-### Phase 5: Reference Section
+### Phase 4: App Shell
 
-**Goal:** All reference materials accessible and well-formatted.
+**Goal:** Wire all features together with routing and providers.
 
 **Files to create:**
-- Copy `reference/d-key-dizi-included-chart.png` to `public/images/`
-- `src/pages/ReferencePage.tsx` — hub page listing all reference docs as cards with title + description
-- `src/pages/ReferenceDetailPage.tsx` — renders individual reference markdown via `MarkdownRenderer`
-- Update router to include `/reference` and `/reference/:slug` routes
-- Update `Sidebar.tsx` to include reference section links
+- `src/app/App.tsx` — layout shell: Sidebar + content `<Outlet/>`, reads `useThemeStore` for dark class
+- `src/app/routes.tsx` — all routes importing from feature `index.ts` files
+- Update `src/main.tsx` to use App shell
 
-**Reference documents:**
-| Slug | Title | Source |
-|------|-------|--------|
-| `fingering-charts` | Fingering Charts | `reference/fingering-charts.md` |
-| `jianpu-guide` | Jianpu Notation Guide | `reference/jianpu-guide.md` |
-| `music-theory` | Music Theory | `reference/music-theory.md` |
-| `maintenance` | Dizi Care & Maintenance | `reference/maintenance.md` |
-| `resources` | Resources & Links | `reference/resources.md` |
+No providers.tsx needed — Zustand stores are self-contained, no wrapper components required.
 
 **How to verify:**
-- Click "Reference" in sidebar → shows 5 reference doc cards
-- Click "Fingering Charts" → renders complex tables correctly with all fingering data
-- D-key chart PNG image displays
-- Click "Jianpu Guide" → notation examples render in monospace
-- External links in Resources page open in new tabs
+- Full app runs at localhost
+- All routes work: `/`, `/level/0`–`/level/7`, `/reference`, `/reference/fingering-charts`
+- Theme toggle works across all pages
+- Progress persists across navigation and reload
 
 ---
 
-### Phase 6: Progress Tracking
+### Phase 5: Audio + Static Assets
 
-**Goal:** Users can mark songs/exercises complete; progress persists across sessions.
+**Goal:** All OGG files served, audio plays inline on every song/exercise.
 
-**Files to create/update:**
-- `src/hooks/useProgress.ts` — `{ completedItems, toggleItem, isCompleted, getLevelProgress }`; reads/writes `localStorage`
-- `src/utils/progress.ts` — `calculateLevelProgress(levelId, completedItems, songs, exercises) → { completed, total, percent }`
-- `src/components/ProgressBar.tsx` — horizontal bar showing completion percentage
-- Update `SongCard.tsx` — add completion checkbox, calls `toggleItem`
-- Update `ExerciseBlock.tsx` — add completion checkbox
-- Update `LevelCard.tsx` — show `ProgressBar` with level completion
-- Update `HomePage.tsx` — show overall course progress summary
+**Actions:**
+- Copy `.ogg` files from `midi/level-*/` to `public/audio/level-*/`
+- Copy `d-key-dizi-included-chart.png` to `public/images/`
+- Verify audio path mappings in `src/data/songs.ts` and `exercises.ts`
 
 **How to verify:**
-- Navigate to Level 2
-- Check the checkbox on 3 different songs → checkmarks appear
-- Navigate away to home page → Level 2 card shows "3/N completed" with progress bar
-- Reload the browser (F5) → navigate back to Level 2 → same 3 songs still checked
-- Uncheck a song → progress updates immediately
+- Level 2 → 小星星 → press play → hear pan flute
+- Speed control 0.5x → plays slower
+- Songs without OGG → no player shown (graceful)
 
 ---
 
-### Phase 7: Responsive Design + Polish
+### Phase 6: Practice Timer (optional)
 
-**Goal:** App works well on mobile (phone held during practice) and desktop.
+**Goal:** Guided practice session timer + history log.
+
+**Files to create:**
+- `src/features/practice-timer/` — full module
+- Register in `feature-manifest.json`
+- Add routes to `src/app/routes.tsx`
+
+**How to verify:**
+- Start practice → timer counts through 5 sections
+- Session saved to practice log
+- Log page shows history
+
+---
+
+### Phase 7: Responsive Polish
+
+**Goal:** Mobile-friendly for phone-in-hand practice.
 
 **Changes:**
-- `Sidebar.tsx` — hamburger menu icon on mobile, slide-out drawer with overlay
-- `AudioPlayer.tsx` — larger touch targets (min 44px), bigger play button
-- `MarkdownRenderer.tsx` — tables wrapped in horizontal scroll container
-- Exercise/jianpu blocks — appropriate font sizing, no awkward line wrapping
-- `Layout.tsx` — proper padding/margins for mobile
-- Overall — smooth transitions, consistent spacing, readable at all sizes
+- Sidebar → hamburger drawer on mobile
+- Audio player → larger touch targets (44px min)
+- Tables → horizontal scroll
+- Jianpu → proper font sizing
 
 **How to verify:**
-- Open browser DevTools → toggle device toolbar
-- Test at 375px width (iPhone SE):
-  - Sidebar hidden, hamburger icon visible
-  - Tap hamburger → sidebar slides in
-  - Audio player buttons large enough to tap
-  - Tables scroll horizontally
-  - Jianpu notation readable without horizontal scroll (or scrolls gracefully)
-- Test at 768px (iPad): sidebar visible, content fills remaining space
-- Test at 1280px (desktop): full layout, comfortable reading width
-
----
-
-### Phase 8 (Optional): Practice Timer + Log
-
-**Goal:** Guided practice sessions following the daily template from README.
-
-**Files to create:**
-- `src/components/PracticeTimer.tsx` — timer cycling through practice sections:
-  1. Breathing exercises (5 min)
-  2. Long tones (8 min)
-  3. Technique drills (7 min)
-  4. New material (10 min)
-  5. Review repertoire (10 min)
-- `src/pages/PracticeLogPage.tsx` — list of past practice sessions with dates, durations
-- Extend `useProgress.ts` — `practiceLog: { date, durationMinutes, levelId }[]`
-
-**How to verify:**
-- Click "Start Practice" → timer starts at "Breathing — 5:00"
-- Timer counts down → at 0:00 moves to "Long Tones — 8:00"
-- Can skip sections or pause
-- After completing (or stopping), session saved to practice log
-- Navigate to Practice Log page → see today's entry
+- Test at 375px, 768px, 1280px
+- All interactions work on touch
 
 ---
 
@@ -397,26 +539,23 @@ npm install && npm run dev
 
 | Decision | Rationale |
 |----------|-----------|
-| OGG only, no browser MIDI | MIDI playback requires synthesizer lib (Tone.js/MIDI.js) — too complex. OGG plays natively. |
-| Content as TypeScript imports | Static imports: type safety, zero-latency navigation, ~130KB total — well within bundle limits. |
-| Hybrid content model | Prose as markdown (flexibility) + songs/exercises as typed objects (enables tracking + audio). |
-| No state management library | Only 2 pieces of global state (theme, progress) — context + hooks sufficient. |
-| Tailwind dark mode via class | Pairs with localStorage toggle, full control over dark palette. |
+| Feature-based structure | Enables parallel subagent development — each feature is an isolated directory |
+| `feature-manifest.json` | Machine-readable context — agent instantly understands features without reading code |
+| `CLAUDE.md` as agent entry point | One file gives full architecture + task decomposition templates |
+| Strict dependency direction | `shared` → `data` → `features` → `app` prevents circular deps and merge conflicts |
+| Features export only via `index.ts` | Clear public API — subagents know exactly what's available |
+| OGG only, no browser MIDI | OGG plays natively; MIDI synthesis adds major complexity |
+| Content as TypeScript imports | Type safety, zero-latency navigation, ~130KB total |
+| Zustand for state | Each feature owns its store — no provider tree, no context boilerplate. `persist` middleware handles localStorage. |
 
 ---
 
 ## Critical Source Files
 
-These files are the primary sources for content extraction:
-
 | File | Used For |
 |------|----------|
-| `README.md` | Course philosophy, daily practice template, milestones → `course.ts` |
-| `level-0-setup.md` through `level-7-advanced.md` | All lesson content → `levels.ts`, `songs.ts`, `exercises.ts` |
-| `reference/fingering-charts.md` | Fingering tables → `references.ts` |
-| `reference/jianpu-guide.md` | Notation guide → `references.ts` |
-| `reference/music-theory.md` | Theory reference → `references.ts` |
-| `reference/maintenance.md` | Dizi care guide → `references.ts` |
-| `reference/resources.md` | External links → `references.ts` |
-| `scripts/generate_midi.py` | Jianpu encoding reference + generate missing OGGs |
+| `README.md` | Course philosophy, milestones → `src/data/course.ts` |
+| `level-0-setup.md` through `level-7-advanced.md` | All lessons → `levels.ts`, `songs.ts`, `exercises.ts` |
+| `reference/*.md` | Reference content → `references.ts` |
+| `scripts/generate_midi.py` | Jianpu encoding reference + missing OGG generation |
 | `midi/README.md` | Audio file naming conventions |
