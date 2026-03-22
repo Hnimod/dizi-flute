@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AudioPlayer, VideoEmbed } from "@/shared/ui";
+import { AudioPlayer, VideoEmbed, JianpuRenderer } from "@/shared/ui";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
 
@@ -123,15 +123,14 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
 
         {/* Jianpu notation */}
         <div className="px-4 py-2">
-          <pre
-            className="jianpu rounded-xl p-4 overflow-x-auto text-sm"
+          <JianpuRenderer
+            content={item.jianpu}
+            className="rounded-xl p-4 overflow-x-auto"
             style={{
               backgroundColor: "var(--color-bg-secondary)",
               border: "1px solid var(--color-border)",
             }}
-          >
-            {item.jianpu}
-          </pre>
+          />
         </div>
 
         {/* Audio player */}

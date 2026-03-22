@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router";
 import { levels } from "@/data";
-import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed } from "@/shared/ui";
+import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed, JianpuRenderer } from "@/shared/ui";
 import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
 import { PracticeView } from "./PracticeView";
 import type { Song, Exercise } from "@/shared/types";
@@ -47,12 +47,11 @@ function SongCard({ song }: { song: Song }) {
         </p>
       )}
       {song.videoUrl && <VideoEmbed url={song.videoUrl} className="my-3" />}
-      <pre
-        className="jianpu rounded-lg p-4 overflow-x-auto text-sm my-3"
+      <JianpuRenderer
+        content={song.jianpu}
+        className="rounded-lg p-4 overflow-x-auto my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
-      >
-        {song.jianpu}
-      </pre>
+      />
       {song.audioPath && <AudioPlayer src={song.audioPath} className="mt-3" />}
     </div>
   );
@@ -84,12 +83,11 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
         </p>
       )}
       {exercise.videoUrl && <VideoEmbed url={exercise.videoUrl} className="my-3" />}
-      <pre
-        className="jianpu rounded-lg p-4 overflow-x-auto text-sm my-3"
+      <JianpuRenderer
+        content={exercise.jianpu}
+        className="rounded-lg p-4 overflow-x-auto my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
-      >
-        {exercise.jianpu}
-      </pre>
+      />
       {exercise.audioPath && <AudioPlayer src={exercise.audioPath} className="mt-3" />}
     </div>
   );
