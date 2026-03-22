@@ -4,7 +4,7 @@
 - **What:** Interactive dizi flute learning course webapp
 - **Stack:** React 18 + Vite + TypeScript + Tailwind CSS v4 + Zustand + react-markdown
 - **Entry points:** `src/main.tsx` (app), `src/app/routes.tsx` (routing), `feature-manifest.json` (feature map)
-- **Content source:** Root `.md` files are the PRD; `src/data/` is the derived data layer
+- **Content source:** `content/` has the PRD markdown files; `src/data/` is the derived data layer
 - **UI context:** `UI_GUIDE.md` has ASCII sketches of every screen
 
 ## Commands
@@ -45,11 +45,11 @@ To add a new feature:
 
 | When you change... | Also update... |
 |---------------------|---------------|
-| `README.md` | `src/data/course.ts` |
-| `level-{N}-*.md` (prose) | `src/data/levels.ts` |
-| `level-{N}-*.md` (song) | `src/data/songs.ts` |
-| `level-{N}-*.md` (exercise) | `src/data/exercises.ts` |
-| `reference/*.md` | `src/data/references.ts` |
+| `content/README.md` | `src/data/course.ts` |
+| `content/level-{N}-*.md` (prose) | `src/data/levels.ts` |
+| `content/level-{N}-*.md` (song) | `src/data/songs.ts` |
+| `content/level-{N}-*.md` (exercise) | `src/data/exercises.ts` |
+| `content/reference/*.md` | `src/data/references.ts` |
 | New `.ogg` audio | Copy to `public/audio/level-{N}/` + set `audioPath` |
 | Any UI change | Update `UI_GUIDE.md` with ASCII sketch |
 | New feature module | Register in `feature-manifest.json` + `routes.tsx` |

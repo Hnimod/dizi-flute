@@ -63,12 +63,13 @@ dizi-flute/
 ├── UI_GUIDE.md                        # Agent-readable UI context (ASCII sketches of every screen)
 ├── PLANNING.md                        # This file
 ├── feature-manifest.json              # Machine-readable feature registry
-├── README.md                          # Course intro (source content)
+├── content/                               # Domain content (PRD)
+│   ├── README.md                          # Course intro (source content)
 │
-├── level-0-setup.md ... level-7-advanced.md   # Source PRD (preserved)
-├── reference/                                  # Source reference docs
-├── midi/                                       # Source audio files
-├── scripts/                                    # MIDI generation
+│   ├── level-0-setup.md ... level-7-advanced.md   # Source PRD
+│   ├── reference/                                  # Source reference docs
+│   ├── midi/                                       # Source audio files
+│   └── scripts/                                    # MIDI generation
 │
 ├── index.html
 ├── package.json
@@ -376,11 +377,11 @@ interface UserProgress {
 
 | When you change... | Also update... |
 |---------------------|---------------|
-| `README.md` (philosophy, milestones, practice template) | `src/data/course.ts` |
+| `content/README.md` (philosophy, milestones, practice template) | `src/data/course.ts` |
 | `level-{N}-*.md` (prose, theory sections) | `src/data/levels.ts` — matching level's section content |
 | `level-{N}-*.md` (add/edit/remove a song) | `src/data/songs.ts` — corresponding `Song` object |
 | `level-{N}-*.md` (add/edit/remove an exercise) | `src/data/exercises.ts` — corresponding `Exercise` object |
-| `reference/*.md` (any reference doc) | `src/data/references.ts` — matching `ReferenceDoc.content` |
+| `content/reference/*.md` (any reference doc) | `src/data/references.ts` — matching `ReferenceDoc.content` |
 | Add new `.ogg` audio file | Copy to `public/audio/level-{N}/` + set `audioPath` on Song/Exercise |
 | Add a new level file | Add to `src/data/levels.ts` + extract songs/exercises |
 | Add a new feature module | Create in `src/features/`, register in `feature-manifest.json`, add route to `src/app/routes.tsx` |
@@ -645,11 +646,11 @@ npm install && npm run dev
 **Goal:** All course content extracted from source markdown into typed data files.
 
 **Files to create:**
-- `src/data/course.ts` — from `README.md`
-- `src/data/levels.ts` — from `level-0-setup.md` through `level-7-advanced.md`
+- `src/data/course.ts` — from `content/README.md`
+- `src/data/levels.ts` — from `content/level-0-setup.md` through `content/level-7-advanced.md`
 - `src/data/songs.ts` — all 60+ songs with jianpu, audio paths, metadata
 - `src/data/exercises.ts` — all exercises
-- `src/data/references.ts` — from `reference/*.md`
+- `src/data/references.ts` — from `content/reference/*.md`
 
 **How to verify:**
 - Console: `levels.length === 8`
@@ -706,7 +707,7 @@ No providers.tsx needed — Zustand stores are self-contained, no wrapper compon
 **Goal:** All OGG files served, audio plays inline on every song/exercise.
 
 **Actions:**
-- Copy `.ogg` files from `midi/level-*/` to `public/audio/level-*/`
+- Copy `.ogg` files from `content/midi/level-*/` to `public/audio/level-*/`
 - Copy `d-key-dizi-included-chart.png` to `public/images/`
 - Verify audio path mappings in `src/data/songs.ts` and `exercises.ts`
 
@@ -769,8 +770,8 @@ No providers.tsx needed — Zustand stores are self-contained, no wrapper compon
 
 | File | Used For |
 |------|----------|
-| `README.md` | Course philosophy, milestones → `src/data/course.ts` |
-| `level-0-setup.md` through `level-7-advanced.md` | All lessons → `levels.ts`, `songs.ts`, `exercises.ts` |
-| `reference/*.md` | Reference content → `references.ts` |
+| `content/README.md` | Course philosophy, milestones → `src/data/course.ts` |
+| `content/level-0-setup.md` through `content/level-7-advanced.md` | All lessons → `levels.ts`, `songs.ts`, `exercises.ts` |
+| `content/reference/*.md` | Reference content → `references.ts` |
 | `scripts/generate_midi.py` | Jianpu encoding reference + missing OGG generation |
-| `midi/README.md` | Audio file naming conventions |
+| `content/midi/README.md` | Audio file naming conventions |
