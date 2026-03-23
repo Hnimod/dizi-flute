@@ -54,17 +54,14 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
               {song.description}
             </p>
           )}
-          {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mb-3" />}
-          <UserVideos itemId={song.id} />
           <TempoGuide
             content={song.jianpu}
             tempo={song.tempo}
-            title={getTitle(song)}
-            keySignature={song.key}
-            timeSignature={song.timeSignature}
             className="rounded-lg p-4 overflow-x-auto"
             style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
           />
+          {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mt-3" />}
+          <UserVideos itemId={song.id} />
           <div className="mt-3 flex items-center gap-4">
             <Link
               to={`/library/${song.id}`}
