@@ -53,8 +53,6 @@ function tokensToString(tokens: string[]): string {
   return parts.join("\n");
 }
 
-const btnSm = "flex items-center justify-center rounded text-xs font-medium h-7 px-2 transition-all";
-
 function tokenBeats(raw: string): number {
   if (raw === "-") return 1;
   if (raw === "0") return 1;
@@ -70,6 +68,22 @@ function beatsPerMeasure(ts: string): number {
   return parseInt(ts.split("/")[0] || "4", 10);
 }
 
+// ─── Styles ───
+
+const activeStyle = (on: boolean) => ({
+  backgroundColor: on ? "var(--color-accent)" : "var(--color-bg-tertiary)",
+  color: on ? "white" : "var(--color-text)",
+  border: `1px solid ${on ? "var(--color-accent)" : "var(--color-border)"}`,
+});
+
+const btnStyle = {
+  backgroundColor: "var(--color-bg-tertiary)",
+  color: "var(--color-text)",
+  border: "1px solid var(--color-border)",
+};
+
+// ─── Main Component ───
+
 export function JianpuEditor({
   value,
   onChange,
@@ -80,18 +94,14 @@ export function JianpuEditor({
 }: JianpuEditorProps) {
   const [tokens, setTokens] = useState<string[]>(() => parseToTokenArray(value));
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [popoverPos, setPopoverPos] = useState<{ x: number; y: number } | null>(null);
   const [beamActive, setBeamActive] = useState(false);
   const [slurActive, setSlurActive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const jianpuText = useMemo(() => tokensToString(tokens), [tokens]);
 
-  useEffect(() => {
-    onChange(jianpuText);
-  }, [jianpuText, onChange]);
+  useEffect(() => { onChange(jianpuText); }, [jianpuText, onChange]);
 
-  // Sync if external value changes
   useEffect(() => {
     const current = tokensToString(tokens);
     if (value !== current) {
@@ -101,75 +111,27 @@ export function JianpuEditor({
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleTokenClick = useCallback(
-    (tokenIdx: number, svgX: number, svgY: number) => {
-      // Find the SVG element position relative to container
-      const container = containerRef.current;
-      if (!container) return;
-      const svgEl = container.querySelectorAll(".jianpu-svg")[0];
-      if (!svgEl) {
-        setSelectedIdx(tokenIdx);
-        setPopoverPos({ x: 100, y: 60 });
-
-        return;
-      }
-      // Use a rough position based on click
-      setSelectedIdx(tokenIdx);
-      // Position popover near the click area
-      const rect = container.getBoundingClientRect();
-      setPopoverPos({
-        x: Math.min(rect.width - 200, Math.max(0, svgX * (rect.width / 800))),
-        y: svgY + 20,
-      });
+    (tokenIdx: number) => {
+      setSelectedIdx((prev) => (prev === tokenIdx ? null : tokenIdx));
     },
     [],
   );
 
-  const updateToken = useCallback(
-    (idx: number, newToken: string) => {
-      setTokens((prev) => {
-        const next = [...prev];
-        next[idx] = newToken;
-        return next;
-      });
-    },
-    [],
-  );
-
-  const insertToken = useCallback(
-    (idx: number, newToken: string) => {
-      setTokens((prev) => {
-        const next = [...prev];
-        next.splice(idx, 0, newToken);
-        return next;
-      });
-      setSelectedIdx(null);
-      setPopoverPos(null);
-    },
-    [],
-  );
-
-  const deleteToken = useCallback(
-    (idx: number) => {
-      setTokens((prev) => prev.filter((_, i) => i !== idx));
-      setSelectedIdx(null);
-      setPopoverPos(null);
-    },
-    [],
-  );
-
-  const appendToken = useCallback(
-    (newToken: string) => {
-      setTokens((prev) => [...prev, newToken]);
-    },
-    [],
-  );
-
-  const closePopover = useCallback(() => {
-    setSelectedIdx(null);
-    setPopoverPos(null);
+  const updateToken = useCallback((idx: number, newToken: string) => {
+    setTokens((prev) => { const n = [...prev]; n[idx] = newToken; return n; });
   }, []);
 
-  // Get current beat count in current measure
+  const deleteToken = useCallback((idx: number) => {
+    setTokens((prev) => prev.filter((_, i) => i !== idx));
+    setSelectedIdx(null);
+  }, []);
+
+  const appendToken = useCallback((t: string) => {
+    setTokens((prev) => [...prev, t]);
+  }, []);
+
+  const closePopover = useCallback(() => { setSelectedIdx(null); }, []);
+
   const currentMeasureBeats = useMemo(() => {
     let beats = 0;
     for (let i = tokens.length - 1; i >= 0; i--) {
@@ -181,101 +143,105 @@ export function JianpuEditor({
   }, [tokens]);
 
   const expected = beatsPerMeasure(timeSignature);
-
-  // Selected token info
   const selectedToken = selectedIdx !== null ? tokens[selectedIdx] : null;
   const parsedSelected = selectedToken ? parseToken(selectedToken) : null;
-
-  const noteStyle = {
-    backgroundColor: "var(--color-bg-secondary)",
-    color: "var(--color-text)",
-    border: "1px solid var(--color-border)",
-  };
 
   return (
     <div ref={containerRef} className="relative">
       {/* Beat indicator */}
       <div
-        className="flex items-center gap-2 rounded-lg px-3 py-1.5 mb-2 text-xs"
+        className="flex items-center gap-3 rounded-xl px-4 py-2 mb-3"
         style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
       >
-        <span style={{ color: "var(--color-text-secondary)" }}>Measure:</span>
-        <div className="flex gap-0.5">
+        <span className="text-xs font-medium" style={{ color: "var(--color-text-secondary)" }}>Beat</span>
+        <div className="flex gap-1">
           {Array.from({ length: expected }, (_, i) => (
             <div
               key={i}
-              className="w-2.5 h-2.5 rounded-full"
+              className="w-3.5 h-3.5 rounded-full"
               style={{
-                backgroundColor: i < Math.floor(currentMeasureBeats) ? "var(--color-accent)" : "var(--color-bg-tertiary)",
-                opacity: i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? 0.5 : 1,
+                backgroundColor: i < Math.floor(currentMeasureBeats) ? "var(--color-accent)"
+                  : i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? "var(--color-accent)" : "var(--color-bg-tertiary)",
+                opacity: i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? 0.4 : 1,
                 border: "1px solid var(--color-border)",
               }}
             />
           ))}
         </div>
-        <span style={{ color: "var(--color-text-secondary)" }}>{currentMeasureBeats}/{expected}</span>
+        <span className="text-xs tabular-nums" style={{ color: "var(--color-text-secondary)" }}>
+          {currentMeasureBeats}/{expected}
+        </span>
       </div>
 
-      {/* Quick add toolbar */}
+      {/* Toolbar: Notes */}
       <div
-        className="flex flex-wrap gap-1 rounded-lg px-2 py-1.5 mb-2"
+        className="rounded-xl px-3 py-3 mb-2 space-y-2"
         style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
       >
-        {["1", "2", "3", "4", "5", "6", "7"].map((d) => (
-          <button key={d} className={btnSm} style={noteStyle} onClick={() => appendToken(beamActive ? `${d}_` : d)}>
-            {d}
+        {/* Note digits */}
+        <div className="flex gap-2 justify-center">
+          {["1", "2", "3", "4", "5", "6", "7"].map((d) => (
+            <button
+              key={d}
+              className="flex items-center justify-center rounded-lg text-base font-semibold h-11 w-11 active:scale-95 transition-transform"
+              style={btnStyle}
+              onClick={() => appendToken(beamActive ? `${d}_` : d)}
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+
+        {/* Tools row */}
+        <div className="flex gap-2 justify-center flex-wrap">
+          <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("0")}>
+            0 rest
           </button>
-        ))}
-        <span className="w-px mx-0.5 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
-        <button className={btnSm} style={noteStyle} onClick={() => appendToken("0")}>0</button>
-        <button className={btnSm} style={noteStyle} onClick={() => appendToken("-")}>−</button>
-        <button className={btnSm} style={noteStyle} onClick={() => appendToken("|")}>|</button>
-        <button className={btnSm} style={noteStyle} onClick={() => appendToken("||")}>||</button>
-        <button className={btnSm} style={noteStyle} onClick={() => appendToken("\n")}>↵</button>
-        <span className="w-px mx-0.5 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
-        <button
-          className={btnSm}
-          style={{
-            backgroundColor: slurActive ? "var(--color-accent)" : "var(--color-bg-secondary)",
-            color: slurActive ? "white" : "var(--color-text)",
-            border: `1px solid ${slurActive ? "var(--color-accent)" : "var(--color-border)"}`,
-          }}
-          onClick={() => {
-            if (slurActive) {
-              appendToken(")");
-              setSlurActive(false);
-            } else {
-              appendToken("(");
-              setSlurActive(true);
-            }
-          }}
-        >
-          {slurActive ? "⌒ )" : "⌒ ("}
-        </button>
-        <button
-          className={btnSm}
-          style={{
-            backgroundColor: beamActive ? "var(--color-accent)" : "var(--color-bg-secondary)",
-            color: beamActive ? "white" : "var(--color-text)",
-            border: `1px solid ${beamActive ? "var(--color-accent)" : "var(--color-border)"}`,
-          }}
-          onClick={() => {
-            if (beamActive) {
-              appendToken("]");
-              setBeamActive(false);
-            } else {
-              appendToken("[");
-              setBeamActive(true);
-            }
-          }}
-        >
-          {beamActive ? "━ ]" : "━ ["}
-        </button>
+          <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("-")}>
+            − hold
+          </button>
+          <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("|")}>
+            | bar
+          </button>
+          <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("||")}>
+            || end
+          </button>
+          <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("\n")}>
+            ↵
+          </button>
+        </div>
+
+        {/* Grouping row */}
+        <div className="flex gap-2 justify-center">
+          <button
+            className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-5 active:scale-95 transition-transform"
+            style={activeStyle(slurActive)}
+            onClick={() => {
+              if (slurActive) { appendToken(")"); setSlurActive(false); }
+              else { appendToken("("); setSlurActive(true); }
+            }}
+          >
+            {slurActive ? "⌒ End slur" : "⌒ Slur"}
+          </button>
+          <button
+            className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-5 active:scale-95 transition-transform"
+            style={activeStyle(beamActive)}
+            onClick={() => {
+              if (beamActive) { appendToken("]"); setBeamActive(false); }
+              else { appendToken("["); setBeamActive(true); }
+            }}
+          >
+            {beamActive ? "━ End beam" : "━ Beam"}
+          </button>
+          <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("V")}>
+            ∨ breath
+          </button>
+        </div>
       </div>
 
-      {/* Interactive SVG notation */}
+      {/* SVG notation (interactive) */}
       <div
-        className="rounded-lg p-4 overflow-x-auto"
+        className="rounded-xl p-4 overflow-x-auto mb-2"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
       >
         {tokens.length > 0 ? (
@@ -290,67 +256,68 @@ export function JianpuEditor({
             onTokenClick={handleTokenClick}
           />
         ) : (
-          <p className="text-sm text-center py-8" style={{ color: "var(--color-text-secondary)" }}>
-            Click the note buttons above to start writing notation
+          <p className="text-sm text-center py-10" style={{ color: "var(--color-text-secondary)" }}>
+            Tap the note buttons above to start writing
           </p>
         )}
       </div>
 
-      {/* Note editing popover */}
-      {selectedIdx !== null && popoverPos && parsedSelected && (
-        <NotePopover
+      {/* Bottom sheet popover for editing selected note */}
+      {selectedIdx !== null && parsedSelected && (
+        <NoteBottomSheet
           token={parsedSelected}
-          position={popoverPos}
-          onUpdate={(newToken) => {
-            updateToken(selectedIdx, newToken);
-          }}
-          onInsertBefore={(newToken) => insertToken(selectedIdx, newToken)}
+          onUpdate={(t) => updateToken(selectedIdx, t)}
           onDelete={() => deleteToken(selectedIdx)}
           onClose={closePopover}
         />
       )}
+
+      {/* Raw text editor (collapsible) */}
+      <details className="mt-2">
+        <summary className="text-xs cursor-pointer select-none py-1" style={{ color: "var(--color-text-secondary)" }}>
+          Edit raw notation
+        </summary>
+        <textarea
+          value={jianpuText}
+          onChange={(e) => {
+            setTokens(parseToTokenArray(e.target.value));
+            setSelectedIdx(null);
+          }}
+          className="w-full font-mono text-sm rounded-lg p-3 mt-1 resize-y"
+          style={{
+            backgroundColor: "var(--color-bg-secondary)",
+            color: "var(--color-text)",
+            border: "1px solid var(--color-border)",
+            minHeight: "80px",
+          }}
+          spellCheck={false}
+        />
+      </details>
     </div>
   );
 }
 
-// ─── Note Popover ───
+// ─── Bottom Sheet for editing a note ───
 
-interface NotePopoverProps {
+interface NoteBottomSheetProps {
   token: ReturnType<typeof parseToken>;
-  position: { x: number; y: number };
   onUpdate: (newToken: string) => void;
-  onInsertBefore: (newToken: string) => void;
   onDelete: () => void;
   onClose: () => void;
 }
 
-function NotePopover({ token, position, onUpdate, onDelete, onClose }: NotePopoverProps) {
+function NoteBottomSheet({ token, onUpdate, onDelete, onClose }: NoteBottomSheetProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Close on click outside
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        onClose();
-      }
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [onClose]);
 
-  const btnSm2 = "flex items-center justify-center rounded text-xs font-medium h-7 min-w-7 px-1.5 transition-all";
-
-  const modStyle = (active: boolean) => ({
-    backgroundColor: active ? "var(--color-accent)" : "var(--color-bg-tertiary)",
-    color: active ? "white" : "var(--color-text)",
-    border: `1px solid ${active ? "var(--color-accent)" : "var(--color-border)"}`,
-  });
-
-  const noteStyle = {
-    backgroundColor: "var(--color-bg-secondary)",
-    color: "var(--color-text)",
-    border: "1px solid var(--color-border)",
-  };
+  const btn = "flex items-center justify-center rounded-lg font-medium active:scale-95 transition-transform";
 
   if (token.type === "note") {
     const digit = token.value.replace(/[^1-7]/g, "").charAt(0) || "1";
@@ -360,8 +327,7 @@ function NotePopover({ token, position, onUpdate, onDelete, onClose }: NotePopov
     const tng = token.tonguing || false;
 
     const rebuild = (
-      d = digit,
-      o = oct,
+      d = digit, o = oct,
       du: "" | "_" | "__" = dur as "" | "_" | "__",
       a: "" | "#" | "b" = acc as "" | "#" | "b",
       t = tng,
@@ -370,76 +336,84 @@ function NotePopover({ token, position, onUpdate, onDelete, onClose }: NotePopov
     return (
       <div
         ref={ref}
-        className="absolute z-50 rounded-lg shadow-lg p-2.5 space-y-1.5"
+        className="fixed bottom-0 left-0 right-0 z-[60] rounded-t-2xl px-4 pt-3 pb-20 space-y-3 sm:absolute sm:bottom-auto sm:left-auto sm:right-auto sm:rounded-xl sm:max-w-xs sm:p-3 sm:pb-3 sm:space-y-2"
         style={{
-          left: Math.max(0, position.x - 80),
-          top: position.y,
           backgroundColor: "var(--color-bg-secondary)",
-          border: "1px solid var(--color-border)",
-          boxShadow: "var(--color-shadow) 0 4px 12px",
-          minWidth: "220px",
+          borderTop: "1px solid var(--color-border)",
+          boxShadow: "0 -4px 20px var(--color-shadow)",
         }}
       >
-        {/* Note digit */}
-        <div className="flex gap-1">
+        {/* Drag handle (mobile) */}
+        <div className="flex justify-center sm:hidden">
+          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: "var(--color-border)" }} />
+        </div>
+
+        {/* Note digits */}
+        <div className="flex gap-2 justify-center">
           {["1", "2", "3", "4", "5", "6", "7"].map((d) => (
-            <button key={d} className={btnSm2} style={modStyle(d === digit)} onClick={() => rebuild(d)}>
+            <button key={d} className={`${btn} h-11 w-11 text-base`} style={activeStyle(d === digit)} onClick={() => rebuild(d)}>
               {d}
             </button>
           ))}
         </div>
 
-        {/* Octave + Duration + Modifiers */}
-        <div className="flex gap-1 flex-wrap">
-          <button className={btnSm2} style={noteStyle} onClick={() => rebuild(digit, oct - 1)}>▼</button>
-          <span className="flex items-center text-xs min-w-6 justify-center" style={{ color: "var(--color-text-secondary)" }}>
-            {oct > 0 ? `+${oct}` : oct}
+        {/* Octave + Duration */}
+        <div className="flex gap-2 justify-center items-center">
+          <button className={`${btn} h-10 w-10 text-sm`} style={btnStyle} onClick={() => rebuild(digit, oct - 1)}>▼</button>
+          <span className="text-xs w-8 text-center tabular-nums" style={{ color: "var(--color-text-secondary)" }}>
+            Oct {oct > 0 ? `+${oct}` : oct}
           </span>
-          <button className={btnSm2} style={noteStyle} onClick={() => rebuild(digit, oct + 1)}>▲</button>
-          <span className="w-px mx-0.5 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
-          <button className={btnSm2} style={modStyle(dur === "")} onClick={() => rebuild(digit, oct, "")}>♩</button>
-          <button className={btnSm2} style={modStyle(dur === "_")} onClick={() => rebuild(digit, oct, "_")}>♪</button>
-          <button className={btnSm2} style={modStyle(dur === "__")} onClick={() => rebuild(digit, oct, "__")}>♬</button>
+          <button className={`${btn} h-10 w-10 text-sm`} style={btnStyle} onClick={() => rebuild(digit, oct + 1)}>▲</button>
+
+          <div className="w-px h-8 mx-1" style={{ backgroundColor: "var(--color-border)" }} />
+
+          <button className={`${btn} h-10 px-3 text-sm`} style={activeStyle(dur === "")}>♩</button>
+          <button className={`${btn} h-10 px-3 text-sm`} style={activeStyle(dur === "_")} onClick={() => rebuild(digit, oct, dur === "_" ? "" : "_")}>♪</button>
+          <button className={`${btn} h-10 px-3 text-sm`} style={activeStyle(dur === "__")} onClick={() => rebuild(digit, oct, dur === "__" ? "" : "__")}>♬</button>
         </div>
 
-        <div className="flex gap-1 flex-wrap">
-          <button className={btnSm2} style={modStyle(acc === "#")} onClick={() => rebuild(digit, oct, dur as "" | "_" | "__", acc === "#" ? "" : "#")}>♯</button>
-          <button className={btnSm2} style={modStyle(acc === "b")} onClick={() => rebuild(digit, oct, dur as "" | "_" | "__", acc === "b" ? "" : "b")}>♭</button>
-          <button className={btnSm2} style={modStyle(tng)} onClick={() => rebuild(digit, oct, dur as "" | "_" | "__", acc as "" | "#" | "b", !tng)}>T</button>
-          <span className="w-px mx-0.5 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
-          <button className={btnSm2} style={{ ...noteStyle, color: "var(--color-accent)" }} onClick={() => onUpdate("-")}>→ −</button>
-          <button className={btnSm2} style={{ ...noteStyle, color: "var(--color-accent)" }} onClick={() => onUpdate("0")}>→ 0</button>
-          <button className={`${btnSm2} text-red-500`} style={noteStyle} onClick={onDelete}>✕</button>
+        {/* Modifiers + Actions */}
+        <div className="flex gap-2 justify-center items-center">
+          <button className={`${btn} h-10 px-3 text-sm`} style={activeStyle(acc === "#")} onClick={() => rebuild(digit, oct, dur as "" | "_" | "__", acc === "#" ? "" : "#")}>♯</button>
+          <button className={`${btn} h-10 px-3 text-sm`} style={activeStyle(acc === "b")} onClick={() => rebuild(digit, oct, dur as "" | "_" | "__", acc === "b" ? "" : "b")}>♭</button>
+          <button className={`${btn} h-10 px-3 text-sm`} style={activeStyle(tng)} onClick={() => rebuild(digit, oct, dur as "" | "_" | "__", acc as "" | "#" | "b", !tng)}>T</button>
+
+          <div className="w-px h-8 mx-1" style={{ backgroundColor: "var(--color-border)" }} />
+
+          <button className={`${btn} h-10 px-3 text-sm`} style={btnStyle} onClick={() => onUpdate("-")}>→ −</button>
+          <button className={`${btn} h-10 px-3 text-sm`} style={btnStyle} onClick={() => onUpdate("0")}>→ 0</button>
+          <button className={`${btn} h-10 px-3 text-sm text-red-500`} style={btnStyle} onClick={onDelete}>✕</button>
         </div>
       </div>
     );
   }
 
-  // For rest/hold — simpler popover
+  // Rest/Hold bottom sheet
   return (
     <div
       ref={ref}
-      className="absolute z-50 rounded-lg shadow-lg p-2.5"
+      className="fixed bottom-0 left-0 right-0 z-[60] rounded-t-2xl px-4 pt-3 pb-20 sm:absolute sm:bottom-auto sm:left-auto sm:right-auto sm:rounded-xl sm:max-w-xs sm:p-3 sm:pb-3"
       style={{
-        left: Math.max(0, position.x - 60),
-        top: position.y,
         backgroundColor: "var(--color-bg-secondary)",
-        border: "1px solid var(--color-border)",
-        boxShadow: "var(--color-shadow) 0 4px 12px",
+        borderTop: "1px solid var(--color-border)",
+        boxShadow: "0 -4px 20px var(--color-shadow)",
       }}
     >
-      <div className="flex gap-1">
-        <span className="text-xs flex items-center mr-1" style={{ color: "var(--color-text-secondary)" }}>
-          Change to:
-        </span>
+      <div className="flex justify-center sm:hidden mb-3">
+        <div className="w-10 h-1 rounded-full" style={{ backgroundColor: "var(--color-border)" }} />
+      </div>
+      <div className="flex gap-2 justify-center flex-wrap">
+        <span className="text-sm flex items-center" style={{ color: "var(--color-text-secondary)" }}>Change to:</span>
         {["1", "2", "3", "4", "5", "6", "7"].map((d) => (
-          <button key={d} className={btnSm2} style={noteStyle} onClick={() => onUpdate(d)}>
+          <button key={d} className={`${btn} h-11 w-11 text-base`} style={btnStyle} onClick={() => onUpdate(d)}>
             {d}
           </button>
         ))}
-        <button className={btnSm2} style={noteStyle} onClick={() => onUpdate("0")}>0</button>
-        <button className={btnSm2} style={noteStyle} onClick={() => onUpdate("-")}>−</button>
-        <button className={`${btnSm2} text-red-500`} style={noteStyle} onClick={onDelete}>✕</button>
+      </div>
+      <div className="flex gap-2 justify-center mt-2">
+        <button className={`${btn} h-10 px-4 text-sm`} style={btnStyle} onClick={() => onUpdate("0")}>0 rest</button>
+        <button className={`${btn} h-10 px-4 text-sm`} style={btnStyle} onClick={() => onUpdate("-")}>− hold</button>
+        <button className={`${btn} h-10 px-4 text-sm text-red-500`} style={btnStyle} onClick={onDelete}>✕ Delete</button>
       </div>
     </div>
   );
