@@ -372,6 +372,50 @@ function renderSvgItems(
     const item = items[idx]!;
     const key = `${keyPrefix}-${idx}`;
 
+    // Annotations: render above the next item's center x
+    if (item.token.type === "tonguing" || item.token.type === "ornament") {
+      const next = items[idx + 1];
+      const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
+      if (item.token.type === "tonguing") {
+        elements.push(
+          <text
+            key={key}
+            x={targetX}
+            y={Y_MARK}
+            textAnchor="middle"
+            fontSize="8"
+            fontWeight="600"
+            fontFamily="sans-serif"
+            fill="var(--color-accent)"
+          >
+            {item.token.technique === "single"
+              ? "T"
+              : item.token.technique === "double"
+                ? "TK"
+                : item.token.technique === "triple"
+                  ? "TTK"
+                  : item.token.technique}
+          </text>,
+        );
+      } else {
+        elements.push(
+          <text
+            key={key}
+            x={targetX}
+            y={Y_MARK}
+            textAnchor="middle"
+            fontSize="8"
+            fontStyle="italic"
+            fontFamily="sans-serif"
+            fill="var(--color-text-secondary)"
+          >
+            {item.token.name}
+          </text>,
+        );
+      }
+      continue;
+    }
+
     if (item.groupType === "slur" && item.children) {
       // Render children first
       renderSvgItems(item.children, activeBeatIndex, elements, `${key}-s`);
@@ -857,6 +901,17 @@ export function JianpuRenderer({ content, className = "", style, activeBeatIndex
 
   const beatCounter = { value: 0 };
 
+  // Pre-compute layouts for all notation lines to find max width
+  const lineLayouts: { items: LayoutItem[]; totalWidth: number; isEmpty: boolean }[] =
+    notationLines.map((line) => {
+      const trimmed = line.trim();
+      if (trimmed === "") return { items: [], totalWidth: 0, isEmpty: true };
+      const rawTokens = trimmed.split(/\s+/).map(parseToken);
+      return { ...layoutLine(rawTokens, beatCounter), isEmpty: false };
+    });
+
+  const maxWidth = Math.max(...lineLayouts.map((l) => l.totalWidth), 1);
+
   return (
     <div className={className} style={style}>
       {headerLines.length > 0 && (
@@ -867,22 +922,18 @@ export function JianpuRenderer({ content, className = "", style, activeBeatIndex
         </div>
       )}
 
-      {notationLines.map((line, lineIdx) => {
-        const trimmed = line.trim();
-        if (trimmed === "") {
+      {lineLayouts.map((layout, lineIdx) => {
+        if (layout.isEmpty) {
           return <div key={lineIdx} className="h-2" />;
         }
 
-        const rawTokens = trimmed.split(/\s+/).map(parseToken);
-        const { items, totalWidth } = layoutLine(rawTokens, beatCounter);
-
         const svgElements: React.ReactNode[] = [];
-        renderSvgItems(items, activeBeatIndex, svgElements, `L${lineIdx}`);
+        renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`);
 
         return (
           <svg
             key={lineIdx}
-            viewBox={`0 0 ${totalWidth} ${LINE_HEIGHT}`}
+            viewBox={`0 0 ${maxWidth} ${LINE_HEIGHT}`}
             width="100%"
             preserveAspectRatio="xMinYMid meet"
             style={{ display: "block" }}
