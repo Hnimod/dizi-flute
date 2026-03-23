@@ -2,9 +2,10 @@ interface JianpuRendererProps {
   content: string;
   className?: string;
   style?: React.CSSProperties;
+  activeBeatIndex?: number;
 }
 
-type Token =
+export type Token =
   | { type: "note"; value: string; octave: number; dotted: boolean }
   | { type: "rest" }
   | { type: "hold" }
@@ -14,12 +15,16 @@ type Token =
 const NOTE_RE = /^([1-7])([',]*)(\.*)?$/;
 const GRACE_RE = /^\(([1-7])\)([1-7])([',]*)(\.*)?$/;
 
-function isNotationLine(line: string): boolean {
+export function isNotationLine(line: string): boolean {
   // A notation line contains digits 1-7 and at least one bar line or dash
   return /[1-7]/.test(line) && /[|\-]/.test(line);
 }
 
-function parseToken(raw: string): Token {
+function isBeat(token: Token): boolean {
+  return token.type === "note" || token.type === "rest" || token.type === "hold";
+}
+
+export function parseToken(raw: string): Token {
   // Bar lines
   if (/^\|{1,2}:?$/.test(raw) || /^:\|{1,2}:?$/.test(raw)) {
     return { type: "bar", value: raw };
@@ -73,27 +78,31 @@ function parseToken(raw: string): Token {
   return { type: "text", value: raw };
 }
 
-function renderToken(token: Token, key: number) {
+function renderToken(token: Token, key: number, beatIndex: number | null, activeBeatIndex?: number) {
+  const isActive = beatIndex !== null && beatIndex === activeBeatIndex;
+  const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
+
   switch (token.type) {
     case "note": {
       let cls = "jianpu-note";
       if (token.octave > 0) cls += " jianpu-note-up";
       if (token.octave < 0) cls += " jianpu-note-down";
+      if (isActive) cls += " jianpu-active";
       return (
-        <span key={key} className={cls}>
+        <span key={key} className={cls} {...beatAttr}>
           {token.value}
         </span>
       );
     }
     case "rest":
       return (
-        <span key={key} className="jianpu-rest">
+        <span key={key} className={`jianpu-rest${isActive ? " jianpu-active" : ""}`} {...beatAttr}>
           0
         </span>
       );
     case "hold":
       return (
-        <span key={key} className="jianpu-hold">
+        <span key={key} className={`jianpu-hold${isActive ? " jianpu-active" : ""}`} {...beatAttr}>
           –
         </span>
       );
@@ -112,7 +121,7 @@ function renderToken(token: Token, key: number) {
   }
 }
 
-export function JianpuRenderer({ content, className = "", style }: JianpuRendererProps) {
+export function JianpuRenderer({ content, className = "", style, activeBeatIndex }: JianpuRendererProps) {
   const lines = content.split("\n");
   const headerLines: string[] = [];
   const notationLines: string[] = [];
@@ -139,6 +148,8 @@ export function JianpuRenderer({ content, className = "", style }: JianpuRendere
     }
   }
 
+  let beatCounter = 0;
+
   return (
     <div className={className} style={style}>
       {/* Header: title, key, tempo */}
@@ -160,7 +171,10 @@ export function JianpuRenderer({ content, className = "", style }: JianpuRendere
         const tokens = trimmed.split(/\s+/).map(parseToken);
         return (
           <div key={lineIdx} className="jianpu-line">
-            {tokens.map((token, tokenIdx) => renderToken(token, tokenIdx))}
+            {tokens.map((token, tokenIdx) => {
+              const bi = isBeat(token) ? beatCounter++ : null;
+              return renderToken(token, tokenIdx, bi, activeBeatIndex);
+            })}
           </div>
         );
       })}

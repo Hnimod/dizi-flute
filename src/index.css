@@ -139,6 +139,18 @@ html {
   color: var(--color-text-secondary);
 }
 
+.jianpu-active {
+  background-color: var(--color-accent);
+  color: white !important;
+  border-radius: 4px;
+  transition: background-color 0.1s ease;
+}
+
+.jianpu-active::after,
+.jianpu-active::before {
+  color: white !important;
+}
+
 /* Better focus rings */
 :focus-visible {
   outline: 2px solid var(--color-accent);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { AudioPlayer, VideoEmbed, JianpuRenderer } from "@/shared/ui";
+import { AudioPlayer, VideoEmbed } from "@/shared/ui";
+import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
 import { UserVideos } from "./UserVideos";
@@ -129,8 +130,9 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
 
         {/* Jianpu notation */}
         <div className="px-4 py-2">
-          <JianpuRenderer
+          <TempoGuide
             content={item.jianpu}
+            tempo={item.tempo}
             className="rounded-xl p-4 overflow-x-auto"
             style={{
               backgroundColor: "var(--color-bg-secondary)",
