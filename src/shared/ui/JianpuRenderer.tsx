@@ -215,12 +215,12 @@ const CELL_BAR = 12;
 const CELL_TIE = 14;
 const CELL_BREATH = 0;
 const CELL_BEAM_NOTE = 18;
-const CELL_ANNOTATION = 16;
+const CELL_ANNOTATION = 0;
 const CELL_TEXT = 16;
 
 // Y positions
 const Y_MARK = 6; // tonguing, fermata, staccato, accent, trill
-const Y_OCTAVE_UP = 19;
+const Y_OCTAVE_UP = 16;
 const Y_NOTE = 30; // text baseline
 const Y_BEAM = 33; // beam right below note number
 const Y_BEAM2 = 37; // sixteenth second line
@@ -752,7 +752,7 @@ function renderSvgToken(
       elements.push(
         <text
           key={key}
-          x={x}
+          x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
           fontSize="8"
@@ -774,7 +774,7 @@ function renderSvgToken(
       elements.push(
         <text
           key={key}
-          x={x}
+          x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
           fontSize="8"
