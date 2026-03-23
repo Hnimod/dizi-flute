@@ -50,6 +50,48 @@ function isBeat(token: Token): boolean {
   return token.type === "note" || token.type === "rest" || token.type === "hold";
 }
 
+function beatDuration(token: Token): number {
+  if (token.type === "note" || token.type === "rest") {
+    const dur = (token as { duration?: string }).duration;
+    if (dur === "eighth") return 0.5;
+    if (dur === "sixteenth") return 0.25;
+  }
+  return 1.0;
+}
+
+/** Returns duration multiplier per beat index: 1.0=quarter, 0.5=eighth, 0.25=sixteenth */
+export function buildBeatSchedule(content: string): number[] {
+  const lines = content.split("\n");
+  let inNotation = false;
+  let headerCount = 0;
+  const schedule: number[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!inNotation) {
+      if (trimmed === "") {
+        if (headerCount > 0) inNotation = true;
+        continue;
+      }
+      if (isNotationLine(trimmed)) {
+        inNotation = true;
+      } else {
+        headerCount++;
+        continue;
+      }
+    }
+    if (!inNotation || trimmed === "") continue;
+
+    const tokens = trimmed.split(/\s+/).map(parseToken);
+    for (const t of tokens) {
+      if (isBeat(t)) {
+        schedule.push(beatDuration(t));
+      }
+    }
+  }
+  return schedule;
+}
+
 export function parseToken(raw: string): Token {
   // Bar lines
   if (/^:?\|{1,2}:?$/.test(raw)) {

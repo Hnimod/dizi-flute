@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { JianpuRenderer, parseToken, isNotationLine } from "@/shared/ui";
+import { JianpuRenderer, buildBeatSchedule } from "@/shared/ui";
 
 interface TempoGuideProps {
   content: string;
@@ -8,79 +8,64 @@ interface TempoGuideProps {
   style?: React.CSSProperties;
 }
 
-function countBeats(content: string): number {
-  const lines = content.split("\n");
-  let inNotation = false;
-  let headerCount = 0;
-  let beats = 0;
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!inNotation) {
-      if (trimmed === "") {
-        if (headerCount > 0) inNotation = true;
-        continue;
-      }
-      if (isNotationLine(trimmed)) {
-        inNotation = true;
-      } else {
-        headerCount++;
-        continue;
-      }
-    }
-    if (!inNotation) continue;
-    if (trimmed === "") continue;
-
-    const tokens = trimmed.split(/\s+/).map(parseToken);
-    for (const t of tokens) {
-      if (t.type === "note" || t.type === "rest" || t.type === "hold") {
-        beats++;
-      }
-    }
-  }
-  return beats;
-}
-
 export function TempoGuide({ content, tempo, className, style }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [bpm, setBpm] = useState(tempo ?? 60);
   const containerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const beatRef = useRef(-1);
 
-  const totalBeats = useMemo(() => countBeats(content), [content]);
+  const schedule = useMemo(() => buildBeatSchedule(content), [content]);
+  const totalBeats = schedule.length;
 
   const stop = useCallback(() => {
     setIsPlaying(false);
     setCurrentBeat(-1);
+    beatRef.current = -1;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, []);
 
   const togglePlay = useCallback(() => {
     setIsPlaying((prev) => {
       if (prev) return false;
-      // If at end, restart
-      setCurrentBeat((b) => (b >= totalBeats - 1 ? 0 : b < 0 ? 0 : b));
+      setCurrentBeat((b) => {
+        const start = b >= totalBeats - 1 || b < 0 ? 0 : b;
+        beatRef.current = start;
+        return start;
+      });
       return true;
     });
   }, [totalBeats]);
 
-  // Interval-based beat advancement
+  // setTimeout-based beat advancement with duration-aware scheduling
   useEffect(() => {
     if (!isPlaying) return;
 
-    const ms = (60 / bpm) * 1000;
-    const id = setInterval(() => {
-      setCurrentBeat((prev) => {
-        const next = prev + 1;
-        if (next >= totalBeats) {
-          setIsPlaying(false);
-          return -1;
-        }
-        return next;
-      });
-    }, ms);
+    const baseMs = (60 / bpm) * 1000;
 
-    return () => clearInterval(id);
-  }, [isPlaying, bpm, totalBeats]);
+    function tick() {
+      const beat = beatRef.current;
+      if (beat >= totalBeats) {
+        setIsPlaying(false);
+        setCurrentBeat(-1);
+        beatRef.current = -1;
+        return;
+      }
+      setCurrentBeat(beat);
+      const duration = baseMs * (schedule[beat] ?? 1);
+      timeoutRef.current = setTimeout(() => {
+        beatRef.current = beat + 1;
+        tick();
+      }, duration);
+    }
+
+    tick();
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [isPlaying, bpm, totalBeats, schedule]);
 
   // Scroll active beat into view
   useEffect(() => {
