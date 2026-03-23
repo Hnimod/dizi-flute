@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AudioPlayer, VideoEmbed, JianpuRenderer } from "@/shared/ui";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
+import { UserVideos } from "./UserVideos";
 
 function getItemTitle(item: Song | Exercise): string {
   if (item.type === "song") {
@@ -113,6 +114,11 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
             <VideoEmbed url={item.videoUrl} />
           </div>
         )}
+
+        {/* User-added videos */}
+        <div className="px-4 py-2">
+          <UserVideos itemId={item.id} />
+        </div>
 
         {/* Description (if any) */}
         {item.description && (

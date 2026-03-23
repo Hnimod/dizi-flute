@@ -5,6 +5,7 @@ import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed, Jianp
 import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
 import { PracticeView } from "./PracticeView";
 import type { Song, Exercise } from "@/shared/types";
+import { UserVideos } from "./UserVideos";
 
 /* ─── Helpers ─── */
 
@@ -47,6 +48,7 @@ function SongCard({ song }: { song: Song }) {
         </p>
       )}
       {song.videoUrl && <VideoEmbed url={song.videoUrl} className="my-3" />}
+      <UserVideos itemId={song.id} />
       <JianpuRenderer
         content={song.jianpu}
         className="rounded-lg p-4 overflow-x-auto my-3"
@@ -83,6 +85,7 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
         </p>
       )}
       {exercise.videoUrl && <VideoEmbed url={exercise.videoUrl} className="my-3" />}
+      <UserVideos itemId={exercise.id} />
       <JianpuRenderer
         content={exercise.jianpu}
         className="rounded-lg p-4 overflow-x-auto my-3"
