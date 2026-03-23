@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import { songs, levels } from "@/data";
 import { VideoEmbed } from "@/shared/ui";
@@ -102,8 +102,17 @@ export function SongLibraryPage() {
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeLevel, setActiveLevel] = useState<"all" | "my" | number>("all");
-  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my">>(new Set());
+  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my">>(() => {
+    try {
+      const saved = localStorage.getItem("dizi-library-collapsed");
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
   const sectionRefs = useRef<Map<number | "my", HTMLElement>>(new Map());
+
+  useEffect(() => {
+    localStorage.setItem("dizi-library-collapsed", JSON.stringify([...collapsedLevels]));
+  }, [collapsedLevels]);
 
   const songsByLevel = useMemo(() => {
     const grouped = new Map<number, Song[]>();
