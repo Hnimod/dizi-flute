@@ -885,7 +885,6 @@ function flatLast(items: LayoutItem[]): LayoutItem | undefined {
   return undefined;
 }
 
-import { useEffect, useRef, useState } from "react";
 
 export function JianpuRenderer({
   content,
@@ -925,102 +924,7 @@ export function JianpuRenderer({
 
   const hasHeader = title || keySignature || timeSignature || tempo;
 
-  // Build all line elements and find active beat position
-  const nonEmptyLines: { layout: typeof lineLayouts[0]; lineIdx: number }[] = [];
-  for (let i = 0; i < lineLayouts.length; i++) {
-    if (!lineLayouts[i]!.isEmpty) nonEmptyLines.push({ layout: lineLayouts[i]!, lineIdx: i });
-  }
-  const totalHeight = nonEmptyLines.length * LINE_HEIGHT;
-
-  // Find the active beat across all lines
-  let hlX = 0;
-  let hlY = 0;
-  let hlW = 0;
-  let activeLineRenderIdx = -1;
-  let hasActiveItem = false;
-  for (let li = 0; li < nonEmptyLines.length; li++) {
-    const activeItem = findActiveBeat(nonEmptyLines[li]!.layout.items, activeBeatIndex);
-    if (activeItem) {
-      hlX = activeItem.x - activeItem.width / 2 + 1;
-      hlY = li * LINE_HEIGHT + Y_NOTE - 14;
-      hlW = activeItem.width - 2;
-      activeLineRenderIdx = li;
-      hasActiveItem = true;
-      break;
-    }
-  }
-
   const transitionDur = beatDurationMs ?? 150;
-
-  // Track line changes for slide off/on
-  const prevLineRef = useRef(activeLineRenderIdx);
-  const [slidePhase, setSlidePhase] = useState<"none" | "out" | "reposition" | "in">("none");
-  const prevPosRef = useRef({ x: hlX, y: hlY, w: hlW });
-  const newPosRef = useRef({ x: hlX, y: hlY, w: hlW });
-
-  useEffect(() => {
-    if (activeLineRenderIdx < 0) {
-      prevLineRef.current = -1;
-      return;
-    }
-    if (prevLineRef.current >= 0 && prevLineRef.current !== activeLineRenderIdx) {
-      // Line changed — start slide-out sequence
-      newPosRef.current = { x: hlX, y: hlY, w: hlW };
-      setSlidePhase("out");
-
-      const t1 = setTimeout(() => {
-        // After slide-out completes, reposition off-left instantly
-        setSlidePhase("reposition");
-        requestAnimationFrame(() => {
-          // Next frame: slide in from left
-          setSlidePhase("in");
-          setTimeout(() => {
-            setSlidePhase("none");
-            prevPosRef.current = newPosRef.current;
-          }, transitionDur);
-        });
-      }, transitionDur);
-
-      prevLineRef.current = activeLineRenderIdx;
-      return () => clearTimeout(t1);
-    }
-    prevLineRef.current = activeLineRenderIdx;
-    prevPosRef.current = { x: hlX, y: hlY, w: hlW };
-  }, [activeLineRenderIdx]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Compute highlight style based on slide phase
-  const hlStyle = (() => {
-    if (slidePhase === "out") {
-      // Slide off to the right at karaoke pace on the PREVIOUS line
-      return {
-        transform: `translate(${maxWidth + 20}px, ${prevPosRef.current.y}px)`,
-        opacity: 0,
-        transition: `transform ${transitionDur}ms linear, opacity ${transitionDur}ms linear`,
-      };
-    }
-    if (slidePhase === "reposition") {
-      // Instantly jump to off-left on the new line
-      return {
-        transform: `translate(-30px, ${newPosRef.current.y}px)`,
-        opacity: 0,
-        transition: "none",
-      };
-    }
-    if (slidePhase === "in") {
-      // Slide in from the left to the first note on the new line
-      return {
-        transform: `translate(${newPosRef.current.x}px, ${newPosRef.current.y}px)`,
-        opacity: 1,
-        transition: `transform ${transitionDur}ms ease-out, opacity ${Math.min(transitionDur, 300)}ms ease-out`,
-      };
-    }
-    // Normal — smooth karaoke slide within line
-    return {
-      transform: `translate(${hlX}px, ${hlY}px)`,
-      opacity: 1,
-      transition: `transform ${transitionDur}ms linear, width ${transitionDur}ms linear`,
-    };
-  })();
 
   return (
     <div className={className} style={style}>
@@ -1038,40 +942,50 @@ export function JianpuRenderer({
         </div>
       )}
 
-      <svg
-        viewBox={`0 0 ${maxWidth} ${totalHeight || LINE_HEIGHT}`}
-        width="100%"
-        preserveAspectRatio="xMinYMid meet"
-        style={{ display: "block" }}
-        className="jianpu-svg"
-      >
-        {/* Single persistent highlight rect with slide transitions */}
-        {hasActiveItem && (
-          <rect
-            key="hl"
-            width={slidePhase === "out" ? prevPosRef.current.w : slidePhase === "reposition" || slidePhase === "in" ? newPosRef.current.w : hlW}
-            height={18}
-            rx={3}
-            fill="var(--color-accent)"
-            style={hlStyle}
-          />
-        )}
+      {lineLayouts.map((layout, lineIdx) => {
+        if (layout.isEmpty) {
+          return <div key={lineIdx} className="h-2" />;
+        }
 
-        {/* Notation lines as offset groups */}
-        {nonEmptyLines.map(({ layout, lineIdx }, renderIdx) => {
-          const svgElements: React.ReactNode[] = [];
-          const interOpts: InteractiveOpts | undefined = interactive
-            ? { interactive, selectedTokenIdx, onTokenClick, onGapClick, lineYOffset: renderIdx * LINE_HEIGHT }
-            : undefined;
-          renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
+        const svgElements: React.ReactNode[] = [];
+        const interOpts: InteractiveOpts | undefined = interactive
+          ? { interactive, selectedTokenIdx, onTokenClick, onGapClick, lineYOffset: lineIdx * LINE_HEIGHT }
+          : undefined;
+        renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
 
-          return (
-            <g key={lineIdx} transform={`translate(0, ${renderIdx * LINE_HEIGHT})`}>
-              {svgElements}
-            </g>
-          );
-        })}
-      </svg>
+        // Per-line highlight
+        const activeItem = findActiveBeat(layout.items, activeBeatIndex);
+        const hlX2 = activeItem ? activeItem.x - activeItem.width / 2 + 1 : 0;
+        const hlW2 = activeItem ? activeItem.width - 2 : 0;
+
+        return (
+          <svg
+            key={lineIdx}
+            viewBox={`0 0 ${maxWidth} ${LINE_HEIGHT}`}
+            width="100%"
+            preserveAspectRatio="xMinYMid meet"
+            style={{ display: "block" }}
+            className="jianpu-svg"
+          >
+            {activeItem && (
+              <rect
+                key="hl"
+                y={Y_NOTE - 14}
+                width={hlW2}
+                height={18}
+                rx={3}
+                fill="var(--color-accent)"
+                className="jianpu-highlight"
+                style={{
+                  transform: `translateX(${hlX2}px)`,
+                  transition: `transform ${transitionDur}ms linear, width ${transitionDur}ms linear`,
+                }}
+              />
+            )}
+            {svgElements}
+          </svg>
+        );
+      })}
     </div>
   );
 }
