@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 interface JianpuRendererProps {
   content: string;
   className?: string;
@@ -921,6 +923,20 @@ export function JianpuRenderer({
 
   const maxWidth = Math.max(...lineLayouts.map((l) => l.totalWidth), 1);
 
+  // Track which line had the highlight to detect line changes
+  const prevActiveLineRef = useRef<number>(-1);
+  let activeLineIdx = -1;
+  if (activeBeatIndex !== undefined) {
+    for (let li = 0; li < lineLayouts.length; li++) {
+      if (!lineLayouts[li]!.isEmpty && findActiveBeat(lineLayouts[li]!.items, activeBeatIndex)) {
+        activeLineIdx = li;
+        break;
+      }
+    }
+  }
+  const lineChanged = activeLineIdx !== prevActiveLineRef.current;
+  prevActiveLineRef.current = activeLineIdx;
+
   const hasHeader = title || keySignature || timeSignature || tempo;
 
   return (
@@ -974,9 +990,12 @@ export function JianpuRenderer({
                 fill="var(--color-accent)"
                 style={{
                   transform: `translateX(${hlX}px)`,
-                  transition: beatDurationMs
-                    ? `transform ${beatDurationMs}ms linear, width ${beatDurationMs}ms linear`
-                    : "transform 0.15s ease-out, width 0.15s ease-out",
+                  transition: lineChanged
+                    ? "none"
+                    : beatDurationMs
+                      ? `transform ${beatDurationMs}ms linear, width ${beatDurationMs}ms linear`
+                      : "transform 0.15s ease-out, width 0.15s ease-out",
+                  animation: lineChanged ? "jianpu-hl-fade-in 0.2s ease-out" : undefined,
                 }}
               />
             )}
