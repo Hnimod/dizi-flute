@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 interface JianpuRendererProps {
   content: string;
   className?: string;
@@ -887,6 +885,8 @@ function flatLast(items: LayoutItem[]): LayoutItem | undefined {
   return undefined;
 }
 
+import { useRef } from "react";
+
 export function JianpuRenderer({
   content,
   className = "",
@@ -923,21 +923,91 @@ export function JianpuRenderer({
 
   const maxWidth = Math.max(...lineLayouts.map((l) => l.totalWidth), 1);
 
-  // Track which line had the highlight to detect line changes
-  const prevActiveLineRef = useRef<number>(-1);
-  let activeLineIdx = -1;
-  if (activeBeatIndex !== undefined) {
-    for (let li = 0; li < lineLayouts.length; li++) {
-      if (!lineLayouts[li]!.isEmpty && findActiveBeat(lineLayouts[li]!.items, activeBeatIndex)) {
-        activeLineIdx = li;
-        break;
-      }
+  const hasHeader = title || keySignature || timeSignature || tempo;
+
+  // Build all line elements and find active beat position
+  const nonEmptyLines: { layout: typeof lineLayouts[0]; lineIdx: number }[] = [];
+  for (let i = 0; i < lineLayouts.length; i++) {
+    if (!lineLayouts[i]!.isEmpty) nonEmptyLines.push({ layout: lineLayouts[i]!, lineIdx: i });
+  }
+  const totalHeight = nonEmptyLines.length * LINE_HEIGHT;
+
+  // Find the active beat across all lines
+  let hlX = 0;
+  let hlY = 0;
+  let hlW = 0;
+  let activeLineRenderIdx = -1;
+  let hasActiveItem = false;
+  for (let li = 0; li < nonEmptyLines.length; li++) {
+    const activeItem = findActiveBeat(nonEmptyLines[li]!.layout.items, activeBeatIndex);
+    if (activeItem) {
+      hlX = activeItem.x - activeItem.width / 2 + 1;
+      hlY = li * LINE_HEIGHT + Y_NOTE - 14;
+      hlW = activeItem.width - 2;
+      activeLineRenderIdx = li;
+      hasActiveItem = true;
+      break;
     }
   }
-  const lineChanged = activeLineIdx !== prevActiveLineRef.current;
-  prevActiveLineRef.current = activeLineIdx;
 
-  const hasHeader = title || keySignature || timeSignature || tempo;
+  const transitionDur = beatDurationMs ?? 150;
+
+  // Track line changes for slide off/on
+  const prevLineRef = useRef(activeLineRenderIdx);
+  const slidePhaseRef = useRef<"none" | "out" | "in">("none");
+  const prevPosRef = useRef({ x: hlX, y: hlY, w: hlW });
+
+  // Detect line change
+  const lineChanged = activeLineRenderIdx >= 0 &&
+    prevLineRef.current >= 0 &&
+    prevLineRef.current !== activeLineRenderIdx;
+
+  if (lineChanged) {
+    // Keep previous position for the slide-out, switch to "out" phase
+    slidePhaseRef.current = "out";
+  } else if (slidePhaseRef.current === "out") {
+    // Beat changed again on the new line — switch to "in" phase
+    slidePhaseRef.current = "in";
+  } else if (slidePhaseRef.current === "in") {
+    // Next beat on the same new line — back to normal
+    slidePhaseRef.current = "none";
+  }
+
+  if (activeLineRenderIdx >= 0) {
+    prevLineRef.current = activeLineRenderIdx;
+  }
+
+  // Compute highlight style based on slide phase
+  const phase = slidePhaseRef.current;
+  const hlStyle = (() => {
+    if (phase === "out") {
+      // Slide off to the right at karaoke pace, using the PREVIOUS line Y
+      return {
+        transform: `translate(${maxWidth + 20}px, ${prevPosRef.current.y}px)`,
+        opacity: 0,
+        transition: `transform ${transitionDur}ms linear, opacity ${transitionDur}ms linear`,
+      };
+    }
+    if (phase === "in") {
+      // Slide in from the left on the new line
+      return {
+        transform: `translate(${hlX}px, ${hlY}px)`,
+        opacity: 1,
+        transition: `transform ${transitionDur}ms ease-out, opacity ${Math.min(transitionDur, 200)}ms ease-out`,
+      };
+    }
+    // Normal — smooth karaoke slide within line
+    return {
+      transform: `translate(${hlX}px, ${hlY}px)`,
+      opacity: 1,
+      transition: `transform ${transitionDur}ms linear, width ${transitionDur}ms linear`,
+    };
+  })();
+
+  // Update prev position (only when not in "out" phase so we keep the old position)
+  if (phase !== "out") {
+    prevPosRef.current = { x: hlX, y: hlY, w: hlW };
+  }
 
   return (
     <div className={className} style={style}>
@@ -955,54 +1025,40 @@ export function JianpuRenderer({
         </div>
       )}
 
-      {lineLayouts.map((layout, lineIdx) => {
-        if (layout.isEmpty) {
-          return <div key={lineIdx} className="h-2" />;
-        }
+      <svg
+        viewBox={`0 0 ${maxWidth} ${totalHeight || LINE_HEIGHT}`}
+        width="100%"
+        preserveAspectRatio="xMinYMid meet"
+        style={{ display: "block" }}
+        className="jianpu-svg"
+      >
+        {/* Single persistent highlight rect with slide transitions */}
+        {hasActiveItem && (
+          <rect
+            key="hl"
+            width={phase === "out" ? prevPosRef.current.w : hlW}
+            height={18}
+            rx={3}
+            fill="var(--color-accent)"
+            style={hlStyle}
+          />
+        )}
 
-        const svgElements: React.ReactNode[] = [];
-        const interOpts: InteractiveOpts | undefined = interactive
-          ? { interactive, selectedTokenIdx, onTokenClick, onGapClick, lineYOffset: lineIdx * LINE_HEIGHT }
-          : undefined;
-        renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
+        {/* Notation lines as offset groups */}
+        {nonEmptyLines.map(({ layout, lineIdx }, renderIdx) => {
+          const svgElements: React.ReactNode[] = [];
+          const interOpts: InteractiveOpts | undefined = interactive
+            ? { interactive, selectedTokenIdx, onTokenClick, onGapClick, lineYOffset: renderIdx * LINE_HEIGHT }
+            : undefined;
+          renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
 
-        // Line-level highlight with smooth transition
-        const activeItem = findActiveBeat(layout.items, activeBeatIndex);
-        const hlX = activeItem ? activeItem.x - activeItem.width / 2 + 1 : 0;
-        const hlW = activeItem ? activeItem.width - 2 : 0;
-
-        return (
-          <svg
-            key={lineIdx}
-            viewBox={`0 0 ${maxWidth} ${LINE_HEIGHT}`}
-            width="100%"
-            preserveAspectRatio="xMinYMid meet"
-            style={{ display: "block" }}
-            className="jianpu-svg"
-          >
-            {activeItem && (
-              <rect
-                key="hl"
-                y={Y_NOTE - 14}
-                width={hlW}
-                height={18}
-                rx={3}
-                fill="var(--color-accent)"
-                style={{
-                  transform: `translateX(${hlX}px)`,
-                  transition: lineChanged
-                    ? "none"
-                    : beatDurationMs
-                      ? `transform ${beatDurationMs}ms linear, width ${beatDurationMs}ms linear`
-                      : "transform 0.15s ease-out, width 0.15s ease-out",
-                  animation: lineChanged ? "jianpu-hl-fade-in 0.2s ease-out" : undefined,
-                }}
-              />
-            )}
-            {svgElements}
-          </svg>
-        );
-      })}
+          return (
+            <g key={lineIdx} transform={`translate(0, ${renderIdx * LINE_HEIGHT})`}>
+              {svgElements}
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 }
