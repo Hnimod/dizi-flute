@@ -6,9 +6,12 @@ interface TempoGuideProps {
   tempo?: number;
   className?: string;
   style?: React.CSSProperties;
+  title?: string;
+  keySignature?: string;
+  timeSignature?: string;
 }
 
-export function TempoGuide({ content, tempo, className, style }: TempoGuideProps) {
+export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [bpm, setBpm] = useState(tempo ?? 60);
@@ -150,6 +153,10 @@ export function TempoGuide({ content, tempo, className, style }: TempoGuideProps
           activeBeatIndex={currentBeat >= 0 ? currentBeat : undefined}
           className={className}
           style={style}
+          title={title}
+          keySignature={keySignature}
+          timeSignature={timeSignature}
+          tempo={tempo}
         />
       </div>
     </div>

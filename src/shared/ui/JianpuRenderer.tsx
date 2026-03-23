@@ -3,6 +3,10 @@ interface JianpuRendererProps {
   className?: string;
   style?: React.CSSProperties;
   activeBeatIndex?: number;
+  title?: string;
+  keySignature?: string;
+  timeSignature?: string;
+  tempo?: number;
 }
 
 export type Token =
@@ -61,26 +65,11 @@ function beatDuration(token: Token): number {
 
 /** Returns duration multiplier per beat index: 1.0=quarter, 0.5=eighth, 0.25=sixteenth */
 export function buildBeatSchedule(content: string): number[] {
-  const lines = content.split("\n");
-  let inNotation = false;
-  let headerCount = 0;
   const schedule: number[] = [];
 
-  for (const line of lines) {
+  for (const line of content.split("\n")) {
     const trimmed = line.trim();
-    if (!inNotation) {
-      if (trimmed === "") {
-        if (headerCount > 0) inNotation = true;
-        continue;
-      }
-      if (isNotationLine(trimmed)) {
-        inNotation = true;
-      } else {
-        headerCount++;
-        continue;
-      }
-    }
-    if (!inNotation || trimmed === "") continue;
+    if (trimmed === "") continue;
 
     const tokens = trimmed.split(/\s+/).map(parseToken);
     for (const t of tokens) {
@@ -873,31 +862,17 @@ function flatLast(items: LayoutItem[]): LayoutItem | undefined {
   return undefined;
 }
 
-export function JianpuRenderer({ content, className = "", style, activeBeatIndex }: JianpuRendererProps) {
-  const lines = content.split("\n");
-  const headerLines: string[] = [];
-  const notationLines: string[] = [];
-  let inNotation = false;
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!inNotation) {
-      if (trimmed === "") {
-        if (headerLines.length > 0) {
-          inNotation = true;
-        }
-        continue;
-      }
-      if (isNotationLine(trimmed)) {
-        inNotation = true;
-        notationLines.push(line);
-      } else {
-        headerLines.push(trimmed);
-      }
-    } else {
-      notationLines.push(line);
-    }
-  }
+export function JianpuRenderer({
+  content,
+  className = "",
+  style,
+  activeBeatIndex,
+  title,
+  keySignature,
+  timeSignature,
+  tempo,
+}: JianpuRendererProps) {
+  const notationLines = content.split("\n");
 
   const beatCounter = { value: 0 };
 
@@ -912,13 +887,21 @@ export function JianpuRenderer({ content, className = "", style, activeBeatIndex
 
   const maxWidth = Math.max(...lineLayouts.map((l) => l.totalWidth), 1);
 
+  const hasHeader = title || keySignature || timeSignature || tempo;
+
   return (
     <div className={className} style={style}>
-      {headerLines.length > 0 && (
+      {hasHeader && (
         <div className="jianpu-header">
-          {headerLines.map((line, i) => (
-            <div key={i}>{line}</div>
-          ))}
+          {title && <div>{title}</div>}
+          {(keySignature || timeSignature) && (
+            <div>
+              {keySignature && `1=${keySignature}`}
+              {keySignature && timeSignature && "  "}
+              {timeSignature}
+            </div>
+          )}
+          {tempo && <div>♩={tempo}</div>}
         </div>
       )}
 

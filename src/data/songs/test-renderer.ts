@@ -11,11 +11,7 @@ export const testRendererSongs: Song[] = [
     timeSignature: "4/4",
     tempo: 60,
     origin: "Test",
-    jianpu: `Renderer Test — All Features (渲染测试)
-1=D  4/4
-♩=60
-
-1 2 3 4 | 5 6 7 1' | 2' 1' 7 6 | 5 4 3 2 |
+    jianpu: `1 2 3 4 | 5 6 7 1' | 2' 1' 7 6 | 5 4 3 2 |
 1 - - - | 5, 6, 7, 1 | 2 3 5 6 | 1' 2' 1' - |
 [ 1_ 2_ ] [ 3_ 5_ ] 6 5 | [ 6_ 5_ ] [ 3_ 2_ ] 1 - |
 [ 1_ 2_ 3_ ] 5 - 0 | 6 [ 3_ 2_ 1_ ] - 0 |

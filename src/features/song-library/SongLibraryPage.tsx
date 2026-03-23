@@ -59,6 +59,9 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
           <TempoGuide
             content={song.jianpu}
             tempo={song.tempo}
+            title={getTitle(song)}
+            keySignature={song.key}
+            timeSignature={song.timeSignature}
             className="rounded-lg p-4 overflow-x-auto"
             style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
           />

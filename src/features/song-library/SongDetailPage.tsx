@@ -74,6 +74,9 @@ export function SongDetailPage() {
       <TempoGuide
         content={song.jianpu}
         tempo={song.tempo}
+        title={getTitle(song)}
+        keySignature={song.key}
+        timeSignature={song.timeSignature}
         className="rounded-lg p-4 overflow-x-auto my-4"
         style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
       />

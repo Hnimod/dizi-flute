@@ -9,10 +9,7 @@ export const level1Songs: Song[] = [
     titleEnglish: "Mary Had a Little Lamb",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `Mary Had a Little Lamb
-1=D  4/4
-
-3 2 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5 - |
+    jianpu: `3 2 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5 - |
 3 2 1 2 | 3 3 3 3 | 2 2 3 2 | 1 - - - ||`,
     description: "Uses only notes 1-5. Perfect first song.",
   },
@@ -23,10 +20,7 @@ export const level1Songs: Song[] = [
     titleEnglish: "Hot Cross Buns",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `Hot Cross Buns
-1=D  4/4
-
-3 2 1 - | 3 2 1 - | 1 1 2 2 | 3 2 1 - ||`,
+    jianpu: `3 2 1 - | 3 2 1 - | 1 1 2 2 | 3 2 1 - ||`,
     description: "Very simple, only 3 notes (1, 2, 3).",
   },
   {
@@ -36,10 +30,7 @@ export const level1Songs: Song[] = [
     titleEnglish: "Lightly Row",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `Lightly Row
-1=D  4/4
-
-5 3 3 - | 4 2 2 - | 1 2 3 4 | 5 5 5 - |
+    jianpu: `5 3 3 - | 4 2 2 - | 1 2 3 4 | 5 5 5 - |
 5 3 3 3 | 4 2 2 2 | 1 3 5 5 | 3 - - - |
 2 2 2 2 | 2 3 4 - | 3 3 3 3 | 3 4 5 - |
 5 3 3 3 | 4 2 2 2 | 1 3 5 5 | 1 - - - ||`,
@@ -53,10 +44,7 @@ export const level1Songs: Song[] = [
     titleEnglish: "Finding Friends",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `\u627E\u670B\u53CB (Finding Friends)
-1=D  2/4
-
-1 1 | 1 3 | 5 5 | 5 3 |
+    jianpu: `1 1 | 1 3 | 5 5 | 5 3 |
 4 2 | 3 1 | 2 - | 2 - |
 1 1 | 1 3 | 5 5 | 5 3 |
 4 2 | 3 1 | 2 1 | 1 - ||`,
@@ -71,10 +59,7 @@ export const level1Songs: Song[] = [
     titleEnglish: "Going to School Song",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `\u4E0A\u5B66\u6B4C (Going to School Song)
-1=D  2/4
-
-1 2 | 3 1 | 3 4 | 5 - |
+    jianpu: `1 2 | 3 1 | 3 4 | 5 - |
 5 4 | 3 1 | 2 3 | 1 - |
 3 4 | 5 5 | 3 4 | 5 - |
 5 4 | 3 1 | 2 3 | 1 - ||`,

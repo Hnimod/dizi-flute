@@ -133,6 +133,9 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
           <TempoGuide
             content={item.jianpu}
             tempo={item.tempo}
+            title={getItemTitle(item)}
+            keySignature={item.key}
+            timeSignature={item.timeSignature}
             className="rounded-xl p-4 overflow-x-auto"
             style={{
               backgroundColor: "var(--color-bg-secondary)",

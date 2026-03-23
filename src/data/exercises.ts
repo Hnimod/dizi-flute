@@ -9,10 +9,7 @@ export const exercises: Exercise[] = [
     title: "Rhythm Clapping: Quarter Notes",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-Clap on every number:
-
-1  1  1  1 | 1  1  1  1 | 1  1  1  1 | 1  1  1  1 ||`,
+    jianpu: `1  1  1  1 | 1  1  1  1 | 1  1  1  1 | 1  1  1  1 ||`,
     description: "Clap on each note to practice reading jianpu rhythm.",
   },
   {
@@ -22,9 +19,7 @@ Clap on every number:
     title: "Rhythm Clapping: Half and Quarter Notes",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1  -  1  1 | 1  1  1  - | 1  -  1  - | 1  -  -  - ||`,
+    jianpu: `1  -  1  1 | 1  1  1  - | 1  -  1  - | 1  -  -  - ||`,
     description: "Practice half notes and quarter notes by clapping.",
   },
   {
@@ -34,9 +29,7 @@ Clap on every number:
     title: "Rhythm Clapping: With Rests",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1  1  0  1 | 1  0  1  1 | 1  -  0  0 | 1  1  1  - ||`,
+    jianpu: `1  1  0  1 | 1  0  1  1 | 1  -  0  0 | 1  1  1  - ||`,
     description: "Practice rests (silence) within rhythmic patterns.",
   },
   {
@@ -46,9 +39,7 @@ Clap on every number:
     title: "Rhythm Clapping: Reading Different Numbers",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1  2  3  4 | 5  -  5  - | 6  5  4  3 | 2  -  1  - ||`,
+    jianpu: `1  2  3  4 | 5  -  5  - | 6  5  4  3 | 2  -  1  - ||`,
     description:
       "Clap the rhythm while saying the numbers out loud. This builds your jianpu reading before adding the complexity of playing.",
   },
@@ -62,10 +53,7 @@ Clap on every number:
     key: "D",
     timeSignature: "4/4",
     tempo: 60,
-    jianpu: `1=D  4/4
-Tempo: 60 BPM (or slower — hold each note as long as you can)
-
-1 - - - | 1 - - - | 0 0 0 0 |
+    jianpu: `1 - - - | 1 - - - | 0 0 0 0 |
 2 - - - | 2 - - - | 0 0 0 0 |
 3 - - - | 3 - - - | 0 0 0 0 |
 4 - - - | 4 - - - | 0 0 0 0 |
@@ -81,10 +69,7 @@ Tempo: 60 BPM (or slower — hold each note as long as you can)
     key: "D",
     timeSignature: "4/4",
     tempo: 60,
-    jianpu: `1=D  4/4
-Tempo: 60 BPM
-
-1 - 2 - | 3 - 4 - | 5 - - - | 0 - - - ||`,
+    jianpu: `1 - 2 - | 3 - 4 - | 5 - - - | 0 - - - ||`,
     description: "Walk up the scale slowly from Do to Sol.",
     audioPath: "/audio/level-1/02-scale-walk-ascending.ogg",
   },
@@ -95,9 +80,7 @@ Tempo: 60 BPM
     title: "Scale Walk (Descending)",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-5 - 4 - | 3 - 2 - | 1 - - - | 0 - - - ||`,
+    jianpu: `5 - 4 - | 3 - 2 - | 1 - - - | 0 - - - ||`,
     description: "Walk down the scale from Sol to Do.",
     audioPath: "/audio/level-1/03-scale-walk-descending.ogg",
   },
@@ -108,9 +91,7 @@ Tempo: 60 BPM
     title: "Scale Up and Down",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1 - 2 - | 3 - 4 - | 5 - - - | 0 0 0 0 |
+    jianpu: `1 - 2 - | 3 - 4 - | 5 - - - | 0 0 0 0 |
 5 - 4 - | 3 - 2 - | 1 - - - | 0 0 0 0 ||`,
     description: "Combine ascending and descending scale practice.",
     audioPath: "/audio/level-1/04-scale-up-and-down.ogg",
@@ -122,9 +103,7 @@ Tempo: 60 BPM
     title: "Step Patterns",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1 2 1 2 | 3 4 3 4 | 5 4 5 4 | 3 2 3 2 |
+    jianpu: `1 2 1 2 | 3 4 3 4 | 5 4 5 4 | 3 2 3 2 |
 1 - - - | 0 0 0 0 ||`,
     description: "Practice stepwise motion between adjacent notes.",
     audioPath: "/audio/level-1/05-step-patterns.ogg",
@@ -136,9 +115,7 @@ Tempo: 60 BPM
     title: "Skip Patterns",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1 3 1 3 | 2 4 2 4 | 3 5 3 5 | 1 - - - ||`,
+    jianpu: `1 3 1 3 | 2 4 2 4 | 3 5 3 5 | 1 - - - ||`,
     description: "Practice skipping between notes (intervals of a third).",
     audioPath: "/audio/level-1/06-skip-patterns.ogg",
   },
@@ -149,9 +126,7 @@ Tempo: 60 BPM
     title: "Simple Tonguing Practice",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1 1 1 1 | 2 2 2 2 | 3 3 3 3 | 4 4 4 4 |
+    jianpu: `1 1 1 1 | 2 2 2 2 | 3 3 3 3 | 4 4 4 4 |
 5 5 5 5 | 4 4 4 4 | 3 3 3 3 | 2 2 2 2 |
 1 - - - ||`,
     description:
@@ -168,10 +143,7 @@ Tempo: 60 BPM
     key: "D",
     timeSignature: "4/4",
     tempo: 60,
-    jianpu: `1=D  4/4
-Tempo: 60 BPM
-
-5, - - - | 6, - - - | 7, - - - | 1 - - - |
+    jianpu: `5, - - - | 6, - - - | 7, - - - | 1 - - - |
 2 - - - | 3 - - - | 4 - - - | 5 - - - |
 6 - - - | 7 - - - | 1' - - - | 0 - - - ||`,
     description: "Long tones through the full scale from low Sol to high Do.",
@@ -184,9 +156,7 @@ Tempo: 60 BPM
     title: "Pentatonic Scale Patterns",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-1 2 3 5 | 6 - - - | 6 5 3 2 | 1 - - - |
+    jianpu: `1 2 3 5 | 6 - - - | 6 5 3 2 | 1 - - - |
 1 3 5 6 | 5 3 2 1 | 2 3 5 6 | 1 - - - ||`,
     description: "Practice the pentatonic scale in various patterns.",
     audioPath: "/audio/level-2/02-pentatonic-patterns.ogg",
@@ -198,9 +168,7 @@ Tempo: 60 BPM
     title: "Octave Jumps",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-5, - 5 - | 6, - 6 - | 7, - 7 - | 1 - 1' - |
+    jianpu: `5, - 5 - | 6, - 6 - | 7, - 7 - | 1 - 1' - |
 1' - 1 - | 7 - 7, - | 6 - 6, - | 5 - 5, - ||`,
     description: "Practice jumping between octaves on the same note.",
     audioPath: "/audio/level-2/03-octave-jumps.ogg",
@@ -212,9 +180,7 @@ Tempo: 60 BPM
     title: "Tonguing on Eighth Notes",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `1=D  2/4
-
-1 2 | 3 4 | 5 6 | 7 1' |
+    jianpu: `1 2 | 3 4 | 5 6 | 7 1' |
 1' 7 | 6 5 | 4 3 | 2 1 ||`,
     description:
       'Tongue each note with "tu". Two notes per beat.',
@@ -229,10 +195,7 @@ Tempo: 60 BPM
     title: "Dynamic Long Tones",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-pp        mf        ff        mf        pp
-
-1 - - - - - - - | 2 - - - - - - - |
+    jianpu: `1 - - - - - - - | 2 - - - - - - - |
 3 - - - - - - - | 5 - - - - - - - |
 6 - - - - - - - ||`,
     description:
@@ -246,9 +209,7 @@ pp        mf        ff        mf        pp
     title: "Pentatonic Patterns",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `1=D  2/4
-
-1 2 | 3 5 | 6 5 | 3 2 |
+    jianpu: `1 2 | 3 5 | 6 5 | 3 2 |
 1 3 | 5 6 | 5 3 | 2 1 |
 6, 1 | 2 3 | 5 6 | 5 - ||`,
     description: "Practice pentatonic patterns in 2/4 time.",
@@ -261,9 +222,7 @@ pp        mf        ff        mf        pp
     title: "Two-Octave Scale Run",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-5, 6, 7, 1 | 2 3 4 5 | 6 7 1' - | 0 0 0 0 |
+    jianpu: `5, 6, 7, 1 | 2 3 4 5 | 6 7 1' - | 0 0 0 0 |
 1' 7 6 5 | 4 3 2 1 | 7, 6, 5, - | 0 0 0 0 ||`,
     description: "Full two-octave scale ascending and descending.",
     audioPath: "/audio/level-3/03-two-octave-scale.ogg",
@@ -275,9 +234,7 @@ pp        mf        ff        mf        pp
     title: "Dotted Rhythm Patterns",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `1=D  2/4
-
-1. 2 | 3. 5 | 6. 5 | 3 - |
+    jianpu: `1. 2 | 3. 5 | 6. 5 | 3 - |
 5. 6 | 5. 3 | 2. 1 | 6, - ||`,
     description:
       'Practice dotted rhythms creating a "long-short" swing feel.',
@@ -290,9 +247,7 @@ pp        mf        ff        mf        pp
     title: "Grace Note Practice",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-
-(2)1 - - - | (1)2 - - - | (2)3 - - - | (3)2 - - - |
+    jianpu: `(2)1 - - - | (1)2 - - - | (2)3 - - - | (3)2 - - - |
 (6)5 - - - | (5)6 - - - | (2)1 - - - ||`,
     description:
       "Numbers in parentheses are grace notes -- play them very quickly before the main note.",
@@ -307,10 +262,7 @@ pp        mf        ff        mf        pp
     title: "Vibrato Long Tones",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-Hold each note for 2 full bars. Add vibrato (~4 pulses/sec):
-
-1 - - - - - - - | 2 - - - - - - - |
+    jianpu: `1 - - - - - - - | 2 - - - - - - - |
 3 - - - - - - - | 5 - - - - - - - |
 6 - - - - - - - | 1' - - - - - - - ||`,
     description:
@@ -325,10 +277,7 @@ Hold each note for 2 full bars. Add vibrato (~4 pulses/sec):
     key: "D",
     timeSignature: "4/4",
     tempo: 80,
-    jianpu: `1=D  4/4
-tu-ku-tu-ku on each note. Start at 80 BPM:
-
-1 1 1 1 | 2 2 2 2 | 3 3 3 3 | 5 5 5 5 |
+    jianpu: `1 1 1 1 | 2 2 2 2 | 3 3 3 3 | 5 5 5 5 |
 6 6 6 6 | 5 5 5 5 | 3 3 3 3 | 2 2 2 2 |
 1 1 1 1 | 1 - - - ||`,
     description:
@@ -342,10 +291,7 @@ tu-ku-tu-ku on each note. Start at 80 BPM:
     title: "Trill Practice",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-tr = trill between the written note and the note above:
-
-1 tr - - | 2 tr - - | 3 tr - - | 5 tr - - |
+    jianpu: `1 tr - - | 2 tr - - | 3 tr - - | 5 tr - - |
 6 tr - - | 5 tr - - | 3 tr - - | 1 tr - - ||`,
     description:
       "Hold each trill for 3 beats. Start with slow trills and increase speed.",
@@ -358,11 +304,7 @@ tr = trill between the written note and the note above:
     title: "Ornament Combinations",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `1=D  2/4
-(d) = \u53E0\u97F3 (upper grace note before main note)
-(da) = \u6253\u97F3 (percussive finger tap)
-
-(d)1 - | (d)2 - | (d)3 - | (d)5 - |
+    jianpu: `(d)1 - | (d)2 - | (d)3 - | (d)5 - |
 (da)6 5 | (da)5 3 | (da)3 2 | (da)1 - ||`,
     description:
       "First half: practice \u53E0\u97F3 on held notes. Second half: practice \u6253\u97F3 on moving passages.",
@@ -375,9 +317,7 @@ tr = trill between the written note and the note above:
     title: "Sixteenth Note Patterns",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `1=D  2/4
-
-1 2 3 2 | 1 - | 3 5 6 5 | 3 - |
+    jianpu: `1 2 3 2 | 1 - | 3 5 6 5 | 3 - |
 5 6 1' 6 | 5 3 | 2 3 5 3 | 2 - ||`,
     description:
       "Groups of four sixteenth notes per beat. Keep fingers close to the holes for speed.",
@@ -392,10 +332,7 @@ tr = trill between the written note and the note above:
     title: "Triple Tonguing Drill",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `1=D  2/4
-tu-tu-ku pattern on triplets:
-
-1 1 1  2 2 2 | 3 3 3  5 5 5 | 6 6 6  5 5 5 | 3 3 3  2 2 2 |
+    jianpu: `1 1 1  2 2 2 | 3 3 3  5 5 5 | 6 6 6  5 5 5 | 3 3 3  2 2 2 |
 1 1 1  1 - ||`,
     description: "Practice the tu-tu-ku pattern on triplet groupings.",
     audioPath: "/audio/level-5/triple-tonguing-drill.ogg",
@@ -407,10 +344,7 @@ tu-tu-ku pattern on triplets:
     title: "Slide Practice",
     key: "D",
     timeSignature: "4/4",
-    jianpu: `1=D  4/4
-\u2197 = upward slide into note, \u2198 = downward slide
-
-1 - \u21973 - | 3 - \u21975 - | 5 - \u21976 - | 6 - \u21985 - |
+    jianpu: `1 - \u21973 - | 3 - \u21975 - | 5 - \u21976 - | 6 - \u21985 - |
 5 - \u21983 - | 3 - \u21981 - ||`,
     description: "Practice upward and downward slides between notes.",
     audioPath: "/audio/level-5/slide-practice.ogg",
@@ -422,10 +356,7 @@ tu-tu-ku pattern on triplets:
     title: "\u6563\u677F Free Time Exercise",
     key: "D",
     timeSignature: "\u6563\u677F",
-    jianpu: `1=D  \u6563\u677F
-Play freely, stretch and compress time:
-
-5, - - 6, 1 | 2 3 - - - | 5 - 6 5 3 | 2 - - - |
+    jianpu: `5, - - 6, 1 | 2 3 - - - | 5 - 6 5 3 | 2 - - - |
 1 - - - 6, | 5, - - - - ||`,
     description:
       "No metronome. Feel each note. Breathe naturally.",

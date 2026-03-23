@@ -53,6 +53,9 @@ function SongCard({ song }: { song: Song }) {
       <TempoGuide
         content={song.jianpu}
         tempo={song.tempo}
+        title={titles.join(" / ")}
+        keySignature={song.key}
+        timeSignature={song.timeSignature}
         className="rounded-lg p-4 overflow-x-auto my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
       />
@@ -91,6 +94,9 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
       <TempoGuide
         content={exercise.jianpu}
         tempo={exercise.tempo}
+        title={exercise.title}
+        keySignature={exercise.key}
+        timeSignature={exercise.timeSignature}
         className="rounded-lg p-4 overflow-x-auto my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
       />

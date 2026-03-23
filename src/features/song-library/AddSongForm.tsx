@@ -138,7 +138,7 @@ export function AddSongForm({ onClose }: { onClose: () => void }) {
           onChange={(e) => setJianpu(e.target.value)}
           className={`${inputClass} font-mono`}
           style={{ ...inputStyle, minHeight: "120px" }}
-          placeholder={`Song Title\n1=D  4/4\n\n1 2 3 4 | 5 - - - ||`}
+          placeholder={`1 2 3 4 | 5 - - - |\n5 3 2 1 | 6 - - - ||`}
           required
         />
       </div>
