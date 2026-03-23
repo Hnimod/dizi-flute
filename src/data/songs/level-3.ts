@@ -10,12 +10,12 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "2/4",
     tempo: 72,
-    jianpu: `3 3 | [ 5_ 6_ ] [ 1'_ 6_ ] | 5 - | [ 5_ 6_ ] [ 1'_ 6_ ] |
-5 - | 5 3 | [ 5_ 6_ ] [ 5_ 3_ ] | 2 - |
-[ 1_ 6,_ ] | [ 5,_ 6,_ ] 1 - | 2 3 | [ 2_ 1_ ] [ 6,_ 5,_ ] |
-6, 1 | 2 - | 3 5 | [ 3_ 2_ ] [ 1_ 2_ ] |
-3 - | 5 3 | [ 2_ 3_ ] [ 5_ 3_ ] | 2 - |
-[ 1_ 6,_ ] | 1 5, | 6, - ||`,
+    jianpu: `3 3 | ( [ 5_ 6_ ] [ 1'_ 6_ ] ) | 5 - V | ( [ 5_ 6_ ] [ 1'_ 6_ ] ) |
+5 - V | ( 5 3 ) | ( [ 5_ 6_ ] [ 5_ 3_ ] ) | 2 - V |
+[ 1_ 6,_ ] | ( [ 5,_ 6,_ ] 1 ) - V | ( 2 3 ) | ( [ 2_ 1_ ] [ 6,_ 5,_ ] ) |
+( 6, 1 ) | 2 - V | ( 3 5 ) | ( [ 3_ 2_ ] [ 1_ 2_ ] ) |
+3 - V | ( 5 3 ) | ( [ 2_ 3_ ] [ 5_ 3_ ] ) | 2 - V |
+[ 1_ 6,_ ] | ( 1 5, ) | 6, - ||`,
     description:
       "The most famous Chinese folk song. Pentatonic, lyrical, beautiful. Jiangsu version.",
     origin: "Jiangsu folk song",
@@ -29,10 +29,10 @@ export const level3Songs: Song[] = [
     key: "G",
     timeSignature: "2/4",
     tempo: 108,
-    jianpu: `5 5 | 6 5 | 3 5 | [ 6_ 1'_ ] | 5 - |
-3 2 | 3 5 - | 2 1 | 6, 1 | 2 - |
-5 5 | 6 5 | 3 5 | [ 6_ 1'_ ] | 5 - |
-3 2 | [ 1_ 6,_ ] | 5, - - ||`,
+    jianpu: `5 5 | ( 6 5 ) | ( 3 5 ) | [ 6_ 1'_ ] | 5 - V |
+( 3 2 ) | ( 3 5 ) - V | ( 2 1 ) | ( 6, 1 ) | 2 - V |
+5 5 | ( 6 5 ) | ( 3 5 ) | [ 6_ 1'_ ] | 5 - V |
+( 3 2 ) | [ 1_ 6,_ ] | 5, - - ||`,
     description: "A famous Sichuan folk song about love. Lively and joyful.",
     origin: "Sichuan folk song",
   },
@@ -45,10 +45,10 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "2/4",
     tempo: 100,
-    jianpu: `[ 0 5_ ] 3 | 5 6 | [ 1'_ 6_ ] | 5 - | [ 0 5_ ] 3 | 5 6 | 5 - |
-3 5 | 6 5 | 3 2 | 1 - | 6, 1 | 2 3 | 2 - |
-[ 0 5_ ] 3 | 5 6 | [ 1'_ 6_ ] | 5 - | [ 0 5_ ] 3 | 5 6 | 5 - |
-3 2 | [ 1_ 6,_ ] | [ 5,_ 6,_ ] | 1 - - ||`,
+    jianpu: `[ 0_ 5_ ] 3 | ( 5 6 ) | [ 1'_ 6_ ] | 5 - V | [ 0_ 5_ ] 3 | ( 5 6 ) | 5 - V |
+( 3 5 ) | ( 6 5 ) | ( 3 2 ) | 1 - V | ( 6, 1 ) | ( 2 3 ) | 2 - V |
+[ 0_ 5_ ] 3 | ( 5 6 ) | [ 1'_ 6_ ] | 5 - V | [ 0_ 5_ ] 3 | ( 5 6 ) | 5 - V |
+( 3 2 ) | [ 1_ 6,_ ] | [ 5,_ 6,_ ] | 1 - - ||`,
     description:
       "A patriotic folk song from the 1940s. Warm and uplifting melody.",
     origin: "Chinese patriotic song, 1940s",
@@ -61,10 +61,10 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "3/4",
     tempo: 80,
-    jianpu: `6, - 6, | 3 - 2 | 3 - 1 | 6, - - |
-0 - 6, | 5 - 6 | 3 - - | 3 - - |
-0 - 6 | 6 - 5 | 3 - 2 | 3 - 1 |
-6, - 1 | 2 - 1 | 6, - - | 6, - - ||`,
+    jianpu: `6, - 6, | 3 - 2 | 3 - 1 | 6, - - V |
+0 - 6, | 5 - 6 | 3 - - | 3 - - V |
+0 - 6 | ( 6 - ) ( 5 ) | ( 3 - ) ( 2 ) | ( 3 - ) ( 1 ) |
+( 6, - ) ( 1 ) | ( 2 - ) ( 1 ) | 6, - - | 6, - - ||`,
     description:
       "An English folk ballad that sounds gorgeous on dizi. In 3/4 time.",
     origin: "English folk ballad",
@@ -78,10 +78,10 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "4/4",
     tempo: 72,
-    jianpu: `5 3 5 | 1' - - | [ 6_ 1'_ ] 6 | 5 - - |
-[ 5_ 6,_ ] 1 | 2 - 1 | 2 - - | 0 - - |
-5 3 5 | 1' - 7 | [ 6_ 1'_ ] 6 | 5 - - |
-5 2 3 | 1 - - | 1 - - | 0 - - ||`,
+    jianpu: `( 5 3 5 ) | 1' - - V | ( [ 6_ 1'_ ] 6 ) | 5 - - V |
+( [ 5_ 6,_ ] 1 ) | ( 2 - 1 ) | 2 - - | 0 - - V |
+( 5 3 5 ) | ( 1' - 7 ) | ( [ 6_ 1'_ ] 6 ) | 5 - - V |
+( 5 2 3 ) | 1 - - | 1 - - | 0 - - ||`,
     description:
       'Based on "Dreaming of Home and Mother" by J.P. Ordway. One of China\'s most cherished songs.',
     origin: "Li Shutong / J.P. Ordway",
@@ -94,10 +94,10 @@ export const level3Songs: Song[] = [
     titleEnglish: "Little Swallow",
     key: "D",
     timeSignature: "2/4",
-    jianpu: `3 5 | 5 - | 3 5 | 1' - |
-6 1' | 6 5 | 3 1 | 2 - |
-2 3 | 4 3 | 2 - | 5 3 |
-4 2 | 1 - ||`,
+    jianpu: `( 3 5 ) | 5 - V | ( 3 5 ) | 1' - V |
+( 6 1' ) | ( 6 5 ) | ( 3 1 ) | 2 - V |
+( 2 3 ) | ( 4 3 ) | 2 - V | ( 5 3 ) |
+( 4 2 ) | 1 - ||`,
     description:
       "A classic Chinese children's song from the 1950s film. Very singable melody.",
     origin: "Chinese film song, 1950s",
@@ -110,9 +110,9 @@ export const level3Songs: Song[] = [
     titleEnglish: "Yi Dance (Simplified)",
     key: "D",
     timeSignature: "3/4",
-    jianpu: `3 2 1 | 6, - - | 1 2 3 | 2 - - |
-3 5 6 | 5 3 2 | [ 1_ 6,_ ] 1 | 2 - - |
-3 2 1 | 6, - 5, | 6, 1 2 | 1 - - ||`,
+    jianpu: `( 3 2 1 ) | 6, - - V | ( 1 2 3 ) | 2 - - V |
+( 3 5 6 ) | ( 5 3 2 ) | [ 1_ 6,_ ] 1 | 2 - - V |
+( 3 2 1 ) | ( 6, - 5, ) | ( 6, 1 2 ) | 1 - - ||`,
     description:
       "A simplified version of a Yi ethnic minority melody. Great introduction to ethnic Chinese music.",
     origin: "Yi ethnic minority melody",
@@ -127,12 +127,12 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "4/4",
     tempo: 66,
-    jianpu: `0 0 0 3 | 5 - [ 6_ 5_ ] | 3 - [ 2_ 1_ ] | 2 - - - |
-0 0 0 1 | 2 - [ 3_ 5_ ] | 5 - [ 3_ 2_ ] | 3 - - - |
-0 0 0 3 | 5 - [ 6_ 5_ ] | 3 - [ 2_ 1_ ] | 2 - - - |
-0 0 0 5 | 6 - [ 1'_ 6_ ] | 5 - [ 3_ 5_ ] | 6 - - - |
-1' - [ 6_ 5_ ] | 6 - [ 5_ 3_ ] | 2 - [ 3_ 2_ ] | 1 - - - |
-0 0 0 3 | 5 - [ 6_ 5_ ] | 3 - [ 2_ 1_ ] | 2 - - - |
+    jianpu: `0 0 0 3 | 5 - [ 6_ 5_ ] | 3 - [ 2_ 1_ ] | 2 - - - V |
+0 0 0 1 | 2 - [ 3_ 5_ ] | 5 - [ 3_ 2_ ] | 3 - - - V |
+0 0 0 3 | 5 - [ 6_ 5_ ] | 3 - [ 2_ 1_ ] | 2 - - - V |
+0 0 0 5 | 6 - [ 1'_ 6_ ] | 5 - [ 3_ 5_ ] | 6 - - - V |
+1' - ( [ 6_ 5_ ] ) | 6 - ( [ 5_ 3_ ] ) | 2 - ( [ 3_ 2_ ] ) | 1 - - - V |
+0 0 0 3 | 5 - [ 6_ 5_ ] | 3 - [ 2_ 1_ ] | 2 - - - V |
 0 0 0 5 | 3 - [ 2_ 1_ ] | 6, - [ 1_ 2_ ] | 1 - - - ||`,
     description:
       "Based on Su Shi's Song dynasty poem. Teresa Teng's 1983 recording made it immortal.",
@@ -148,12 +148,12 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "4/4",
     tempo: 66,
-    jianpu: `3 - [ 5_ 6_ ] | 5 - - - | 3 - [ 2_ 3_ ] | 2 - - - |
-6, - [ 1_ 2_ ] | 1 - - - | 6, - [ 5,_ 6,_ ] | 1 - - - |
-3 - [ 5_ 6_ ] | 5 - - - | 3 - [ 2_ 3_ ] | 5 - - - |
-6 - [ 5_ 3_ ] | 2 - - - | 1 - [ 6,_ 1_ ] | 2 - - - |
-3 - [ 5_ 6_ ] | 5 - - - | 3 - [ 2_ 3_ ] | 2 - - - |
-6, - [ 1_ 2_ ] | 1 - - - | 6, - [ 5,_ 6,_ ] | 1 - - - ||`,
+    jianpu: `3 - ( [ 5_ 6_ ] ) | 5 - - - V | 3 - ( [ 2_ 3_ ] ) | 2 - - - V |
+6, - ( [ 1_ 2_ ] ) | 1 - - - V | 6, - ( [ 5,_ 6,_ ] ) | 1 - - - V |
+3 - ( [ 5_ 6_ ] ) | 5 - - - V | 3 - ( [ 2_ 3_ ] ) | 5 - - - V |
+6 - ( [ 5_ 3_ ] ) | 2 - - - V | 1 - ( [ 6,_ 1_ ] ) | 2 - - - V |
+3 - ( [ 5_ 6_ ] ) | 5 - - - V | 3 - ( [ 2_ 3_ ] ) | 2 - - - V |
+6, - ( [ 1_ 2_ ] ) | 1 - - - V | 6, - ( [ 5,_ 6,_ ] ) | 1 - - - ||`,
     description:
       "By Muneyuki Sou. Extremely popular among Vietnamese s\u00E1o tr\u00FAc players. Pentatonic, gentle, melancholic.",
     origin: "Muneyuki Sou (Japanese ocarina)",
@@ -168,12 +168,12 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "2/4",
     tempo: 108,
-    jianpu: `3 5 | 6 5 | 3 2 | 1 - |
-6, 1 | 2 3 | 5 3 | 2 - |
-2 3 | 5 6 | 5 3 | 2 1 |
-6, 1 | 2 1 | [ 6,_ 5,_ ] | 6, - |
-3 5 | 6 5 | 3 2 | 1 - |
-6, 1 | 2 3 | 2 1 | 6, - ||`,
+    jianpu: `( 3 5 ) | ( 6 5 ) | ( 3 2 ) | 1 - V |
+( 6, 1 ) | ( 2 3 ) | ( 5 3 ) | 2 - V |
+( 2 3 ) | ( 5 6 ) | ( 5 3 ) | ( 2 1 ) |
+( 6, 1 ) | ( 2 1 ) | [ 6,_ 5,_ ] | 6, - V |
+( 3 5 ) | ( 6 5 ) | ( 3 2 ) | 1 - V |
+( 6, 1 ) | ( 2 3 ) | ( 2 1 ) | 6, - ||`,
     description:
       'Opening theme of "New Legend of White Snake" (1992). Joyful, lively.',
     origin: "New Legend of White Snake TV (1992)",
@@ -187,10 +187,10 @@ export const level3Songs: Song[] = [
     key: "C",
     timeSignature: "2/4",
     tempo: 90,
-    jianpu: `[ 2_ 2_ ] [ 3_ 2_ ] | 1 - 6, - | [ 1_ 2_ ] [ 3_ 5_ ] | 3 - 2 - |
-[ 6,_ 1_ ] [ 2_ 3_ ] | 2 - 1 - | [ 6,_ 1_ ] [ 6,_ 5,_ ] | 6, - - - |
-[ 2_ 2_ ] [ 3_ 2_ ] | 1 - 6, - | [ 1_ 2_ ] [ 3_ 5_ ] | 3 - 2 - |
-[ 6,_ 1_ ] [ 2_ 1_ ] | 6, - 5, - | 6, - - - | 0 - - - ||`,
+    jianpu: `( [ 2_ 2_ ] [ 3_ 2_ ] ) | 1 - 6, - V | ( [ 1_ 2_ ] [ 3_ 5_ ] ) | 3 - 2 - V |
+( [ 6,_ 1_ ] [ 2_ 3_ ] ) | 2 - 1 - V | ( [ 6,_ 1_ ] [ 6,_ 5,_ ] ) | 6, - - - V |
+( [ 2_ 2_ ] [ 3_ 2_ ] ) | 1 - 6, - V | ( [ 1_ 2_ ] [ 3_ 5_ ] ) | 3 - 2 - V |
+( [ 6,_ 1_ ] [ 2_ 1_ ] ) | 6, - 5, - | 6, - - - | 0 - - - ||`,
     description:
       "Northern Vietnamese folk song (d\u00E2n ca B\u1EAFc B\u1ED9). An iconic pentatonic melody.",
     origin: "Northern Vietnamese folk song",
@@ -204,10 +204,10 @@ export const level3Songs: Song[] = [
     key: "C",
     timeSignature: "4/4",
     tempo: 72,
-    jianpu: `[ 1_ 1_ ] [ 5_ 4_ ] | [ 6_ 5_ ] 5 - | [ 3_ 3_ ] [ 3_ 5_ ] | 1 - - - |
-[ 5_ 3_ ] [ 5_ 6_ ] | 5 - [ 3_ 2_ ] | [ 1_ 6,_ ] [ 1_ 2_ ] | 1 - - - |
-[ 1_ 1_ ] [ 5_ 4_ ] | [ 6_ 5_ ] 5 - | [ 3_ 3_ ] [ 3_ 5_ ] | 1 - - - |
-[ 5_ 3_ ] [ 2_ 1_ ] | 6, - 5, - | [ 6,_ 1_ ] [ 2_ 1_ ] | 6, - - - ||`,
+    jianpu: `( [ 1_ 1_ ] [ 5_ 4_ ] ) | ( [ 6_ 5_ ] ) 5 - V | ( [ 3_ 3_ ] [ 3_ 5_ ] ) | 1 - - - V |
+( [ 5_ 3_ ] [ 5_ 6_ ] ) | 5 - ( [ 3_ 2_ ] ) | ( [ 1_ 6,_ ] [ 1_ 2_ ] ) | 1 - - - V |
+( [ 1_ 1_ ] [ 5_ 4_ ] ) | ( [ 6_ 5_ ] ) 5 - V | ( [ 3_ 3_ ] [ 3_ 5_ ] ) | 1 - - - V |
+( [ 5_ 3_ ] [ 2_ 1_ ] ) | 6, - 5, - V | ( [ 6,_ 1_ ] [ 2_ 1_ ] ) | 6, - - - ||`,
     description:
       "Quan h\u1ECD B\u1EAFc Ninh folk song. UNESCO Intangible Cultural Heritage. Hauntingly lyrical.",
     origin: "Quan h\u1ECD B\u1EAFc Ninh folk song",
@@ -221,10 +221,10 @@ export const level3Songs: Song[] = [
     key: "C",
     timeSignature: "2/4",
     tempo: 110,
-    jianpu: `[ 5_ 3_ ] [ 2_ 1_ ] | [ 2_ 3_ ] 5 - | [ 6_ 5_ ] [ 3_ 2_ ] | 1 - 6, - |
-[ 5,_ 6,_ ] [ 1_ 2_ ] | [ 3_ 5_ ] 3 - | [ 2_ 1_ ] [ 6,_ 1_ ] | 2 - - - |
-[ 5_ 3_ ] [ 2_ 1_ ] | [ 2_ 3_ ] 5 - | [ 6_ 5_ ] [ 3_ 2_ ] | 1 - 6, - |
-[ 5,_ 6,_ ] [ 1_ 2_ ] | [ 1_ 6,_ ] 5, - | 6, - - - | 0 - - - ||`,
+    jianpu: `( [ 5_ 3_ ] [ 2_ 1_ ] ) | ( [ 2_ 3_ ] ) 5 - V | ( [ 6_ 5_ ] [ 3_ 2_ ] ) | 1 - 6, - V |
+( [ 5,_ 6,_ ] [ 1_ 2_ ] ) | ( [ 3_ 5_ ] ) 3 - V | ( [ 2_ 1_ ] [ 6,_ 1_ ] ) | 2 - - - V |
+( [ 5_ 3_ ] [ 2_ 1_ ] ) | ( [ 2_ 3_ ] ) 5 - V | ( [ 6_ 5_ ] [ 3_ 2_ ] ) | 1 - 6, - V |
+( [ 5,_ 6,_ ] [ 1_ 2_ ] ) | ( [ 1_ 6,_ ] ) 5, - | 6, - - - | 0 - - - ||`,
     description:
       "Northern Vietnamese folk song. Lively, cheerful, widely known.",
     origin: "Northern Vietnamese folk song",
@@ -238,10 +238,10 @@ export const level3Songs: Song[] = [
     key: "D",
     timeSignature: "2/4",
     tempo: 120,
-    jianpu: `[ 5_ 5_ ] [ 6_ 5_ ] | [ 3_ 2_ ] 1 - | [ 2_ 3_ ] [ 5_ 6_ ] | [ 5_ 3_ ] 2 - |
-[ 1_ 2_ ] [ 3_ 5_ ] | [ 6_ 5_ ] 3 - | [ 2_ 1_ ] [ 6,_ 1_ ] | 2 - - - |
-[ 5_ 5_ ] [ 6_ 5_ ] | [ 3_ 2_ ] 1 - | [ 2_ 3_ ] [ 5_ 6_ ] | [ 5_ 3_ ] 2 - |
-[ 1_ 6,_ ] [ 5,_ 6,_ ] | [ 1_ 2_ ] 1 - | 6, - - - | 0 - - - ||`,
+    jianpu: `( [ 5_ 5_ ] [ 6_ 5_ ] ) | ( [ 3_ 2_ ] ) 1 - V | ( [ 2_ 3_ ] [ 5_ 6_ ] ) | ( [ 5_ 3_ ] ) 2 - V |
+( [ 1_ 2_ ] [ 3_ 5_ ] ) | ( [ 6_ 5_ ] ) 3 - V | ( [ 2_ 1_ ] [ 6,_ 1_ ] ) | 2 - - - V |
+( [ 5_ 5_ ] [ 6_ 5_ ] ) | ( [ 3_ 2_ ] ) 1 - V | ( [ 2_ 3_ ] [ 5_ 6_ ] ) | ( [ 5_ 3_ ] ) 2 - V |
+( [ 1_ 6,_ ] [ 5,_ 6,_ ] ) | ( [ 1_ 2_ ] ) 1 - | 6, - - - | 0 - - - ||`,
     description:
       "Traditional Vietnamese folk song. Fast and cheerful. Great for developing articulation.",
     origin: "Vietnamese traditional folk song",
