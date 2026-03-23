@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { JianpuRenderer, parseToken } from "./JianpuRenderer";
+import { JianpuRenderer, parseToken } from "./jianpu";
 
 interface JianpuEditorProps {
   value: string;
