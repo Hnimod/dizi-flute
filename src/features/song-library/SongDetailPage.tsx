@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router";
 import { songs } from "@/data";
 import { VideoEmbed, JianpuEditor } from "@/shared/ui";
 import { UserVideos } from "@/features/lesson-viewer/UserVideos";
+import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
@@ -78,14 +79,39 @@ export function SongDetailPage() {
 
       <UserVideos itemId={song.id} />
 
-      {/* Jianpu builder with live preview */}
+      {/* Jianpu notation */}
       <div className="my-4">
-        <JianpuEditor
-          value={editableJianpu}
-          onChange={handleJianpuChange}
-          timeSignature={song.timeSignature}
-          onEditModeChange={setIsEditing}
-        />
+        {isEditing ? (
+          <JianpuEditor
+            value={editableJianpu}
+            onChange={handleJianpuChange}
+            timeSignature={song.timeSignature}
+            onEditModeChange={setIsEditing}
+            initialEditMode
+          />
+        ) : (
+          <>
+            <div className="flex justify-end mb-1">
+              <button
+                className="flex items-center gap-1 text-xs hover:opacity-80 transition-opacity"
+                style={{ color: "var(--color-text-secondary)" }}
+                onClick={() => setIsEditing(true)}
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Edit
+              </button>
+            </div>
+            <TempoGuide
+              content={editableJianpu}
+              tempo={song.tempo}
+              className="rounded-lg p-4 overflow-x-auto"
+              style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
+            />
+          </>
+        )}
         {isEditing && hasChanges && (
           <div className="flex items-center gap-2 mt-3">
             {isUserSong && (

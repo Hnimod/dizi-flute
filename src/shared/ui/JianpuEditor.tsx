@@ -6,6 +6,7 @@ interface JianpuEditorProps {
   onChange: (jianpu: string) => void;
   timeSignature: string;
   onEditModeChange?: (editing: boolean) => void;
+  initialEditMode?: boolean;
 }
 
 function buildNoteToken(
@@ -87,9 +88,10 @@ export function JianpuEditor({
   onChange,
   timeSignature,
   onEditModeChange,
+  initialEditMode = false,
 }: JianpuEditorProps) {
   const [tokens, setTokens] = useState<string[]>(() => parseToTokenArray(value));
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(initialEditMode);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [beamActive, setBeamActive] = useState(false);
   const [slurActive, setSlurActive] = useState(false);
