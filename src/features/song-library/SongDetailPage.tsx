@@ -23,6 +23,7 @@ export function SongDetailPage() {
 
   const isUserSong = song?.id.startsWith("user-song-");
   const [editableJianpu, setEditableJianpu] = useState(song?.jianpu ?? "");
+  const [isEditing, setIsEditing] = useState(false);
   const hasChanges = editableJianpu !== (song?.jianpu ?? "");
 
   const handleJianpuChange = useCallback((value: string) => {
@@ -86,8 +87,9 @@ export function SongDetailPage() {
           title={getTitle(song)}
           keySignature={song.key}
           tempo={song.tempo}
+          onEditModeChange={setIsEditing}
         />
-        {hasChanges && (
+        {isEditing && hasChanges && (
           <div className="flex items-center gap-2 mt-3">
             {isUserSong && (
               <button
