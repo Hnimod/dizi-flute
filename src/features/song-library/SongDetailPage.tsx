@@ -84,9 +84,6 @@ export function SongDetailPage() {
           value={editableJianpu}
           onChange={handleJianpuChange}
           timeSignature={song.timeSignature}
-          title={getTitle(song)}
-          keySignature={song.key}
-          tempo={song.tempo}
           onEditModeChange={setIsEditing}
         />
         {isEditing && hasChanges && (

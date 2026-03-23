@@ -5,9 +5,6 @@ interface JianpuEditorProps {
   value: string;
   onChange: (jianpu: string) => void;
   timeSignature: string;
-  title?: string;
-  keySignature?: string;
-  tempo?: number;
   onEditModeChange?: (editing: boolean) => void;
 }
 
@@ -89,9 +86,6 @@ export function JianpuEditor({
   value,
   onChange,
   timeSignature,
-  title,
-  keySignature,
-  tempo,
   onEditModeChange,
 }: JianpuEditorProps) {
   const [tokens, setTokens] = useState<string[]>(() => parseToTokenArray(value));
@@ -304,10 +298,6 @@ export function JianpuEditor({
         {tokens.length > 0 ? (
           <JianpuRenderer
             content={jianpuText}
-            title={title}
-            keySignature={keySignature}
-            timeSignature={timeSignature}
-            tempo={tempo}
             interactive={editMode}
             selectedTokenIdx={editMode ? selectedIdx : null}
             onTokenClick={editMode ? handleTokenClick : undefined}
