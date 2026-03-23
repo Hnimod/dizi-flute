@@ -7,6 +7,11 @@ interface JianpuRendererProps {
   keySignature?: string;
   timeSignature?: string;
   tempo?: number;
+  // Interactive editor props
+  interactive?: boolean;
+  selectedTokenIdx?: number | null;
+  onTokenClick?: (tokenIdx: number, x: number, y: number) => void;
+  onGapClick?: (insertIdx: number, x: number, y: number) => void;
 }
 
 export type Token =
@@ -221,6 +226,7 @@ interface LayoutItem {
   x: number;
   width: number;
   beatIndex: number | null;
+  tokenIdx: number;
   children?: LayoutItem[];
   groupType?: "beam" | "slur";
 }
@@ -228,6 +234,7 @@ interface LayoutItem {
 function layoutLine(
   tokens: Token[],
   beatCounter: { value: number },
+  tokenIdxOffset: number = 0,
 ): { items: LayoutItem[]; totalWidth: number } {
   const items: LayoutItem[] = [];
   let x = 0;
@@ -235,16 +242,15 @@ function layoutLine(
 
   while (i < tokens.length) {
     const token = tokens[i]!;
+    const ti = tokenIdxOffset + i;
 
     if (token.type === "slur-start") {
-      // Collect children inside slur
       const children: LayoutItem[] = [];
       i++;
       const slurX = x;
       while (i < tokens.length && tokens[i]!.type !== "slur-end") {
         const t = tokens[i]!;
         if (t.type === "beam-start") {
-          // Nested beam inside slur
           const beamChildren: LayoutItem[] = [];
           i++;
           const beamX = x;
@@ -252,9 +258,7 @@ function layoutLine(
             const bt = tokens[i]!;
             const w = CELL_BEAM_NOTE;
             beamChildren.push({
-              token: bt,
-              x: x + w / 2,
-              width: w,
+              token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
               beatIndex: isBeat(bt) ? beatCounter.value++ : null,
             });
             x += w;
@@ -262,19 +266,13 @@ function layoutLine(
           }
           i++; // skip beam-end
           children.push({
-            token: { type: "beam-start" },
-            x: beamX + (x - beamX) / 2,
-            width: x - beamX,
-            beatIndex: null,
-            children: beamChildren,
-            groupType: "beam",
+            token: { type: "beam-start" }, x: beamX + (x - beamX) / 2,
+            width: x - beamX, beatIndex: null, tokenIdx: ti, children: beamChildren, groupType: "beam",
           });
         } else {
           const w = cellWidth(t);
           children.push({
-            token: t,
-            x: x + w / 2,
-            width: w,
+            token: t, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
             beatIndex: isBeat(t) ? beatCounter.value++ : null,
           });
           x += w;
@@ -283,12 +281,8 @@ function layoutLine(
       }
       i++; // skip slur-end
       items.push({
-        token: { type: "slur-start" },
-        x: slurX + (x - slurX) / 2,
-        width: x - slurX,
-        beatIndex: null,
-        children,
-        groupType: "slur",
+        token: { type: "slur-start" }, x: slurX + (x - slurX) / 2,
+        width: x - slurX, beatIndex: null, tokenIdx: ti, children, groupType: "slur",
       });
     } else if (token.type === "beam-start") {
       const children: LayoutItem[] = [];
@@ -298,9 +292,7 @@ function layoutLine(
         const bt = tokens[i]!;
         const w = CELL_BEAM_NOTE;
         children.push({
-          token: bt,
-          x: x + w / 2,
-          width: w,
+          token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
           beatIndex: isBeat(bt) ? beatCounter.value++ : null,
         });
         x += w;
@@ -308,21 +300,15 @@ function layoutLine(
       }
       i++; // skip beam-end
       items.push({
-        token: { type: "beam-start" },
-        x: beamX + (x - beamX) / 2,
-        width: x - beamX,
-        beatIndex: null,
-        children,
-        groupType: "beam",
+        token: { type: "beam-start" }, x: beamX + (x - beamX) / 2,
+        width: x - beamX, beatIndex: null, tokenIdx: ti, children, groupType: "beam",
       });
     } else if (token.type === "slur-end" || token.type === "beam-end") {
       i++;
     } else {
       const w = cellWidth(token);
       items.push({
-        token,
-        x: x + w / 2,
-        width: w,
+        token, x: x + w / 2, width: w, tokenIdx: ti,
         beatIndex: isBeat(token) ? beatCounter.value++ : null,
       });
       x += w;
@@ -351,11 +337,20 @@ function cellWidth(token: Token): number {
   }
 }
 
+interface InteractiveOpts {
+  interactive?: boolean;
+  selectedTokenIdx?: number | null;
+  onTokenClick?: (tokenIdx: number, x: number, y: number) => void;
+  onGapClick?: (insertIdx: number, x: number, y: number) => void;
+  lineYOffset?: number;
+}
+
 function renderSvgItems(
   items: LayoutItem[],
   activeBeatIndex: number | undefined,
   elements: React.ReactNode[],
   keyPrefix: string,
+  opts?: InteractiveOpts,
 ) {
   for (let idx = 0; idx < items.length; idx++) {
     const item = items[idx]!;
@@ -407,7 +402,7 @@ function renderSvgItems(
 
     if (item.groupType === "slur" && item.children) {
       // Render children first
-      renderSvgItems(item.children, activeBeatIndex, elements, `${key}-s`);
+      renderSvgItems(item.children, activeBeatIndex, elements, `${key}-s`, opts);
       // Draw slur arc above
       const first = flatFirst(item.children);
       const last = flatLast(item.children);
@@ -428,7 +423,7 @@ function renderSvgItems(
       }
     } else if (item.groupType === "beam" && item.children) {
       // Render children
-      renderSvgItems(item.children, activeBeatIndex, elements, `${key}-b`);
+      renderSvgItems(item.children, activeBeatIndex, elements, `${key}-b`, opts);
       // Draw beam line
       const first = item.children[0];
       const last = item.children[item.children.length - 1];
@@ -474,7 +469,7 @@ function renderSvgItems(
         }
       }
     } else {
-      renderSvgToken(item, activeBeatIndex, elements, key);
+      renderSvgToken(item, activeBeatIndex, elements, key, opts);
     }
   }
 }
@@ -484,11 +479,17 @@ function renderSvgToken(
   activeBeatIndex: number | undefined,
   elements: React.ReactNode[],
   key: string,
+  opts?: InteractiveOpts,
 ) {
-  const { token, x, width, beatIndex } = item;
+  const { token, x, width, beatIndex, tokenIdx } = item;
   const isActive = beatIndex !== null && beatIndex === activeBeatIndex;
+  const isSelected = opts?.selectedTokenIdx === tokenIdx;
   const textColor = isActive ? "white" : "var(--color-text)";
   const secondaryColor = isActive ? "white" : "var(--color-text-secondary)";
+  const clickable = opts?.interactive && isBeat(token);
+  const clickHandler = clickable
+    ? () => opts.onTokenClick?.(tokenIdx, x, (opts.lineYOffset ?? 0) + Y_NOTE)
+    : undefined;
 
   // Active highlight background
   if (isActive) {
@@ -526,6 +527,24 @@ function renderSvgToken(
         );
       }
 
+      // Selection highlight
+      if (isSelected) {
+        elements.push(
+          <rect
+            key={`${key}-sel`}
+            x={x - width / 2}
+            y={Y_NOTE - 15}
+            width={width}
+            height={20}
+            rx={3}
+            fill="none"
+            stroke="var(--color-accent)"
+            strokeWidth="2"
+            strokeDasharray="3 2"
+          />,
+        );
+      }
+
       // Note number
       elements.push(
         <text
@@ -535,7 +554,9 @@ function renderSvgToken(
           textAnchor="middle"
           fontSize="16"
           fontWeight="600"
-          fill={textColor}
+          fill={isSelected ? "var(--color-accent)" : textColor}
+          style={clickable ? { cursor: "pointer" } : undefined}
+          onClick={clickHandler}
           {...beatAttr}
         >
           {token.value}
@@ -662,7 +683,9 @@ function renderSvgToken(
           textAnchor="middle"
           fontSize="16"
           fontWeight="600"
-          fill={secondaryColor}
+          fill={isSelected ? "var(--color-accent)" : secondaryColor}
+          style={clickable ? { cursor: "pointer" } : undefined}
+          onClick={clickHandler}
           {...beatAttr}
         >
           0
@@ -707,7 +730,9 @@ function renderSvgToken(
           textAnchor="middle"
           fontSize="16"
           fontWeight="600"
-          fill={secondaryColor}
+          fill={isSelected ? "var(--color-accent)" : secondaryColor}
+          style={clickable ? { cursor: "pointer" } : undefined}
+          onClick={clickHandler}
           {...beatAttr}
         >
           –
@@ -871,18 +896,28 @@ export function JianpuRenderer({
   keySignature,
   timeSignature,
   tempo,
+  interactive,
+  selectedTokenIdx,
+  onTokenClick,
+  onGapClick,
 }: JianpuRendererProps) {
   const notationLines = content.split("\n");
 
   const beatCounter = { value: 0 };
+  let tokenIdxOffset = 0;
 
   // Pre-compute layouts for all notation lines to find max width
   const lineLayouts: { items: LayoutItem[]; totalWidth: number; isEmpty: boolean }[] =
     notationLines.map((line) => {
       const trimmed = line.trim();
-      if (trimmed === "") return { items: [], totalWidth: 0, isEmpty: true };
+      if (trimmed === "") {
+        tokenIdxOffset++; // account for \n
+        return { items: [], totalWidth: 0, isEmpty: true };
+      }
       const rawTokens = trimmed.split(/\s+/).map(parseToken);
-      return { ...layoutLine(rawTokens, beatCounter), isEmpty: false };
+      const result = { ...layoutLine(rawTokens, beatCounter, tokenIdxOffset), isEmpty: false };
+      tokenIdxOffset += rawTokens.length + 1; // +1 for the implicit \n between lines
+      return result;
     });
 
   const maxWidth = Math.max(...lineLayouts.map((l) => l.totalWidth), 1);
@@ -911,7 +946,10 @@ export function JianpuRenderer({
         }
 
         const svgElements: React.ReactNode[] = [];
-        renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`);
+        const interOpts: InteractiveOpts | undefined = interactive
+          ? { interactive, selectedTokenIdx, onTokenClick, onGapClick, lineYOffset: lineIdx * LINE_HEIGHT }
+          : undefined;
+        renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
 
         return (
           <svg

@@ -1,9 +1,8 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { songs } from "@/data";
-import { VideoEmbed } from "@/shared/ui";
+import { VideoEmbed, JianpuEditor } from "@/shared/ui";
 import { UserVideos } from "@/features/lesson-viewer/UserVideos";
-import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
@@ -25,6 +24,10 @@ export function SongDetailPage() {
   const isUserSong = song?.id.startsWith("user-song-");
   const [editableJianpu, setEditableJianpu] = useState(song?.jianpu ?? "");
   const hasChanges = editableJianpu !== (song?.jianpu ?? "");
+
+  const handleJianpuChange = useCallback((value: string) => {
+    setEditableJianpu(value);
+  }, []);
 
   if (!song) {
     return (
@@ -74,37 +77,30 @@ export function SongDetailPage() {
 
       <UserVideos itemId={song.id} />
 
-      {/* Editable jianpu notation */}
+      {/* Jianpu builder with live preview */}
       <div className="my-4">
-        <label className="block text-sm font-medium mb-1" style={{ color: "var(--color-text-secondary)" }}>
-          Jianpu Notation
-        </label>
-        <textarea
+        <JianpuEditor
           value={editableJianpu}
-          onChange={(e) => setEditableJianpu(e.target.value)}
-          className="w-full font-mono text-sm rounded-lg p-3 resize-y"
-          style={{
-            backgroundColor: "var(--color-bg-secondary)",
-            color: "var(--color-text)",
-            border: "1px solid var(--color-border)",
-            minHeight: "100px",
-          }}
-          spellCheck={false}
+          onChange={handleJianpuChange}
+          timeSignature={song.timeSignature}
+          title={getTitle(song)}
+          keySignature={song.key}
+          tempo={song.tempo}
         />
         {hasChanges && (
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-3">
             {isUserSong && (
               <button
                 onClick={() => updateSong(song.id, { jianpu: editableJianpu })}
-                className="px-3 py-1 text-sm font-medium rounded-md text-white"
+                className="px-3 py-1.5 text-sm font-medium rounded-md text-white"
                 style={{ backgroundColor: "var(--color-accent)" }}
               >
-                Save
+                Save changes
               </button>
             )}
             <button
               onClick={() => setEditableJianpu(song.jianpu)}
-              className="px-3 py-1 text-sm font-medium rounded-md"
+              className="px-3 py-1.5 text-sm font-medium rounded-md"
               style={{ color: "var(--color-text-secondary)", border: "1px solid var(--color-border)" }}
             >
               Reset
@@ -112,17 +108,6 @@ export function SongDetailPage() {
           </div>
         )}
       </div>
-
-      {/* Live preview */}
-      <TempoGuide
-        content={editableJianpu}
-        tempo={song.tempo}
-        title={getTitle(song)}
-        keySignature={song.key}
-        timeSignature={song.timeSignature}
-        className="rounded-lg p-4 overflow-x-auto my-4"
-        style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
-      />
 
       {isUserSong && (
         <button
