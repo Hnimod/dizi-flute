@@ -885,7 +885,7 @@ function flatLast(items: LayoutItem[]): LayoutItem | undefined {
   return undefined;
 }
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function JianpuRenderer({
   content,
@@ -954,46 +954,64 @@ export function JianpuRenderer({
 
   // Track line changes for slide off/on
   const prevLineRef = useRef(activeLineRenderIdx);
-  const slidePhaseRef = useRef<"none" | "out" | "in">("none");
+  const [slidePhase, setSlidePhase] = useState<"none" | "out" | "reposition" | "in">("none");
   const prevPosRef = useRef({ x: hlX, y: hlY, w: hlW });
+  const newPosRef = useRef({ x: hlX, y: hlY, w: hlW });
 
-  // Detect line change
-  const lineChanged = activeLineRenderIdx >= 0 &&
-    prevLineRef.current >= 0 &&
-    prevLineRef.current !== activeLineRenderIdx;
+  useEffect(() => {
+    if (activeLineRenderIdx < 0) {
+      prevLineRef.current = -1;
+      return;
+    }
+    if (prevLineRef.current >= 0 && prevLineRef.current !== activeLineRenderIdx) {
+      // Line changed — start slide-out sequence
+      newPosRef.current = { x: hlX, y: hlY, w: hlW };
+      setSlidePhase("out");
 
-  if (lineChanged) {
-    // Keep previous position for the slide-out, switch to "out" phase
-    slidePhaseRef.current = "out";
-  } else if (slidePhaseRef.current === "out") {
-    // Beat changed again on the new line — switch to "in" phase
-    slidePhaseRef.current = "in";
-  } else if (slidePhaseRef.current === "in") {
-    // Next beat on the same new line — back to normal
-    slidePhaseRef.current = "none";
-  }
+      const t1 = setTimeout(() => {
+        // After slide-out completes, reposition off-left instantly
+        setSlidePhase("reposition");
+        requestAnimationFrame(() => {
+          // Next frame: slide in from left
+          setSlidePhase("in");
+          setTimeout(() => {
+            setSlidePhase("none");
+            prevPosRef.current = newPosRef.current;
+          }, transitionDur);
+        });
+      }, transitionDur);
 
-  if (activeLineRenderIdx >= 0) {
+      prevLineRef.current = activeLineRenderIdx;
+      return () => clearTimeout(t1);
+    }
     prevLineRef.current = activeLineRenderIdx;
-  }
+    prevPosRef.current = { x: hlX, y: hlY, w: hlW };
+  }, [activeLineRenderIdx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Compute highlight style based on slide phase
-  const phase = slidePhaseRef.current;
   const hlStyle = (() => {
-    if (phase === "out") {
-      // Slide off to the right at karaoke pace, using the PREVIOUS line Y
+    if (slidePhase === "out") {
+      // Slide off to the right at karaoke pace on the PREVIOUS line
       return {
         transform: `translate(${maxWidth + 20}px, ${prevPosRef.current.y}px)`,
         opacity: 0,
         transition: `transform ${transitionDur}ms linear, opacity ${transitionDur}ms linear`,
       };
     }
-    if (phase === "in") {
-      // Slide in from the left on the new line
+    if (slidePhase === "reposition") {
+      // Instantly jump to off-left on the new line
       return {
-        transform: `translate(${hlX}px, ${hlY}px)`,
+        transform: `translate(-30px, ${newPosRef.current.y}px)`,
+        opacity: 0,
+        transition: "none",
+      };
+    }
+    if (slidePhase === "in") {
+      // Slide in from the left to the first note on the new line
+      return {
+        transform: `translate(${newPosRef.current.x}px, ${newPosRef.current.y}px)`,
         opacity: 1,
-        transition: `transform ${transitionDur}ms ease-out, opacity ${Math.min(transitionDur, 200)}ms ease-out`,
+        transition: `transform ${transitionDur}ms ease-out, opacity ${Math.min(transitionDur, 300)}ms ease-out`,
       };
     }
     // Normal — smooth karaoke slide within line
@@ -1003,11 +1021,6 @@ export function JianpuRenderer({
       transition: `transform ${transitionDur}ms linear, width ${transitionDur}ms linear`,
     };
   })();
-
-  // Update prev position (only when not in "out" phase so we keep the old position)
-  if (phase !== "out") {
-    prevPosRef.current = { x: hlX, y: hlY, w: hlW };
-  }
 
   return (
     <div className={className} style={style}>
@@ -1036,7 +1049,7 @@ export function JianpuRenderer({
         {hasActiveItem && (
           <rect
             key="hl"
-            width={phase === "out" ? prevPosRef.current.w : hlW}
+            width={slidePhase === "out" ? prevPosRef.current.w : slidePhase === "reposition" || slidePhase === "in" ? newPosRef.current.w : hlW}
             height={18}
             rx={3}
             fill="var(--color-accent)"

@@ -50,7 +50,7 @@ html {
 .jianpu-svg {
   display: block;
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .jianpu-svg text {
