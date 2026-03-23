@@ -77,8 +77,6 @@ export function SongDetailPage() {
 
       {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mb-4" />}
 
-      <UserVideos itemId={song.id} />
-
       {/* Jianpu notation */}
       <div className="my-4">
         {isEditing ? (
@@ -133,6 +131,8 @@ export function SongDetailPage() {
           </div>
         )}
       </div>
+
+      <UserVideos itemId={song.id} />
 
       {isUserSong && (
         <button
