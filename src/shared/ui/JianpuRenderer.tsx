@@ -631,19 +631,47 @@ function renderSvgToken(
       );
       break;
     }
-    case "bar":
-      elements.push(
-        <line
-          key={key}
-          x1={x}
-          y1={Y_NOTE - 12}
-          x2={x}
-          y2={Y_NOTE + 4}
-          stroke="var(--color-text-secondary)"
-          strokeWidth="1"
-        />,
-      );
+    case "bar": {
+      const isDouble = token.value === "||";
+      if (isDouble) {
+        // Double bar: thin line + thick line
+        elements.push(
+          <line
+            key={`${key}-a`}
+            x1={x - 3}
+            y1={Y_NOTE - 12}
+            x2={x - 3}
+            y2={Y_NOTE + 4}
+            stroke="var(--color-text-secondary)"
+            strokeWidth="1"
+          />,
+        );
+        elements.push(
+          <line
+            key={`${key}-b`}
+            x1={x + 2}
+            y1={Y_NOTE - 12}
+            x2={x + 2}
+            y2={Y_NOTE + 4}
+            stroke="var(--color-text)"
+            strokeWidth="2.5"
+          />,
+        );
+      } else {
+        elements.push(
+          <line
+            key={key}
+            x1={x}
+            y1={Y_NOTE - 12}
+            x2={x}
+            y2={Y_NOTE + 4}
+            stroke="var(--color-text-secondary)"
+            strokeWidth="1"
+          />,
+        );
+      }
       break;
+    }
     case "tie":
       elements.push(
         <path
