@@ -93,6 +93,7 @@ export function JianpuEditor({
   tempo,
 }: JianpuEditorProps) {
   const [tokens, setTokens] = useState<string[]>(() => parseToTokenArray(value));
+  const [editMode, setEditMode] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [beamActive, setBeamActive] = useState(false);
   const [slurActive, setSlurActive] = useState(false);
@@ -148,31 +149,55 @@ export function JianpuEditor({
 
   return (
     <div ref={containerRef} className="relative">
-      {/* Beat indicator */}
-      <div
-        className="flex items-center gap-3 rounded-xl px-4 py-2 mb-3"
-        style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
-      >
-        <span className="text-xs font-medium" style={{ color: "var(--color-text-secondary)" }}>Beat</span>
-        <div className="flex gap-1">
-          {Array.from({ length: expected }, (_, i) => (
-            <div
-              key={i}
-              className="w-3.5 h-3.5 rounded-full"
-              style={{
-                backgroundColor: i < Math.floor(currentMeasureBeats) ? "var(--color-accent)"
-                  : i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? "var(--color-accent)" : "var(--color-bg-tertiary)",
-                opacity: i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? 0.4 : 1,
-                border: "1px solid var(--color-border)",
-              }}
-            />
-          ))}
-        </div>
-        <span className="text-xs tabular-nums" style={{ color: "var(--color-text-secondary)" }}>
-          {currentMeasureBeats}/{expected}
-        </span>
+      {/* Edit mode toggle */}
+      <div className="flex justify-end mb-2">
+        <button
+          className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-all"
+          style={{
+            backgroundColor: editMode ? "var(--color-accent)" : "var(--color-bg-tertiary)",
+            color: editMode ? "white" : "var(--color-text-secondary)",
+            border: `1px solid ${editMode ? "var(--color-accent)" : "var(--color-border)"}`,
+          }}
+          onClick={() => {
+            setEditMode((m) => !m);
+            if (editMode) { setSelectedIdx(null); setBeamActive(false); setSlurActive(false); }
+          }}
+        >
+          {editMode ? "Done" : "Edit"}
+        </button>
       </div>
 
+      {editMode && (
+        <>
+          {/* Beat indicator */}
+          <div
+            className="flex items-center gap-3 rounded-xl px-4 py-2 mb-3"
+            style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
+          >
+            <span className="text-xs font-medium" style={{ color: "var(--color-text-secondary)" }}>Beat</span>
+            <div className="flex gap-1">
+              {Array.from({ length: expected }, (_, i) => (
+                <div
+                  key={i}
+                  className="w-3.5 h-3.5 rounded-full"
+                  style={{
+                    backgroundColor: i < Math.floor(currentMeasureBeats) ? "var(--color-accent)"
+                      : i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? "var(--color-accent)" : "var(--color-bg-tertiary)",
+                    opacity: i === Math.floor(currentMeasureBeats) && currentMeasureBeats % 1 > 0 ? 0.4 : 1,
+                    border: "1px solid var(--color-border)",
+                  }}
+                />
+              ))}
+            </div>
+            <span className="text-xs tabular-nums" style={{ color: "var(--color-text-secondary)" }}>
+              {currentMeasureBeats}/{expected}
+            </span>
+          </div>
+        </>
+      )}
+
+      {editMode && (
+      <>
       {/* Toolbar: Notes */}
       <div
         className="rounded-xl px-3 py-3 mb-2 space-y-2"
@@ -256,8 +281,10 @@ export function JianpuEditor({
           {beamActive ? "End beam ]" : "Beam ["}
         </button>
       </div>
+      </>
+      )}
 
-      {/* SVG notation (interactive) */}
+      {/* SVG notation */}
       <div
         className="rounded-xl p-4 overflow-x-auto mb-2"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
@@ -269,9 +296,9 @@ export function JianpuEditor({
             keySignature={keySignature}
             timeSignature={timeSignature}
             tempo={tempo}
-            interactive
-            selectedTokenIdx={selectedIdx}
-            onTokenClick={handleTokenClick}
+            interactive={editMode}
+            selectedTokenIdx={editMode ? selectedIdx : null}
+            onTokenClick={editMode ? handleTokenClick : undefined}
           />
         ) : (
           <p className="text-sm text-center py-10" style={{ color: "var(--color-text-secondary)" }}>
@@ -281,7 +308,7 @@ export function JianpuEditor({
       </div>
 
       {/* Bottom sheet popover for editing selected note */}
-      {selectedIdx !== null && parsedSelected && (
+      {editMode && selectedIdx !== null && parsedSelected && (
         <NoteBottomSheet
           token={parsedSelected}
           onUpdate={(t) => updateToken(selectedIdx, t)}
@@ -291,26 +318,28 @@ export function JianpuEditor({
       )}
 
       {/* Raw text editor (collapsible) */}
-      <details className="mt-2">
-        <summary className="text-xs cursor-pointer select-none py-1" style={{ color: "var(--color-text-secondary)" }}>
-          Edit raw notation
-        </summary>
-        <textarea
-          value={jianpuText}
-          onChange={(e) => {
-            setTokens(parseToTokenArray(e.target.value));
-            setSelectedIdx(null);
-          }}
-          className="w-full font-mono text-sm rounded-lg p-3 mt-1 resize-y"
-          style={{
-            backgroundColor: "var(--color-bg-secondary)",
-            color: "var(--color-text)",
-            border: "1px solid var(--color-border)",
-            minHeight: "80px",
-          }}
-          spellCheck={false}
-        />
-      </details>
+      {editMode && (
+        <details className="mt-2">
+          <summary className="text-xs cursor-pointer select-none py-1" style={{ color: "var(--color-text-secondary)" }}>
+            Edit raw notation
+          </summary>
+          <textarea
+            value={jianpuText}
+            onChange={(e) => {
+              setTokens(parseToTokenArray(e.target.value));
+              setSelectedIdx(null);
+            }}
+            className="w-full font-mono text-sm rounded-lg p-3 mt-1 resize-y"
+            style={{
+              backgroundColor: "var(--color-bg-secondary)",
+              color: "var(--color-text)",
+              border: "1px solid var(--color-border)",
+              minHeight: "80px",
+            }}
+            spellCheck={false}
+          />
+        </details>
+      )}
     </div>
   );
 }
