@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
 import { songs, levels } from "@/data";
 import { VideoEmbed } from "@/shared/ui";
 import { UserVideos } from "@/features/lesson-viewer/UserVideos";
@@ -57,40 +58,50 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
         </svg>
       </button>
 
-      {expanded && (
-        <div className="border-t border-(--color-border) px-4 py-3">
-          {song.description && (
-            <p className="text-sm mb-3 leading-relaxed text-(--color-text-secondary)">
-              {song.description}
-            </p>
-          )}
-          <TempoGuide
-            content={song.jianpu}
-            tempo={song.tempo}
-            className="rounded-lg p-4 overflow-x-auto"
-            style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
-          />
-          {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mt-3" />}
-          <UserVideos itemId={song.id} />
-          <div className="mt-3 flex items-center gap-4">
-            <Link
-              to={`/library/${song.id}`}
-              className="text-sm font-medium hover:opacity-70 transition-opacity"
-              style={{ color: "var(--color-accent)" }}
-            >
-              Go to details &rarr;
-            </Link>
-            {canDelete && (
-              <button
-                onClick={() => removeSong(song.id)}
-                className="text-sm font-medium text-red-500 hover:opacity-70 transition-opacity"
-              >
-                Remove song
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            <div className="border-t border-(--color-border) px-4 py-3">
+              {song.description && (
+                <p className="text-sm mb-3 leading-relaxed text-(--color-text-secondary)">
+                  {song.description}
+                </p>
+              )}
+              <TempoGuide
+                content={song.jianpu}
+                tempo={song.tempo}
+                className="rounded-lg p-4 overflow-x-auto"
+                style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
+              />
+              {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mt-3" />}
+              <UserVideos itemId={song.id} />
+              <div className="mt-3 flex items-center gap-4">
+                <Link
+                  to={`/library/${song.id}`}
+                  className="text-sm font-medium hover:opacity-70 transition-opacity"
+                  style={{ color: "var(--color-accent)" }}
+                >
+                  Go to details &rarr;
+                </Link>
+                {canDelete && (
+                  <button
+                    onClick={() => removeSong(song.id)}
+                    className="text-sm font-medium text-red-500 hover:opacity-70 transition-opacity"
+                  >
+                    Remove song
+                  </button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -279,14 +290,24 @@ export function SongLibraryPage() {
       )}
 
       {/* Add song form */}
-      {showForm && (
-        <div
-          className="mb-4 rounded-xl p-4"
-          style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
-        >
-          <AddSongForm onClose={() => setShowForm(false)} />
-        </div>
-      )}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            <div
+              className="mb-4 rounded-xl p-4"
+              style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
+            >
+              <AddSongForm onClose={() => setShowForm(false)} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* User songs section */}
       {showUserSection && (

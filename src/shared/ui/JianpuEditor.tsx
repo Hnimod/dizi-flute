@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { JianpuRenderer, parseToken } from "./JianpuRenderer";
 
 interface JianpuEditorProps {
@@ -312,14 +313,17 @@ export function JianpuEditor({
       </div>
 
       {/* Bottom sheet popover for editing selected note */}
-      {editMode && selectedIdx !== null && parsedSelected && (
-        <NoteBottomSheet
-          token={parsedSelected}
-          onUpdate={(t) => updateToken(selectedIdx, t)}
-          onDelete={() => deleteToken(selectedIdx)}
-          onClose={closePopover}
-        />
-      )}
+      <AnimatePresence>
+        {editMode && selectedIdx !== null && parsedSelected && (
+          <NoteBottomSheet
+            key="bottom-sheet"
+            token={parsedSelected}
+            onUpdate={(t) => updateToken(selectedIdx, t)}
+            onDelete={() => deleteToken(selectedIdx)}
+            onClose={closePopover}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Raw text editor (collapsible) */}
       {editMode && (
@@ -385,7 +389,7 @@ function NoteBottomSheet({ token, onUpdate, onDelete, onClose }: NoteBottomSheet
     ) => onUpdate(buildNoteToken(d, o, du, a, t));
 
     return (
-      <div
+      <motion.div
         ref={ref}
         className="fixed bottom-0 left-0 right-0 z-[60] rounded-t-2xl px-4 pt-3 pb-20 space-y-3 sm:absolute sm:bottom-auto sm:left-auto sm:right-auto sm:rounded-xl sm:max-w-xs sm:p-3 sm:pb-3 sm:space-y-2"
         style={{
@@ -393,6 +397,10 @@ function NoteBottomSheet({ token, onUpdate, onDelete, onClose }: NoteBottomSheet
           borderTop: "1px solid var(--color-border)",
           boxShadow: "0 -4px 20px var(--color-shadow)",
         }}
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
         {/* Drag handle (mobile) */}
         <div className="flex justify-center sm:hidden">
@@ -435,13 +443,13 @@ function NoteBottomSheet({ token, onUpdate, onDelete, onClose }: NoteBottomSheet
           <button className={`${btn} h-10 px-3 text-sm`} style={btnStyle} onClick={() => onUpdate("0")}>→ 0</button>
           <button className={`${btn} h-10 px-3 text-sm text-red-500`} style={btnStyle} onClick={onDelete}>✕</button>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   // Rest/Hold bottom sheet
   return (
-    <div
+    <motion.div
       ref={ref}
       className="fixed bottom-0 left-0 right-0 z-[60] rounded-t-2xl px-4 pt-3 pb-20 sm:absolute sm:bottom-auto sm:left-auto sm:right-auto sm:rounded-xl sm:max-w-xs sm:p-3 sm:pb-3"
       style={{
@@ -449,6 +457,10 @@ function NoteBottomSheet({ token, onUpdate, onDelete, onClose }: NoteBottomSheet
         borderTop: "1px solid var(--color-border)",
         boxShadow: "0 -4px 20px var(--color-shadow)",
       }}
+      initial={{ y: "100%", opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: "100%", opacity: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
     >
       <div className="flex justify-center sm:hidden mb-3">
         <div className="w-10 h-1 rounded-full" style={{ backgroundColor: "var(--color-border)" }} />
@@ -466,6 +478,6 @@ function NoteBottomSheet({ token, onUpdate, onDelete, onClose }: NoteBottomSheet
         <button className={`${btn} h-10 px-4 text-sm`} style={btnStyle} onClick={() => onUpdate("-")}>− hold</button>
         <button className={`${btn} h-10 px-4 text-sm text-red-500`} style={btnStyle} onClick={onDelete}>✕ Delete</button>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { VideoEmbed } from "@/shared/ui";
 import { useVideoLinksStore, selectVideos } from "./store";
 
@@ -27,21 +28,30 @@ export function UserVideos({ itemId }: { itemId: string }) {
   return (
     <div className="my-3">
       {/* Existing user videos */}
-      {videos.map((url) => (
-        <div key={url} className="relative mb-3">
-          <VideoEmbed url={url} />
-          <button
-            onClick={() => removeVideo(itemId, url)}
-            className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full text-white transition-opacity hover:opacity-80"
-            style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
-            title="Remove video"
+      <AnimatePresence>
+        {videos.map((url) => (
+          <motion.div
+            key={url}
+            className="relative mb-3"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      ))}
+            <VideoEmbed url={url} />
+            <button
+              onClick={() => removeVideo(itemId, url)}
+              className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full text-white transition-opacity hover:opacity-80"
+              style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+              title="Remove video"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </motion.div>
+        ))}
+      </AnimatePresence>
 
       {/* Add video input */}
       <div className="relative">

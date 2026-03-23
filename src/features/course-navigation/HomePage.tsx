@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { motion } from "framer-motion";
 import { levels } from "@/data";
 import { useProgressStore } from "@/features/progress-tracking";
 
@@ -24,10 +25,15 @@ export function HomePage() {
           const percent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
 
           return (
-            <Link
+            <motion.div
               key={level.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: level.id * 0.05, ease: "easeOut" }}
+            >
+            <Link
               to={`/level/${level.id}`}
-              className="group rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-4 shadow-sm transition-all hover:border-(--color-accent) hover:shadow-md active:scale-[0.98] md:p-5"
+              className="group block rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-4 shadow-sm transition-all hover:border-(--color-accent) hover:shadow-md active:scale-[0.98] md:p-5"
             >
               <div className="flex items-start justify-between">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-(--color-accent) text-sm font-bold text-white">
@@ -65,6 +71,7 @@ export function HomePage() {
                 </div>
               )}
             </Link>
+            </motion.div>
           );
         })}
       </div>

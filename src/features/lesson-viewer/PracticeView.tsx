@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { AudioPlayer, VideoEmbed } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
@@ -66,7 +67,12 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
   const hasNext = currentIndex < items.length - 1;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-(--color-bg)">
+    <motion.div
+      className="fixed inset-0 z-50 flex flex-col bg-(--color-bg)"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+    >
       {/* Sticky top bar */}
       <div className="flex shrink-0 items-center justify-between border-b border-(--color-border) px-3 py-2">
         <button
@@ -177,6 +183,6 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
