@@ -57,14 +57,7 @@ html {
   font-family: "Courier New", Courier, monospace;
 }
 
-.jianpu-highlight {
-  animation: jianpu-hl-enter 0.2s ease-out;
-}
 
-@keyframes jianpu-hl-enter {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
 
 /* Better focus rings */
 :focus-visible {

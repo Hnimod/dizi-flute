@@ -886,6 +886,9 @@ function flatLast(items: LayoutItem[]): LayoutItem | undefined {
 }
 
 
+import { useMemo, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 export function JianpuRenderer({
   content,
   className = "",
@@ -924,7 +927,34 @@ export function JianpuRenderer({
 
   const hasHeader = title || keySignature || timeSignature || tempo;
 
-  const transitionDur = beatDurationMs ?? 150;
+  const transitionDur = (beatDurationMs ?? 150) / 1000; // seconds for framer-motion
+
+  // Track which line has the active beat
+  const activeLineIdx = lineLayouts.findIndex(
+    (l) => !l.isEmpty && findActiveBeat(l.items, activeBeatIndex),
+  );
+
+  // Compute line end x positions for exit animation
+  const lineEndXMap = useMemo(() => {
+    const map = new Map<number, number>();
+    lineLayouts.forEach((layout, idx) => {
+      if (!layout.isEmpty) {
+        let endX = 0;
+        for (const item of layout.items) {
+          const r = item.x + item.width / 2;
+          if (r > endX) endX = r;
+        }
+        map.set(idx, endX + 20);
+      }
+    });
+    return map;
+  }, [lineLayouts]);
+
+  // Remember the previous line to know the exit direction
+  const prevLineRef = useRef(-1);
+  if (activeLineIdx >= 0) {
+    prevLineRef.current = activeLineIdx;
+  }
 
   return (
     <div className={className} style={style}>
@@ -955,8 +985,9 @@ export function JianpuRenderer({
 
         // Per-line highlight
         const activeItem = findActiveBeat(layout.items, activeBeatIndex);
-        const hlX2 = activeItem ? activeItem.x - activeItem.width / 2 + 1 : 0;
-        const hlW2 = activeItem ? activeItem.width - 2 : 0;
+        const hlX = activeItem ? activeItem.x - activeItem.width / 2 + 1 : 0;
+        const hlW = activeItem ? activeItem.width - 2 : 0;
+        const lineEndX = lineEndXMap.get(lineIdx) ?? maxWidth;
 
         return (
           <svg
@@ -967,21 +998,32 @@ export function JianpuRenderer({
             style={{ display: "block" }}
             className="jianpu-svg"
           >
-            {activeItem && (
-              <rect
-                key="hl"
-                y={Y_NOTE - 14}
-                width={hlW2}
-                height={18}
-                rx={3}
-                fill="var(--color-accent)"
-                className="jianpu-highlight"
-                style={{
-                  transform: `translateX(${hlX2}px)`,
-                  transition: `transform ${transitionDur}ms linear, width ${transitionDur}ms linear`,
-                }}
-              />
-            )}
+            <AnimatePresence>
+              {activeItem && (
+                <motion.rect
+                  key={`hl-${lineIdx}`}
+                  y={Y_NOTE - 14}
+                  height={18}
+                  rx={3}
+                  fill="var(--color-accent)"
+                  initial={{ x: -20, width: hlW, opacity: 0 }}
+                  animate={{
+                    x: hlX,
+                    width: hlW,
+                    opacity: 1,
+                  }}
+                  exit={{
+                    x: lineEndX,
+                    opacity: 0,
+                  }}
+                  transition={{
+                    x: { duration: transitionDur, ease: "linear" },
+                    width: { duration: transitionDur, ease: "linear" },
+                    opacity: { duration: 0.15, ease: "easeOut" },
+                  }}
+                />
+              )}
+            </AnimatePresence>
             {svgElements}
           </svg>
         );
