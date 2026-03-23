@@ -151,6 +151,198 @@ html {
   color: white !important;
 }
 
+/* ─── Duration: eighth & sixteenth underlines ─── */
+
+.jianpu-eighth {
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 1px;
+}
+
+.jianpu-sixteenth {
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 3px;
+}
+
+.jianpu-sixteenth::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 15%;
+  right: 15%;
+  border-bottom: 2px solid currentColor;
+}
+
+/* ─── Beamed group: shared underline ─── */
+
+.jianpu-beam {
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid var(--color-text);
+  padding-bottom: 1px;
+  gap: 0;
+}
+
+.jianpu-beam .jianpu-note,
+.jianpu-beam .jianpu-rest {
+  border-bottom: none;
+}
+
+.jianpu-beam .jianpu-sixteenth::after {
+  bottom: -3px;
+  left: 5%;
+  right: 5%;
+}
+
+/* ─── Accidentals ─── */
+
+.jianpu-sharp::before {
+  content: "♯";
+  position: absolute;
+  left: -0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65em;
+  line-height: 1;
+}
+
+.jianpu-flat::before {
+  content: "♭";
+  position: absolute;
+  left: -0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65em;
+  line-height: 1;
+}
+
+/* When note also has octave dot, shift accidental */
+.jianpu-note-up.jianpu-sharp::before,
+.jianpu-note-up.jianpu-flat::before {
+  left: -0.6em;
+}
+
+/* ─── Fermata ─── */
+
+.jianpu-fermata::after {
+  content: "𝄐";
+  position: absolute;
+  top: -0.3em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7em;
+  line-height: 1;
+}
+
+/* Override octave dot when fermata is present */
+.jianpu-note-up.jianpu-fermata::after {
+  content: "𝄐";
+  top: -0.5em;
+}
+
+/* ─── Staccato ─── */
+
+.jianpu-staccato::after {
+  content: "·";
+  position: absolute;
+  top: -0.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.jianpu-note-up.jianpu-staccato::after {
+  top: -0.45em;
+}
+
+/* ─── Accent ─── */
+
+.jianpu-accent::after {
+  content: ">";
+  position: absolute;
+  top: -0.25em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6em;
+  line-height: 1;
+}
+
+.jianpu-note-up.jianpu-accent::after {
+  top: -0.5em;
+}
+
+/* ─── Trill ─── */
+
+.jianpu-trill::before {
+  content: "tr";
+  position: absolute;
+  top: -0.4em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5em;
+  font-style: italic;
+  line-height: 1;
+}
+
+.jianpu-note-up.jianpu-trill::before {
+  top: -0.6em;
+}
+
+/* ─── Tie ─── */
+
+.jianpu-tie {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 0.8em;
+  height: 2.2em;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin: 0 -0.1em;
+}
+
+/* ─── Slur markers ─── */
+
+.jianpu-slur-mark {
+  display: inline-flex;
+  flex: 0 0 0;
+  width: 0;
+  height: 2.2em;
+}
+
+/* ─── Tonguing annotation ─── */
+
+.jianpu-tonguing {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 0 1 auto;
+  height: 2.2em;
+  padding-top: 0.1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-right: 0.2em;
+}
+
+/* ─── Ornament annotation ─── */
+
+.jianpu-ornament {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 0 1 auto;
+  height: 2.2em;
+  padding-top: 0.1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.55rem;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  margin-right: 0.2em;
+}
+
 /* Better focus rings */
 :focus-visible {
   outline: 2px solid var(--color-accent);
