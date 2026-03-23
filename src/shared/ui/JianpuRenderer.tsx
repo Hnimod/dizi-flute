@@ -165,102 +165,589 @@ export function parseToken(raw: string): Token {
   return { type: "text", value: raw };
 }
 
-function renderToken(token: Token, key: number, beatIndex: number | null, activeBeatIndex?: number) {
+// ─── SVG Layout & Rendering ───
+
+// Cell widths in SVG units
+const CELL_NOTE = 28;
+const CELL_BAR = 12;
+const CELL_TIE = 14;
+const CELL_BREATH = 0;
+const CELL_BEAM_NOTE = 18;
+const CELL_ANNOTATION = 16;
+const CELL_TEXT = 16;
+
+// Y positions
+const Y_MARK = 6; // tonguing, fermata, staccato, accent, trill
+const Y_OCTAVE_UP = 13;
+const Y_NOTE = 30; // text baseline
+const Y_OCTAVE_DOWN = 40;
+const Y_BEAM = 43;
+const Y_BEAM2 = 47; // sixteenth second line
+const LINE_HEIGHT = 52;
+
+interface LayoutItem {
+  token: Token;
+  x: number;
+  width: number;
+  beatIndex: number | null;
+  children?: LayoutItem[];
+  groupType?: "beam" | "slur";
+}
+
+function layoutLine(
+  tokens: Token[],
+  beatCounter: { value: number },
+): { items: LayoutItem[]; totalWidth: number } {
+  const items: LayoutItem[] = [];
+  let x = 0;
+  let i = 0;
+
+  while (i < tokens.length) {
+    const token = tokens[i]!;
+
+    if (token.type === "slur-start") {
+      // Collect children inside slur
+      const children: LayoutItem[] = [];
+      i++;
+      const slurX = x;
+      while (i < tokens.length && tokens[i]!.type !== "slur-end") {
+        const t = tokens[i]!;
+        if (t.type === "beam-start") {
+          // Nested beam inside slur
+          const beamChildren: LayoutItem[] = [];
+          i++;
+          const beamX = x;
+          while (i < tokens.length && tokens[i]!.type !== "beam-end") {
+            const bt = tokens[i]!;
+            const w = CELL_BEAM_NOTE;
+            beamChildren.push({
+              token: bt,
+              x: x + w / 2,
+              width: w,
+              beatIndex: isBeat(bt) ? beatCounter.value++ : null,
+            });
+            x += w;
+            i++;
+          }
+          i++; // skip beam-end
+          children.push({
+            token: { type: "beam-start" },
+            x: beamX + (x - beamX) / 2,
+            width: x - beamX,
+            beatIndex: null,
+            children: beamChildren,
+            groupType: "beam",
+          });
+        } else {
+          const w = cellWidth(t);
+          children.push({
+            token: t,
+            x: x + w / 2,
+            width: w,
+            beatIndex: isBeat(t) ? beatCounter.value++ : null,
+          });
+          x += w;
+          i++;
+        }
+      }
+      i++; // skip slur-end
+      items.push({
+        token: { type: "slur-start" },
+        x: slurX + (x - slurX) / 2,
+        width: x - slurX,
+        beatIndex: null,
+        children,
+        groupType: "slur",
+      });
+    } else if (token.type === "beam-start") {
+      const children: LayoutItem[] = [];
+      i++;
+      const beamX = x;
+      while (i < tokens.length && tokens[i]!.type !== "beam-end") {
+        const bt = tokens[i]!;
+        const w = CELL_BEAM_NOTE;
+        children.push({
+          token: bt,
+          x: x + w / 2,
+          width: w,
+          beatIndex: isBeat(bt) ? beatCounter.value++ : null,
+        });
+        x += w;
+        i++;
+      }
+      i++; // skip beam-end
+      items.push({
+        token: { type: "beam-start" },
+        x: beamX + (x - beamX) / 2,
+        width: x - beamX,
+        beatIndex: null,
+        children,
+        groupType: "beam",
+      });
+    } else if (token.type === "slur-end" || token.type === "beam-end") {
+      i++;
+    } else {
+      const w = cellWidth(token);
+      items.push({
+        token,
+        x: x + w / 2,
+        width: w,
+        beatIndex: isBeat(token) ? beatCounter.value++ : null,
+      });
+      x += w;
+      i++;
+    }
+  }
+
+  return { items, totalWidth: x };
+}
+
+function cellWidth(token: Token): number {
+  switch (token.type) {
+    case "bar":
+      return CELL_BAR;
+    case "tie":
+      return CELL_TIE;
+    case "breath":
+      return CELL_BREATH;
+    case "tonguing":
+    case "ornament":
+      return CELL_ANNOTATION;
+    case "text":
+      return CELL_TEXT;
+    default:
+      return CELL_NOTE;
+  }
+}
+
+function renderSvgItems(
+  items: LayoutItem[],
+  activeBeatIndex: number | undefined,
+  elements: React.ReactNode[],
+  keyPrefix: string,
+) {
+  for (let idx = 0; idx < items.length; idx++) {
+    const item = items[idx]!;
+    const key = `${keyPrefix}-${idx}`;
+
+    if (item.groupType === "slur" && item.children) {
+      // Render children first
+      renderSvgItems(item.children, activeBeatIndex, elements, `${key}-s`);
+      // Draw slur arc above
+      const first = flatFirst(item.children);
+      const last = flatLast(item.children);
+      if (first && last) {
+        const sx = first.x;
+        const ex = last.x;
+        const midX = (sx + ex) / 2;
+        const arcHeight = Math.min(10, (ex - sx) * 0.15 + 4);
+        elements.push(
+          <path
+            key={`${key}-arc`}
+            d={`M ${sx} ${Y_OCTAVE_UP} Q ${midX} ${Y_OCTAVE_UP - arcHeight} ${ex} ${Y_OCTAVE_UP}`}
+            fill="none"
+            stroke="var(--color-text-secondary)"
+            strokeWidth="1.2"
+          />,
+        );
+      }
+    } else if (item.groupType === "beam" && item.children) {
+      // Render children
+      renderSvgItems(item.children, activeBeatIndex, elements, `${key}-b`);
+      // Draw beam line
+      const first = item.children[0];
+      const last = item.children[item.children.length - 1];
+      if (first && last) {
+        const x1 = first.x - first.width * 0.35;
+        const x2 = last.x + last.width * 0.35;
+        elements.push(
+          <line
+            key={`${key}-beam`}
+            x1={x1}
+            y1={Y_BEAM}
+            x2={x2}
+            y2={Y_BEAM}
+            stroke="var(--color-text)"
+            strokeWidth="1.5"
+          />,
+        );
+        // Check for sixteenth notes — draw second beam line
+        const hasSixteenth = item.children.some(
+          (c) => c.token.type === "note" && c.token.duration === "sixteenth",
+        );
+        if (hasSixteenth) {
+          elements.push(
+            <line
+              key={`${key}-beam2`}
+              x1={x1}
+              y1={Y_BEAM2}
+              x2={x2}
+              y2={Y_BEAM2}
+              stroke="var(--color-text)"
+              strokeWidth="1.5"
+            />,
+          );
+        }
+      }
+    } else {
+      renderSvgToken(item, activeBeatIndex, elements, key);
+    }
+  }
+}
+
+function renderSvgToken(
+  item: LayoutItem,
+  activeBeatIndex: number | undefined,
+  elements: React.ReactNode[],
+  key: string,
+) {
+  const { token, x, width, beatIndex } = item;
   const isActive = beatIndex !== null && beatIndex === activeBeatIndex;
-  const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
+  const textColor = isActive ? "white" : "var(--color-text)";
+  const secondaryColor = isActive ? "white" : "var(--color-text-secondary)";
+
+  // Active highlight background
+  if (isActive) {
+    elements.push(
+      <rect
+        key={`${key}-hl`}
+        x={x - width / 2 + 1}
+        y={Y_NOTE - 14}
+        width={width - 2}
+        height={18}
+        rx={3}
+        fill="var(--color-accent)"
+      />,
+    );
+  }
 
   switch (token.type) {
     case "note": {
-      const cls = [
-        "jianpu-note",
-        token.octave > 0 && "jianpu-note-up",
-        token.octave < 0 && "jianpu-note-down",
-        token.duration === "eighth" && "jianpu-eighth",
-        token.duration === "sixteenth" && "jianpu-sixteenth",
-        token.accidental === "#" && "jianpu-sharp",
-        token.accidental === "b" && "jianpu-flat",
-        token.fermata && "jianpu-fermata",
-        token.staccato && "jianpu-staccato",
-        token.accent && "jianpu-accent",
-        token.trill && "jianpu-trill",
-        token.tonguing && "jianpu-tonguing-mark",
-        isActive && "jianpu-active",
-      ]
-        .filter(Boolean)
-        .join(" ");
+      // data-beat group wrapper for scrollIntoView
+      const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
 
-      return (
-        <span key={key} className={cls} {...beatAttr}>
+      // Accidental
+      if (token.accidental) {
+        elements.push(
+          <text
+            key={`${key}-acc`}
+            x={x - 7}
+            y={Y_NOTE}
+            textAnchor="middle"
+            fontSize="9"
+            fill={textColor}
+          >
+            {token.accidental === "#" ? "♯" : "♭"}
+          </text>,
+        );
+      }
+
+      // Note number
+      elements.push(
+        <text
+          key={key}
+          x={x}
+          y={Y_NOTE}
+          textAnchor="middle"
+          fontSize="16"
+          fontWeight="600"
+          fill={textColor}
+          {...beatAttr}
+        >
           {token.value}
-        </span>
+        </text>,
       );
+
+      // Octave dots
+      if (token.octave > 0) {
+        for (let d = 0; d < token.octave; d++) {
+          elements.push(
+            <circle
+              key={`${key}-ou${d}`}
+              cx={x}
+              cy={Y_OCTAVE_UP - d * 4}
+              r={1.5}
+              fill={textColor}
+            />,
+          );
+        }
+      }
+      if (token.octave < 0) {
+        for (let d = 0; d < -token.octave; d++) {
+          elements.push(
+            <circle
+              key={`${key}-od${d}`}
+              cx={x}
+              cy={Y_OCTAVE_DOWN + d * 4}
+              r={1.5}
+              fill={textColor}
+            />,
+          );
+        }
+      }
+
+      // Duration underlines (for non-beamed notes)
+      if (token.duration === "eighth" || token.duration === "sixteenth") {
+        elements.push(
+          <line
+            key={`${key}-dur`}
+            x1={x - 5}
+            y1={Y_BEAM}
+            x2={x + 5}
+            y2={Y_BEAM}
+            stroke={textColor}
+            strokeWidth="1.5"
+          />,
+        );
+        if (token.duration === "sixteenth") {
+          elements.push(
+            <line
+              key={`${key}-dur2`}
+              x1={x - 5}
+              y1={Y_BEAM2}
+              x2={x + 5}
+              y2={Y_BEAM2}
+              stroke={textColor}
+              strokeWidth="1.5"
+            />,
+          );
+        }
+      }
+
+      // Above-note marks
+      const markY = token.octave > 0 ? Y_MARK - 2 : Y_MARK;
+      if (token.tonguing) {
+        elements.push(
+          <text
+            key={`${key}-tng`}
+            x={x}
+            y={markY}
+            textAnchor="middle"
+            fontSize="9"
+            fontWeight="700"
+            fontFamily="sans-serif"
+            fill="var(--color-accent)"
+          >
+            T
+          </text>,
+        );
+      }
+      if (token.fermata) {
+        elements.push(
+          <text key={`${key}-fer`} x={x} y={markY} textAnchor="middle" fontSize="10" fill={textColor}>
+            𝄐
+          </text>,
+        );
+      }
+      if (token.staccato) {
+        elements.push(
+          <circle key={`${key}-stc`} cx={x} cy={markY} r={1.3} fill={textColor} />,
+        );
+      }
+      if (token.accent) {
+        elements.push(
+          <text key={`${key}-acn`} x={x} y={markY} textAnchor="middle" fontSize="9" fill={textColor}>
+            &gt;
+          </text>,
+        );
+      }
+      if (token.trill) {
+        elements.push(
+          <text
+            key={`${key}-trl`}
+            x={x}
+            y={markY}
+            textAnchor="middle"
+            fontSize="8"
+            fontStyle="italic"
+            fill={textColor}
+          >
+            tr
+          </text>,
+        );
+      }
+      break;
     }
     case "rest": {
-      const cls = [
-        "jianpu-rest",
-        token.duration === "eighth" && "jianpu-eighth",
-        token.duration === "sixteenth" && "jianpu-sixteenth",
-        isActive && "jianpu-active",
-      ]
-        .filter(Boolean)
-        .join(" ");
-      return (
-        <span key={key} className={cls} {...beatAttr}>
+      const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
+      elements.push(
+        <text
+          key={key}
+          x={x}
+          y={Y_NOTE}
+          textAnchor="middle"
+          fontSize="16"
+          fontWeight="600"
+          fill={secondaryColor}
+          {...beatAttr}
+        >
           0
-        </span>
+        </text>,
       );
+      // Duration underlines for rests
+      if (token.duration === "eighth" || token.duration === "sixteenth") {
+        elements.push(
+          <line
+            key={`${key}-dur`}
+            x1={x - 5}
+            y1={Y_BEAM}
+            x2={x + 5}
+            y2={Y_BEAM}
+            stroke={secondaryColor}
+            strokeWidth="1.5"
+          />,
+        );
+        if (token.duration === "sixteenth") {
+          elements.push(
+            <line
+              key={`${key}-dur2`}
+              x1={x - 5}
+              y1={Y_BEAM2}
+              x2={x + 5}
+              y2={Y_BEAM2}
+              stroke={secondaryColor}
+              strokeWidth="1.5"
+            />,
+          );
+        }
+      }
+      break;
     }
-    case "hold":
-      return (
-        <span key={key} className={`jianpu-hold${isActive ? " jianpu-active" : ""}`} {...beatAttr}>
+    case "hold": {
+      const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
+      elements.push(
+        <text
+          key={key}
+          x={x}
+          y={Y_NOTE}
+          textAnchor="middle"
+          fontSize="16"
+          fontWeight="600"
+          fill={secondaryColor}
+          {...beatAttr}
+        >
           –
-        </span>
+        </text>,
       );
+      break;
+    }
     case "bar":
-      return (
-        <span key={key} className="jianpu-bar">
-          {token.value}
-        </span>
+      elements.push(
+        <line
+          key={key}
+          x1={x}
+          y1={Y_NOTE - 12}
+          x2={x}
+          y2={Y_NOTE + 4}
+          stroke="var(--color-text-secondary)"
+          strokeWidth="1"
+        />,
       );
+      break;
     case "tie":
-      return (
-        <span key={key} className="jianpu-tie">
-          ⌢
-        </span>
+      elements.push(
+        <path
+          key={key}
+          d={`M ${x - 5} ${Y_NOTE - 10} Q ${x} ${Y_NOTE - 16} ${x + 5} ${Y_NOTE - 10}`}
+          fill="none"
+          stroke="var(--color-text-secondary)"
+          strokeWidth="1"
+        />,
       );
+      break;
     case "breath":
-      return (
-        <span key={key} className="jianpu-breath">
+      elements.push(
+        <text
+          key={key}
+          x={x + CELL_BAR / 2}
+          y={Y_NOTE - 14}
+          textAnchor="middle"
+          fontSize="8"
+          fill="var(--color-text-secondary)"
+        >
           ∨
-        </span>
+        </text>,
       );
-    case "slur-start":
-      return null;
-    case "slur-end":
-      return null;
-    case "beam-start":
-      return null;
-    case "beam-end":
-      return null;
+      break;
     case "tonguing":
-      return (
-        <span key={key} className="jianpu-tonguing">
-          {token.technique === "single" ? "T" : token.technique === "double" ? "TK" : token.technique === "triple" ? "TTK" : token.technique}
-        </span>
+      elements.push(
+        <text
+          key={key}
+          x={x}
+          y={Y_MARK}
+          textAnchor="middle"
+          fontSize="8"
+          fontWeight="600"
+          fontFamily="sans-serif"
+          fill="var(--color-accent)"
+        >
+          {token.technique === "single"
+            ? "T"
+            : token.technique === "double"
+              ? "TK"
+              : token.technique === "triple"
+                ? "TTK"
+                : token.technique}
+        </text>,
       );
+      break;
     case "ornament":
-      return (
-        <span key={key} className="jianpu-ornament">
+      elements.push(
+        <text
+          key={key}
+          x={x}
+          y={Y_MARK}
+          textAnchor="middle"
+          fontSize="8"
+          fontStyle="italic"
+          fontFamily="sans-serif"
+          fill="var(--color-text-secondary)"
+        >
           {token.name}
-        </span>
+        </text>,
       );
+      break;
     case "text":
-      return (
-        <span key={key} className="jianpu-text">
+      elements.push(
+        <text
+          key={key}
+          x={x}
+          y={Y_NOTE}
+          textAnchor="middle"
+          fontSize="12"
+          fill="var(--color-text-secondary)"
+        >
           {token.value}
-        </span>
+        </text>,
       );
+      break;
   }
+}
+
+/** Get the first leaf LayoutItem (for arc endpoints) */
+function flatFirst(items: LayoutItem[]): LayoutItem | undefined {
+  for (const item of items) {
+    if (item.children) {
+      const f = flatFirst(item.children);
+      if (f) return f;
+    } else if (isBeat(item.token)) {
+      return item;
+    }
+  }
+  return undefined;
+}
+
+function flatLast(items: LayoutItem[]): LayoutItem | undefined {
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i]!;
+    if (item.children) {
+      const l = flatLast(item.children);
+      if (l) return l;
+    } else if (isBeat(item.token)) {
+      return item;
+    }
+  }
+  return undefined;
 }
 
 export function JianpuRenderer({ content, className = "", style, activeBeatIndex }: JianpuRendererProps) {
@@ -289,7 +776,7 @@ export function JianpuRenderer({ content, className = "", style, activeBeatIndex
     }
   }
 
-  let beatCounter = 0;
+  const beatCounter = { value: 0 };
 
   return (
     <div className={className} style={style}>
@@ -308,89 +795,22 @@ export function JianpuRenderer({ content, className = "", style, activeBeatIndex
         }
 
         const rawTokens = trimmed.split(/\s+/).map(parseToken);
+        const { items, totalWidth } = layoutLine(rawTokens, beatCounter);
 
-        // Group beamed tokens
-        const elements: React.ReactNode[] = [];
-        let i = 0;
-        let tokenKey = 0;
-
-        while (i < rawTokens.length) {
-          const token = rawTokens[i]!;
-
-          if (token.type === "slur-start") {
-            // Collect slurred notes until slur-end
-            const slurTokens: Token[] = [];
-            i++;
-            while (i < rawTokens.length && rawTokens[i]!.type !== "slur-end") {
-              slurTokens.push(rawTokens[i]!);
-              i++;
-            }
-            i++; // skip slur-end
-
-            // Render slur contents, handling nested beams
-            const slurElements: React.ReactNode[] = [];
-            let si = 0;
-            while (si < slurTokens.length) {
-              const st = slurTokens[si]!;
-              if (st.type === "beam-start") {
-                const beamTokens: Token[] = [];
-                si++;
-                while (si < slurTokens.length && slurTokens[si]!.type !== "beam-end") {
-                  beamTokens.push(slurTokens[si]!);
-                  si++;
-                }
-                si++; // skip beam-end
-                slurElements.push(
-                  <span key={`beam-${tokenKey}`} className="jianpu-beam">
-                    {beamTokens.map((bt) => {
-                      const bi = isBeat(bt) ? beatCounter++ : null;
-                      return renderToken(bt, tokenKey++, bi, activeBeatIndex);
-                    })}
-                  </span>,
-                );
-              } else {
-                const bi = isBeat(st) ? beatCounter++ : null;
-                const el = renderToken(st, tokenKey++, bi, activeBeatIndex);
-                if (el) slurElements.push(el);
-                si++;
-              }
-            }
-
-            elements.push(
-              <span key={`slur-${tokenKey}`} className="jianpu-slur">
-                {slurElements}
-              </span>,
-            );
-          } else if (token.type === "beam-start") {
-            // Collect beamed notes until beam-end
-            const beamTokens: Token[] = [];
-            i++;
-            while (i < rawTokens.length && rawTokens[i]!.type !== "beam-end") {
-              beamTokens.push(rawTokens[i]!);
-              i++;
-            }
-            i++; // skip beam-end
-
-            elements.push(
-              <span key={`beam-${tokenKey}`} className="jianpu-beam">
-                {beamTokens.map((bt) => {
-                  const bi = isBeat(bt) ? beatCounter++ : null;
-                  return renderToken(bt, tokenKey++, bi, activeBeatIndex);
-                })}
-              </span>,
-            );
-          } else {
-            const bi = isBeat(token) ? beatCounter++ : null;
-            const el = renderToken(token, tokenKey++, bi, activeBeatIndex);
-            if (el) elements.push(el);
-            i++;
-          }
-        }
+        const svgElements: React.ReactNode[] = [];
+        renderSvgItems(items, activeBeatIndex, svgElements, `L${lineIdx}`);
 
         return (
-          <div key={lineIdx} className="jianpu-line">
-            {elements}
-          </div>
+          <svg
+            key={lineIdx}
+            viewBox={`0 0 ${totalWidth} ${LINE_HEIGHT}`}
+            width="100%"
+            preserveAspectRatio="xMinYMid meet"
+            style={{ display: "block" }}
+            className="jianpu-svg"
+          >
+            {svgElements}
+          </svg>
         );
       })}
     </div>
