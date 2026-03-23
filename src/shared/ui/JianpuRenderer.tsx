@@ -413,22 +413,31 @@ function renderSvgItems(
             strokeWidth="1.5"
           />,
         );
-        // Check for sixteenth notes — draw second beam line
-        const hasSixteenth = item.children.some(
-          (c) => c.token.type === "note" && c.token.duration === "sixteenth",
-        );
-        if (hasSixteenth) {
-          elements.push(
-            <line
-              key={`${key}-beam2`}
-              x1={x1}
-              y1={Y_BEAM2}
-              x2={x2}
-              y2={Y_BEAM2}
-              stroke="var(--color-text)"
-              strokeWidth="1.5"
-            />,
-          );
+        // Draw partial second beam lines for contiguous sixteenth note runs
+        let runStart: number | null = null;
+        let beam2Idx = 0;
+        for (let ci = 0; ci <= item.children.length; ci++) {
+          const child = item.children[ci];
+          const isSixteenth =
+            child?.token.type === "note" && child.token.duration === "sixteenth";
+          if (isSixteenth && runStart === null) {
+            runStart = ci;
+          } else if (!isSixteenth && runStart !== null) {
+            const rs = item.children[runStart]!;
+            const re = item.children[ci - 1]!;
+            elements.push(
+              <line
+                key={`${key}-beam2-${beam2Idx++}`}
+                x1={rs.x - rs.width * 0.35}
+                y1={Y_BEAM2}
+                x2={re.x + re.width * 0.35}
+                y2={Y_BEAM2}
+                stroke="var(--color-text)"
+                strokeWidth="1.5"
+              />,
+            );
+            runStart = null;
+          }
         }
       }
     } else {
