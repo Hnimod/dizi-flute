@@ -1018,7 +1018,7 @@ export function JianpuRenderer({
                   height={18}
                   rx={3}
                   fill="var(--color-accent)"
-                  initial={{ x: -20, width: hlW, opacity: 0 }}
+                  initial={false}
                   animate={{
                     x: hlX,
                     width: hlW,
@@ -1028,10 +1028,12 @@ export function JianpuRenderer({
                     x: lineEndX,
                     opacity: 0,
                   }}
-                  transition={{
+                  transition={beatDurationMs ? {
                     x: { duration: transitionDur, ease: "linear" },
                     width: { duration: transitionDur, ease: "linear" },
                     opacity: { duration: 0.15, ease: "easeOut" },
+                  } : {
+                    duration: 0,
                   }}
                 />
               )}
