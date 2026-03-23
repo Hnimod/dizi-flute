@@ -218,6 +218,14 @@ export function LevelPage() {
       )}
 
       <div className="mx-auto max-w-3xl">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1 text-sm hover:opacity-80 mb-4"
+          style={{ color: "var(--color-accent)" }}
+        >
+          &larr; Course Overview
+        </Link>
+
         {/* Header */}
         <header className="mb-6 md:mb-8">
           <p className="text-xs font-medium mb-1 md:text-sm" style={{ color: "var(--color-accent)" }}>
