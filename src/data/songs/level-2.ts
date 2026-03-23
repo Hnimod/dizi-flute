@@ -30,10 +30,10 @@ export const level2Songs: Song[] = [
 1=D  3/4
 \u266A=69  \u6CB3\u5317\u6C11\u6B4C
 
-( 5 3 ) 3T | 2T - - V | ( 5 3 ) | ( 3 2 ) 1T | - - V | ( 1 3 ) 2T |
-6T - - V | 2T 1T | [ 1,_ 6,_ ] 5,T V | 2T 2T 3T | 2T - - V |
-[ 5_ 3_ ] [ 3_ 2_ ] | 1T - - V | 1T [ 3_ 2_ ] | 6,T - - V | [ 2_ 1_ ] [ 1,_ 6,_ ] |
-5,T - - V | 6,T [ 1,_ 6,_ ] | 5,T V | 6,T | [ 1,_ 6,_ ] 5,T V | 6,T 2T [ 1,_ 6,_ ] | 5,T - - ||`,
+( 5T 3 ) 3T | 2T - - V | ( 5 3 ) ( [ 3_ 2_ ] ) | 1T - - V | ( 1T 3 ) 2T |
+6,T - - V | 2T 1T ( [ 1,_T 6,_ ] ) | 5,T - - V | 2T 2T 3T | 2T - - V |
+( 5T 3 ) ( [ 3_T 2_ ] ) | 1T - - V | ( 1T 3 ) 2T  | 6,T - - V | ( 2T 1T ) ( [ 1_ 6,_ ] ) |
+5,T - - V | 6,T ( [ 1_T 6,_ ] ) 5,T V | 6,T ( [ 1_T 6,_ ] ) 5,T V | 6,T 2T ( [ 1, 6,_ ] ) | 5,T - - ||`,
     description: "A sorrowful Chinese folk song. Pentatonic \u2014 uses only 1, 2, 3, 5, 6.",
     origin: "Hebei folk song",
   },

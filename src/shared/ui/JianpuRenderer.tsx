@@ -178,11 +178,11 @@ const CELL_TEXT = 16;
 
 // Y positions
 const Y_MARK = 6; // tonguing, fermata, staccato, accent, trill
-const Y_OCTAVE_UP = 13;
+const Y_OCTAVE_UP = 19;
 const Y_NOTE = 30; // text baseline
-const Y_OCTAVE_DOWN = 40;
-const Y_BEAM = 43;
-const Y_BEAM2 = 47; // sixteenth second line
+const Y_BEAM = 33; // beam right below note number
+const Y_BEAM2 = 37; // sixteenth second line
+const Y_OCTAVE_DOWN = 40; // octave dots below beams
 const LINE_HEIGHT = 52;
 
 interface LayoutItem {
@@ -344,7 +344,7 @@ function renderSvgItems(
         elements.push(
           <path
             key={`${key}-arc`}
-            d={`M ${sx} ${Y_OCTAVE_UP} Q ${midX} ${Y_OCTAVE_UP - arcHeight} ${ex} ${Y_OCTAVE_UP}`}
+            d={`M ${sx} ${Y_OCTAVE_UP - 4} Q ${midX} ${Y_OCTAVE_UP - 4 - arcHeight} ${ex} ${Y_OCTAVE_UP - 4}`}
             fill="none"
             stroke="var(--color-text-secondary)"
             strokeWidth="1.2"
