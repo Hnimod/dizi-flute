@@ -76,9 +76,15 @@ export function Sidebar() {
               Practice Timer
             </NavLink>
           </li>
+        </ul>
+
+        <p className="mb-2 mt-6 px-2 text-[11px] font-semibold uppercase tracking-wider text-(--color-text-secondary)">
+          Resources
+        </p>
+        <ul className="space-y-0.5">
           <li>
             <NavLink
-              to="/practice-log"
+              to="/library"
               className={({ isActive }) =>
                 `block rounded-lg px-3 py-2.5 text-sm transition-colors ${
                   isActive
@@ -87,15 +93,9 @@ export function Sidebar() {
                 }`
               }
             >
-              Practice Log
+              Song Library
             </NavLink>
           </li>
-        </ul>
-
-        <p className="mb-2 mt-6 px-2 text-[11px] font-semibold uppercase tracking-wider text-(--color-text-secondary)">
-          Resources
-        </p>
-        <ul className="space-y-0.5">
           <li>
             <NavLink
               to="/reference"

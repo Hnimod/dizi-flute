@@ -49,11 +49,20 @@
     },
     "practice-timer": {
       "path": "src/features/practice-timer",
-      "description": "Guided practice sessions with timer and session log",
-      "routes": ["/practice", "/practice-log"],
-      "exports": ["PracticePage", "PracticeLogPage", "usePracticeStore"],
+      "description": "Guided practice sessions with timer",
+      "routes": ["/practice"],
+      "exports": ["PracticePage", "usePracticeStore"],
       "dependsOn": ["shared", "data"],
       "crossFeatureDeps": [],
+      "status": "done"
+    },
+    "song-library": {
+      "path": "src/features/song-library",
+      "description": "Browse all songs by level, add custom songs for practice",
+      "routes": ["/library"],
+      "exports": ["SongLibraryPage"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["lesson-viewer"],
       "status": "done"
     }
   }
