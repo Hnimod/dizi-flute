@@ -4,6 +4,8 @@ interface JianpuRendererProps {
   style?: React.CSSProperties;
   activeBeatIndex?: number;
   beatDurationMs?: number;
+  startBeatIndex?: number;
+  onBeatClick?: (beatIndex: number) => void;
   title?: string;
   keySignature?: string;
   timeSignature?: string;
@@ -343,6 +345,7 @@ interface InteractiveOpts {
   selectedTokenIdx?: number | null;
   onTokenClick?: (tokenIdx: number, x: number, y: number) => void;
   onGapClick?: (insertIdx: number, x: number, y: number) => void;
+  onBeatClick?: (beatIndex: number) => void;
   lineYOffset?: number;
 }
 
@@ -488,9 +491,12 @@ function renderSvgToken(
   const textColor = isActive ? "white" : "var(--color-text)";
   const secondaryColor = isActive ? "white" : "var(--color-text-secondary)";
   const clickable = opts?.interactive && isBeat(token);
+  const beatClickable = !clickable && opts?.onBeatClick && beatIndex !== null;
   const clickHandler = clickable
     ? () => opts.onTokenClick?.(tokenIdx, x, (opts.lineYOffset ?? 0) + Y_NOTE)
-    : undefined;
+    : beatClickable
+      ? () => opts.onBeatClick!(beatIndex!)
+      : undefined;
 
   switch (token.type) {
     case "note": {
@@ -541,7 +547,7 @@ function renderSvgToken(
           fontSize="16"
           fontWeight="600"
           fill={isSelected ? "var(--color-accent)" : textColor}
-          style={clickable ? { cursor: "pointer" } : undefined}
+          style={clickable || beatClickable ? { cursor: "pointer" } : undefined}
           onClick={clickHandler}
           {...beatAttr}
         >
@@ -670,7 +676,7 @@ function renderSvgToken(
           fontSize="16"
           fontWeight="600"
           fill={isSelected ? "var(--color-accent)" : secondaryColor}
-          style={clickable ? { cursor: "pointer" } : undefined}
+          style={clickable || beatClickable ? { cursor: "pointer" } : undefined}
           onClick={clickHandler}
           {...beatAttr}
         >
@@ -717,7 +723,7 @@ function renderSvgToken(
           fontSize="16"
           fontWeight="600"
           fill={isSelected ? "var(--color-accent)" : secondaryColor}
-          style={clickable ? { cursor: "pointer" } : undefined}
+          style={clickable || beatClickable ? { cursor: "pointer" } : undefined}
           onClick={clickHandler}
           {...beatAttr}
         >
@@ -895,6 +901,8 @@ export function JianpuRenderer({
   style,
   activeBeatIndex,
   beatDurationMs,
+  startBeatIndex,
+  onBeatClick,
   title,
   keySignature,
   timeSignature,
@@ -978,9 +986,10 @@ export function JianpuRenderer({
         }
 
         const svgElements: React.ReactNode[] = [];
-        const interOpts: InteractiveOpts | undefined = interactive
-          ? { interactive, selectedTokenIdx, onTokenClick, onGapClick, lineYOffset: lineIdx * LINE_HEIGHT }
-          : undefined;
+        const interOpts: InteractiveOpts = {
+          interactive, selectedTokenIdx, onTokenClick, onGapClick, onBeatClick,
+          lineYOffset: lineIdx * LINE_HEIGHT,
+        };
         renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
 
         // Per-line highlight
@@ -988,6 +997,9 @@ export function JianpuRenderer({
         const hlX = activeItem ? activeItem.x - activeItem.width / 2 + 1 : 0;
         const hlW = activeItem ? activeItem.width - 2 : 0;
         const lineEndX = lineEndXMap.get(lineIdx) ?? maxWidth;
+
+        // Start marker
+        const startItem = startBeatIndex !== undefined ? findActiveBeat(layout.items, startBeatIndex) : undefined;
 
         return (
           <svg
@@ -1024,6 +1036,13 @@ export function JianpuRenderer({
                 />
               )}
             </AnimatePresence>
+            {startItem && !activeItem && (
+              <polygon
+                points={`${startItem.x - 4},${Y_MARK - 4} ${startItem.x + 4},${Y_MARK - 4} ${startItem.x},${Y_MARK + 2}`}
+                fill="var(--color-accent)"
+                opacity={0.7}
+              />
+            )}
             {svgElements}
           </svg>
         );

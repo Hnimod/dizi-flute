@@ -14,6 +14,7 @@ interface TempoGuideProps {
 export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
+  const [startBeat, setStartBeat] = useState(-1);
   const [bpm, setBpm] = useState(tempo ?? 60);
   const containerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -25,21 +26,31 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
   const stop = useCallback(() => {
     setIsPlaying(false);
     setCurrentBeat(-1);
+    setStartBeat(-1);
     beatRef.current = -1;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, []);
+
+  const handleBeatClick = useCallback((beatIndex: number) => {
+    if (isPlaying) return;
+    setStartBeat(beatIndex);
+    setCurrentBeat(beatIndex);
+    beatRef.current = beatIndex;
+  }, [isPlaying]);
 
   const togglePlay = useCallback(() => {
     setIsPlaying((prev) => {
       if (prev) return false;
       setCurrentBeat((b) => {
-        const start = b >= totalBeats - 1 || b < 0 ? 0 : b;
+        const start = b >= totalBeats - 1 || b < 0
+          ? (startBeat >= 0 ? startBeat : 0)
+          : b;
         beatRef.current = start;
         return start;
       });
       return true;
     });
-  }, [totalBeats]);
+  }, [totalBeats, startBeat]);
 
   // setTimeout-based beat advancement with duration-aware scheduling
   useEffect(() => {
@@ -138,12 +149,16 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           </button>
         </div>
 
-        {/* Beat counter */}
-        {currentBeat >= 0 && (
-          <span className="ml-auto text-xs" style={{ color: "var(--color-text-secondary)" }}>
-            {currentBeat + 1} / {totalBeats}
-          </span>
-        )}
+        {/* Beat counter / start indicator */}
+        <span className="ml-auto text-xs" style={{ color: "var(--color-text-secondary)" }}>
+          {currentBeat >= 0 ? (
+            <>{currentBeat + 1} / {totalBeats}</>
+          ) : startBeat >= 0 ? (
+            <button onClick={() => setStartBeat(-1)} className="hover:opacity-70 transition-opacity">
+              from {startBeat + 1} ✕
+            </button>
+          ) : null}
+        </span>
       </div>
 
       {/* Jianpu with highlight */}
@@ -152,6 +167,8 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           content={content}
           activeBeatIndex={currentBeat >= 0 ? currentBeat : undefined}
           beatDurationMs={currentBeat >= 0 ? (60 / bpm) * 1000 * (schedule[currentBeat] ?? 1) : undefined}
+          startBeatIndex={startBeat >= 0 && currentBeat < 0 ? startBeat : undefined}
+          onBeatClick={handleBeatClick}
           className={className}
           style={style}
           title={title}
