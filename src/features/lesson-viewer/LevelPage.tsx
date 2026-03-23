@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams, Link } from "react-router";
+import { useParams, Link, useNavigate } from "react-router";
 import { levels } from "@/data";
 import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
@@ -161,6 +161,7 @@ function CompactItemRow({
 
 export function LevelPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const levelId = Number(id);
   const level = levels.find((l) => l.id === levelId);
   const completedCount = useProgressStore(selectCompletedCount(levelId));
@@ -221,13 +222,13 @@ export function LevelPage() {
       )}
 
       <div className="mx-auto max-w-3xl">
-        <Link
-          to="/"
+        <button
+          onClick={() => navigate(-1)}
           className="inline-flex items-center gap-1 text-sm hover:opacity-80 mb-4"
           style={{ color: "var(--color-accent)" }}
         >
-          &larr; Course Overview
-        </Link>
+          &larr; Back
+        </button>
 
         {/* Header */}
         <header className="mb-6 md:mb-8">

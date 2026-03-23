@@ -69,7 +69,7 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
                 className="text-sm font-medium hover:opacity-70 transition-opacity"
                 style={{ color: "var(--color-accent)" }}
               >
-                Go to lesson &rarr;
+                Go to details &rarr;
               </Link>
             )}
             {canDelete && (
