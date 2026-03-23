@@ -211,32 +211,50 @@ export function JianpuEditor({
           </button>
         </div>
 
-        {/* Grouping row */}
+        {/* Breath */}
         <div className="flex gap-2 justify-center">
-          <button
-            className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-5 active:scale-95 transition-transform"
-            style={activeStyle(slurActive)}
-            onClick={() => {
-              if (slurActive) { appendToken(")"); setSlurActive(false); }
-              else { appendToken("("); setSlurActive(true); }
-            }}
-          >
-            {slurActive ? "⌒ End slur" : "⌒ Slur"}
-          </button>
-          <button
-            className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-5 active:scale-95 transition-transform"
-            style={activeStyle(beamActive)}
-            onClick={() => {
-              if (beamActive) { appendToken("]"); setBeamActive(false); }
-              else { appendToken("["); setBeamActive(true); }
-            }}
-          >
-            {beamActive ? "━ End beam" : "━ Beam"}
-          </button>
           <button className="flex items-center justify-center rounded-lg text-sm font-medium h-10 px-4 active:scale-95 transition-transform" style={btnStyle} onClick={() => appendToken("V")}>
             ∨ breath
           </button>
         </div>
+      </div>
+
+      {/* Toggle modes: Slur & Beam — separate section */}
+      <div
+        className="flex gap-2 justify-center rounded-xl px-3 py-2 mb-2"
+        style={{ backgroundColor: "var(--color-bg-tertiary)", border: "1px dashed var(--color-border)" }}
+      >
+        <span className="text-xs flex items-center" style={{ color: "var(--color-text-secondary)" }}>Mode:</span>
+        <button
+          className="flex items-center gap-1.5 rounded-full text-sm font-medium h-9 px-4 active:scale-95 transition-all"
+          style={{
+            backgroundColor: slurActive ? "var(--color-accent)" : "transparent",
+            color: slurActive ? "white" : "var(--color-text-secondary)",
+            border: `2px solid ${slurActive ? "var(--color-accent)" : "var(--color-border)"}`,
+          }}
+          onClick={() => {
+            if (slurActive) { appendToken(")"); setSlurActive(false); }
+            else { appendToken("("); setSlurActive(true); }
+          }}
+        >
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: slurActive ? "white" : "var(--color-border)" }} />
+          {slurActive ? "End slur )" : "Slur ("}
+        </button>
+        <button
+          className="flex items-center gap-1.5 rounded-full text-sm font-medium h-9 px-4 active:scale-95 transition-all"
+          style={{
+            backgroundColor: beamActive ? "var(--color-accent)" : "transparent",
+            color: beamActive ? "white" : "var(--color-text-secondary)",
+            border: `2px solid ${beamActive ? "var(--color-accent)" : "var(--color-border)"}`,
+          }}
+          onClick={() => {
+            if (beamActive) { appendToken("]"); setBeamActive(false); }
+            else { appendToken("["); setBeamActive(true); }
+          }}
+        >
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: beamActive ? "white" : "var(--color-border)" }} />
+          {beamActive ? "End beam ]" : "Beam ["}
+        </button>
       </div>
 
       {/* SVG notation (interactive) */}
