@@ -3,6 +3,7 @@ interface JianpuRendererProps {
   className?: string;
   style?: React.CSSProperties;
   activeBeatIndex?: number;
+  beatDurationMs?: number;
   title?: string;
   keySignature?: string;
   timeSignature?: string;
@@ -491,21 +492,6 @@ function renderSvgToken(
     ? () => opts.onTokenClick?.(tokenIdx, x, (opts.lineYOffset ?? 0) + Y_NOTE)
     : undefined;
 
-  // Active highlight background
-  if (isActive) {
-    elements.push(
-      <rect
-        key={`${key}-hl`}
-        x={x - width / 2 + 1}
-        y={Y_NOTE - 14}
-        width={width - 2}
-        height={18}
-        rx={3}
-        fill="var(--color-accent)"
-      />,
-    );
-  }
-
   switch (token.type) {
     case "note": {
       // data-beat group wrapper for scrollIntoView
@@ -874,6 +860,18 @@ function flatFirst(items: LayoutItem[]): LayoutItem | undefined {
   return undefined;
 }
 
+function findActiveBeat(items: LayoutItem[], beatIdx: number | undefined): LayoutItem | undefined {
+  if (beatIdx === undefined) return undefined;
+  for (const item of items) {
+    if (item.beatIndex === beatIdx) return item;
+    if (item.children) {
+      const found = findActiveBeat(item.children, beatIdx);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
 function flatLast(items: LayoutItem[]): LayoutItem | undefined {
   for (let i = items.length - 1; i >= 0; i--) {
     const item = items[i]!;
@@ -892,6 +890,7 @@ export function JianpuRenderer({
   className = "",
   style,
   activeBeatIndex,
+  beatDurationMs,
   title,
   keySignature,
   timeSignature,
@@ -951,6 +950,11 @@ export function JianpuRenderer({
           : undefined;
         renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
 
+        // Line-level highlight with smooth transition
+        const activeItem = findActiveBeat(layout.items, activeBeatIndex);
+        const hlX = activeItem ? activeItem.x - activeItem.width / 2 + 1 : 0;
+        const hlW = activeItem ? activeItem.width - 2 : 0;
+
         return (
           <svg
             key={lineIdx}
@@ -960,6 +964,22 @@ export function JianpuRenderer({
             style={{ display: "block" }}
             className="jianpu-svg"
           >
+            {activeItem && (
+              <rect
+                key="hl"
+                y={Y_NOTE - 14}
+                width={hlW}
+                height={18}
+                rx={3}
+                fill="var(--color-accent)"
+                style={{
+                  transform: `translateX(${hlX}px)`,
+                  transition: beatDurationMs
+                    ? `transform ${beatDurationMs}ms linear, width ${beatDurationMs}ms linear`
+                    : "transform 0.15s ease-out, width 0.15s ease-out",
+                }}
+              />
+            )}
             {svgElements}
           </svg>
         );

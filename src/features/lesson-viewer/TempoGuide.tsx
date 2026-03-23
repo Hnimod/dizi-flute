@@ -151,6 +151,7 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
         <JianpuRenderer
           content={content}
           activeBeatIndex={currentBeat >= 0 ? currentBeat : undefined}
+          beatDurationMs={currentBeat >= 0 ? (60 / bpm) * 1000 * (schedule[currentBeat] ?? 1) : undefined}
           className={className}
           style={style}
           title={title}
