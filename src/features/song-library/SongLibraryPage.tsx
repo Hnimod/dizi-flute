@@ -63,15 +63,13 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
             style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
           />
           <div className="mt-3 flex items-center gap-4">
-            {song.levelId > 0 && (
-              <Link
-                to={`/level/${song.levelId}`}
-                className="text-sm font-medium hover:opacity-70 transition-opacity"
-                style={{ color: "var(--color-accent)" }}
-              >
-                Go to details &rarr;
-              </Link>
-            )}
+            <Link
+              to={`/library/${song.id}`}
+              className="text-sm font-medium hover:opacity-70 transition-opacity"
+              style={{ color: "var(--color-accent)" }}
+            >
+              Go to details &rarr;
+            </Link>
             {canDelete && (
               <button
                 onClick={() => removeSong(song.id)}

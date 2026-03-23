@@ -4,7 +4,7 @@ import { HomePage } from "@/features/course-navigation";
 import { LevelPage } from "@/features/lesson-viewer";
 import { ReferencePage, ReferenceDetailPage } from "@/features/reference-library";
 import { PracticePage } from "@/features/practice-timer";
-import { SongLibraryPage } from "@/features/song-library";
+import { SongLibraryPage, SongDetailPage } from "@/features/song-library";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +17,7 @@ export const router = createBrowserRouter([
       { path: "reference/:slug", element: <ReferenceDetailPage /> },
       { path: "practice", element: <PracticePage /> },
       { path: "library", element: <SongLibraryPage /> },
+      { path: "library/:songId", element: <SongDetailPage /> },
     ],
   },
 ]);
