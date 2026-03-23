@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { songs } from "@/data";
 import { VideoEmbed } from "@/shared/ui";
@@ -16,12 +16,15 @@ export function SongDetailPage() {
   const navigate = useNavigate();
   const userSongs = useSongLibraryStore((s) => s.userSongs);
   const removeSong = useSongLibraryStore((s) => s.removeSong);
+  const updateSong = useSongLibraryStore((s) => s.updateSong);
 
   const song = useMemo(() => {
     return songs.find((s) => s.id === songId) ?? userSongs.find((s) => s.id === songId);
   }, [songId, userSongs]);
 
   const isUserSong = song?.id.startsWith("user-song-");
+  const [editableJianpu, setEditableJianpu] = useState(song?.jianpu ?? "");
+  const hasChanges = editableJianpu !== (song?.jianpu ?? "");
 
   if (!song) {
     return (
@@ -71,8 +74,48 @@ export function SongDetailPage() {
 
       <UserVideos itemId={song.id} />
 
+      {/* Editable jianpu notation */}
+      <div className="my-4">
+        <label className="block text-sm font-medium mb-1" style={{ color: "var(--color-text-secondary)" }}>
+          Jianpu Notation
+        </label>
+        <textarea
+          value={editableJianpu}
+          onChange={(e) => setEditableJianpu(e.target.value)}
+          className="w-full font-mono text-sm rounded-lg p-3 resize-y"
+          style={{
+            backgroundColor: "var(--color-bg-secondary)",
+            color: "var(--color-text)",
+            border: "1px solid var(--color-border)",
+            minHeight: "100px",
+          }}
+          spellCheck={false}
+        />
+        {hasChanges && (
+          <div className="flex items-center gap-2 mt-2">
+            {isUserSong && (
+              <button
+                onClick={() => updateSong(song.id, { jianpu: editableJianpu })}
+                className="px-3 py-1 text-sm font-medium rounded-md text-white"
+                style={{ backgroundColor: "var(--color-accent)" }}
+              >
+                Save
+              </button>
+            )}
+            <button
+              onClick={() => setEditableJianpu(song.jianpu)}
+              className="px-3 py-1 text-sm font-medium rounded-md"
+              style={{ color: "var(--color-text-secondary)", border: "1px solid var(--color-border)" }}
+            >
+              Reset
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Live preview */}
       <TempoGuide
-        content={song.jianpu}
+        content={editableJianpu}
         tempo={song.tempo}
         title={getTitle(song)}
         keySignature={song.key}

@@ -17,6 +17,7 @@ interface UserSongInput {
 interface SongLibraryState {
   userSongs: Song[];
   addSong: (input: UserSongInput) => void;
+  updateSong: (id: string, updates: Partial<UserSongInput>) => void;
   removeSong: (id: string) => void;
 }
 
@@ -35,6 +36,12 @@ export const useSongLibraryStore = create<SongLibraryState>()(
               levelId: 0,
             },
           ],
+        })),
+      updateSong: (id, updates) =>
+        set((state) => ({
+          userSongs: state.userSongs.map((s) =>
+            s.id === id ? { ...s, ...updates } : s,
+          ),
         })),
       removeSong: (id) =>
         set((state) => ({
