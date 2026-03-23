@@ -81,6 +81,8 @@ export function JianpuEditor({
   const [tokens, setTokens] = useState<string[]>(() => parseToTokenArray(value));
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [popoverPos, setPopoverPos] = useState<{ x: number; y: number } | null>(null);
+  const [beamActive, setBeamActive] = useState(false);
+  const [slurActive, setSlurActive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const jianpuText = useMemo(() => tokensToString(tokens), [tokens]);
@@ -220,7 +222,7 @@ export function JianpuEditor({
         style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
       >
         {["1", "2", "3", "4", "5", "6", "7"].map((d) => (
-          <button key={d} className={btnSm} style={noteStyle} onClick={() => appendToken(d)}>
+          <button key={d} className={btnSm} style={noteStyle} onClick={() => appendToken(beamActive ? `${d}_` : d)}>
             {d}
           </button>
         ))}
@@ -230,6 +232,45 @@ export function JianpuEditor({
         <button className={btnSm} style={noteStyle} onClick={() => appendToken("|")}>|</button>
         <button className={btnSm} style={noteStyle} onClick={() => appendToken("||")}>||</button>
         <button className={btnSm} style={noteStyle} onClick={() => appendToken("\n")}>↵</button>
+        <span className="w-px mx-0.5 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
+        <button
+          className={btnSm}
+          style={{
+            backgroundColor: slurActive ? "var(--color-accent)" : "var(--color-bg-secondary)",
+            color: slurActive ? "white" : "var(--color-text)",
+            border: `1px solid ${slurActive ? "var(--color-accent)" : "var(--color-border)"}`,
+          }}
+          onClick={() => {
+            if (slurActive) {
+              appendToken(")");
+              setSlurActive(false);
+            } else {
+              appendToken("(");
+              setSlurActive(true);
+            }
+          }}
+        >
+          {slurActive ? "⌒ )" : "⌒ ("}
+        </button>
+        <button
+          className={btnSm}
+          style={{
+            backgroundColor: beamActive ? "var(--color-accent)" : "var(--color-bg-secondary)",
+            color: beamActive ? "white" : "var(--color-text)",
+            border: `1px solid ${beamActive ? "var(--color-accent)" : "var(--color-border)"}`,
+          }}
+          onClick={() => {
+            if (beamActive) {
+              appendToken("]");
+              setBeamActive(false);
+            } else {
+              appendToken("[");
+              setBeamActive(true);
+            }
+          }}
+        >
+          {beamActive ? "━ ]" : "━ ["}
+        </button>
       </div>
 
       {/* Interactive SVG notation */}
