@@ -52,7 +52,7 @@ html {
   flex-wrap: nowrap;
   align-items: center;
   min-height: 2.2em;
-  gap: 0;
+  gap: 0.1em;
 }
 
 .jianpu-note {
@@ -179,7 +179,14 @@ html {
   align-items: center;
   border-bottom: 2px solid var(--color-text);
   padding-bottom: 1px;
+  margin-bottom: -3px;
   gap: 0;
+}
+
+.jianpu-slur .jianpu-note,
+.jianpu-slur .jianpu-rest {
+  flex: 1 1 1.2em;
+  min-width: 0.8em;
 }
 
 .jianpu-beam .jianpu-note,
@@ -302,13 +309,59 @@ html {
   margin: 0 -0.1em;
 }
 
-/* ─── Slur markers ─── */
+/* ─── Slur (arc above notes) ─── */
 
-.jianpu-slur-mark {
+.jianpu-slur {
   display: inline-flex;
+  align-items: center;
+  position: relative;
+  gap: 0.15em;
+}
+
+.jianpu-slur::after {
+  content: "";
+  position: absolute;
+  top: 0.1em;
+  left: 15%;
+  right: 15%;
+  height: 0.45em;
+  border-top: 1.5px solid var(--color-text-secondary);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ─── Tonguing mark (T above individual note) ─── */
+
+.jianpu-tonguing-mark::before {
+  content: "T";
+  position: absolute;
+  top: -0.3em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.55em;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.jianpu-note-up.jianpu-tonguing-mark::before {
+  top: -0.5em;
+}
+
+/* ─── Breath mark ─── */
+
+.jianpu-breath {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
   flex: 0 0 0;
   width: 0;
   height: 2.2em;
+  font-size: 0.6rem;
+  color: var(--color-text-secondary);
+  margin-right: -0.3em;
+  padding-top: 0.1em;
 }
 
 /* ─── Tonguing annotation ─── */

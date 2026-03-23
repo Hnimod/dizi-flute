@@ -164,11 +164,13 @@ A sorrowful Chinese folk song. Pentatonic — uses only 1, 2, 3, 5, 6. Notice: n
 
 ```
 小白菜 (Little White Cabbage)
-1=D  2/4
+1=D  3/4
+♪=69  河北民歌
 
-6 5 | 3 5 | 6 - | 6 5 |
-3 2 | 1 - | 2 3 | 5 6 |
-5 - | 3 2 | 1 6̣ | 5̣ - ||
+( 5 3 ) 3T | 2T - - V | ( 5 3 ) | ( 3 2 ) 1T | - - V | ( 1 3 ) 2T |
+6T - - V | 2T 1T | [ 1,_ 6,_ ] 5,T V | 2T 2T 3T | 2T - - V |
+[ 5_ 3_ ] [ 3_ 2_ ] | 1T - - V | 1T [ 3_ 2_ ] | 6,T - - V | [ 2_ 1_ ] [ 1,_ 6,_ ] |
+5,T - - V | 6,T [ 1,_ 6,_ ] | 5,T V | 6,T | [ 1,_ 6,_ ] 5,T V | 6,T 2T [ 1,_ 6,_ ] | 5,T - - ||
 ```
 > **Listen:** [YouTube search: 小白菜 笛子 河北民歌](https://www.youtube.com/results?search_query=小白菜+笛子+河北民歌)
 

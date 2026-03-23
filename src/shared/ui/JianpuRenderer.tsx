@@ -17,12 +17,14 @@ export type Token =
       staccato?: boolean;
       accent?: boolean;
       trill?: boolean;
+      tonguing?: boolean;
     }
   | { type: "rest"; duration?: "eighth" | "sixteenth" }
   | { type: "hold" }
   | { type: "bar"; value: string }
   | { type: "text"; value: string }
   | { type: "tie" }
+  | { type: "breath" }
   | { type: "slur-start" }
   | { type: "slur-end" }
   | { type: "beam-start" }
@@ -34,11 +36,11 @@ export type Token =
 // optional tr prefix, optional # or b, digit 1-7, optional octave ',
 // optional dot, optional _ or __, optional articulation ^;>
 const EXT_NOTE_RE =
-  /^(tr)?(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>])?$/;
+  /^(tr)?(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
 
 // Grace note: (x)... same extensions
 const EXT_GRACE_RE =
-  /^(tr)?\(([1-7])\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>])?$/;
+  /^(tr)?\(([1-7])\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
 
 export function isNotationLine(line: string): boolean {
   return /[1-7]/.test(line) && /[|\-]/.test(line);
@@ -58,6 +60,9 @@ export function parseToken(raw: string): Token {
   if (raw === "~") {
     return { type: "tie" };
   }
+
+  // Breath mark
+  if (raw === "V") return { type: "breath" };
 
   // Slur markers
   if (raw === "(") return { type: "slur-start" };
@@ -116,6 +121,7 @@ export function parseToken(raw: string): Token {
       staccato: articulation === ";",
       accent: articulation === ">",
       trill,
+      tonguing: articulation === "T",
     };
   }
 
@@ -151,6 +157,7 @@ export function parseToken(raw: string): Token {
       staccato: articulation === ";",
       accent: articulation === ">",
       trill,
+      tonguing: articulation === "T",
     };
   }
 
@@ -176,6 +183,7 @@ function renderToken(token: Token, key: number, beatIndex: number | null, active
         token.staccato && "jianpu-staccato",
         token.accent && "jianpu-accent",
         token.trill && "jianpu-trill",
+        token.tonguing && "jianpu-tonguing-mark",
         isActive && "jianpu-active",
       ]
         .filter(Boolean)
@@ -220,10 +228,16 @@ function renderToken(token: Token, key: number, beatIndex: number | null, active
           ⌢
         </span>
       );
+    case "breath":
+      return (
+        <span key={key} className="jianpu-breath">
+          ∨
+        </span>
+      );
     case "slur-start":
-      return <span key={key} className="jianpu-slur-mark jianpu-slur-start" />;
+      return null;
     case "slur-end":
-      return <span key={key} className="jianpu-slur-mark jianpu-slur-end" />;
+      return null;
     case "beam-start":
       return null;
     case "beam-end":
@@ -303,7 +317,51 @@ export function JianpuRenderer({ content, className = "", style, activeBeatIndex
         while (i < rawTokens.length) {
           const token = rawTokens[i]!;
 
-          if (token.type === "beam-start") {
+          if (token.type === "slur-start") {
+            // Collect slurred notes until slur-end
+            const slurTokens: Token[] = [];
+            i++;
+            while (i < rawTokens.length && rawTokens[i]!.type !== "slur-end") {
+              slurTokens.push(rawTokens[i]!);
+              i++;
+            }
+            i++; // skip slur-end
+
+            // Render slur contents, handling nested beams
+            const slurElements: React.ReactNode[] = [];
+            let si = 0;
+            while (si < slurTokens.length) {
+              const st = slurTokens[si]!;
+              if (st.type === "beam-start") {
+                const beamTokens: Token[] = [];
+                si++;
+                while (si < slurTokens.length && slurTokens[si]!.type !== "beam-end") {
+                  beamTokens.push(slurTokens[si]!);
+                  si++;
+                }
+                si++; // skip beam-end
+                slurElements.push(
+                  <span key={`beam-${tokenKey}`} className="jianpu-beam">
+                    {beamTokens.map((bt) => {
+                      const bi = isBeat(bt) ? beatCounter++ : null;
+                      return renderToken(bt, tokenKey++, bi, activeBeatIndex);
+                    })}
+                  </span>,
+                );
+              } else {
+                const bi = isBeat(st) ? beatCounter++ : null;
+                const el = renderToken(st, tokenKey++, bi, activeBeatIndex);
+                if (el) slurElements.push(el);
+                si++;
+              }
+            }
+
+            elements.push(
+              <span key={`slur-${tokenKey}`} className="jianpu-slur">
+                {slurElements}
+              </span>,
+            );
+          } else if (token.type === "beam-start") {
             // Collect beamed notes until beam-end
             const beamTokens: Token[] = [];
             i++;

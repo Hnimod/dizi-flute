@@ -24,15 +24,17 @@ export const level2Songs: Song[] = [
     titleChinese: "\u5C0F\u767D\u83DC",
     titleEnglish: "Little White Cabbage",
     key: "D",
-    timeSignature: "2/4",
+    timeSignature: "3/4",
+    tempo: 69,
     jianpu: `\u5C0F\u767D\u83DC (Little White Cabbage)
-1=D  2/4
+1=D  3/4
+\u266A=69  \u6CB3\u5317\u6C11\u6B4C
 
-6 5 | 3 5 | 6 - | 6 5 |
-3 2 | 1 - | 2 3 | 5 6 |
-5 - | 3 2 | 1 6, | 5, - ||`,
-    description:
-      "A sorrowful Chinese folk song. Pentatonic \u2014 uses only 1, 2, 3, 5, 6.",
+( 5 3 ) 3T | 2T - - V | ( 5 3 ) | ( 3 2 ) 1T | - - V | ( 1 3 ) 2T |
+6T - - V | 2T 1T | [ 1,_ 6,_ ] 5,T V | 2T 2T 3T | 2T - - V |
+[ 5_ 3_ ] [ 3_ 2_ ] | 1T - - V | 1T [ 3_ 2_ ] | 6,T - - V | [ 2_ 1_ ] [ 1,_ 6,_ ] |
+5,T - - V | 6,T [ 1,_ 6,_ ] | 5,T V | 6,T | [ 1,_ 6,_ ] 5,T V | 6,T 2T [ 1,_ 6,_ ] | 5,T - - ||`,
+    description: "A sorrowful Chinese folk song. Pentatonic \u2014 uses only 1, 2, 3, 5, 6.",
     origin: "Hebei folk song",
   },
   {
@@ -90,8 +92,7 @@ export const level2Songs: Song[] = [
 3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 2 - 1 - |
 2 2 3 1 | 2 [ 3_ 4_ ] 3 1 | 2 [ 3_ 4_ ] 3 2 | 1 2 5, - |
 3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 2 - 1 - ||`,
-    description:
-      "Beethoven. Uses stepwise motion. Good for smooth finger transitions.",
+    description: "Beethoven. Uses stepwise motion. Good for smooth finger transitions.",
     origin: "Beethoven",
   },
   {
@@ -133,8 +134,7 @@ Andante \u2669=72
 3 - 5 - | 6 - 1' - | 6 - 5 - | 5 - - - |
 1 1 1 - | 3 5 6 - | 6 6 5 - | 5 - - - |
 5 5 3 - | 2 3 2 - | 1 1 1 - | 1 - - - ||`,
-    description:
-      "Teresa Teng (1977). One of the most beloved Chinese songs worldwide.",
+    description: "Teresa Teng (1977). One of the most beloved Chinese songs worldwide.",
     origin: "Teresa Teng, 1977",
   },
   {
@@ -155,8 +155,7 @@ Moderato \u2669=96
 6 6 5 6 | 1' - 6 5 | 3 3 2 1 | 2 - - - |
 3 3 5 6 | 5 - - - | 3 3 2 3 | 5 - - - |
 6 6 5 6 | 1' - 6 5 | 3 2 1 2 | 1 - - - ||`,
-    description:
-      "Teresa Teng, 1979. Cheerful and instantly recognizable.",
+    description: "Teresa Teng, 1979. Cheerful and instantly recognizable.",
     origin: "Teresa Teng, 1979",
   },
   {
@@ -176,8 +175,7 @@ Moderato \u2669=100
 [ 5_ 3_ ] [ 5_ 3_ ] | [ 5_ 3_ ] [ 2_ 1_ ] | [ 2_ 3_ ] [ 2_ 1_ ] | 5, - |
 [ 6,_ 6,_ ] [ 1_ 6,_ ] | [ 5,_ 5,_ ] [ 3,_ 5,_ ] | [ 6,_ 6,_ ] [ 1_ 2_ ] | 1 - |
 [ 5_ 3_ ] [ 5_ 3_ ] | [ 5_ 3_ ] [ 2_ 1_ ] | [ 2_ 3_ ] [ 2_ 1_ ] | 5, - ||`,
-    description:
-      "A beloved Vietnamese children's song. Simple melody, single octave.",
+    description: "A beloved Vietnamese children's song. Simple melody, single octave.",
     origin: "Vietnamese children's song",
   },
   {
@@ -217,8 +215,7 @@ Moderato \u2669=100
 [ 2_ 2_ ] [ 3_ 2_ ] | 1 - 6, - | [ 1_ 2_ ] [ 3_ 5_ ] | 3 - 1 - |
 [ 5_ 5_ ] [ 3_ 5_ ] | 6 - 5 - | [ 3_ 3_ ] [ 1_ 3_ ] | 5 - 3 - |
 [ 2_ 3_ ] [ 2_ 1_ ] | 6, - 1 - | [ 2_ 3_ ] [ 2_ 1_ ] | 1 - - - ||`,
-    description:
-      "By Ph\u1EA1m Tuy\u00EAn. A happy, bouncy melody beloved by Vietnamese children.",
+    description: "By Ph\u1EA1m Tuy\u00EAn. A happy, bouncy melody beloved by Vietnamese children.",
     origin: "Ph\u1EA1m Tuy\u00EAn, Vietnamese",
   },
 ];
