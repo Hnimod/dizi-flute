@@ -44,14 +44,14 @@ export function UserVideos({ itemId }: { itemId: string }) {
       ))}
 
       {/* Add video input */}
-      <div className="flex gap-2">
+      <div className="relative">
         <input
           type="url"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
           placeholder="Paste video link (YouTube, TikTok...)"
-          className="min-w-0 flex-1 rounded-lg px-3 py-2 text-sm outline-none"
+          className="w-full rounded-xl px-4 py-2.5 pr-16 text-sm outline-none"
           style={{
             backgroundColor: "var(--color-bg)",
             border: "1px solid var(--color-border)",
@@ -61,7 +61,7 @@ export function UserVideos({ itemId }: { itemId: string }) {
         <button
           onClick={handleAdd}
           disabled={!input.trim()}
-          className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-white transition-opacity disabled:opacity-40"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg px-3 py-1.5 text-xs font-medium text-white transition-opacity disabled:opacity-30"
           style={{ backgroundColor: "var(--color-accent)" }}
         >
           Add
