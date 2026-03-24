@@ -5,6 +5,7 @@ import { LevelPage } from "@/features/lesson-viewer";
 import { ReferencePage, ReferenceDetailPage } from "@/features/reference-library";
 import { PracticePage } from "@/features/practice-timer";
 import { SongLibraryPage, SongDetailPage } from "@/features/song-library";
+import { AdminLoginPage } from "@/features/auth";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "practice", element: <PracticePage /> },
       { path: "library", element: <SongLibraryPage /> },
       { path: "library/:songId", element: <SongDetailPage /> },
+      { path: "admin/login", element: <AdminLoginPage /> },
     ],
   },
 ]);

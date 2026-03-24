@@ -1,13 +1,17 @@
-import type { Level } from "@/shared/types";
-import { exercises } from "./exercises";
-import { songs } from "./songs";
+import type { Level, Song, Exercise } from "@/shared/types";
+import { exercises as staticExercises } from "./exercises";
+import { songs as staticSongs } from "./songs";
 
-const exercisesForLevel = (levelId: number) =>
-  exercises.filter((e) => e.levelId === levelId);
-const songsForLevel = (levelId: number) =>
-  songs.filter((s) => s.levelId === levelId);
+export function buildLevels(
+  songs: Song[] = staticSongs,
+  exercises: Exercise[] = staticExercises,
+): Level[] {
+  const exercisesForLevel = (levelId: number) =>
+    exercises.filter((e) => e.levelId === levelId);
+  const songsForLevel = (levelId: number) =>
+    songs.filter((s) => s.levelId === levelId);
 
-export const levels: Level[] = [
+  return [
   {
     id: 0,
     slug: "setup",
@@ -293,4 +297,8 @@ export const levels: Level[] = [
       },
     ],
   },
-];
+  ];
+}
+
+// Static export for backward compatibility (uses hardcoded data)
+export const levels: Level[] = buildLevels();

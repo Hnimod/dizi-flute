@@ -1,12 +1,21 @@
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useThemeStore, ThemeToggle } from "@/features/theme";
 import { Sidebar } from "@/features/course-navigation";
+import { useContentStore } from "@/data";
+import { IdentifyPrompt, SyncProvider } from "@/features/auth";
 import { BottomNav } from "./BottomNav";
 
 export function App() {
   const { theme } = useThemeStore();
   const location = useLocation();
+  const fetchContent = useContentStore((s) => s.fetchContent);
+
+  // Load content from API on startup (falls back to static data if offline)
+  useEffect(() => {
+    fetchContent();
+  }, [fetchContent]);
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
@@ -45,6 +54,10 @@ export function App() {
         {/* Mobile bottom navigation */}
         <BottomNav />
       </div>
+
+      {/* Auth: sync provider + identify prompt */}
+      <SyncProvider />
+      <IdentifyPrompt />
     </div>
   );
 }

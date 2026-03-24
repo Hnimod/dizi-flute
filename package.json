@@ -5,8 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:full": "npx wrangler pages dev --proxy=5173",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && npx wrangler pages deploy dist/ --project-name dizi-flute",
+    "db:migrate": "npx wrangler d1 execute dizi-flute --file=./db/migrations/001-init.sql",
+    "db:seed": "npx wrangler d1 execute dizi-flute --file=./db/seed.sql",
+    "db:generate-seed": "npx tsx --tsconfig tsconfig.app.json db/generate-seed.ts > db/seed.sql"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -18,6 +23,8 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250313.0",
+    "wrangler": "^4.14.0",
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { songs, levels } from "@/data";
+import { levels, useContentStore } from "@/data";
 import { VideoEmbed } from "@/shared/ui";
 import { UserVideos } from "@/features/lesson-viewer/UserVideos";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
@@ -109,6 +109,7 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
 // ─── Main Page ───
 
 export function SongLibraryPage() {
+  const songs = useContentStore((s) => s.songs);
   const userSongs = useSongLibraryStore((s) => s.userSongs);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -133,7 +134,7 @@ export function SongLibraryPage() {
       grouped.set(song.levelId, list);
     }
     return grouped;
-  }, []);
+  }, [songs]);
 
   const levelTitles = useMemo(() => {
     const map = new Map<number, string>();

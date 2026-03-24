@@ -1,9 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import { songs } from "@/data";
+import { motion, AnimatePresence } from "framer-motion";
+import { useContentStore } from "@/data";
 import { VideoEmbed, JianpuEditor } from "@/shared/ui";
 import { UserVideos } from "@/features/lesson-viewer/UserVideos";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
+import { useAuthStore } from "@/features/auth";
+import { SongEditor } from "@/features/admin";
 import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
@@ -14,17 +17,20 @@ function getTitle(song: Song): string {
 export function SongDetailPage() {
   const { songId } = useParams();
   const navigate = useNavigate();
+  const songs = useContentStore((s) => s.songs);
   const userSongs = useSongLibraryStore((s) => s.userSongs);
   const removeSong = useSongLibraryStore((s) => s.removeSong);
   const updateSong = useSongLibraryStore((s) => s.updateSong);
 
   const song = useMemo(() => {
     return songs.find((s) => s.id === songId) ?? userSongs.find((s) => s.id === songId);
-  }, [songId, userSongs]);
+  }, [songId, songs, userSongs]);
 
+  const isAdmin = useAuthStore((s) => s.isAdmin);
   const isUserSong = song?.id.startsWith("user-song-");
   const [editableJianpu, setEditableJianpu] = useState(song?.jianpu ?? "");
   const [isEditing, setIsEditing] = useState(false);
+  const [showAdminEditor, setShowAdminEditor] = useState(false);
   const hasChanges = editableJianpu !== (song?.jianpu ?? "");
 
   const handleJianpuChange = useCallback((value: string) => {
@@ -58,9 +64,24 @@ export function SongDetailPage() {
       </button>
 
       <header className="mb-6">
-        <h1 className="text-2xl font-bold mb-1 md:text-3xl" style={{ color: "var(--color-text)" }}>
-          {getTitle(song)}
-        </h1>
+        <div className="flex items-start justify-between">
+          <h1 className="text-2xl font-bold mb-1 md:text-3xl" style={{ color: "var(--color-text)" }}>
+            {getTitle(song)}
+          </h1>
+          {isAdmin && !isUserSong && (
+            <button
+              onClick={() => setShowAdminEditor(true)}
+              className="shrink-0 ml-3 flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium text-white"
+              style={{ backgroundColor: "var(--color-accent)" }}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+              Edit
+            </button>
+          )}
+        </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm" style={{ color: "var(--color-text-secondary)" }}>
           <span>Key: {song.key}</span>
           <span>Time: {song.timeSignature}</span>
@@ -145,6 +166,32 @@ export function SongDetailPage() {
           Remove song
         </button>
       )}
+
+      {/* Admin song editor modal */}
+      <AnimatePresence>
+        {showAdminEditor && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-end md:items-center justify-center"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            onClick={() => setShowAdminEditor(false)}
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-2xl md:rounded-2xl p-5"
+              style={{ backgroundColor: "var(--color-bg-secondary)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <SongEditor song={song} onClose={() => setShowAdminEditor(false)} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

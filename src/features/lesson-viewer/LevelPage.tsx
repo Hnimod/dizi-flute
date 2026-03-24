@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { levels } from "@/data";
+import { motion, AnimatePresence } from "framer-motion";
+import { useLevels } from "@/data";
 import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
+import { useAuthStore } from "@/features/auth";
+import { SongEditor } from "@/features/admin";
+import { ExerciseEditor } from "@/features/admin";
 import { PracticeView } from "./PracticeView";
 import type { Song, Exercise } from "@/shared/types";
 import { UserVideos } from "./UserVideos";
@@ -21,7 +25,7 @@ function getItemTitle(item: Song | Exercise): string {
 
 /* ─── Desktop: full cards ─── */
 
-function SongCard({ song }: { song: Song }) {
+function SongCard({ song, onEdit }: { song: Song; onEdit?: () => void }) {
   const toggleItem = useProgressStore((s) => s.toggleItem);
   const completed = useProgressStore(selectIsCompleted(song.id));
   const titles = [song.titleChinese, song.titleVietnamese, song.titleEnglish].filter(Boolean);
@@ -32,9 +36,16 @@ function SongCard({ song }: { song: Song }) {
       style={{ border: "1px solid var(--color-border)" }}
     >
       <div className="flex items-center justify-between mb-1">
-        <h4 className="text-lg font-semibold" style={{ color: "var(--color-text)" }}>
-          {titles.join(" / ")}
-        </h4>
+        <div className="flex items-center gap-2">
+          <h4 className="text-lg font-semibold" style={{ color: "var(--color-text)" }}>
+            {titles.join(" / ")}
+          </h4>
+          {onEdit && (
+            <button onClick={onEdit} className="text-xs hover:opacity-70" style={{ color: "var(--color-accent)" }}>
+              Edit
+            </button>
+          )}
+        </div>
         <Checkbox checked={completed} onChange={() => toggleItem(song.id)} label="Completed" />
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3" style={{ color: "var(--color-text-secondary)" }}>
@@ -64,7 +75,7 @@ function SongCard({ song }: { song: Song }) {
   );
 }
 
-function ExerciseCard({ exercise }: { exercise: Exercise }) {
+function ExerciseCard({ exercise, onEdit }: { exercise: Exercise; onEdit?: () => void }) {
   const toggleItem = useProgressStore((s) => s.toggleItem);
   const completed = useProgressStore(selectIsCompleted(exercise.id));
 
@@ -74,9 +85,16 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
       style={{ border: "1px solid var(--color-border)" }}
     >
       <div className="flex items-center justify-between mb-1">
-        <h4 className="text-lg font-semibold" style={{ color: "var(--color-text)" }}>
-          {exercise.title}
-        </h4>
+        <div className="flex items-center gap-2">
+          <h4 className="text-lg font-semibold" style={{ color: "var(--color-text)" }}>
+            {exercise.title}
+          </h4>
+          {onEdit && (
+            <button onClick={onEdit} className="text-xs hover:opacity-70" style={{ color: "var(--color-accent)" }}>
+              Edit
+            </button>
+          )}
+        </div>
         <Checkbox checked={completed} onChange={() => toggleItem(exercise.id)} label="Completed" />
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3" style={{ color: "var(--color-text-secondary)" }}>
@@ -168,16 +186,21 @@ function CompactItemRow({
 export function LevelPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const levels = useLevels();
   const levelId = Number(id);
   const level = levels.find((l) => l.id === levelId);
   const completedCount = useProgressStore(selectCompletedCount(levelId));
   const setCurrentLevel = useProgressStore((s) => s.setCurrentLevel);
+  const isAdmin = useAuthStore((s) => s.isAdmin);
 
   // Practice view state: which section's items and starting index
   const [practiceState, setPracticeState] = useState<{
     items: (Song | Exercise)[];
     index: number;
   } | null>(null);
+
+  // Admin editor state
+  const [editingItem, setEditingItem] = useState<Song | Exercise | null>(null);
 
   const totalItems = useMemo(
     () => (level ? level.sections.reduce((sum, s) => sum + s.items.length, 0) : 0),
@@ -278,9 +301,9 @@ export function LevelPage() {
             <div className="hidden md:block">
               {section.items.map((item) =>
                 item.type === "song" ? (
-                  <SongCard key={item.id} song={item} />
+                  <SongCard key={item.id} song={item} onEdit={isAdmin ? () => setEditingItem(item) : undefined} />
                 ) : (
-                  <ExerciseCard key={item.id} exercise={item} />
+                  <ExerciseCard key={item.id} exercise={item} onEdit={isAdmin ? () => setEditingItem(item) : undefined} />
                 ),
               )}
             </div>
@@ -327,6 +350,36 @@ export function LevelPage() {
           )}
         </nav>
       </div>
+
+      {/* Admin editor modal */}
+      <AnimatePresence>
+        {editingItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-end md:items-center justify-center"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            onClick={() => setEditingItem(null)}
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-2xl md:rounded-2xl p-5"
+              style={{ backgroundColor: "var(--color-bg-secondary)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {editingItem.type === "song" ? (
+                <SongEditor song={editingItem} onClose={() => setEditingItem(null)} />
+              ) : (
+                <ExerciseEditor exercise={editingItem} onClose={() => setEditingItem(null)} />
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

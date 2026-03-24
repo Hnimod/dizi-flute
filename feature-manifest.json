@@ -60,9 +60,27 @@
       "path": "src/features/song-library",
       "description": "Browse all songs by level, add custom songs for practice",
       "routes": ["/library"],
-      "exports": ["SongLibraryPage"],
+      "exports": ["SongLibraryPage", "useSongLibraryStore"],
       "dependsOn": ["shared", "data"],
       "crossFeatureDeps": ["lesson-viewer"],
+      "status": "done"
+    },
+    "auth": {
+      "path": "src/features/auth",
+      "description": "Two-tier auth: email-only identify for users, email+password for admin. Syncs progress to DB.",
+      "routes": ["/admin/login"],
+      "exports": ["useAuthStore", "IdentifyPrompt", "AdminLoginPage", "SyncProvider"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["progress-tracking", "practice-timer", "song-library", "lesson-viewer"],
+      "status": "done"
+    },
+    "admin": {
+      "path": "src/features/admin",
+      "description": "Inline song/exercise editors for admin content management",
+      "routes": [],
+      "exports": ["SongEditor", "ExerciseEditor"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["auth"],
       "status": "done"
     }
   }
