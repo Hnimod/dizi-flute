@@ -7,8 +7,7 @@
     {
       "binding": "DB",
       "database_name": "dizi-flute",
-      // Replace with actual ID after running: npx wrangler d1 create dizi-flute
-      "database_id": "REPLACE_ME"
+      "database_id": "a8b66541-ba17-48b0-a177-32e8f1137fe0"
     }
   ]
 }
