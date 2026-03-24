@@ -6,6 +6,7 @@ import { ReferencePage, ReferenceDetailPage } from "@/features/reference-library
 import { PracticePage } from "@/features/practice-timer";
 import { SongLibraryPage, SongDetailPage } from "@/features/song-library";
 import { AdminLoginPage } from "@/features/auth";
+import { AdminSongDetailPage } from "@/features/admin";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { path: "library", element: <SongLibraryPage /> },
       { path: "library/:songId", element: <SongDetailPage /> },
       { path: "admin/login", element: <AdminLoginPage /> },
+      { path: "admin/song/:songId", element: <AdminSongDetailPage /> },
     ],
   },
 ]);

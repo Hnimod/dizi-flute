@@ -59,7 +59,9 @@ function SongCard({ song, onEdit }: { song: Song; onEdit?: () => void }) {
           {song.description}
         </p>
       )}
-      {song.videoUrl && <VideoEmbed url={song.videoUrl} className="my-3" />}
+      {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
+        <VideoEmbed key={i} url={url} className="my-3" />
+      ))}
       <UserVideos itemId={song.id} />
       <TempoGuide
         content={song.jianpu}

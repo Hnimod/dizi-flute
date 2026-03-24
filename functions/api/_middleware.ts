@@ -58,8 +58,8 @@ export const onRequest: PagesFunction[] = [
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Auth endpoints don't need JWT
-    if (path.startsWith("/api/auth/")) {
+    // Login/identify endpoints don't need JWT (they create tokens)
+    if (path === "/api/auth/login" || path === "/api/auth/identify") {
       return context.next();
     }
 

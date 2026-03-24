@@ -4,13 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useThemeStore, ThemeToggle } from "@/features/theme";
 import { Sidebar } from "@/features/course-navigation";
 import { useContentStore } from "@/data";
-import { IdentifyPrompt, SyncProvider } from "@/features/auth";
+import { useAuthStore, IdentifyPrompt, SyncProvider } from "@/features/auth";
 import { BottomNav } from "./BottomNav";
 
 export function App() {
   const { theme } = useThemeStore();
   const location = useLocation();
   const fetchContent = useContentStore((s) => s.fetchContent);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isAdmin = useAuthStore((s) => s.isAdmin);
+  const email = useAuthStore((s) => s.email);
+  const logout = useAuthStore((s) => s.logout);
 
   // Load content from API on startup (falls back to static data if offline)
   useEffect(() => {
@@ -33,6 +37,28 @@ export function App() {
               Dizi Flute
             </span>
             <div className="flex-1" />
+            {isAuthenticated && (
+              <div className="flex items-center gap-2 mr-3">
+                {isAdmin && (
+                  <span
+                    className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase text-white"
+                    style={{ backgroundColor: "var(--color-accent)" }}
+                  >
+                    Admin
+                  </span>
+                )}
+                <span className="hidden text-xs sm:inline" style={{ color: "var(--color-text-secondary)" }}>
+                  {email}
+                </span>
+                <button
+                  onClick={logout}
+                  className="text-xs hover:opacity-70 transition-opacity"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
             <ThemeToggle />
           </header>
 

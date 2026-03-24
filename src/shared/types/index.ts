@@ -47,6 +47,7 @@ export interface Song {
   description?: string;
   audioPath?: string;
   videoUrl?: string;
+  videoUrls?: string[];
   origin?: string;
 }
 

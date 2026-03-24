@@ -2,6 +2,16 @@ interface Env {
   DB: D1Database;
 }
 
+function parseVideoUrls(raw: unknown): string[] {
+  if (!raw || raw === "null") return [];
+  const str = String(raw);
+  try {
+    const parsed = JSON.parse(str);
+    if (Array.isArray(parsed)) return parsed.filter(Boolean);
+  } catch { /* not JSON */ }
+  return str ? [str] : [];
+}
+
 function snakeToCamel(row: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(row)) {
@@ -9,6 +19,7 @@ function snakeToCamel(row: Record<string, unknown>): Record<string, unknown> {
     result[camelKey] = value;
   }
   result.type = "song";
+  result.videoUrls = parseVideoUrls(result.videoUrl);
   return result;
 }
 
@@ -63,7 +74,16 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
   const sets: string[] = [];
   const values: unknown[] = [];
 
+  // Handle videoUrls array → serialize to JSON for video_url column
+  if (body.videoUrls || body.video_urls) {
+    const urls = (body.videoUrls ?? body.video_urls) as string[];
+    const filtered = Array.isArray(urls) ? urls.filter(Boolean) : [];
+    sets.push("video_url = ?");
+    values.push(filtered.length > 0 ? JSON.stringify(filtered) : null);
+  }
+
   for (const [inputKey, value] of Object.entries(body)) {
+    if (inputKey === "videoUrls" || inputKey === "video_urls") continue;
     const dbCol = fieldMap[inputKey];
     if (dbCol) {
       sets.push(`${dbCol} = ?`);

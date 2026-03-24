@@ -2,14 +2,34 @@ interface Env {
   DB: D1Database;
 }
 
+function serializeVideoUrls(raw: unknown): string | null {
+  if (!raw) return null;
+  if (Array.isArray(raw)) {
+    const filtered = raw.filter(Boolean);
+    return filtered.length > 0 ? JSON.stringify(filtered) : null;
+  }
+  return String(raw) || null;
+}
+
+function parseVideoUrls(raw: unknown): string[] {
+  if (!raw || raw === "null") return [];
+  const str = String(raw);
+  try {
+    const parsed = JSON.parse(str);
+    if (Array.isArray(parsed)) return parsed.filter(Boolean);
+  } catch { /* not JSON */ }
+  return str ? [str] : [];
+}
+
 function snakeToCamel(row: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(row)) {
     const camelKey = key.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
     result[camelKey] = value;
   }
-  // Add type field for songs
   result.type = "song";
+  // Parse video_url JSON into videoUrls array
+  result.videoUrls = parseVideoUrls(result.videoUrl);
   return result;
 }
 
@@ -71,7 +91,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       (body.jianpu ?? "") as string,
       (body.description ?? null) as string | null,
       (body.audioPath ?? body.audio_path ?? null) as string | null,
-      (body.videoUrl ?? body.video_url ?? null) as string | null,
+      serializeVideoUrls(body.videoUrls ?? body.video_urls ?? body.videoUrl ?? body.video_url),
       (body.origin ?? null) as string | null,
       sortOrder
     )

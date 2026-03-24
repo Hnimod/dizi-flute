@@ -1,12 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import { motion, AnimatePresence } from "framer-motion";
 import { useContentStore } from "@/data";
 import { VideoEmbed, JianpuEditor } from "@/shared/ui";
 import { UserVideos } from "@/features/lesson-viewer/UserVideos";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useAuthStore } from "@/features/auth";
-import { SongEditor } from "@/features/admin";
 import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
@@ -30,7 +28,6 @@ export function SongDetailPage() {
   const isUserSong = song?.id.startsWith("user-song-");
   const [editableJianpu, setEditableJianpu] = useState(song?.jianpu ?? "");
   const [isEditing, setIsEditing] = useState(false);
-  const [showAdminEditor, setShowAdminEditor] = useState(false);
   const hasChanges = editableJianpu !== (song?.jianpu ?? "");
 
   const handleJianpuChange = useCallback((value: string) => {
@@ -69,8 +66,8 @@ export function SongDetailPage() {
             {getTitle(song)}
           </h1>
           {isAdmin && !isUserSong && (
-            <button
-              onClick={() => setShowAdminEditor(true)}
+            <Link
+              to={`/admin/song/${song.id}`}
               className="shrink-0 ml-3 flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium text-white"
               style={{ backgroundColor: "var(--color-accent)" }}
             >
@@ -79,7 +76,7 @@ export function SongDetailPage() {
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
               </svg>
               Edit
-            </button>
+            </Link>
           )}
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm" style={{ color: "var(--color-text-secondary)" }}>
@@ -96,7 +93,9 @@ export function SongDetailPage() {
         </p>
       )}
 
-      {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mb-4" />}
+      {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
+        <VideoEmbed key={i} url={url} className="mb-4" />
+      ))}
 
       {/* Jianpu notation */}
       <div className="my-4">
@@ -167,31 +166,6 @@ export function SongDetailPage() {
         </button>
       )}
 
-      {/* Admin song editor modal */}
-      <AnimatePresence>
-        {showAdminEditor && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-end md:items-center justify-center"
-            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-            onClick={() => setShowAdminEditor(false)}
-          >
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-2xl md:rounded-2xl p-5"
-              style={{ backgroundColor: "var(--color-bg-secondary)" }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <SongEditor song={song} onClose={() => setShowAdminEditor(false)} />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

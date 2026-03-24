@@ -79,7 +79,9 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
                 className="rounded-lg p-4 overflow-x-auto"
                 style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
               />
-              {song.videoUrl && <VideoEmbed url={song.videoUrl} className="mt-3" />}
+              {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
+                <VideoEmbed key={i} url={url} className="mt-3" />
+              ))}
               <UserVideos itemId={song.id} />
               <div className="mt-3 flex items-center gap-4">
                 <Link

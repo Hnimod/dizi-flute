@@ -8,6 +8,8 @@ interface JianpuEditorProps {
   timeSignature: string;
   onEditModeChange?: (editing: boolean) => void;
   initialEditMode?: boolean;
+  /** When true, always in edit mode with no Done/Edit toggle */
+  alwaysEdit?: boolean;
 }
 
 function buildNoteToken(
@@ -90,9 +92,10 @@ export function JianpuEditor({
   timeSignature,
   onEditModeChange,
   initialEditMode = false,
+  alwaysEdit = false,
 }: JianpuEditorProps) {
   const [tokens, setTokens] = useState<string[]>(() => parseToTokenArray(value));
-  const [editMode, setEditMode] = useState(initialEditMode);
+  const [editMode, setEditMode] = useState(alwaysEdit || initialEditMode);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [beamActive, setBeamActive] = useState(false);
   const [slurActive, setSlurActive] = useState(false);
@@ -148,8 +151,8 @@ export function JianpuEditor({
 
   return (
     <div ref={containerRef} className="relative">
-      {/* Edit mode toggle — subtle inline */}
-      {!editMode && (
+      {/* Edit mode toggle — subtle inline (hidden in alwaysEdit mode) */}
+      {!alwaysEdit && !editMode && (
         <div className="flex justify-end mb-1">
           <button
             className="flex items-center gap-1 text-xs hover:opacity-80 transition-opacity"
@@ -167,16 +170,18 @@ export function JianpuEditor({
 
       {editMode && (
         <>
-          {/* Done button */}
-          <div className="flex justify-end mb-1">
-            <button
-              className="flex items-center gap-1 text-xs font-medium hover:opacity-80 transition-opacity"
-              style={{ color: "var(--color-accent)" }}
-              onClick={() => { setEditMode(false); setSelectedIdx(null); setBeamActive(false); setSlurActive(false); onEditModeChange?.(false); }}
-            >
-              Done
-            </button>
-          </div>
+          {/* Done button (hidden in alwaysEdit mode) */}
+          {!alwaysEdit && (
+            <div className="flex justify-end mb-1">
+              <button
+                className="flex items-center gap-1 text-xs font-medium hover:opacity-80 transition-opacity"
+                style={{ color: "var(--color-accent)" }}
+                onClick={() => { setEditMode(false); setSelectedIdx(null); setBeamActive(false); setSlurActive(false); onEditModeChange?.(false); }}
+              >
+                Done
+              </button>
+            </div>
+          )}
 
           {/* Beat indicator */}
           <div
