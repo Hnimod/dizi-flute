@@ -1,0 +1,1 @@
+ALTER TABLE user_progress ADD COLUMN favorited INTEGER NOT NULL DEFAULT 0;

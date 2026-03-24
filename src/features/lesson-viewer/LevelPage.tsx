@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLevels } from "@/data";
-import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed } from "@/shared/ui";
+import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed, LevelSkeleton } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
 import { useAuthStore } from "@/features/auth";
@@ -10,7 +10,6 @@ import { SongEditor } from "@/features/admin";
 import { ExerciseEditor } from "@/features/admin";
 import { PracticeView } from "./PracticeView";
 import type { Song, Exercise } from "@/shared/types";
-import { UserVideos } from "./UserVideos";
 
 /* ─── Helpers ─── */
 
@@ -62,7 +61,6 @@ function SongCard({ song, onEdit }: { song: Song; onEdit?: () => void }) {
       {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
         <VideoEmbed key={i} url={url} className="my-3" />
       ))}
-      <UserVideos itemId={song.id} />
       <TempoGuide
         content={song.jianpu}
         tempo={song.tempo}
@@ -110,7 +108,6 @@ function ExerciseCard({ exercise, onEdit }: { exercise: Exercise; onEdit?: () =>
         </p>
       )}
       {exercise.videoUrl && <VideoEmbed url={exercise.videoUrl} className="my-3" />}
-      <UserVideos itemId={exercise.id} />
       <TempoGuide
         content={exercise.jianpu}
         tempo={exercise.tempo}
@@ -188,7 +185,7 @@ function CompactItemRow({
 export function LevelPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const levels = useLevels();
+  const { levels, isLoading } = useLevels();
   const levelId = Number(id);
   const level = levels.find((l) => l.id === levelId);
   const completedCount = useProgressStore(selectCompletedCount(levelId));
@@ -220,6 +217,8 @@ export function LevelPage() {
   useEffect(() => {
     setPracticeState(null);
   }, [levelId]);
+
+  if (isLoading) return <LevelSkeleton />;
 
   if (!level) {
     return (
@@ -369,7 +368,7 @@ export function LevelPage() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-2xl md:rounded-2xl p-5"
+              className="w-full max-w-3xl h-[95vh] md:max-h-[90vh] overflow-y-auto rounded-t-2xl md:rounded-2xl p-5 pb-24 md:pb-5"
               style={{ backgroundColor: "var(--color-bg-secondary)" }}
               onClick={(e) => e.stopPropagation()}
             >

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { Exercise } from "@/shared/types";
-import { updateExercise, createExercise, deleteExercise } from "@/data/api";
-import { useContentStore } from "@/data";
+import { useUpdateExercise, useCreateExercise, useDeleteExercise } from "@/data";
 
 interface Props {
   exercise?: Exercise;
@@ -9,7 +8,9 @@ interface Props {
 }
 
 export function ExerciseEditor({ exercise, onClose }: Props) {
-  const refreshExercises = useContentStore((s) => s.refreshExercises);
+  const updateExerciseMutation = useUpdateExercise();
+  const createExerciseMutation = useCreateExercise();
+  const deleteExerciseMutation = useDeleteExercise();
   const [title, setTitle] = useState(exercise?.title ?? "");
   const [key, setKey] = useState(exercise?.key ?? "D");
   const [timeSignature, setTimeSignature] = useState(exercise?.timeSignature ?? "4/4");
@@ -18,16 +19,15 @@ export function ExerciseEditor({ exercise, onClose }: Props) {
   const [description, setDescription] = useState(exercise?.description ?? "");
   const [videoUrl, setVideoUrl] = useState(exercise?.videoUrl ?? "");
   const [levelId, setLevelId] = useState(exercise?.levelId?.toString() ?? "1");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const isEditing = !!exercise;
+  const loading = updateExerciseMutation.isPending || createExerciseMutation.isPending || deleteExerciseMutation.isPending;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim() || !jianpu.trim()) return;
 
-    setLoading(true);
     setError("");
     try {
       const data = {
@@ -42,31 +42,24 @@ export function ExerciseEditor({ exercise, onClose }: Props) {
       };
 
       if (isEditing) {
-        await updateExercise(exercise.id, data);
+        await updateExerciseMutation.mutateAsync({ id: exercise.id, updates: data });
       } else {
-        await createExercise(data);
+        await createExerciseMutation.mutateAsync(data);
       }
 
-      await refreshExercises();
       onClose();
     } catch {
       setError("Failed to save. Are you logged in as admin?");
-    } finally {
-      setLoading(false);
     }
   }
 
   async function handleDelete() {
     if (!exercise || !confirm("Delete this exercise?")) return;
-    setLoading(true);
     try {
-      await deleteExercise(exercise.id);
-      await refreshExercises();
+      await deleteExerciseMutation.mutateAsync(exercise.id);
       onClose();
     } catch {
       setError("Failed to delete");
-    } finally {
-      setLoading(false);
     }
   }
 

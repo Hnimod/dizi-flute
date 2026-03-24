@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { levels, useContentStore } from "@/data";
-import { VideoEmbed } from "@/shared/ui";
-import { UserVideos } from "@/features/lesson-viewer/UserVideos";
+import { levels, useSongs } from "@/data";
+import { SongListSkeleton } from "@/shared/ui";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
+import { useAuthStore } from "@/features/auth";
+import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
 import { AddSongForm } from "./AddSongForm";
 import type { Song } from "@/shared/types";
@@ -24,11 +25,163 @@ function matchesSearch(song: Song, query: string): boolean {
   );
 }
 
+// ─── Heart Icon ───
+
+function HeartButton({ songId }: { songId: string }) {
+  const favorited = useProgressStore((s) => !!s.favoritedItems[songId]);
+  const toggleFavorite = useProgressStore((s) => s.toggleFavorite);
+
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleFavorite(songId);
+      }}
+      className="shrink-0 p-1 hover:opacity-70 transition-opacity"
+      title={favorited ? "Remove from favorites" : "Add to favorites"}
+    >
+      <svg
+        className="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill={favorited ? "var(--color-accent)" : "none"}
+        stroke={favorited ? "var(--color-accent)" : "var(--color-text-secondary)"}
+        strokeWidth={2}
+      >
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+    </button>
+  );
+}
+
+// ─── Check Icon ───
+
+function CheckButton({ songId }: { songId: string }) {
+  const completed = useProgressStore((s) => !!s.completedItems[songId]);
+  const toggleItem = useProgressStore((s) => s.toggleItem);
+
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleItem(songId);
+      }}
+      className="shrink-0 p-1 hover:opacity-70 transition-opacity"
+      title={completed ? "Mark incomplete" : "Mark completed"}
+    >
+      <svg
+        className="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill={completed ? "var(--color-accent)" : "none"}
+        stroke={completed ? "var(--color-accent)" : "var(--color-text-secondary)"}
+        strokeWidth={2}
+      >
+        <circle cx="12" cy="12" r="10" />
+        {completed && <path d="M9 12l2 2 4-4" strokeWidth={2.5} stroke="white" fill="none" />}
+      </svg>
+    </button>
+  );
+}
+
+// ─── Level Dropdown ───
+
+function LevelDropdown({
+  levelIds,
+  levelTitles,
+  selected,
+  onChange,
+}: {
+  levelIds: number[];
+  levelTitles: Map<number, string>;
+  selected: Set<number>;
+  onChange: (next: Set<number>) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const label =
+    selected.size === 0
+      ? "All Levels"
+      : [...selected].sort((a, b) => a - b).map((id) => `Lv.${id}`).join(", ");
+
+  function toggle(id: number) {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    onChange(next);
+  }
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all"
+        style={{
+          backgroundColor: selected.size > 0 ? "var(--color-accent)" : "var(--color-bg-tertiary)",
+          color: selected.size > 0 ? "white" : "var(--color-text-secondary)",
+          border: `1px solid ${selected.size > 0 ? "var(--color-accent)" : "var(--color-border)"}`,
+        }}
+      >
+        <span className="truncate max-w-[120px]">{label}</span>
+        <svg
+          className={`h-3 w-3 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2.5}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div
+            className="absolute right-0 top-full mt-1 z-50 rounded-xl p-2 shadow-lg min-w-[160px]"
+            style={{
+              backgroundColor: "var(--color-bg-secondary)",
+              border: "1px solid var(--color-border)",
+            }}
+          >
+            {selected.size > 0 && (
+              <button
+                onClick={() => { onChange(new Set()); setOpen(false); }}
+                className="w-full text-left px-3 py-1.5 text-xs rounded-lg hover:opacity-70 mb-1"
+                style={{ color: "var(--color-accent)" }}
+              >
+                Clear all
+              </button>
+            )}
+            {levelIds.map((id) => (
+              <button
+                key={id}
+                onClick={() => toggle(id)}
+                className="flex w-full items-center gap-2.5 px-3 py-2 text-xs rounded-lg transition-colors"
+                style={{ color: "var(--color-text)" }}
+              >
+                <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" strokeWidth={2}>
+                  {selected.has(id) ? (
+                    <>
+                      <rect x="3" y="3" width="18" height="18" rx="4" fill="var(--color-accent)" stroke="var(--color-accent)" />
+                      <path d="M9 12l2 2 4-4" stroke="white" strokeWidth={2.5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </>
+                  ) : (
+                    <rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="var(--color-border)" />
+                  )}
+                </svg>
+                <span>Lv.{id} — {levelTitles.get(id) ?? ""}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 // ─── Song Row ───
 
-function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
+function SongRow({ song }: { song: Song }) {
   const [expanded, setExpanded] = useState(false);
-  const removeSong = useSongLibraryStore((s) => s.removeSong);
 
   return (
     <div className="rounded-xl transition-colors" style={{ border: "1px solid var(--color-border)" }}>
@@ -47,6 +200,8 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
             {song.origin && <span>{song.origin}</span>}
           </div>
         </div>
+        <CheckButton songId={song.id} />
+        <HeartButton songId={song.id} />
         <svg
           className={`h-4 w-4 shrink-0 transition-transform text-(--color-text-secondary) ${expanded ? "rotate-180" : ""}`}
           fill="none"
@@ -68,22 +223,13 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
             style={{ overflow: "hidden" }}
           >
             <div className="border-t border-(--color-border) px-4 py-3">
-              {song.description && (
-                <p className="text-sm mb-3 leading-relaxed text-(--color-text-secondary)">
-                  {song.description}
-                </p>
-              )}
               <TempoGuide
                 content={song.jianpu}
                 tempo={song.tempo}
                 className="rounded-lg p-4 overflow-x-auto"
                 style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
               />
-              {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
-                <VideoEmbed key={i} url={url} className="mt-3" />
-              ))}
-              <UserVideos itemId={song.id} />
-              <div className="mt-3 flex items-center gap-4">
+              <div className="mt-3">
                 <Link
                   to={`/library/${song.id}`}
                   className="text-sm font-medium hover:opacity-70 transition-opacity"
@@ -91,14 +237,6 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
                 >
                   Go to details &rarr;
                 </Link>
-                {canDelete && (
-                  <button
-                    onClick={() => removeSong(song.id)}
-                    className="text-sm font-medium text-red-500 hover:opacity-70 transition-opacity"
-                  >
-                    Remove song
-                  </button>
-                )}
               </div>
             </div>
           </motion.div>
@@ -110,23 +248,43 @@ function SongRow({ song, canDelete }: { song: Song; canDelete?: boolean }) {
 
 // ─── Main Page ───
 
+type FilterMode = "all" | "favorites" | "completed";
+
 export function SongLibraryPage() {
-  const songs = useContentStore((s) => s.songs);
+  const { data: songs = [], isLoading } = useSongs();
   const userSongs = useSongLibraryStore((s) => s.userSongs);
+  const isAdmin = useAuthStore((s) => s.isAdmin);
+  const completedItems = useProgressStore((s) => s.completedItems);
+  const favoritedItems = useProgressStore((s) => s.favoritedItems);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeLevel, setActiveLevel] = useState<"all" | "my" | number>("all");
-  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my">>(() => {
+  const [filterMode, setFilterMode] = useState<FilterMode>("all");
+  const [selectedLevels, setSelectedLevels] = useState<Set<number>>(new Set());
+  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my" | "fav">>(() => {
     try {
       const saved = localStorage.getItem("dizi-library-collapsed");
       return saved ? new Set(JSON.parse(saved)) : new Set();
     } catch { return new Set(); }
   });
-  const sectionRefs = useRef<Map<number | "my", HTMLElement>>(new Map());
 
   useEffect(() => {
     localStorage.setItem("dizi-library-collapsed", JSON.stringify([...collapsedLevels]));
   }, [collapsedLevels]);
+
+  // Apply status filter + search to a song list, sort favorites to top
+  const applyFilters = useCallback((list: Song[]) => {
+    let filtered = list.filter((s) => matchesSearch(s, searchQuery));
+    if (filterMode === "favorites") {
+      filtered = filtered.filter((s) => favoritedItems[s.id]);
+    } else if (filterMode === "completed") {
+      filtered = filtered.filter((s) => completedItems[s.id]);
+    }
+    return filtered.sort((a, b) => {
+      const aFav = favoritedItems[a.id] ? 1 : 0;
+      const bFav = favoritedItems[b.id] ? 1 : 0;
+      return bFav - aFav;
+    });
+  }, [searchQuery, filterMode, favoritedItems, completedItems]);
 
   const songsByLevel = useMemo(() => {
     const grouped = new Map<number, Song[]>();
@@ -151,39 +309,35 @@ export function SongLibraryPage() {
   const isSearching = searchQuery.trim().length > 0;
 
   const filteredUserSongs = useMemo(
-    () => userSongs.filter((s) => matchesSearch(s, searchQuery)),
-    [userSongs, searchQuery],
+    () => applyFilters(userSongs),
+    [userSongs, applyFilters],
   );
 
   const filteredSongsByLevel = useMemo(() => {
     const map = new Map<number, Song[]>();
     for (const [levelId, levelSongs] of songsByLevel) {
-      const filtered = levelSongs.filter((s) => matchesSearch(s, searchQuery));
+      if (selectedLevels.size > 0 && !selectedLevels.has(levelId)) continue;
+      const filtered = applyFilters(levelSongs);
       if (filtered.length > 0) map.set(levelId, filtered);
     }
     return map;
-  }, [songsByLevel, searchQuery]);
+  }, [songsByLevel, applyFilters, selectedLevels]);
 
-  const toggleLevel = useCallback((id: number | "my") => {
+  // All favorited songs (across all levels + user songs), filtered by search + level
+  const favoriteSongs = useMemo(() => {
+    const allSongs = [...songs, ...userSongs];
+    return allSongs
+      .filter((s) => favoritedItems[s.id])
+      .filter((s) => matchesSearch(s, searchQuery))
+      .filter((s) => selectedLevels.size === 0 || selectedLevels.has(s.levelId));
+  }, [songs, userSongs, favoritedItems, searchQuery, selectedLevels]);
+
+  const toggleLevel = useCallback((id: number | "my" | "fav") => {
     setCollapsedLevels((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
-    });
-  }, []);
-
-  const scrollToLevel = useCallback((id: number | "my") => {
-    setActiveLevel(id);
-    // Expand the section
-    setCollapsedLevels((prev) => {
-      const next = new Set(prev);
-      next.delete(id);
-      return next;
-    });
-    // Scroll after render
-    requestAnimationFrame(() => {
-      sectionRefs.current.get(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }, []);
 
@@ -194,12 +348,14 @@ export function SongLibraryPage() {
   });
 
   const showUserSection =
-    (activeLevel === "all" || activeLevel === "my") &&
+    selectedLevels.size === 0 &&
     (filteredUserSongs.length > 0 || showForm);
+
+  const totalFiltered = filteredUserSongs.length + [...filteredSongsByLevel.values()].reduce((sum, s) => sum + s.length, 0);
 
   return (
     <div className="mx-auto max-w-3xl">
-      {/* Sticky search + level pills */}
+      {/* Sticky search + filters */}
       <div
         className="sticky -top-5 z-10 -mx-4 -mt-5 px-4 pt-5 pb-3 mb-4 bg-(--color-bg) border-b border-(--color-border)"
       >
@@ -238,48 +394,51 @@ export function SongLibraryPage() {
           )}
         </div>
 
-        {/* Level filter pills */}
-        {!isSearching && (
-          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
-            <button
-              className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
-              style={pillStyle(activeLevel === "all")}
-              onClick={() => { setActiveLevel("all"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            >
-              All
-            </button>
-            {userSongs.length > 0 && (
-              <button
-                className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
-                style={pillStyle(activeLevel === "my")}
-                onClick={() => scrollToLevel("my")}
-              >
-                My Songs
-              </button>
-            )}
-            {sortedLevelIds.map((id) => (
-              <button
-                key={id}
-                className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
-                style={pillStyle(activeLevel === id)}
-                onClick={() => scrollToLevel(id)}
-              >
-                Lv.{id}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Status pills + Level dropdown */}
+        <div className="flex items-center gap-1.5">
+          <button
+            className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
+            style={pillStyle(filterMode === "all")}
+            onClick={() => setFilterMode("all")}
+          >
+            All
+          </button>
+          <button
+            className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
+            style={pillStyle(filterMode === "favorites")}
+            onClick={() => setFilterMode(filterMode === "favorites" ? "all" : "favorites")}
+          >
+            Favorites
+          </button>
+          <button
+            className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
+            style={pillStyle(filterMode === "completed")}
+            onClick={() => setFilterMode(filterMode === "completed" ? "all" : "completed")}
+          >
+            Completed
+          </button>
+          <div className="flex-1" />
+          <LevelDropdown
+            levelIds={sortedLevelIds}
+            levelTitles={levelTitles}
+            selected={selectedLevels}
+            onChange={setSelectedLevels}
+          />
+        </div>
       </div>
 
-      {/* Search results count */}
-      {isSearching && (
+      {/* Loading skeleton */}
+      {isLoading && <SongListSkeleton />}
+
+      {/* Results count when filtering */}
+      {(isSearching || filterMode !== "all" || selectedLevels.size > 0) && (
         <p className="text-xs mb-3" style={{ color: "var(--color-text-secondary)" }}>
-          {filteredUserSongs.length + [...filteredSongsByLevel.values()].reduce((sum, s) => sum + s.length, 0)} results
+          {totalFiltered} {filterMode === "favorites" ? "favorite" : filterMode === "completed" ? "completed" : ""} result{totalFiltered !== 1 ? "s" : ""}
         </p>
       )}
 
-      {/* Add song button */}
-      {!showForm && (
+      {/* Add song button (admin only) */}
+      {isAdmin && !showForm && (
         <button
           onClick={() => setShowForm(true)}
           className="mb-4 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-80"
@@ -292,9 +451,9 @@ export function SongLibraryPage() {
         </button>
       )}
 
-      {/* Add song form */}
+      {/* Add song form (admin only) */}
       <AnimatePresence>
-        {showForm && (
+        {isAdmin && showForm && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -312,12 +471,52 @@ export function SongLibraryPage() {
         )}
       </AnimatePresence>
 
+      {/* Favorites section */}
+      <AnimatePresence>
+        {favoriteSongs.length > 0 && (
+          <motion.section
+            className="mb-6"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            <button
+              onClick={() => toggleLevel("fav")}
+              className="flex w-full items-center gap-2 text-left mb-2"
+            >
+              <svg
+                className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedLevels.has("fav") ? "" : "rotate-90"}`}
+                fill="var(--color-text-secondary)"
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="var(--color-accent)" strokeWidth={2}>
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              <h2 className="text-base font-bold" style={{ color: "var(--color-text)" }}>
+                Favorites
+              </h2>
+              <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                ({favoriteSongs.length})
+              </span>
+            </button>
+            {!collapsedLevels.has("fav") && (
+              <div className="space-y-2">
+                {favoriteSongs.map((song) => (
+                  <SongRow key={song.id} song={song} />
+                ))}
+              </div>
+            )}
+          </motion.section>
+        )}
+      </AnimatePresence>
+
       {/* User songs section */}
       {showUserSection && (
-        <section
-          className="mb-6"
-          ref={(el) => { if (el) sectionRefs.current.set("my", el); }}
-        >
+        <section className="mb-6">
           <button
             onClick={() => toggleLevel("my")}
             className="flex w-full items-center gap-2 text-left mb-2"
@@ -339,7 +538,7 @@ export function SongLibraryPage() {
           {!collapsedLevels.has("my") && (
             <div className="space-y-2">
               {filteredUserSongs.map((song) => (
-                <SongRow key={song.id} song={song} canDelete />
+                <SongRow key={song.id} song={song} />
               ))}
             </div>
           )}
@@ -347,21 +546,13 @@ export function SongLibraryPage() {
       )}
 
       {/* Built-in songs by level */}
-      {(isSearching ? [...filteredSongsByLevel.keys()].sort((a, b) => a - b) : sortedLevelIds)
-        .filter((id) => !isSearching || filteredSongsByLevel.has(id))
-        .filter((id) => activeLevel === "all" || activeLevel === id || isSearching)
+      {[...filteredSongsByLevel.keys()].sort((a, b) => a - b)
         .map((levelId) => {
-          const levelSongs = isSearching
-            ? filteredSongsByLevel.get(levelId)!
-            : songsByLevel.get(levelId)!;
+          const levelSongs = filteredSongsByLevel.get(levelId)!;
           const isCollapsed = collapsedLevels.has(levelId);
 
           return (
-            <section
-              key={levelId}
-              className="mb-6"
-              ref={(el) => { if (el) sectionRefs.current.set(levelId, el); }}
-            >
+            <section key={levelId} className="mb-6">
               <button
                 onClick={() => toggleLevel(levelId)}
                 className="flex w-full items-center gap-2 text-left mb-2"
@@ -392,13 +583,17 @@ export function SongLibraryPage() {
         })}
 
       {/* No results */}
-      {isSearching &&
-        filteredUserSongs.length === 0 &&
-        filteredSongsByLevel.size === 0 && (
-          <p className="text-sm text-center py-12" style={{ color: "var(--color-text-secondary)" }}>
-            No songs found for "{searchQuery}"
-          </p>
-        )}
+      {!isLoading && totalFiltered === 0 && (
+        <p className="text-sm text-center py-12" style={{ color: "var(--color-text-secondary)" }}>
+          {isSearching
+            ? `No songs found for "${searchQuery}"`
+            : filterMode === "favorites"
+              ? "No favorite songs yet"
+              : filterMode === "completed"
+                ? "No completed songs yet"
+                : "No songs available"}
+        </p>
+      )}
     </div>
   );
 }

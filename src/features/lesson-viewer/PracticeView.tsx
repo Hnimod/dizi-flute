@@ -4,7 +4,6 @@ import { AudioPlayer, VideoEmbed } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
-import { UserVideos } from "./UserVideos";
 
 function getItemTitle(item: Song | Exercise): string {
   if (item.type === "song") {
@@ -124,7 +123,6 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
 
         {/* User-added videos */}
         <div className="px-4 py-2">
-          <UserVideos itemId={item.id} />
         </div>
 
         {/* Description (if any) */}

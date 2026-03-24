@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:full": "npm run build && npx wrangler pages dev dist/",
+    "dev:full": "vite & VITE_PID=$!; trap 'kill $VITE_PID 2>/dev/null' EXIT; sleep 2 && npx wrangler pages dev --proxy=5173",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && npx wrangler pages deploy dist/ --project-name dizi-flute",
@@ -14,6 +14,7 @@
     "db:generate-seed": "npx tsx --tsconfig tsconfig.app.json db/generate-seed.ts > db/seed.sql"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.95.2",
     "framer-motion": "^12.38.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -24,7 +25,6 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250313.0",
-    "wrangler": "^4.14.0",
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -32,6 +32,7 @@
     "autoprefixer": "^10.4.27",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
-    "vite": "^8.0.1"
+    "vite": "^8.0.1",
+    "wrangler": "^4.14.0"
   }
 }

@@ -119,18 +119,6 @@ export async function loginAdmin(
   return res.json();
 }
 
-export async function identify(
-  email: string
-): Promise<{ token: string; role: "user"; email: string }> {
-  const res = await fetch(`${API_BASE}/auth/identify`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
-  if (!res.ok) throw new Error(`Identify failed: ${res.status}`);
-  return res.json();
-}
-
 export async function checkAuth(): Promise<{
   email: string;
   role: "admin" | "user";
@@ -148,10 +136,11 @@ export async function checkAuth(): Promise<{
   }
 }
 
-// ── User Progress ──────────────────────────────────────────────────
+// ── Progress ──────────────────────────────────────────────────────
 
 export async function fetchProgress(): Promise<{
   completedItems: Record<string, boolean>;
+  favoritedItems: Record<string, boolean>;
   currentLevel: number;
   lastVisited: string;
 } | null> {
@@ -168,6 +157,7 @@ export async function fetchProgress(): Promise<{
 
 export async function syncProgress(data: {
   completedItems?: Record<string, boolean>;
+  favoritedItems?: Record<string, boolean>;
   currentLevel?: number;
 }): Promise<void> {
   try {
@@ -177,109 +167,7 @@ export async function syncProgress(data: {
       body: JSON.stringify(data),
     });
   } catch {
-    // Fire-and-forget, will sync next time
-  }
-}
-
-// ── Practice Sessions ──────────────────────────────────────────────
-
-export async function fetchSessions(): Promise<
-  { id: string; date: string; duration: number; notes: string }[]
-> {
-  try {
-    const res = await fetch(`${API_BASE}/me/sessions`, {
-      headers: authHeaders(),
-    });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
-}
-
-export async function syncSession(session: {
-  id: string;
-  date: string;
-  duration: number;
-  notes: string;
-}): Promise<void> {
-  try {
-    await fetch(`${API_BASE}/me/sessions`, {
-      method: "POST",
-      headers: authHeaders(),
-      body: JSON.stringify(session),
-    });
-  } catch {
     // Fire-and-forget
   }
 }
 
-// ── User Songs ─────────────────────────────────────────────────────
-
-export async function fetchUserSongs(): Promise<Song[]> {
-  try {
-    const res = await fetch(`${API_BASE}/me/songs`, {
-      headers: authHeaders(),
-    });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
-}
-
-export async function createUserSong(song: Partial<Song>): Promise<Song> {
-  const res = await fetch(`${API_BASE}/me/songs`, {
-    method: "POST",
-    headers: authHeaders(),
-    body: JSON.stringify(song),
-  });
-  if (!res.ok) throw new Error(`Failed to create user song: ${res.status}`);
-  return res.json();
-}
-
-export async function updateUserSong(
-  id: string,
-  updates: Partial<Song>
-): Promise<void> {
-  await fetch(`${API_BASE}/me/songs/${encodeURIComponent(id)}`, {
-    method: "PUT",
-    headers: authHeaders(),
-    body: JSON.stringify(updates),
-  });
-}
-
-export async function deleteUserSong(id: string): Promise<void> {
-  await fetch(`${API_BASE}/me/songs/${encodeURIComponent(id)}`, {
-    method: "DELETE",
-    headers: authHeaders(),
-  });
-}
-
-// ── Video Links ────────────────────────────────────────────────────
-
-export async function fetchVideoLinks(): Promise<Record<string, string[]>> {
-  try {
-    const res = await fetch(`${API_BASE}/me/videos`, {
-      headers: authHeaders(),
-    });
-    if (!res.ok) return {};
-    return res.json();
-  } catch {
-    return {};
-  }
-}
-
-export async function syncVideoLinks(
-  links: Record<string, string[]>
-): Promise<void> {
-  try {
-    await fetch(`${API_BASE}/me/videos`, {
-      method: "PUT",
-      headers: authHeaders(),
-      body: JSON.stringify(links),
-    });
-  } catch {
-    // Fire-and-forget
-  }
-}

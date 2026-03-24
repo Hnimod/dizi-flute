@@ -19,7 +19,7 @@ export const onRequestGet: PagesFunction<
 
   const [progressRows, stateRow] = await Promise.all([
     context.env.DB.prepare(
-      "SELECT item_id, completed FROM user_progress WHERE email = ?"
+      "SELECT item_id, completed, favorited FROM user_progress WHERE email = ?"
     )
       .bind(auth.email)
       .all(),
@@ -29,13 +29,17 @@ export const onRequestGet: PagesFunction<
   ]);
 
   const completedItems: Record<string, boolean> = {};
+  const favoritedItems: Record<string, boolean> = {};
   for (const row of progressRows.results) {
-    completedItems[row.item_id as string] = !!(row.completed as number);
+    const id = row.item_id as string;
+    completedItems[id] = !!(row.completed as number);
+    favoritedItems[id] = !!(row.favorited as number);
   }
 
   return new Response(
     JSON.stringify({
       completedItems,
+      favoritedItems,
       currentLevel: (stateRow?.current_level as number) ?? 1,
       lastVisited: (stateRow?.last_visited as string) ?? new Date().toISOString(),
     }),
@@ -58,6 +62,7 @@ export const onRequestPut: PagesFunction<
 
   const body = (await context.request.json()) as {
     completedItems?: Record<string, boolean>;
+    favoritedItems?: Record<string, boolean>;
     currentLevel?: number;
   };
 
@@ -81,6 +86,18 @@ export const onRequestPut: PagesFunction<
           `INSERT INTO user_progress (email, item_id, completed, updated_at) VALUES (?, ?, ?, datetime('now'))
            ON CONFLICT(email, item_id) DO UPDATE SET completed = excluded.completed, updated_at = excluded.updated_at`
         ).bind(auth.email, itemId, completed ? 1 : 0)
+      );
+    }
+  }
+
+  // Upsert favorited items
+  if (body.favoritedItems) {
+    for (const [itemId, favorited] of Object.entries(body.favoritedItems)) {
+      batch.push(
+        context.env.DB.prepare(
+          `INSERT INTO user_progress (email, item_id, favorited, updated_at) VALUES (?, ?, ?, datetime('now'))
+           ON CONFLICT(email, item_id) DO UPDATE SET favorited = excluded.favorited, updated_at = excluded.updated_at`
+        ).bind(auth.email, itemId, favorited ? 1 : 0)
       );
     }
   }

@@ -1,1 +1,1 @@
-export { useProgressStore, selectIsCompleted, selectCompletedCount } from "./store";
+export { useProgressStore, selectIsCompleted, selectIsFavorited, selectCompletedCount } from "./store";
