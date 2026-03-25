@@ -11,6 +11,12 @@ import { song as littleWhiteCabbage } from "./elementary/little-white-cabbage";
 import { song as sweetHoney } from "./elementary/sweet-honey";
 import { song as theMoonRepresentsMyHeart } from "./elementary/the-moon-represents-my-heart";
 
+// Intermediate (difficulty 5-6)
+import { song as beautifulMyth } from "./intermediate/beautiful-myth";
+import { song as blueAndWhitePorcelain } from "./intermediate/blue-and-white-porcelain";
+import { song as daughtersLove } from "./intermediate/daughters-love";
+import { song as chiQingZhong } from "./intermediate/chi-qing-zhong";
+
 // Advanced (difficulty 7+)
 import { song as fuGuang } from "./advanced/fu-guang";
 
@@ -22,5 +28,9 @@ export const songs: Song[] = [
   littleWhiteCabbage,
   theMoonRepresentsMyHeart,
   sweetHoney,
+  daughtersLove,
+  blueAndWhitePorcelain,
+  beautifulMyth,
+  chiQingZhong,
   fuGuang,
 ];
