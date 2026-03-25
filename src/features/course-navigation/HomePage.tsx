@@ -1,10 +1,11 @@
 import { Link } from "react-router";
 import { motion } from "framer-motion";
-import { levels } from "@/data";
+import { useLevels } from "@/data";
 import { useProgressStore } from "@/features/progress-tracking";
 
 export function HomePage() {
   const completedItems = useProgressStore((s) => s.completedItems);
+  const { levels } = useLevels();
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -17,10 +18,9 @@ export function HomePage() {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
         {levels.map((level) => {
-          const totalItems = level.sections.flatMap((s) => s.items).length;
-          const completedCount = Object.entries(completedItems).filter(
-            ([key, done]) => done && key.startsWith(`level-${level.id}-`),
-          ).length;
+          const itemIds = level.sections.flatMap((s) => s.items.map((i) => i.id));
+          const totalItems = itemIds.length;
+          const completedCount = itemIds.filter((id) => completedItems[id]).length;
           const isComplete = totalItems > 0 && completedCount >= totalItems;
           const percent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
 

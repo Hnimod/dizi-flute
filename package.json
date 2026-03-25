@@ -11,7 +11,8 @@
     "deploy": "npm run build && npx wrangler pages deploy dist/ --project-name dizi-flute",
     "db:migrate": "npx wrangler d1 execute dizi-flute --file=./db/migrations/001-init.sql",
     "db:seed": "npx wrangler d1 execute dizi-flute --file=./db/seed.sql",
-    "db:generate-seed": "npx tsx --tsconfig tsconfig.app.json db/generate-seed.ts > db/seed.sql"
+    "db:generate-seed": "npx tsx --tsconfig tsconfig.app.json db/generate-seed.ts > db/seed.sql",
+    "db:sync": "npx wrangler d1 export dizi-flute --remote --output db/remote-data.sql && npx wrangler d1 execute dizi-flute --local --command 'DROP TABLE IF EXISTS songs; DROP TABLE IF EXISTS exercises; DROP TABLE IF EXISTS user_progress; DROP TABLE IF EXISTS user_state; DROP TABLE IF EXISTS practice_sessions; DROP TABLE IF EXISTS user_songs; DROP TABLE IF EXISTS video_links;' && npx wrangler d1 execute dizi-flute --local --file db/remote-data.sql && rm db/remote-data.sql"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.95.2",

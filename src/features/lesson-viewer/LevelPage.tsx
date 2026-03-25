@@ -188,7 +188,6 @@ export function LevelPage() {
   const { levels, isLoading } = useLevels();
   const levelId = Number(id);
   const level = levels.find((l) => l.id === levelId);
-  const completedCount = useProgressStore(selectCompletedCount(levelId));
   const setCurrentLevel = useProgressStore((s) => s.setCurrentLevel);
   const isAdmin = useAuthStore((s) => s.isAdmin);
 
@@ -201,10 +200,12 @@ export function LevelPage() {
   // Admin editor state
   const [editingItem, setEditingItem] = useState<Song | Exercise | null>(null);
 
-  const totalItems = useMemo(
-    () => (level ? level.sections.reduce((sum, s) => sum + s.items.length, 0) : 0),
+  const itemIds = useMemo(
+    () => level ? level.sections.flatMap((s) => s.items.map((i) => i.id)) : [],
     [level],
   );
+  const totalItems = itemIds.length;
+  const completedCount = useProgressStore(selectCompletedCount(itemIds));
   const progressPercent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
 
   useEffect(() => {

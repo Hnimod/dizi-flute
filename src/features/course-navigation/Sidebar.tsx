@@ -1,9 +1,10 @@
 import { NavLink } from "react-router";
-import { levels } from "@/data";
+import { useLevels } from "@/data";
 import { useProgressStore } from "@/features/progress-tracking";
 
 export function Sidebar() {
   const completedItems = useProgressStore((s) => s.completedItems);
+  const { levels } = useLevels();
 
   return (
     <nav className="flex h-full flex-col overflow-y-auto">
@@ -19,10 +20,9 @@ export function Sidebar() {
         </p>
         <ul className="space-y-0.5">
           {levels.map((level) => {
-            const totalItems = level.sections.flatMap((s) => s.items).length;
-            const completed = Object.entries(completedItems).filter(
-              ([key, done]) => done && key.startsWith(`level-${level.id}-`),
-            ).length;
+            const itemIds = level.sections.flatMap((s) => s.items.map((i) => i.id));
+            const totalItems = itemIds.length;
+            const completed = itemIds.filter((id) => completedItems[id]).length;
 
             return (
               <li key={level.id}>

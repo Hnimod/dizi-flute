@@ -74,9 +74,7 @@ export function selectIsFavorited(id: string) {
   return (s: ProgressState) => !!s.favoritedItems[id];
 }
 
-export function selectCompletedCount(levelId: number) {
+export function selectCompletedCount(itemIds: string[]) {
   return (s: ProgressState) =>
-    Object.entries(s.completedItems).filter(
-      ([key, done]) => done && key.startsWith(`level-${levelId}-`),
-    ).length;
+    itemIds.filter((id) => s.completedItems[id]).length;
 }
