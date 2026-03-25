@@ -4,11 +4,9 @@ import { persist } from "zustand/middleware";
 interface ProgressState {
   completedItems: Record<string, boolean>;
   favoritedItems: Record<string, boolean>;
-  currentLevel: number;
   lastVisited: string;
   toggleItem: (id: string) => void;
   toggleFavorite: (id: string) => void;
-  setCurrentLevel: (level: number) => void;
 }
 
 export const useProgressStore = create<ProgressState>()(
@@ -16,7 +14,6 @@ export const useProgressStore = create<ProgressState>()(
     (set, get) => ({
       completedItems: {},
       favoritedItems: {},
-      currentLevel: 1,
       lastVisited: new Date().toISOString(),
 
       toggleItem: (id: string) => {
@@ -38,10 +35,6 @@ export const useProgressStore = create<ProgressState>()(
             [id]: newValue,
           },
         }));
-      },
-
-      setCurrentLevel: (level: number) => {
-        set({ currentLevel: level });
       },
     }),
     {

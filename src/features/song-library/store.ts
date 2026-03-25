@@ -33,7 +33,7 @@ export const useSongLibraryStore = create<SongLibraryState>()(
               ...input,
               id: `user-song-${Date.now()}`,
               type: "song" as const,
-              levelId: 0,
+              difficulty: 1,
             },
           ],
         })),

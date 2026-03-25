@@ -3,7 +3,7 @@ import type { Song } from "@/shared/types";
 export const song: Song = {
   id: "level-1-song-3",
   type: "song",
-  levelId: 1,
+  difficulty: 1,
   titleEnglish: "Lightly Row",
   key: "D",
   timeSignature: "4/4",

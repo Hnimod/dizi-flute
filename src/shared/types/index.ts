@@ -36,7 +36,7 @@ export interface LevelSection {
 export interface Song {
   id: string;
   type: "song";
-  levelId: number;
+  difficulty: number;
   titleChinese?: string;
   titleVietnamese?: string;
   titleEnglish: string;

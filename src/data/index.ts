@@ -1,4 +1,4 @@
-export { levelMeta } from "./levels";
+export { difficultyLabels } from "./levels";
 export { songs } from "./songs";
 export { exercises } from "./exercises";
 export { references } from "./references";

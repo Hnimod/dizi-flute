@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import { songs as staticSongs, getTechnique } from "@/data";
+import { songs as staticSongs, getTechnique, difficultyLabels } from "@/data";
 import { VideoEmbed } from "@/shared/ui";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useProgressStore } from "@/features/progress-tracking";
@@ -94,7 +94,13 @@ export function SongDetailPage() {
             </svg>
           </button>
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm" style={{ color: "var(--color-text-secondary)" }}>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm" style={{ color: "var(--color-text-secondary)" }}>
+          <span
+            className="rounded-md px-2 py-0.5 text-xs font-semibold"
+            style={{ backgroundColor: "var(--color-accent-light)", color: "var(--color-accent)" }}
+          >
+            {song.difficulty}/10 · {difficultyLabels[song.difficulty] ?? ""}
+          </span>
           <span>Key: {song.key}</span>
           <span>Time: {song.timeSignature}</span>
           {song.tempo && <span>Tempo: {song.tempo} BPM</span>}

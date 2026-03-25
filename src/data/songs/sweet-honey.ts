@@ -3,7 +3,7 @@ import type { Song } from "@/shared/types";
 export const song: Song = {
   id: "level-2-song-8",
   type: "song",
-  levelId: 2,
+  difficulty: 4,
   titleChinese: "甜蜜蜜",
   titleVietnamese: "Điểm Mật Mật",
   titleEnglish: "Sweet Honey",

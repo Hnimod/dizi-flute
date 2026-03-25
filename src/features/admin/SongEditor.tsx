@@ -24,7 +24,7 @@ export function SongEditor({ song, onClose }: Props) {
   const [videoUrls, setVideoUrls] = useState<string[]>(
     song?.videoUrls?.length ? song.videoUrls : song?.videoUrl ? [song.videoUrl] : [""],
   );
-  const [levelId, setLevelId] = useState(song?.levelId?.toString() ?? "1");
+  const [difficulty, setDifficulty] = useState(song?.difficulty?.toString() ?? "1");
   const [jianpu, setJianpu] = useState(song?.jianpu ?? "");
   const [error, setError] = useState("");
 
@@ -51,7 +51,7 @@ export function SongEditor({ song, onClose }: Props) {
         description: description.trim() || undefined,
         origin: origin.trim() || undefined,
         videoUrls: videoUrls.filter((u) => u.trim()),
-        levelId: Number(levelId),
+        difficulty: Number(difficulty),
       } as Partial<Song>;
 
       if (isEditing) {
@@ -174,8 +174,8 @@ export function SongEditor({ song, onClose }: Props) {
         <div>
           <label className={labelClass}>Level</label>
           <select
-            value={levelId}
-            onChange={(e) => setLevelId(e.target.value)}
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value)}
             className={inputClass}
             style={inputStyle}
           >

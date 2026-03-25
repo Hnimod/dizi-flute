@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { levelMeta, songs as staticSongs } from "@/data";
+import { difficultyLabels, songs as staticSongs } from "@/data";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
@@ -79,14 +79,14 @@ function CheckButton({ songId }: { songId: string }) {
   );
 }
 
-// ─── Level Dropdown ───
+// ─── Difficulty Dropdown ───
 
-function LevelDropdown({
-  levelIds,
+function DifficultyDropdown({
+  difficulties,
   selected,
   onChange,
 }: {
-  levelIds: number[];
+  difficulties: number[];
   selected: Set<number>;
   onChange: (next: Set<number>) => void;
 }) {
@@ -94,13 +94,13 @@ function LevelDropdown({
 
   const label =
     selected.size === 0
-      ? "All Levels"
-      : [...selected].sort((a, b) => a - b).map((id) => `Lv.${id}`).join(", ");
+      ? "All"
+      : [...selected].sort((a, b) => a - b).map((d) => `${d}`).join(", ");
 
-  function toggle(id: number) {
+  function toggle(d: number) {
     const next = new Set(selected);
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
+    if (next.has(d)) next.delete(d);
+    else next.add(d);
     onChange(next);
   }
 
@@ -115,7 +115,7 @@ function LevelDropdown({
           border: `1px solid ${selected.size > 0 ? "var(--color-accent)" : "var(--color-border)"}`,
         }}
       >
-        <span className="truncate max-w-[120px]">{label}</span>
+        <span className="truncate max-w-[120px]">{selected.size > 0 ? `Diff: ${label}` : "Difficulty"}</span>
         <svg
           className={`h-3 w-3 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
           fill="none"
@@ -146,15 +146,15 @@ function LevelDropdown({
                 Clear all
               </button>
             )}
-            {levelIds.map((id) => (
+            {difficulties.map((d) => (
               <button
-                key={id}
-                onClick={() => toggle(id)}
+                key={d}
+                onClick={() => toggle(d)}
                 className="flex w-full items-center gap-2.5 px-3 py-2 text-xs rounded-lg transition-colors"
                 style={{ color: "var(--color-text)" }}
               >
                 <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" strokeWidth={2}>
-                  {selected.has(id) ? (
+                  {selected.has(d) ? (
                     <>
                       <rect x="3" y="3" width="18" height="18" rx="4" fill="var(--color-accent)" stroke="var(--color-accent)" />
                       <path d="M9 12l2 2 4-4" stroke="white" strokeWidth={2.5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -163,7 +163,7 @@ function LevelDropdown({
                     <rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="var(--color-border)" />
                   )}
                 </svg>
-                <span>Lv.{id} — {levelMeta[id]?.title ?? ""}</span>
+                <span>{d} — {difficultyLabels[d] ?? ""}</span>
               </button>
             ))}
           </div>
@@ -256,8 +256,8 @@ export function SongLibraryPage() {
   const favoritedItems = useProgressStore((s) => s.favoritedItems);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
-  const [selectedLevels, setSelectedLevels] = useState<Set<number>>(new Set());
-  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my" | "fav">>(() => {
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Set<number>>(new Set());
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<number | "my" | "fav">>(() => {
     try {
       const saved = localStorage.getItem("dizi-library-collapsed");
       return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -265,10 +265,9 @@ export function SongLibraryPage() {
   });
 
   useEffect(() => {
-    localStorage.setItem("dizi-library-collapsed", JSON.stringify([...collapsedLevels]));
-  }, [collapsedLevels]);
+    localStorage.setItem("dizi-library-collapsed", JSON.stringify([...collapsedGroups]));
+  }, [collapsedGroups]);
 
-  // Apply status filter + search to a song list, sort favorites to top
   const applyFilters = useCallback((list: Song[]) => {
     let filtered = list.filter((s) => matchesSearch(s, searchQuery));
     if (filterMode === "favorites") {
@@ -283,17 +282,17 @@ export function SongLibraryPage() {
     });
   }, [searchQuery, filterMode, favoritedItems, completedItems]);
 
-  const songsByLevel = useMemo(() => {
+  const songsByDifficulty = useMemo(() => {
     const grouped = new Map<number, Song[]>();
     for (const song of songs) {
-      const list = grouped.get(song.levelId) ?? [];
+      const list = grouped.get(song.difficulty) ?? [];
       list.push(song);
-      grouped.set(song.levelId, list);
+      grouped.set(song.difficulty, list);
     }
     return grouped;
   }, [songs]);
 
-  const sortedLevelIds = useMemo(() => [...songsByLevel.keys()].sort((a, b) => a - b), [songsByLevel]);
+  const sortedDifficulties = useMemo(() => [...songsByDifficulty.keys()].sort((a, b) => a - b), [songsByDifficulty]);
 
   const isSearching = searchQuery.trim().length > 0;
 
@@ -302,27 +301,26 @@ export function SongLibraryPage() {
     [userSongs, applyFilters],
   );
 
-  const filteredSongsByLevel = useMemo(() => {
+  const filteredSongsByDifficulty = useMemo(() => {
     const map = new Map<number, Song[]>();
-    for (const [levelId, levelSongs] of songsByLevel) {
-      if (selectedLevels.size > 0 && !selectedLevels.has(levelId)) continue;
-      const filtered = applyFilters(levelSongs);
-      if (filtered.length > 0) map.set(levelId, filtered);
+    for (const [diff, diffSongs] of songsByDifficulty) {
+      if (selectedDifficulties.size > 0 && !selectedDifficulties.has(diff)) continue;
+      const filtered = applyFilters(diffSongs);
+      if (filtered.length > 0) map.set(diff, filtered);
     }
     return map;
-  }, [songsByLevel, applyFilters, selectedLevels]);
+  }, [songsByDifficulty, applyFilters, selectedDifficulties]);
 
-  // All favorited songs (across all levels + user songs), filtered by search + level
   const favoriteSongs = useMemo(() => {
     const allSongs = [...songs, ...userSongs];
     return allSongs
       .filter((s) => favoritedItems[s.id])
       .filter((s) => matchesSearch(s, searchQuery))
-      .filter((s) => selectedLevels.size === 0 || selectedLevels.has(s.levelId));
-  }, [songs, userSongs, favoritedItems, searchQuery, selectedLevels]);
+      .filter((s) => selectedDifficulties.size === 0 || selectedDifficulties.has(s.difficulty));
+  }, [songs, userSongs, favoritedItems, searchQuery, selectedDifficulties]);
 
-  const toggleLevel = useCallback((id: number | "my" | "fav") => {
-    setCollapsedLevels((prev) => {
+  const toggleGroup = useCallback((id: number | "my" | "fav") => {
+    setCollapsedGroups((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -337,10 +335,10 @@ export function SongLibraryPage() {
   });
 
   const showUserSection =
-    selectedLevels.size === 0 &&
+    selectedDifficulties.size === 0 &&
     filteredUserSongs.length > 0;
 
-  const totalFiltered = filteredUserSongs.length + [...filteredSongsByLevel.values()].reduce((sum, s) => sum + s.length, 0);
+  const totalFiltered = filteredUserSongs.length + [...filteredSongsByDifficulty.values()].reduce((sum, s) => sum + s.length, 0);
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -393,7 +391,7 @@ export function SongLibraryPage() {
           )}
         </div>
 
-        {/* Status pills + Level dropdown */}
+        {/* Status pills + Difficulty dropdown */}
         <div className="flex items-center gap-1.5">
           <button
             className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
@@ -417,16 +415,16 @@ export function SongLibraryPage() {
             Completed
           </button>
           <div className="flex-1" />
-          <LevelDropdown
-            levelIds={sortedLevelIds}
-            selected={selectedLevels}
-            onChange={setSelectedLevels}
+          <DifficultyDropdown
+            difficulties={sortedDifficulties}
+            selected={selectedDifficulties}
+            onChange={setSelectedDifficulties}
           />
         </div>
       </div>
 
       {/* Results count when filtering */}
-      {(isSearching || filterMode !== "all" || selectedLevels.size > 0) && (
+      {(isSearching || filterMode !== "all" || selectedDifficulties.size > 0) && (
         <p className="text-xs mb-3" style={{ color: "var(--color-text-secondary)" }}>
           {totalFiltered} {filterMode === "favorites" ? "favorite" : filterMode === "completed" ? "completed" : ""} result{totalFiltered !== 1 ? "s" : ""}
         </p>
@@ -444,11 +442,11 @@ export function SongLibraryPage() {
             style={{ overflow: "hidden" }}
           >
             <button
-              onClick={() => toggleLevel("fav")}
+              onClick={() => toggleGroup("fav")}
               className="flex w-full items-center gap-2 text-left mb-2"
             >
               <svg
-                className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedLevels.has("fav") ? "" : "rotate-90"}`}
+                className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedGroups.has("fav") ? "" : "rotate-90"}`}
                 fill="var(--color-text-secondary)"
                 viewBox="0 0 24 24"
               >
@@ -464,7 +462,7 @@ export function SongLibraryPage() {
                 ({favoriteSongs.length})
               </span>
             </button>
-            {!collapsedLevels.has("fav") && (
+            {!collapsedGroups.has("fav") && (
               <div className="space-y-2">
                 {favoriteSongs.map((song) => (
                   <SongRow key={song.id} song={song} />
@@ -479,11 +477,11 @@ export function SongLibraryPage() {
       {showUserSection && (
         <section className="mb-6">
           <button
-            onClick={() => toggleLevel("my")}
+            onClick={() => toggleGroup("my")}
             className="flex w-full items-center gap-2 text-left mb-2"
           >
             <svg
-              className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedLevels.has("my") ? "" : "rotate-90"}`}
+              className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedGroups.has("my") ? "" : "rotate-90"}`}
               fill="var(--color-text-secondary)"
               viewBox="0 0 24 24"
             >
@@ -496,7 +494,7 @@ export function SongLibraryPage() {
               ({filteredUserSongs.length})
             </span>
           </button>
-          {!collapsedLevels.has("my") && (
+          {!collapsedGroups.has("my") && (
             <div className="space-y-2">
               {filteredUserSongs.map((song) => (
                 <SongRow key={song.id} song={song} />
@@ -506,16 +504,16 @@ export function SongLibraryPage() {
         </section>
       )}
 
-      {/* Built-in songs by level */}
-      {[...filteredSongsByLevel.keys()].sort((a, b) => a - b)
-        .map((levelId) => {
-          const levelSongs = filteredSongsByLevel.get(levelId)!;
-          const isCollapsed = collapsedLevels.has(levelId);
+      {/* Songs by difficulty */}
+      {[...filteredSongsByDifficulty.keys()].sort((a, b) => a - b)
+        .map((diff) => {
+          const diffSongs = filteredSongsByDifficulty.get(diff)!;
+          const isCollapsed = collapsedGroups.has(diff);
 
           return (
-            <section key={levelId} className="mb-6">
+            <section key={diff} className="mb-6">
               <button
-                onClick={() => toggleLevel(levelId)}
+                onClick={() => toggleGroup(diff)}
                 className="flex w-full items-center gap-2 text-left mb-2"
               >
                 <svg
@@ -526,15 +524,15 @@ export function SongLibraryPage() {
                   <path d="M8 5v14l11-7z" />
                 </svg>
                 <h2 className="text-base font-bold" style={{ color: "var(--color-text)" }}>
-                  Level {levelId} — {levelMeta[levelId]?.title ?? ""}
+                  Difficulty {diff} — {difficultyLabels[diff] ?? ""}
                 </h2>
                 <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                  ({levelSongs.length})
+                  ({diffSongs.length})
                 </span>
               </button>
               {!isCollapsed && (
                 <div className="space-y-2">
-                  {levelSongs.map((song) => (
+                  {diffSongs.map((song) => (
                     <SongRow key={song.id} song={song} />
                   ))}
                 </div>

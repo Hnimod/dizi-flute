@@ -210,7 +210,7 @@ export function TechniqueDetailPage() {
                 <span
                   className="shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase bg-(--color-accent-light) text-(--color-accent)"
                 >
-                  L{song.levelId}
+                  {song.difficulty}/10
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium">
