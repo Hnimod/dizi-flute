@@ -37,6 +37,7 @@ export interface Song {
   id: string;
   type: "song";
   difficulty: number;
+  difficultyNote?: string;
   titleChinese?: string;
   titleVietnamese?: string;
   titleEnglish: string;

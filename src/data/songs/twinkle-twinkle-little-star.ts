@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-2-song-1",
   type: "song",
   difficulty: 2,
+  difficultyNote: "Notes 1-6, octave jump to 6, repeated patterns.",
   titleChinese: "小星星",
   titleEnglish: "Twinkle Twinkle Little Star",
   key: "D",

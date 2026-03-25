@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-1-song-1",
   type: "song",
   difficulty: 1,
+  difficultyNote: "Notes 1-5 only, quarter notes, no rests or ties.",
   titleChinese: "玛丽有只小羊羔",
   titleEnglish: "Mary Had a Little Lamb",
   key: "D",

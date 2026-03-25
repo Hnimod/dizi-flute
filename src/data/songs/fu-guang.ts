@@ -4,6 +4,7 @@ export const song: Song = {
   id: "fu-guang",
   type: "song",
   difficulty: 7,
+  difficultyNote: "Fork fingering, double grace notes, ornament combos, sharp notes, 3/4 at 123 BPM, volta repeats.",
   titleChinese: "浮光",
   titleEnglish: "Fu Guang (The History)",
   key: "bD",

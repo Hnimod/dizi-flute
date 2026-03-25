@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-2-song-8",
   type: "song",
   difficulty: 4,
+  difficultyNote: "Faster tempo (96 BPM), verse + chorus structure, wider range up to 1\u2032, eighth note pairs.",
   titleChinese: "甜蜜蜜",
   titleVietnamese: "Điểm Mật Mật",
   titleEnglish: "Sweet Honey",

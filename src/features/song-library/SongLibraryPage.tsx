@@ -50,35 +50,6 @@ function HeartButton({ songId }: { songId: string }) {
   );
 }
 
-// ─── Check Icon ───
-
-function CheckButton({ songId }: { songId: string }) {
-  const completed = useProgressStore((s) => !!s.completedItems[songId]);
-  const toggleItem = useProgressStore((s) => s.toggleItem);
-
-  return (
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        toggleItem(songId);
-      }}
-      className="shrink-0 p-1 hover:opacity-70 transition-opacity"
-      title={completed ? "Mark incomplete" : "Mark completed"}
-    >
-      <svg
-        className="h-4 w-4"
-        viewBox="0 0 24 24"
-        fill={completed ? "var(--color-accent)" : "none"}
-        stroke={completed ? "var(--color-accent)" : "var(--color-text-secondary)"}
-        strokeWidth={2}
-      >
-        <circle cx="12" cy="12" r="10" />
-        {completed && <path d="M9 12l2 2 4-4" strokeWidth={2.5} stroke="white" fill="none" />}
-      </svg>
-    </button>
-  );
-}
-
 // ─── Difficulty Dropdown ───
 
 function DifficultyDropdown({
@@ -175,16 +146,15 @@ function DifficultyDropdown({
 
 // ─── Song Row ───
 
-function SongRow({ song }: { song: Song }) {
-  const [expanded, setExpanded] = useState(false);
+function SongRow({ song, expanded, onToggle }: { song: Song; expanded: boolean; onToggle: () => void }) {
 
   return (
     <div className="rounded-xl transition-colors" style={{ border: "1px solid var(--color-border)" }}>
       <div
         role="button"
         tabIndex={0}
-        onClick={() => setExpanded(!expanded)}
-        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setExpanded(!expanded); } }}
+        onClick={onToggle}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onToggle(); } }}
         className="flex w-full items-center gap-3 px-4 py-3 text-left cursor-pointer"
       >
         <div className="min-w-0 flex-1">
@@ -198,7 +168,6 @@ function SongRow({ song }: { song: Song }) {
             {song.origin && <span>{song.origin}</span>}
           </div>
         </div>
-        <CheckButton songId={song.id} />
         <HeartButton songId={song.id} />
         <svg
           className={`h-4 w-4 shrink-0 transition-transform text-(--color-text-secondary) ${expanded ? "rotate-180" : ""}`}
@@ -246,13 +215,12 @@ function SongRow({ song }: { song: Song }) {
 
 // ─── Main Page ───
 
-type FilterMode = "all" | "favorites" | "completed";
+type FilterMode = "all" | "favorites";
 
 export function SongLibraryPage() {
   const songs = staticSongs;
   const userSongs = useSongLibraryStore((s) => s.userSongs);
 
-  const completedItems = useProgressStore((s) => s.completedItems);
   const favoritedItems = useProgressStore((s) => s.favoritedItems);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
@@ -263,24 +231,32 @@ export function SongLibraryPage() {
       return saved ? new Set(JSON.parse(saved)) : new Set();
     } catch { return new Set(); }
   });
+  const [expandedSongs, setExpandedSongs] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem("dizi-library-expanded-songs");
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
 
   useEffect(() => {
     localStorage.setItem("dizi-library-collapsed", JSON.stringify([...collapsedGroups]));
   }, [collapsedGroups]);
 
+  useEffect(() => {
+    localStorage.setItem("dizi-library-expanded-songs", JSON.stringify([...expandedSongs]));
+  }, [expandedSongs]);
+
   const applyFilters = useCallback((list: Song[]) => {
     let filtered = list.filter((s) => matchesSearch(s, searchQuery));
     if (filterMode === "favorites") {
       filtered = filtered.filter((s) => favoritedItems[s.id]);
-    } else if (filterMode === "completed") {
-      filtered = filtered.filter((s) => completedItems[s.id]);
     }
     return filtered.sort((a, b) => {
       const aFav = favoritedItems[a.id] ? 1 : 0;
       const bFav = favoritedItems[b.id] ? 1 : 0;
       return bFav - aFav;
     });
-  }, [searchQuery, filterMode, favoritedItems, completedItems]);
+  }, [searchQuery, filterMode, favoritedItems]);
 
   const songsByDifficulty = useMemo(() => {
     const grouped = new Map<number, Song[]>();
@@ -319,6 +295,15 @@ export function SongLibraryPage() {
       .filter((s) => selectedDifficulties.size === 0 || selectedDifficulties.has(s.difficulty));
   }, [songs, userSongs, favoritedItems, searchQuery, selectedDifficulties]);
 
+  const toggleSong = useCallback((id: string) => {
+    setExpandedSongs((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
   const toggleGroup = useCallback((id: number | "my" | "fav") => {
     setCollapsedGroups((prev) => {
       const next = new Set(prev);
@@ -340,16 +325,60 @@ export function SongLibraryPage() {
 
   const totalFiltered = filteredUserSongs.length + [...filteredSongsByDifficulty.values()].reduce((sum, s) => sum + s.length, 0);
 
+  const allVisibleSongIds = useMemo(() => {
+    const ids: string[] = [];
+    for (const diffSongs of filteredSongsByDifficulty.values()) {
+      for (const s of diffSongs) ids.push(s.id);
+    }
+    for (const s of filteredUserSongs) ids.push(s.id);
+    for (const s of favoriteSongs) ids.push(s.id);
+    return ids;
+  }, [filteredSongsByDifficulty, filteredUserSongs, favoriteSongs]);
+
+  const anyExpanded = allVisibleSongIds.some((id) => expandedSongs.has(id));
+
+  const toggleAll = useCallback(() => {
+    if (anyExpanded) {
+      setExpandedSongs(new Set());
+    } else {
+      setExpandedSongs(new Set(allVisibleSongIds));
+    }
+  }, [anyExpanded, allVisibleSongIds]);
+
   return (
     <div className="mx-auto max-w-3xl">
       {/* Header */}
-      <header className="mb-4">
+      <header className="mb-4 flex items-center justify-between">
         <h1
           className="text-2xl font-bold md:text-3xl"
           style={{ color: "var(--color-text)" }}
         >
           Songs
         </h1>
+        <button
+          onClick={toggleAll}
+          className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-opacity hover:opacity-70"
+          style={{ color: "var(--color-text-secondary)" }}
+          title={anyExpanded ? "Collapse all" : "Expand all"}
+        >
+          <svg
+            className="h-3.5 w-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            {anyExpanded ? (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            ) : (
+              <>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 8l7-4 7 4" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 16l7 4 7-4" />
+              </>
+            )}
+          </svg>
+          {anyExpanded ? "Collapse all" : "Expand all"}
+        </button>
       </header>
 
       {/* Sticky search + filters */}
@@ -407,13 +436,6 @@ export function SongLibraryPage() {
           >
             Favorites
           </button>
-          <button
-            className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
-            style={pillStyle(filterMode === "completed")}
-            onClick={() => setFilterMode(filterMode === "completed" ? "all" : "completed")}
-          >
-            Completed
-          </button>
           <div className="flex-1" />
           <DifficultyDropdown
             difficulties={sortedDifficulties}
@@ -426,7 +448,7 @@ export function SongLibraryPage() {
       {/* Results count when filtering */}
       {(isSearching || filterMode !== "all" || selectedDifficulties.size > 0) && (
         <p className="text-xs mb-3" style={{ color: "var(--color-text-secondary)" }}>
-          {totalFiltered} {filterMode === "favorites" ? "favorite" : filterMode === "completed" ? "completed" : ""} result{totalFiltered !== 1 ? "s" : ""}
+          {totalFiltered} {filterMode === "favorites" ? "favorite " : ""}result{totalFiltered !== 1 ? "s" : ""}
         </p>
       )}
 
@@ -465,7 +487,7 @@ export function SongLibraryPage() {
             {!collapsedGroups.has("fav") && (
               <div className="space-y-2">
                 {favoriteSongs.map((song) => (
-                  <SongRow key={song.id} song={song} />
+                  <SongRow key={song.id} song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
                 ))}
               </div>
             )}
@@ -497,7 +519,7 @@ export function SongLibraryPage() {
           {!collapsedGroups.has("my") && (
             <div className="space-y-2">
               {filteredUserSongs.map((song) => (
-                <SongRow key={song.id} song={song} />
+                <SongRow key={song.id} song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
               ))}
             </div>
           )}
@@ -505,41 +527,42 @@ export function SongLibraryPage() {
       )}
 
       {/* Songs by difficulty */}
-      {[...filteredSongsByDifficulty.keys()].sort((a, b) => a - b)
-        .map((diff) => {
-          const diffSongs = filteredSongsByDifficulty.get(diff)!;
-          const isCollapsed = collapsedGroups.has(diff);
-
-          return (
-            <section key={diff} className="mb-6">
-              <button
-                onClick={() => toggleGroup(diff)}
-                className="flex w-full items-center gap-2 text-left mb-2"
-              >
-                <svg
-                  className={`h-3.5 w-3.5 shrink-0 transition-transform ${isCollapsed ? "" : "rotate-90"}`}
-                  fill="var(--color-text-secondary)"
-                  viewBox="0 0 24 24"
+      <div className="space-y-2">
+        {[...filteredSongsByDifficulty.keys()].sort((a, b) => a - b)
+          .map((diff) => {
+            const diffSongs = filteredSongsByDifficulty.get(diff)!;
+            const isCollapsed = collapsedGroups.has(diff);
+            return (
+              <div key={diff}>
+                {/* Subtle collapsible divider */}
+                <button
+                  onClick={() => toggleGroup(diff)}
+                  className="flex w-full items-center gap-3 my-3 cursor-pointer"
                 >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-                <h2 className="text-base font-bold" style={{ color: "var(--color-text)" }}>
-                  Difficulty {diff} — {difficultyLabels[diff] ?? ""}
-                </h2>
-                <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                  ({diffSongs.length})
-                </span>
-              </button>
-              {!isCollapsed && (
-                <div className="space-y-2">
-                  {diffSongs.map((song) => (
-                    <SongRow key={song.id} song={song} />
-                  ))}
-                </div>
-              )}
-            </section>
-          );
-        })}
+                  <div className="flex-1 h-px" style={{ backgroundColor: "var(--color-border)" }} />
+                  <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider" style={{ color: "var(--color-text-secondary)" }}>
+                    {difficultyLabels[diff] ?? ""} · {diff}/10
+                    <svg
+                      className={`h-2.5 w-2.5 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                  <div className="flex-1 h-px" style={{ backgroundColor: "var(--color-border)" }} />
+                </button>
+                {!isCollapsed && diffSongs.map((song) => (
+                  <div key={song.id} className="mb-2">
+                    <SongRow song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+      </div>
 
       {/* No results */}
       {totalFiltered === 0 && (
@@ -548,9 +571,7 @@ export function SongLibraryPage() {
             ? `No songs found for "${searchQuery}"`
             : filterMode === "favorites"
               ? "No favorite songs yet"
-              : filterMode === "completed"
-                ? "No completed songs yet"
-                : "No songs available"}
+              : "No songs available"}
         </p>
       )}
     </div>

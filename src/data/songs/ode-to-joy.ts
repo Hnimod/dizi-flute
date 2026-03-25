@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-2-song-5",
   type: "song",
   difficulty: 2,
+  difficultyNote: "Stepwise motion, eighth note groups, needs smooth transitions.",
   titleChinese: "欢乐颂",
   titleEnglish: "Ode to Joy",
   key: "D",

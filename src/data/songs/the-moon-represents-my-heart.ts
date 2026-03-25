@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-2-song-7",
   type: "song",
   difficulty: 3,
+  difficultyNote: "Sustained notes need breath control, expressive dynamics, pentatonic phrasing.",
   titleChinese: "月亮代表我的心",
   titleEnglish: "The Moon Represents My Heart",
   key: "D",

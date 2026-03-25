@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-2-song-3",
   type: "song",
   difficulty: 2,
+  difficultyNote: "Pentatonic, eighth note pairs, moderate phrasing.",
   titleChinese: "世上只有妈妈好",
   titleEnglish: "Only Mama is Good",
   key: "C",

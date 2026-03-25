@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-1-song-3",
   type: "song",
   difficulty: 1,
+  difficultyNote: "Notes 1-5, simple rhythm but longer piece — builds stamina.",
   titleEnglish: "Lightly Row",
   key: "D",
   timeSignature: "4/4",

@@ -4,6 +4,7 @@ export const song: Song = {
   id: "level-2-song-2",
   type: "song",
   difficulty: 3,
+  difficultyNote: "3/4 time, tonguing marks throughout, slurs, expressive phrasing.",
   titleChinese: "小白菜",
   titleEnglish: "Little White Cabbage",
   key: "D",

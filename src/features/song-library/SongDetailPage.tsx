@@ -21,9 +21,7 @@ export function SongDetailPage() {
   }, [songId, userSongs]);
 
   const favorited = useProgressStore((s) => song ? !!s.favoritedItems[song.id] : false);
-  const completed = useProgressStore((s) => song ? !!s.completedItems[song.id] : false);
   const toggleFavorite = useProgressStore((s) => s.toggleFavorite);
-  const toggleItem = useProgressStore((s) => s.toggleItem);
 
   const techniqueDetails = useMemo(() => {
     if (!song?.techniques) return [];
@@ -64,22 +62,6 @@ export function SongDetailPage() {
             {getTitle(song)}
           </h1>
           <button
-            onClick={() => toggleItem(song.id)}
-            className="shrink-0 p-1 hover:opacity-70 transition-opacity"
-            title={completed ? "Mark incomplete" : "Mark completed"}
-          >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill={completed ? "var(--color-accent)" : "none"}
-              stroke={completed ? "var(--color-accent)" : "var(--color-text-secondary)"}
-              strokeWidth={2}
-            >
-              <circle cx="12" cy="12" r="10" />
-              {completed && <path d="M9 12l2 2 4-4" strokeWidth={2.5} stroke="white" fill="none" />}
-            </svg>
-          </button>
-          <button
             onClick={() => toggleFavorite(song.id)}
             className="shrink-0 p-1 hover:opacity-70 transition-opacity"
           >
@@ -106,6 +88,11 @@ export function SongDetailPage() {
           {song.tempo && <span>Tempo: {song.tempo} BPM</span>}
           {song.origin && <span>Origin: {song.origin}</span>}
         </div>
+        {song.difficultyNote && (
+          <p className="mt-1 text-xs" style={{ color: "var(--color-text-secondary)" }}>
+            {song.difficultyNote}
+          </p>
+        )}
       </header>
 
       {song.description && (
