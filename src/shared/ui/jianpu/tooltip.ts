@@ -102,10 +102,14 @@ export function buildNoteTooltip(token: Token, annotations: string[]): string | 
   // Annotations from preceding tokens
   for (const ann of annotations) {
     if (ann === "fork") lines.push("Fork fingering (又) — alternate fingering for different tone color");
+    else if (ann === "die") lines.push("叠音 (Dié Yīn) — quick grace from ONE hole above, finger only (no tongue)");
+    else if (ann === "da") lines.push("打音 (Dǎ Yīn) — quick strike from ONE hole below, finger only (no tongue)");
+    else if (ann === "zeng") lines.push("赠音 (Zèng Yīn) — trailing gift note at end of held note, release finger as breath stops");
+    else if (ann === "bo") lines.push("波音 (Bō Yīn) — single rapid upper-neighbor flick (one oscillation, like a short trill)");
     else if (ann === "vibrato") lines.push("Vibrato — oscillate pitch for expression");
     else if (ann === "slide-up") lines.push("Slide up — glide pitch upward into note");
     else if (ann === "slide-down") lines.push("Slide down — glide pitch downward");
-    else if (ann === "flutter") lines.push("Flutter tongue — roll tongue while playing");
+    else if (ann === "flutter") lines.push("Flutter tongue (花舌) — roll tongue while playing");
     else if (ann.startsWith("T:")) {
       const tech = ann.slice(2);
       if (tech === "single") lines.push("Single tonguing (T) — one tongue attack per note");

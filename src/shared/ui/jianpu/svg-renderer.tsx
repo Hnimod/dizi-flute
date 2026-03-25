@@ -6,6 +6,20 @@ import {
 import { isBeat } from "./parser";
 import { flatFirst, flatLast } from "./layout";
 
+// Ornament names that render as Chinese characters (non-italic, bold)
+const ORNAMENT_CHARS: Record<string, string> = {
+  fork: "又",
+  die: "叠",
+  da: "打",
+  zeng: "赠",
+  bo: "波",
+};
+
+function ornamentDisplay(name: string): { text: string; isChar: boolean } {
+  const char = ORNAMENT_CHARS[name];
+  return char ? { text: char, isChar: true } : { text: name, isChar: false };
+}
+
 export function renderSvgItems(
   items: LayoutItem[],
   activeBeatIndex: number | undefined,
@@ -48,20 +62,20 @@ export function renderSvgItems(
           </text>,
         );
       } else {
-        const isFork = item.token.name === "fork";
+        const { text: ornText, isChar } = ornamentDisplay(item.token.name);
         elements.push(
           <text
             key={key}
             x={targetX}
             y={Y_MARK}
             textAnchor="middle"
-            fontSize={isFork ? "10" : "8"}
-            fontStyle={isFork ? "normal" : "italic"}
-            fontWeight={isFork ? "700" : undefined}
+            fontSize={isChar ? "10" : "8"}
+            fontStyle={isChar ? "normal" : "italic"}
+            fontWeight={isChar ? "700" : undefined}
             fontFamily="sans-serif"
             fill="var(--color-text-secondary)"
           >
-            {isFork ? "又" : item.token.name}
+            {ornText}
           </text>,
         );
       }
@@ -620,20 +634,20 @@ function renderSvgToken(
       );
       break;
     case "ornament": {
-      const isFork = token.name === "fork";
+      const { text: ornText2, isChar: isChar2 } = ornamentDisplay(token.name);
       elements.push(
         <text
           key={key}
           x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
-          fontSize={isFork ? "10" : "8"}
-          fontStyle={isFork ? "normal" : "italic"}
-          fontWeight={isFork ? "700" : undefined}
+          fontSize={isChar2 ? "10" : "8"}
+          fontStyle={isChar2 ? "normal" : "italic"}
+          fontWeight={isChar2 ? "700" : undefined}
           fontFamily="sans-serif"
           fill="var(--color-text-secondary)"
         >
-          {isFork ? "又" : token.name}
+          {ornText2}
         </text>,
       );
       break;

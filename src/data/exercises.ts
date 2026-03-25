@@ -59,7 +59,7 @@ export const exercises: Exercise[] = [
 4 - - - | 4 - - - | 0 0 0 0 |
 5 - - - | 5 - - - | 0 0 0 0 ||`,
     description: "Hold each note as long as possible with a steady, even tone.",
-    audioPath: "/audio/level-1/01-long-tones.ogg",
+
   },
   {
     id: "level-1-exercise-2",
@@ -71,7 +71,6 @@ export const exercises: Exercise[] = [
     tempo: 60,
     jianpu: `1 - 2 - | 3 - 4 - | 5 - - - | 0 - - - ||`,
     description: "Walk up the scale slowly from Do to Sol.",
-    audioPath: "/audio/level-1/02-scale-walk-ascending.ogg",
   },
   {
     id: "level-1-exercise-3",
@@ -82,7 +81,6 @@ export const exercises: Exercise[] = [
     timeSignature: "4/4",
     jianpu: `5 - 4 - | 3 - 2 - | 1 - - - | 0 - - - ||`,
     description: "Walk down the scale from Sol to Do.",
-    audioPath: "/audio/level-1/03-scale-walk-descending.ogg",
   },
   {
     id: "level-1-exercise-4",
@@ -94,7 +92,6 @@ export const exercises: Exercise[] = [
     jianpu: `1 - 2 - | 3 - 4 - | 5 - - - | 0 0 0 0 |
 5 - 4 - | 3 - 2 - | 1 - - - | 0 0 0 0 ||`,
     description: "Combine ascending and descending scale practice.",
-    audioPath: "/audio/level-1/04-scale-up-and-down.ogg",
   },
   {
     id: "level-1-exercise-5",
@@ -106,7 +103,6 @@ export const exercises: Exercise[] = [
     jianpu: `1 2 1 2 | 3 4 3 4 | 5 4 5 4 | 3 2 3 2 |
 1 - - - | 0 0 0 0 ||`,
     description: "Practice stepwise motion between adjacent notes.",
-    audioPath: "/audio/level-1/05-step-patterns.ogg",
   },
   {
     id: "level-1-exercise-6",
@@ -117,7 +113,6 @@ export const exercises: Exercise[] = [
     timeSignature: "4/4",
     jianpu: `1 3 1 3 | 2 4 2 4 | 3 5 3 5 | 1 - - - ||`,
     description: "Practice skipping between notes (intervals of a third).",
-    audioPath: "/audio/level-1/06-skip-patterns.ogg",
   },
   {
     id: "level-1-exercise-7",
@@ -131,7 +126,6 @@ export const exercises: Exercise[] = [
 1 - - - ||`,
     description:
       'Single tongue each note with "tu". Start at 60 BPM.',
-    audioPath: "/audio/level-1/07-tonguing-practice.ogg",
   },
 
   // ── Level 2 Exercises ──────────────────────────────────────────────
@@ -147,7 +141,6 @@ export const exercises: Exercise[] = [
 2 - - - | 3 - - - | 4 - - - | 5 - - - |
 6 - - - | 7 - - - | 1' - - - | 0 - - - ||`,
     description: "Long tones through the full scale from low Sol to high Do.",
-    audioPath: "/audio/level-2/01-full-scale-long-tones.ogg",
   },
   {
     id: "level-2-exercise-2",
@@ -159,7 +152,6 @@ export const exercises: Exercise[] = [
     jianpu: `1 2 3 5 | 6 - - - | 6 5 3 2 | 1 - - - |
 1 3 5 6 | 5 3 2 1 | 2 3 5 6 | 1 - - - ||`,
     description: "Practice the pentatonic scale in various patterns.",
-    audioPath: "/audio/level-2/02-pentatonic-patterns.ogg",
   },
   {
     id: "level-2-exercise-3",
@@ -171,7 +163,6 @@ export const exercises: Exercise[] = [
     jianpu: `5, - 5 - | 6, - 6 - | 7, - 7 - | 1 - 1' - |
 1' - 1 - | 7 - 7, - | 6 - 6, - | 5 - 5, - ||`,
     description: "Practice jumping between octaves on the same note.",
-    audioPath: "/audio/level-2/03-octave-jumps.ogg",
   },
   {
     id: "level-2-exercise-4",
@@ -184,7 +175,6 @@ export const exercises: Exercise[] = [
 1' 7 | 6 5 | 4 3 | 2 1 ||`,
     description:
       'Tongue each note with "tu". Two notes per beat.',
-    audioPath: "/audio/level-2/04-tonguing-eighth-notes.ogg",
   },
 
   // ── Level 3 Exercises ──────────────────────────────────────────────
@@ -200,7 +190,6 @@ export const exercises: Exercise[] = [
 6 - - - - - - - ||`,
     description:
       "Play each note: start very soft, grow to loud, return to soft.",
-    audioPath: "/audio/level-3/01-dynamic-long-tones.ogg",
   },
   {
     id: "level-3-exercise-2",
@@ -213,7 +202,6 @@ export const exercises: Exercise[] = [
 1 3 | 5 6 | 5 3 | 2 1 |
 6, 1 | 2 3 | 5 6 | 5 - ||`,
     description: "Practice pentatonic patterns in 2/4 time.",
-    audioPath: "/audio/level-3/02-pentatonic-patterns.ogg",
   },
   {
     id: "level-3-exercise-3",
@@ -225,7 +213,6 @@ export const exercises: Exercise[] = [
     jianpu: `5, 6, 7, 1 | 2 3 4 5 | 6 7 1' - | 0 0 0 0 |
 1' 7 6 5 | 4 3 2 1 | 7, 6, 5, - | 0 0 0 0 ||`,
     description: "Full two-octave scale ascending and descending.",
-    audioPath: "/audio/level-3/03-two-octave-scale.ogg",
   },
   {
     id: "level-3-exercise-4",
@@ -238,7 +225,6 @@ export const exercises: Exercise[] = [
 5. 6 | 5. 3 | 2. 1 | 6, - ||`,
     description:
       'Practice dotted rhythms creating a "long-short" swing feel.',
-    audioPath: "/audio/level-3/04-dotted-rhythms.ogg",
   },
   {
     id: "level-3-exercise-5",
@@ -251,7 +237,6 @@ export const exercises: Exercise[] = [
 (6)5 - - - | (5)6 - - - | (2)1 - - - ||`,
     description:
       "Numbers in parentheses are grace notes -- play them very quickly before the main note.",
-    audioPath: "/audio/level-3/05-grace-notes.ogg",
   },
 
   // ── Level 4 Exercises ──────────────────────────────────────────────
@@ -267,7 +252,6 @@ export const exercises: Exercise[] = [
 6 - - - - - - - | 1' - - - - - - - ||`,
     description:
       "Start each note plain for the first beat, then add vibrato for the remaining 7 beats.",
-    audioPath: "/audio/level-4/01-vibrato-long-tones.ogg",
   },
   {
     id: "level-4-exercise-2",
@@ -282,7 +266,6 @@ export const exercises: Exercise[] = [
 1 1 1 1 | 1 - - - ||`,
     description:
       'Each note tongued with alternating tu-ku. Make "ku" as clear as "tu."',
-    audioPath: "/audio/level-4/02-double-tonguing.ogg",
   },
   {
     id: "level-4-exercise-3",
@@ -295,7 +278,6 @@ export const exercises: Exercise[] = [
 6 tr - - | 5 tr - - | 3 tr - - | 1 tr - - ||`,
     description:
       "Hold each trill for 3 beats. Start with slow trills and increase speed.",
-    audioPath: "/audio/level-4/03-trill-practice.ogg",
   },
   {
     id: "level-4-exercise-4",
@@ -308,7 +290,6 @@ export const exercises: Exercise[] = [
 (da)6 5 | (da)5 3 | (da)3 2 | (da)1 - ||`,
     description:
       "First half: practice \u53E0\u97F3 on held notes. Second half: practice \u6253\u97F3 on moving passages.",
-    audioPath: "/audio/level-4/04-ornament-combinations.ogg",
   },
   {
     id: "level-4-exercise-5",
@@ -321,7 +302,6 @@ export const exercises: Exercise[] = [
 5 6 1' 6 | 5 3 | 2 3 5 3 | 2 - ||`,
     description:
       "Groups of four sixteenth notes per beat. Keep fingers close to the holes for speed.",
-    audioPath: "/audio/level-4/05-sixteenth-notes.ogg",
   },
 
   // ── Level 5 Exercises ──────────────────────────────────────────────
@@ -335,7 +315,6 @@ export const exercises: Exercise[] = [
     jianpu: `1 1 1  2 2 2 | 3 3 3  5 5 5 | 6 6 6  5 5 5 | 3 3 3  2 2 2 |
 1 1 1  1 - ||`,
     description: "Practice the tu-tu-ku pattern on triplet groupings.",
-    audioPath: "/audio/level-5/triple-tonguing-drill.ogg",
   },
   {
     id: "level-5-exercise-2",
@@ -347,7 +326,6 @@ export const exercises: Exercise[] = [
     jianpu: `1 - \u21973 - | 3 - \u21975 - | 5 - \u21976 - | 6 - \u21985 - |
 5 - \u21983 - | 3 - \u21981 - ||`,
     description: "Practice upward and downward slides between notes.",
-    audioPath: "/audio/level-5/slide-practice.ogg",
   },
   {
     id: "level-5-exercise-3",
@@ -360,6 +338,156 @@ export const exercises: Exercise[] = [
 1 - - - 6, | 5, - - - - ||`,
     description:
       "No metronome. Feel each note. Breathe naturally.",
-    audioPath: "/audio/level-5/sanban-free-time.ogg",
+  },
+
+  // ── Level 3 New Exercises ─────────────────────────────────────────
+  {
+    id: "level-3-exercise-6",
+    type: "exercise",
+    levelId: 3,
+    title: "叠音 (Dié Yīn) — Stacked Grace Note",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `orn:die 1 - - - | orn:die 2 - - - | orn:die 3 - - - | orn:die 5 - - - |
+orn:die 1 - orn:die 2 - | orn:die 3 - orn:die 5 - | orn:die 6 - orn:die 5 - | orn:die 3 - - - ||`,
+    description:
+      "叠音: Flick the finger ONE hole ABOVE the main note, then return. No tongue — finger only. The grace note is so quick it barely sounds. This re-articulates the note without tonguing. Practice slowly: hold the note, then do a single quick flick up and back.",
+  },
+  {
+    id: "level-3-exercise-7",
+    type: "exercise",
+    levelId: 3,
+    title: "打音 (Dǎ Yīn) — Struck Grace Note",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `orn:da 2 - - - | orn:da 3 - - - | orn:da 5 - - - | orn:da 6 - - - |
+orn:da 2 - orn:da 3 - | orn:da 5 - orn:da 6 - | orn:da 5 - orn:da 3 - | orn:da 2 - - - ||`,
+    description:
+      "打音: Strike the finger ONE hole BELOW the main note, then release. No tongue — finger only. Like 叠音 but from below instead of above. Used to re-articulate repeated notes cleanly. Practice: hold a note, quickly tap the hole below, then release.",
+  },
+
+  // ── Level 4 New Exercises ─────────────────────────────────────────
+  {
+    id: "level-4-exercise-6",
+    type: "exercise",
+    levelId: 4,
+    title: "赠音 (Zèng Yīn) — Trailing Gift Note",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `1 - - orn:zeng 1 | 2 - - orn:zeng 2 | 3 - - orn:zeng 3 | 5 - - orn:zeng 5 |
+6 - - orn:zeng 6 | 5 - - orn:zeng 5 | 3 - - orn:zeng 3 | 1 - - - ||`,
+    description:
+      "赠音: At the end of a held note, release a finger as your breath stops. The residual air creates a faint trailing 'gift' note. Practice: hold a long tone for 3 beats, then on beat 4 gently lift one finger as you stop blowing. The effect is a soft, vanishing ornamental note.",
+  },
+  {
+    id: "level-4-exercise-7",
+    type: "exercise",
+    levelId: 4,
+    title: "波音 (Bō Yīn) — Mordent",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 72,
+    jianpu: `orn:bo 1 - - - | orn:bo 2 - - - | orn:bo 3 - - - | orn:bo 5 - - - |
+orn:bo 1 - orn:bo 3 - | orn:bo 5 - orn:bo 6 - | orn:bo 5 - orn:bo 3 - | orn:bo 1 - - - ||`,
+    description:
+      "波音: A single rapid flick to the upper neighbor and back — like a one-cycle trill. Differs from trill (颤音) which repeats many times. Practice: hold a note, do ONE quick up-down finger movement, then sustain. The 波 should be barely noticeable — a subtle 'wave' in the sound.",
+  },
+  {
+    id: "level-4-exercise-8",
+    type: "exercise",
+    levelId: 4,
+    title: "花舌 (Huā Shé) — Flutter Tongue",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `orn:flutter 3 - - - | orn:flutter 5 - - - | orn:flutter 6 - - - | orn:flutter 5 - - - |
+orn:flutter 3 - orn:flutter 5 - | orn:flutter 6 - orn:flutter 5 - | orn:flutter 3 - - - | 3 - - - ||`,
+    description:
+      "花舌: Roll your tongue (like a rolled 'R' in Spanish) while blowing into the dizi. Creates a buzzing, tremolo-like effect. Step 1: Practice rolling your tongue without the dizi. Step 2: Try it while blowing a long tone on middle register notes (3, 5, 6). Start with easy notes and sustain the flutter for the full duration.",
+  },
+
+  // ── Level 5 New Exercises ─────────────────────────────────────────
+  {
+    id: "level-5-exercise-4",
+    type: "exercise",
+    levelId: 5,
+    title: "历音 (Lì Yīn) — Glissando Runs",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 72,
+    jianpu: `5, 6, 1 2 | 3 5 6 1' | 2' - - - | 2' 1' 6 5 | 3 2 1 6, | 5, - - - |
+5, 6, 1 2 | 3 5 6 1' | 1' 6 5 3 | 2 1 6, 5, | 5, - - - ||`,
+    description:
+      "历音: Rapid sequential runs through multiple notes — like a cascade or waterfall of sound. Practice ascending (low→high) and descending (high→low) separately. Start slowly, ensuring each note sounds clearly, then gradually increase speed until the notes blur together into a smooth glissando effect.",
+  },
+  {
+    id: "level-5-exercise-5",
+    type: "exercise",
+    levelId: 5,
+    title: "剁音 (Duò Yīn) — Chopped Note",
+    key: "D",
+    timeSignature: "2/4",
+    tempo: 80,
+    jianpu: `1' 1 | 1' 2 | 1' 3 | 1' 5 |
+1' 1 | 1' 6, | 1' 5, | 1 - ||`,
+    description:
+      "剁音: A dramatic northern-style attack. Start with all holes open (high pitch), then tongue and slam all fingers down to the target note simultaneously. The effect is a sharp downward 'chop'. Practice: start from the highest note, then drop to each target note. Focus on the coordination of tongue attack + finger slam happening at exactly the same instant.",
+  },
+
+  // ── Level 6 New Exercises ─────────────────────────────────────────
+  {
+    id: "level-6-exercise-1",
+    type: "exercise",
+    levelId: 6,
+    title: "循环换气 (Circular Breathing) Steps",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `1 - - - | 1 - - - | 1 - - - | 1 - - - |
+1 - - - | 1 - - - | 1 - - - | 1 - - - ||`,
+    description:
+      "循环换气: Breathe in through your nose while maintaining airflow from your mouth. Practice in 3 stages:\n\nStage 1 (no dizi): Puff cheeks with air. Breathe in through nose while holding cheeks puffed.\n\nStage 2 (no dizi): Puff cheeks, slowly release air through a small lip opening while simultaneously breathing in through nose.\n\nStage 3 (with dizi): Sustain a long tone on note 1. When running low on air, puff cheeks and switch to cheek air while nose-inhaling. The goal is an unbroken tone across the breath switch. Start with note 1 (easiest embouchure).",
+  },
+  {
+    id: "level-6-exercise-2",
+    type: "exercise",
+    levelId: 6,
+    title: "半孔 (Half-Holing) Chromatic Scale",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `5, - #5, - | 6, - b7, - | 7, - 1 - | #1 - 2 - |
+#2 - 3 - | #4 - 5 - | #5 - 6 - | b7 - 7 - | 1' - - - ||`,
+    description:
+      "半孔: Partially cover a hole to produce notes between the standard scale degrees. Slide your finger to cover roughly half the hole. Practice each chromatic note slowly, checking intonation. Sharp notes (#1, #2, #4, #5) require half-covering specific holes. Listen carefully for pitch accuracy — half-holing is subtle and requires fine finger control.",
+  },
+  {
+    id: "level-6-exercise-3",
+    type: "exercise",
+    levelId: 6,
+    title: "泛音 (Harmonics) Practice",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 60,
+    jianpu: `1 - 1' - | 2 - 2' - | 3 - 3' - | 5 - 5' - |
+1' - - - | 2' - - - | 3' - - - ||`,
+    description:
+      "泛音: Overtone pitches produced by overblowing with specific fingerings. Using the SAME fingering as the lower note, increase air speed and tighten embouchure to produce the note one octave above. Practice: play middle 1, then without changing fingers, overblow to reach high 1'. The transition should be smooth. This develops embouchure control for the upper register.",
+  },
+  {
+    id: "level-6-exercise-4",
+    type: "exercise",
+    levelId: 6,
+    title: "飞指 (Flying Fingers) Practice",
+    key: "D",
+    timeSignature: "4/4",
+    tempo: 72,
+    jianpu: `1 - - - | 2 - - - | 3 - - - | 5 - - - |
+6 - - - | 5 - - - | 3 - - - | 1 - - - ||`,
+    description:
+      "飞指: Rapid lateral finger movement across holes while sustaining a note, creating a shimmering, vibrating effect. Practice: hold a long tone, then rapidly wave your fingers across the open holes (not closing them fully, just brushing over). Start slowly and increase speed. The result should be a sparkling, tremolo-like shimmer — different from trill (which alternates between two specific notes).",
   },
 ];

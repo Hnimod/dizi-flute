@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { AudioPlayer, VideoEmbed } from "@/shared/ui";
+import { VideoEmbed } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
 import type { Song, Exercise } from "@/shared/types";
@@ -147,13 +147,6 @@ export function PracticeView({ items, initialIndex, levelTitle, onClose }: Pract
             }}
           />
         </div>
-
-        {/* Audio player */}
-        {item.audioPath && (
-          <div className="px-4 py-2">
-            <AudioPlayer src={item.audioPath} />
-          </div>
-        )}
 
         {/* Spacer for bottom bar */}
         <div className="h-4" />

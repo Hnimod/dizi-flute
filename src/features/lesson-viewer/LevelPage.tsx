@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLevels } from "@/data";
-import { MarkdownRenderer, AudioPlayer, Checkbox, ProgressBar, VideoEmbed, LevelSkeleton } from "@/shared/ui";
+import { MarkdownRenderer, Checkbox, ProgressBar, VideoEmbed, LevelSkeleton } from "@/shared/ui";
 import { TempoGuide } from "./TempoGuide";
 import { useProgressStore, selectIsCompleted, selectCompletedCount } from "@/features/progress-tracking";
 import { useAuthStore } from "@/features/auth";
@@ -70,7 +70,7 @@ function SongCard({ song, onEdit }: { song: Song; onEdit?: () => void }) {
         className="rounded-lg p-4 overflow-x-auto my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
       />
-      {song.audioPath && <AudioPlayer src={song.audioPath} className="mt-3" />}
+
     </div>
   );
 }
@@ -117,7 +117,7 @@ function ExerciseCard({ exercise, onEdit }: { exercise: Exercise; onEdit?: () =>
         className="rounded-lg p-4 overflow-x-auto my-3"
         style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
       />
-      {exercise.audioPath && <AudioPlayer src={exercise.audioPath} className="mt-3" />}
+
     </div>
   );
 }

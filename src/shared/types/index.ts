@@ -45,7 +45,6 @@ export interface Song {
   tempo?: number;
   jianpu: string;
   description?: string;
-  audioPath?: string;
   videoUrl?: string;
   videoUrls?: string[];
   origin?: string;
@@ -61,7 +60,6 @@ export interface Exercise {
   tempo?: number;
   jianpu: string;
   description?: string;
-  audioPath?: string;
   videoUrl?: string;
 }
 
