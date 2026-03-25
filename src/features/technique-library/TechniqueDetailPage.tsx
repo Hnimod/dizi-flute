@@ -2,31 +2,21 @@ import { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { getTechnique, exercises as staticExercises, songs as staticSongs } from "@/data";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
-import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
-import { Checkbox } from "@/shared/ui";
 import type { Exercise } from "@/shared/types";
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
-  const toggleItem = useProgressStore((s) => s.toggleItem);
-  const completed = useProgressStore(selectIsCompleted(exercise.id));
-
   return (
     <div
       className="my-4 rounded-xl bg-(--color-bg-secondary) p-5 shadow-sm"
       style={{ border: "1px solid var(--color-border)" }}
     >
-      <div className="flex items-center justify-between mb-1">
+      <div className="mb-1">
         <h4
           className="text-base font-semibold"
           style={{ color: "var(--color-text)" }}
         >
           {exercise.title}
         </h4>
-        <Checkbox
-          checked={completed}
-          onChange={() => toggleItem(exercise.id)}
-          label="Completed"
-        />
       </div>
       <div
         className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3"
