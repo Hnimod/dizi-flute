@@ -1,10 +1,11 @@
-import { useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { JianpuRendererProps, InteractiveOpts, LayoutItem } from "./types";
+import type { Token, JianpuRendererProps, InteractiveOpts, LayoutItem } from "./types";
 import { Y_MARK, Y_NOTE, LINE_HEIGHT } from "./constants";
 import { parseToken } from "./parser";
 import { layoutLine, findActiveBeat } from "./layout";
 import { renderSvgItems } from "./svg-renderer";
+import { buildNoteTooltip } from "./tooltip";
 
 export function JianpuRenderer({
   content,
@@ -75,8 +76,21 @@ export function JianpuRenderer({
     prevLineRef.current = activeLineIdx;
   }
 
+  // Tooltip state
+  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleNoteHover = useCallback((token: Token, event: React.MouseEvent, annotations: string[]) => {
+    const text = buildNoteTooltip(token, annotations);
+    if (!text) return;
+    const rect = (event.target as Element).getBoundingClientRect();
+    setTooltip({ text, x: rect.left + rect.width / 2, y: rect.top });
+  }, []);
+
+  const handleNoteLeave = useCallback(() => setTooltip(null), []);
+
   return (
-    <div className={className} style={style}>
+    <div ref={containerRef} className={className} style={{ ...style, position: "relative" }}>
       {hasHeader && (
         <div className="jianpu-header">
           {title && <div>{title}</div>}
@@ -100,6 +114,8 @@ export function JianpuRenderer({
         const interOpts: InteractiveOpts = {
           interactive, selectedTokenIdx, onTokenClick, onGapClick, onBeatClick,
           lineYOffset: lineIdx * LINE_HEIGHT,
+          onNoteHover: handleNoteHover,
+          onNoteLeave: handleNoteLeave,
         };
         renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
 
@@ -160,6 +176,38 @@ export function JianpuRenderer({
           </svg>
         );
       })}
+
+      {/* Tooltip */}
+      {tooltip && (
+        <div
+          style={{
+            position: "fixed",
+            left: 0,
+            top: 0,
+            transform: `translate(${tooltip.x}px, ${tooltip.y - 10}px)`,
+            pointerEvents: "none",
+            zIndex: 50,
+          }}
+        >
+          <div
+            style={{
+              transform: "translate(-50%, -100%)",
+              backgroundColor: "var(--color-bg-secondary)",
+              border: "1px solid var(--color-border)",
+              borderRadius: 8,
+              padding: "8px 12px",
+              fontSize: 12,
+              lineHeight: 1.5,
+              color: "var(--color-text)",
+              whiteSpace: "pre-line",
+              maxWidth: 280,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            }}
+          >
+            {tooltip.text}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

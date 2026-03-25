@@ -13,12 +13,17 @@ export function renderSvgItems(
   keyPrefix: string,
   opts?: InteractiveOpts,
 ) {
+  const pendingAnnotations: string[] = [];
+
   for (let idx = 0; idx < items.length; idx++) {
     const item = items[idx]!;
     const key = `${keyPrefix}-${idx}`;
 
     // Annotations: render above the next item's center x
     if (item.token.type === "tonguing" || item.token.type === "ornament") {
+      pendingAnnotations.push(
+        item.token.type === "tonguing" ? `T:${item.token.technique}` : item.token.name,
+      );
       const next = items[idx + 1];
       const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
       if (item.token.type === "tonguing") {
@@ -132,7 +137,8 @@ export function renderSvgItems(
         }
       }
     } else {
-      renderSvgToken(item, activeBeatIndex, elements, key, opts);
+      renderSvgToken(item, activeBeatIndex, elements, key, opts, [...pendingAnnotations]);
+      if (isBeat(item.token)) pendingAnnotations.length = 0;
     }
   }
 
@@ -187,6 +193,7 @@ function renderSvgToken(
   elements: React.ReactNode[],
   key: string,
   opts?: InteractiveOpts,
+  annotations: string[] = [],
 ) {
   const { token, x, width, beatIndex, tokenIdx } = item;
   const isActive = beatIndex !== null && beatIndex === activeBeatIndex;
@@ -200,6 +207,10 @@ function renderSvgToken(
     : beatClickable
       ? () => opts.onBeatClick!(beatIndex!)
       : undefined;
+  const noteHoverEnter = opts?.onNoteHover && token.type === "note"
+    ? (e: React.MouseEvent) => opts.onNoteHover!(token, e, annotations)
+    : undefined;
+  const noteHoverLeave = opts?.onNoteLeave;
 
   switch (token.type) {
     case "note": {
@@ -295,8 +306,10 @@ function renderSvgToken(
             fontSize="16"
             fontWeight="600"
             fill={noteColor}
-            style={noteStyle}
+            style={noteHoverEnter ? { ...noteStyle, cursor: "help" } : noteStyle}
             onClick={clickHandler}
+            onMouseEnter={noteHoverEnter}
+            onMouseLeave={noteHoverLeave}
             {...beatAttr}
           >
             {mainText}
@@ -312,8 +325,10 @@ function renderSvgToken(
             fontSize="16"
             fontWeight="600"
             fill={noteColor}
-            style={noteStyle}
+            style={noteHoverEnter ? { ...noteStyle, cursor: "help" } : noteStyle}
             onClick={clickHandler}
+            onMouseEnter={noteHoverEnter}
+            onMouseLeave={noteHoverLeave}
             {...beatAttr}
           >
             {token.value}

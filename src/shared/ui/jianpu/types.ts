@@ -43,6 +43,8 @@ export interface InteractiveOpts {
   onGapClick?: (insertIdx: number, x: number, y: number) => void;
   onBeatClick?: (beatIndex: number) => void;
   lineYOffset?: number;
+  onNoteHover?: (token: Token, event: React.MouseEvent, annotations: string[]) => void;
+  onNoteLeave?: () => void;
 }
 
 export interface JianpuRendererProps {
