@@ -545,7 +545,7 @@ export function SongLibraryPage() {
                 >
                   <div className="flex-1 h-px" style={{ backgroundColor: "var(--color-border)" }} />
                   <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider" style={{ color: "var(--color-text-secondary)" }}>
-                    {difficultyLabels[diff] ?? ""} · {diff}/10
+                    {difficultyLabels[diff] ?? ""} · {diff}/10 · {diffSongs.length} {diffSongs.length === 1 ? "song" : "songs"}
                     <svg
                       className={`h-2.5 w-2.5 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
                       fill="none"
