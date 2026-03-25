@@ -1,23 +1,18 @@
 # Dizi Flute Learning Platform
 
 ## Quick Orientation
-- **What:** Interactive dizi flute learning course webapp
-- **Stack:** React 19 + Vite + TypeScript + Tailwind CSS v4 + Zustand + react-markdown
-- **Backend:** Cloudflare D1 (SQLite) + Pages Functions (Workers)
+- **What:** Library-first dizi flute learning webapp — browse songs, learn techniques, read knowledge articles
+- **Stack:** React 19 + Vite + TypeScript + Tailwind CSS v4 + Zustand + react-markdown + framer-motion
+- **Data:** Static TypeScript files (no API calls currently). Backend exists but is disconnected.
 - **Entry points:** `src/main.tsx` (app), `src/app/routes.tsx` (routing), `feature-manifest.json` (feature map)
-- **Content source:** `content/` has the PRD markdown files; `src/data/` is the derived data layer
-- **API source:** `functions/api/` has the Cloudflare Pages Functions (file-based routing)
-- **UI context:** `UI_GUIDE.md` has ASCII sketches of every screen
+- **Content source:** `src/data/` — songs, exercises, techniques, references (all static)
+- **UI context:** `UI_GUIDE.md` has screen descriptions
 
 ## Commands
 ```bash
-npm run dev           # Frontend-only dev server (localhost:5173, uses static fallback data)
-npm run dev:full      # Full stack: Wrangler proxies Vite + D1 + Pages Functions
-npm run build         # Production build
+npm run dev           # Dev server (localhost:5173, static data only)
+npm run build         # Production build (tsc + vite)
 npm run deploy        # Build + deploy to Cloudflare Pages
-npm run db:migrate    # Run D1 migrations
-npm run db:seed       # Seed D1 from generated SQL
-npm run db:generate-seed  # Generate seed.sql from hardcoded src/data/
 ```
 
 ## Architecture
@@ -28,55 +23,84 @@ npm run db:generate-seed  # Generate seed.sql from hardcoded src/data/
 shared/ → data/ → features/ → app/
 ```
 
-- `shared/` — Types, UI primitives, utils. Zero business logic.
-- `data/` — Content store + API client + static fallback data. Key files:
-  - `content-store.ts` — Zustand store, fetches songs/exercises from API, falls back to static data
-  - `api.ts` — Fetch wrapper for all backend endpoints
-  - `levels.ts` — `buildLevels(songs, exercises)` function, computes level sections dynamically
-  - `songs/`, `exercises.ts` — Static hardcoded data (used as fallback when API unavailable)
+- `shared/` — Types, UI primitives (JianpuRenderer, VideoEmbed, Checkbox, etc.), utils. Zero business logic.
+- `data/` — Static content only. Key files:
+  - `songs/` — Individual song files organized by difficulty (`beginner/`, `elementary/`, `advanced/`)
+  - `songs/index.ts` — Aggregates all songs into flat `songs: Song[]` array
+  - `exercises.ts` — All exercises (technique drills)
+  - `techniques.ts` — Technique catalog (links exercises to techniques)
+  - `levels.ts` — `difficultyLabels` mapping (1-10 → Beginner/Elementary/Intermediate/Advanced/Expert)
+  - `references.ts` — Knowledge articles (fingering charts, jianpu guide, theory)
+  - `mutations.ts` — Stubbed mutation hooks (for future admin editing)
 - `features/` — Self-contained modules. Import other features ONLY via `index.ts`.
-- `app/` — Thin shell: routes + layout. Imports from `features/`.
+- `app/` — Thin shell: routes + layout + sidebar + bottom nav.
 
-### Backend (Cloudflare D1 + Pages Functions)
+### Routes
 
+| Path | Component | Feature |
+|------|-----------|---------|
+| `/` | SongLibraryPage | song-library |
+| `/song/:songId` | SongDetailPage | song-library |
+| `/techniques` | TechniqueLibraryPage | technique-library |
+| `/techniques/:id` | TechniqueDetailPage | technique-library |
+| `/knowledge` | ReferencePage | reference-library |
+| `/knowledge/:slug` | ReferenceDetailPage | reference-library |
+| `/practice` | PracticePage | practice-timer |
+
+### Navigation
+- **Desktop:** Left sidebar with links (Songs, Techniques, Knowledge, Practice)
+- **Mobile:** Bottom tab bar (4 tabs), top bar with login/theme toggle
+
+## Data Model
+
+### Song (`src/shared/types/index.ts`)
+```typescript
+interface Song {
+  id: string;
+  type: "song";
+  difficulty: number;        // 1-10 scale
+  difficultyNote?: string;   // Why this difficulty rating
+  titleChinese?: string;
+  titleVietnamese?: string;
+  titleEnglish: string;
+  key: string;               // e.g., "D", "C", "bD"
+  timeSignature: string;     // e.g., "4/4", "3/4"
+  tempo?: number;            // BPM
+  jianpu: string;            // Notation content
+  description?: string;
+  videoUrl?: string;
+  videoUrls?: string[];
+  origin?: string;           // e.g., "Teresa Teng, 1977"
+  techniques?: string[];     // Technique IDs, e.g., ["tonguing", "pentatonic-scale"]
+}
 ```
-functions/api/
-  _middleware.ts        — JWT verification, admin-only write protection
-  auth/
-    login.ts            — POST: admin email+password → JWT
-    identify.ts         — POST: user email-only → JWT (auto-creates user state)
-    me.ts               — GET: verify token, return {email, role}
-  songs/                — GET (public), POST/PUT/DELETE (admin)
-  exercises/            — GET (public), POST/PUT/DELETE (admin)
-  me/
-    progress.ts         — GET/PUT: user's completed items + current level
-    sessions/           — GET/POST: practice sessions
-    songs/              — GET/POST/PUT/DELETE: user's custom songs
-    videos.ts           — GET/PUT: user's video links
+
+### Song file structure
+```
+src/data/songs/
+  beginner/       # difficulty 1-2
+  elementary/     # difficulty 3-4
+  advanced/       # difficulty 7+
+  index.ts        # aggregates all into songs[]
 ```
 
-### Database (D1 schema in `db/migrations/001-init.sql`)
+Each song is a single file exporting `export const song: Song = { ... }`.
 
-**Content tables** (admin-managed):
-- `songs` — id, level_id, titles, key, time_signature, tempo, jianpu, description, video_url, origin, sort_order
-- `exercises` — id, level_id, title, key, time_signature, tempo, jianpu, description, audio_path, sort_order
+### Technique (`src/data/techniques.ts`)
+```typescript
+interface Technique {
+  id: string;
+  name: string;              // e.g., "Single Tonguing (吐音)"
+  category: string;          // fundamentals | articulation | ornaments | breathing | fingering | advanced
+  level: number;             // Difficulty level
+  description: string;
+  exerciseIds: string[];     // Links to exercises
+  referenceSlug?: string;    // Links to knowledge article
+}
+```
 
-**User tables** (keyed by email):
-- `user_progress` — (email, item_id) → completed flag
-- `user_state` — email → current_level, last_visited
-- `practice_sessions` — email → session history
-- `user_songs` — email → custom songs
-- `video_links` — email → per-item video URLs
-
-### Auth model (two tiers)
-
-| Tier | Login | JWT expiry | Can do |
-|------|-------|-----------|--------|
-| **Admin** | email + password (`/admin/login`) | 7 days | CRUD songs/exercises in DB |
-| **User** | email only (IdentifyPrompt) | 30 days | Sync progress/sessions/videos across devices |
-| **Anonymous** | none | — | Read-only, localStorage progress |
-
-Admin credentials are set as Cloudflare env secrets (`ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, `JWT_SECRET`).
+### Exercise (`src/data/exercises.ts`)
+Exercises keep `levelId` (0-6) for organizing by technique progression. They are linked from the technique catalog.
 
 ## Feature Module Convention
 
@@ -85,59 +109,46 @@ Every feature lives in `src/features/{name}/` and MUST have:
 - `store.ts` — Zustand store if the feature has state (uses `persist` middleware for localStorage)
 - Internal files are private — other features import only from `index.ts`
 
-Key features:
-- `auth/` — Auth store, IdentifyPrompt (email prompt), AdminLoginPage, SyncProvider (auto-syncs stores to API)
-- `admin/` — SongEditor, ExerciseEditor (mobile-friendly forms, used as slide-up modals)
-- `song-library/` — Browse/search songs, add custom songs, song detail view
-- `lesson-viewer/` — Level content with songs/exercises, practice view, video links
-- `progress-tracking/` — Completion tracking store
+### Current features:
+- `song-library/` — Home page (song browsing, search, favorites, difficulty grouping), song detail view
+- `technique-library/` — Technique browsing by category, technique detail with exercises and related songs
+- `reference-library/` — Knowledge hub (fingering charts, jianpu guide, theory articles)
+- `lesson-viewer/` — PracticeView (full-screen song practice) + TempoGuide (jianpu renderer wrapper with playback)
 - `practice-timer/` — Timer + session history
+- `progress-tracking/` — Favorites tracking (localStorage via Zustand persist)
+- `auth/` — Local-only admin toggle (no API). Password checked client-side.
+- `admin/` — SongEditor, ExerciseEditor (kept but not wired to UI currently)
+- `theme/` — Dark/light mode toggle
 
-## Content Sync Rules
+## Auth (simplified)
 
-**Songs and exercises now live in D1 database.** The static files in `src/data/songs/` and `src/data/exercises.ts` serve as fallback only.
+Currently local-only. Admin mode is a simple password check stored in localStorage. No API calls, no JWT.
+- Login via top-bar popover
+- Progress (favorites) persists in localStorage for all users
+
+## Content Changes
 
 | To change content... | Do this... |
 |---------------------|------------|
-| Add/edit a song | Login as admin → edit inline on song detail page, OR via API |
-| Add/edit an exercise | Login as admin → edit inline on level page, OR via API |
-| Change level prose | Edit `src/data/levels.ts` (still hardcoded — structural content) |
-| Change course metadata | Edit `src/data/course.ts` (still hardcoded) |
-| Change references | Edit `src/data/references.ts` (still hardcoded) |
-| Add audio file | Copy `.ogg` to `public/audio/level-{N}/`, set `audioPath` in DB |
-| Any UI change | Update `UI_GUIDE.md` with ASCII sketch |
+| Add a song | Create file in `src/data/songs/{difficulty}/`, import in `songs/index.ts` |
+| Edit a song | Edit the song's `.ts` file directly |
+| Add an exercise | Add to `src/data/exercises.ts` |
+| Add a technique | Add to `src/data/techniques.ts` with exercise IDs |
+| Change references | Edit `src/data/references.ts` |
+| Any UI change | Update `UI_GUIDE.md` |
 | New feature module | Register in `feature-manifest.json` + `routes.tsx` |
 
 ## Deployment
 
 Hosted on **Cloudflare Pages** (`dizi-flute.pages.dev`).
 
-### First-time setup
-1. `npx wrangler d1 create dizi-flute` → copy database_id into `wrangler.jsonc`
-2. `npm run db:migrate` — create tables
-3. `npm run db:generate-seed && npm run db:seed` — populate from static data
-4. In Cloudflare dashboard (Pages > Settings > Functions):
-   - Bind D1 database: binding name `DB`, database `dizi-flute`
-   - Set secrets: `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` (SHA-256), `JWT_SECRET`
-5. `npm run deploy`
-
-### Generating admin password hash
 ```bash
-echo -n "your-password" | shasum -a 256 | awk '{print $1}'
+npm run deploy   # builds + deploys frontend
 ```
 
-### Ongoing deploys
-```bash
-npm run deploy   # builds + deploys frontend + functions
-```
+## Backend (disconnected)
 
-## Task Decomposition
-
-**Content change via admin UI** (e.g., "add song to level 3"):
-1. Login at `/admin/login` → 2. Navigate to level/library → 3. Click Edit/Add → 4. Fill form → 5. Save
-
-**Content change via code** (e.g., updating level prose):
-1. Edit `src/data/levels.ts` → 2. Build → 3. Deploy
-
-**New feature** (e.g., "add metronome"):
-1. Create `src/features/{name}/` → 2. Register in manifest → 3. Add route → 4. Integrate → 5. Update `UI_GUIDE.md`
+A Cloudflare D1 + Pages Functions backend exists in `functions/api/` and `db/` but is currently disconnected. The frontend uses static data only. The backend can be reconnected later by:
+1. Restoring `src/data/api.ts` and `src/data/queries.ts`
+2. Wrapping data access in TanStack Query hooks
+3. Wiring admin editors back into the UI

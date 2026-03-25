@@ -1,141 +1,213 @@
-# UI Guide — Dizi Flute Learning Platform
+# UI Guide — Dizi Flute
 
-Agent-readable UI context. Updated after each phase that changes UI.
+Screen descriptions for each page in the app.
 
----
+## Navigation
 
-## Screen: Home Page (`/`)
-**Feature:** course-navigation
-**Purpose:** Course overview and entry point
-
-```
-┌─────────────────────────────────────────────────┐
-│ [☰]                                    [🌙/☀️] │
-├──────────┬──────────────────────────────────────┤
-│ Sidebar  │                                      │
-│          │  Learn Dizi Flute                     │
-│ Level 0  │  A structured self-study course...    │
-│ Level 1  │                                      │
-│ Level 2  │  ┌──────────┐  ┌──────────┐         │
-│ Level 3  │  │ 0        │  │ 1        │         │
-│ Level 4  │  │ Setup &  │  │ First    │         │
-│ Level 5  │  │ Found.   │  │ Sounds   │         │
-│ Level 6  │  │ Week 0   │  │ Wks 1-4  │         │
-│ Level 7  │  └──────────┘  └──────────┘         │
-│          │  ┌──────────┐  ┌──────────┐         │
-│ ──────── │  │ 2        │  │ 3        │         │
-│ Reference│  │ First    │  │ Folk     │         │
-│ Library  │  │ Songs    │  │ Repert.  │         │
-│          │  │ Wks 5-8  │  │ Mo 3-4   │         │
-│          │  └──────────┘  └──────────┘         │
-│          │  ... (8 cards total, 2x4 grid)       │
-│          │  Each card shows a progress bar and   │
-│          │  "X/Y completed" count below title    │
-└──────────┴──────────────────────────────────────┘
-```
-
-**Interactions:**
-- Click level card → navigates to `/level/:id`
-- Sidebar links → same navigation
-- Theme toggle in top-right switches dark/light
-- On mobile: sidebar hidden, hamburger menu top-left
-- Progress bars on each card update as songs/exercises are marked complete
+**Desktop:** Left sidebar (Songs, Techniques, Knowledge, Practice) + top bar (Login, Theme toggle)
+**Mobile:** Bottom tab bar (Songs, Techniques, Knowledge, Practice) + top bar (app name, Login, Theme toggle)
 
 ---
 
-## Screen: Level Page (`/level/:id`)
-**Feature:** lesson-viewer
-**Purpose:** Full lesson content for one level
+## Home — Song Library (`/`)
 
 ```
-┌──────────┬──────────────────────────────────────┐
-│ Sidebar  │  Level 2 · Weeks 5-8 · CCOM Grade 1-2│
-│          │  First Songs                          │
-│          │  Full scale, simple songs, tonguing    │
-│          │                                        │
-│          │  ┌─ Progress ──────────────────┐       │
-│          │  │ ████████░░░  5/11 completed │       │
-│          │  └────────────────────────────-┘       │
-│          │                                        │
-│          │  ## Section Title                      │
-│          │  Markdown prose content...             │
-│          │                                        │
-│          │  ┌─ Song Card ────────────────┐        │
-│          │  │ 小星星 / Twinkle Twinkle   │ [✓]   │
-│          │  │ Key: D · 4/4 · 80 BPM     │        │
-│          │  │ ┌─ jianpu ──────────┐      │        │
-│          │  │ │ 1 1 5 5 | 6 6 5 -│      │        │
-│          │  │ └───────────────────┘      │        │
-│          │  │ [▶ Audio Player  0.5x 1x]  │        │
-│          │  └────────────────────────────┘        │
-│          │                                        │
-│          │  ← Previous Level    Next Level →      │
-└──────────┴────────────────────────────────────────┘
+┌─────────────────────────────────────┐
+│  Songs                 [Expand all] │
+├─────────────────────────────────────┤
+│  🔍 Search songs...                │
+│  [All] [Favorites]      [Difficulty]│
+├─────────────────────────────────────┤
+│  ── BEGINNER · 1/10 ──       [▼]   │
+│  ┌─────────────────────────────┐    │
+│  │ 玛丽有只小羊羔 / Mary Had...│ ♡ ▼│
+│  │ Key: D · Time: 4/4         │    │
+│  └─────────────────────────────┘    │
+│  ┌─────────────────────────────┐    │
+│  │ Hot Cross Buns              │ ♡ ▼│
+│  └─────────────────────────────┘    │
+│                                     │
+│  ── ELEMENTARY · 3/10 ──     [▼]   │
+│  ┌─────────────────────────────┐    │
+│  │ 小白菜 / Little White...   │ ♡ ▼│
+│  └─────────────────────────────┘    │
+│                                     │
+│  ── ADVANCED · 7/10 ──       [▼]   │
+│  ┌─────────────────────────────┐    │
+│  │ 浮光 / Fu Guang             │ ♡ ▼│
+│  └─────────────────────────────┘    │
+└─────────────────────────────────────┘
 ```
 
-**Interactions:**
-- Progress bar shows completed items count out of total (songs + exercises)
-- Checkbox on song/exercise cards toggles completion (persisted to localStorage)
-- Audio player supports playback speed controls (0.5x, 0.75x, 1x)
-- Jianpu notation rendered in monospace inside song cards
-- "Previous Level" / "Next Level" buttons navigate between levels
-- Markdown prose sections rendered with full formatting (headings, lists, bold, etc.)
+- Songs grouped by difficulty with subtle centered dividers
+- Dividers are collapsible (click to toggle)
+- Each song row: title, metadata (key, time, tempo, origin), heart (favorite), expand chevron
+- Expanded row shows jianpu with standard header + "Go to details" link
+- Expand/collapse all button in header
+- Search filters across all title fields + origin
+- Filter pills: All, Favorites
+- Difficulty dropdown: multi-select filter
+- Favorites section appears at top when any songs are favorited
+- Song expand/collapse state persists in localStorage
 
 ---
 
-## Screen: Reference Hub (`/reference`)
-**Feature:** reference-library
-**Purpose:** Hub listing all reference documents
+## Song Detail (`/song/:songId`)
 
 ```
-┌──────────┬──────────────────────────────────────┐
-│ Sidebar  │  Reference Library                    │
-│          │  Quick-reference documents...          │
-│          │                                        │
-│          │  ┌──────────┐  ┌──────────┐           │
-│          │  │ 🎵       │  │ 🔢       │           │
-│          │  │ Fingering│  │ Jianpu   │           │
-│          │  │ Charts   │  │ Guide    │           │
-│          │  └──────────┘  └──────────┘           │
-│          │  ┌──────────┐  ┌──────────┐           │
-│          │  │ 📖       │  │ 🔧       │           │
-│          │  │ Music    │  │ Mainten- │           │
-│          │  │ Theory   │  │ ance     │           │
-│          │  └──────────┘  └──────────┘           │
-│          │  ... (6 cards, 2-col grid)            │
-└──────────┴────────────────────────────────────────┘
+┌─────────────────────────────────────┐
+│  ← Back                            │
+│                                     │
+│  月亮代表我的心 / The Moon...    ♡  │
+│  [3/10 · Elementary]                │
+│  Sustained notes need breath...     │
+│  Key: D · Time: 4/4 · 72 BPM       │
+│  Origin: Teresa Teng, 1977          │
+│                                     │
+│  Description text...                │
+│                                     │
+│  Techniques: [Pentatonic] [Tonguing]│
+│              (clickable → /tech/id) │
+│                                     │
+│  [YouTube embed if videoUrls]       │
+│                                     │
+│  ┌─ Jianpu ──────────────────────┐  │
+│  │        月亮代表我的心          │  │
+│  │       Teresa Teng, 1977       │  │
+│  │  1=D  4/4                     │  │
+│  │  ♩=72                         │  │
+│  │  ( 1 1 ) 1 - | ( 3 5 ) 6 -  │  │
+│  │  ...                          │  │
+│  │  ▶ Play  ♩=72 [-][+]         │  │
+│  └───────────────────────────────┘  │
+└─────────────────────────────────────┘
 ```
 
-**Interactions:**
-- Click any reference card → navigates to `/reference/:slug`
-- Cards display icon, title, and brief description
-- 2-column responsive grid (stacks to 1-column on mobile)
+- Difficulty badge with label + difficultyNote below
+- Technique pills link to `/techniques/:id`
+- Jianpu rendered with standard header (centered title, origin, left-aligned key+time, tempo)
+- TempoGuide provides playback controls
 
 ---
 
-## Screen: Reference Detail (`/reference/:slug`)
-**Feature:** reference-library
-**Purpose:** Individual reference doc viewer
+## Techniques (`/techniques`)
 
 ```
-┌──────────┬──────────────────────────────────────┐
-│ Sidebar  │  ← Back to Reference Library          │
-│          │  🎵 Fingering Charts                   │
-│          │                                        │
-│          │  Full markdown content rendered...     │
-│          │  Tables, headings, lists, etc.         │
-└──────────┴────────────────────────────────────────┘
+┌─────────────────────────────────────┐
+│  Techniques                         │
+│  Learn dizi techniques...           │
+│                                     │
+│  [All][Fundamentals][Articulation]  │
+│  [Ornaments][Breathing][Fingering]  │
+│  [Advanced]                         │
+│                                     │
+│  ── Fundamentals ──                 │
+│  [L1] Long Tones (长音)        2 ex │
+│       Sustaining each note...    → │
+│  [L1] Scale Walking            3 ex│
+│                                     │
+│  ── Articulation ──                 │
+│  [L1] Single Tonguing (吐音)   2 ex│
+│  [L4] Double Tonguing (双吐)   1 ex│
+│  ...                                │
+└─────────────────────────────────────┘
 ```
 
-**Interactions:**
-- "Back to Reference Library" link returns to `/reference`
-- Full markdown rendering with tables, headings, lists, code blocks
-- Sidebar remains visible for navigation to other sections
+- Techniques grouped by category
+- Each card: level badge, name, description, exercise count, arrow
+- Filter pills for categories
+- Sorted by level within each category
 
 ---
 
-## Layout: App Shell
-**Components:** Sidebar (left, 256px) + Top bar (56px, theme toggle) + Content area
+## Technique Detail (`/techniques/:id`)
 
-- Desktop (≥768px): Sidebar always visible
-- Mobile (<768px): Sidebar hidden, hamburger menu opens slide-out drawer with backdrop overlay
+```
+┌─────────────────────────────────────┐
+│  ← Back                            │
+│  [Level 3] [ornaments]              │
+│  Grace Notes (装饰音)               │
+│  Quick ornamental notes before...   │
+│                                     │
+│  [📖 Read more in Knowledge]        │
+│                                     │
+│  ── Practice Exercises ──           │
+│  ┌───────────────────────────────┐  │
+│  │ Grace Note Practice           │  │
+│  │ Key: D · Time: 4/4           │  │
+│  │ Numbers in parentheses are... │  │
+│  │ [jianpu notation]            │  │
+│  └───────────────────────────────┘  │
+│                                     │
+│  ── Songs Using This Technique ──   │
+│  [3/10] 小白菜 / Little White...  →│
+│  [7/10] 浮光 / Fu Guang           →│
+└─────────────────────────────────────┘
+```
+
+- Technique info: name, level, category, description
+- Link to knowledge article if referenceSlug exists
+- Exercise cards with jianpu notation (no completion checkbox)
+- Related songs list linking back to song detail
+
+---
+
+## Knowledge (`/knowledge`)
+
+```
+┌─────────────────────────────────────┐
+│  Knowledge                          │
+│  Fingerings, notation, theory...    │
+│                                     │
+│  ┌──────────┐  ┌──────────┐        │
+│  │ 🎵        │  │ 📖        │        │
+│  │ Fingering │  │ Jianpu   │        │
+│  │ Charts    │  │ Guide    │        │
+│  └──────────┘  └──────────┘        │
+│  ┌──────────┐  ┌──────────┐        │
+│  │ 🎶        │  │ ...      │        │
+│  │ Theory    │  │          │        │
+│  └──────────┘  └──────────┘        │
+└─────────────────────────────────────┘
+```
+
+- Card grid (1 col mobile, 2 col desktop)
+- Each card: icon, title, description
+- Links to `/knowledge/:slug`
+
+---
+
+## Knowledge Detail (`/knowledge/:slug`)
+
+- Back link to Knowledge hub
+- Icon + title
+- Markdown rendered content (tables, headings, code blocks)
+
+---
+
+## Practice (`/practice`)
+
+```
+┌─────────────────────────────────────┐
+│  Practice Timer                     │
+│                                     │
+│       ┌──────────────┐              │
+│       │    05:23     │              │
+│       └──────────────┘              │
+│    [Start]  [Pause]  [Reset]        │
+│    [Save Session]                   │
+│                                     │
+│  ── Daily Practice Schedule ──      │
+│  [10 min] Long tones & breathing    │
+│  [10 min] Technique drills          │
+│  [10 min] Song practice             │
+│                                     │
+│  ── Session History ──              │
+│  Mar 25 — 15:00 (notes...)         │
+│  Mar 24 — 20:00 (notes...)         │
+└─────────────────────────────────────┘
+```
+
+- Timer with start/pause/reset
+- Save session with optional notes
+- Session history from localStorage

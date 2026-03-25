@@ -19,6 +19,7 @@ export function JianpuRenderer({
   keySignature,
   timeSignature,
   tempo,
+  origin,
   interactive,
   selectedTokenIdx,
   onTokenClick,
@@ -92,16 +93,29 @@ export function JianpuRenderer({
   return (
     <div ref={containerRef} className={className} style={{ ...style, position: "relative" }}>
       {hasHeader && (
-        <div className="jianpu-header">
-          {title && <div>{title}</div>}
-          {(keySignature || timeSignature) && (
-            <div>
-              {keySignature && `1=${keySignature}`}
-              {keySignature && timeSignature && "  "}
-              {timeSignature}
+        <div className="jianpu-header" style={{ marginBottom: 8 }}>
+          {title && (
+            <div style={{ textAlign: "center", fontSize: 16, fontWeight: 700, marginBottom: 2 }}>
+              {title}
             </div>
           )}
-          {tempo && <div>♩={tempo}</div>}
+          {origin && (
+            <div style={{ textAlign: "center", fontSize: 11, opacity: 0.6, marginBottom: 6 }}>
+              {origin}
+            </div>
+          )}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", fontSize: 12 }}>
+            <div>
+              {(keySignature || timeSignature) && (
+                <div>
+                  {keySignature && <span>1={keySignature}</span>}
+                  {keySignature && timeSignature && "  "}
+                  {timeSignature && <span>{timeSignature}</span>}
+                </div>
+              )}
+              {tempo && <div style={{ opacity: 0.7 }}>♩={tempo}</div>}
+            </div>
+          </div>
         </div>
       )}
 

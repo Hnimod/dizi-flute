@@ -9,9 +9,10 @@ interface TempoGuideProps {
   title?: string;
   keySignature?: string;
   timeSignature?: string;
+  origin?: string;
 }
 
-export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature }: TempoGuideProps) {
+export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [startBeat, setStartBeat] = useState(-1);
@@ -175,6 +176,7 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           keySignature={keySignature}
           timeSignature={timeSignature}
           tempo={tempo}
+          origin={origin}
         />
       </div>
     </div>

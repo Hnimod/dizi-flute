@@ -59,6 +59,7 @@ export interface JianpuRendererProps {
   keySignature?: string;
   timeSignature?: string;
   tempo?: number;
+  origin?: string;
   // Interactive editor props
   interactive?: boolean;
   selectedTokenIdx?: number | null;
