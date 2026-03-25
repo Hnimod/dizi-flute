@@ -186,9 +186,12 @@ function SongRow({ song }: { song: Song }) {
 
   return (
     <div className="rounded-xl transition-colors" style={{ border: "1px solid var(--color-border)" }}>
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center gap-3 px-4 py-3 text-left"
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setExpanded(!expanded); } }}
+        className="flex w-full items-center gap-3 px-4 py-3 text-left cursor-pointer"
       >
         <div className="min-w-0 flex-1">
           <div className="text-sm font-medium" style={{ color: "var(--color-text)" }}>
@@ -212,7 +215,7 @@ function SongRow({ song }: { song: Song }) {
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
-      </button>
+      </div>
 
       <AnimatePresence>
         {expanded && (
