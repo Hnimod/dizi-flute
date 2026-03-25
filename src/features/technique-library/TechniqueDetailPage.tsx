@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import { getTechnique, useExercises, useSongs } from "@/data";
+import { getTechnique, exercises as staticExercises, songs as staticSongs } from "@/data";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useProgressStore, selectIsCompleted } from "@/features/progress-tracking";
 import { Checkbox } from "@/shared/ui";
@@ -64,25 +64,22 @@ export function TechniqueDetailPage() {
   const { techniqueId } = useParams();
   const navigate = useNavigate();
   const technique = getTechnique(techniqueId ?? "");
-  const { data: allExercises = [] } = useExercises();
-  const { data: allSongs = [] } = useSongs();
-
   const exercises = useMemo(
     () =>
       technique
         ? technique.exerciseIds
-            .map((id) => allExercises.find((e) => e.id === id))
+            .map((id) => staticExercises.find((e) => e.id === id))
             .filter(Boolean) as Exercise[]
         : [],
-    [technique, allExercises],
+    [technique],
   );
 
   const relatedSongs = useMemo(
     () =>
       technique
-        ? allSongs.filter((s) => s.techniques?.includes(technique.id))
+        ? staticSongs.filter((s) => s.techniques?.includes(technique.id))
         : [],
-    [technique, allSongs],
+    [technique],
   );
 
   if (!technique) {

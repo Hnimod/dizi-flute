@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { fetchProgress, syncProgress } from "@/data/api";
-import { useAuthStore } from "@/features/auth";
+import { persist } from "zustand/middleware";
 
 interface ProgressState {
   completedItems: Record<string, boolean>;
@@ -10,61 +9,46 @@ interface ProgressState {
   toggleItem: (id: string) => void;
   toggleFavorite: (id: string) => void;
   setCurrentLevel: (level: number) => void;
-  loadFromApi: () => Promise<void>;
 }
 
-export const useProgressStore = create<ProgressState>()((set, get) => ({
-  completedItems: {},
-  favoritedItems: {},
-  currentLevel: 1,
-  lastVisited: new Date().toISOString(),
-
-  toggleItem: (id: string) => {
-    const newValue = !get().completedItems[id];
-    set((state) => ({
-      completedItems: {
-        ...state.completedItems,
-        [id]: newValue,
-      },
+export const useProgressStore = create<ProgressState>()(
+  persist(
+    (set, get) => ({
+      completedItems: {},
+      favoritedItems: {},
+      currentLevel: 1,
       lastVisited: new Date().toISOString(),
-    }));
-    if (useAuthStore.getState().isAuthenticated) {
-      syncProgress({ completedItems: { [id]: newValue } });
-    }
-  },
 
-  toggleFavorite: (id: string) => {
-    const newValue = !get().favoritedItems[id];
-    set((state) => ({
-      favoritedItems: {
-        ...state.favoritedItems,
-        [id]: newValue,
+      toggleItem: (id: string) => {
+        const newValue = !get().completedItems[id];
+        set((state) => ({
+          completedItems: {
+            ...state.completedItems,
+            [id]: newValue,
+          },
+          lastVisited: new Date().toISOString(),
+        }));
       },
-    }));
-    if (useAuthStore.getState().isAuthenticated) {
-      syncProgress({ favoritedItems: { [id]: newValue } });
-    }
-  },
 
-  setCurrentLevel: (level: number) => {
-    set({ currentLevel: level });
-    if (useAuthStore.getState().isAuthenticated) {
-      syncProgress({ currentLevel: level });
-    }
-  },
+      toggleFavorite: (id: string) => {
+        const newValue = !get().favoritedItems[id];
+        set((state) => ({
+          favoritedItems: {
+            ...state.favoritedItems,
+            [id]: newValue,
+          },
+        }));
+      },
 
-  loadFromApi: async () => {
-    const progress = await fetchProgress();
-    if (progress) {
-      set({
-        completedItems: progress.completedItems,
-        favoritedItems: progress.favoritedItems ?? {},
-        currentLevel: progress.currentLevel,
-        lastVisited: progress.lastVisited,
-      });
-    }
-  },
-}));
+      setCurrentLevel: (level: number) => {
+        set({ currentLevel: level });
+      },
+    }),
+    {
+      name: "dizi-progress",
+    },
+  ),
+);
 
 export function selectIsCompleted(id: string) {
   return (s: ProgressState) => !!s.completedItems[id];

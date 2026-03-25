@@ -1,64 +1,16 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Song, Exercise } from "@/shared/types";
-import {
-  createSong,
-  updateSong,
-  deleteSong,
-  createExercise,
-  updateExercise,
-  deleteExercise,
-} from "./api";
+// Stub mutations — admin editing will be re-wired when backend is ready
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-// ── Song mutations ──
-
-export function useCreateSong() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (data: Partial<Song>) => createSong(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["songs"] }),
-  });
+function stubMutation() {
+  return {
+    mutateAsync: async (..._args: any[]) => { throw new Error("API not connected"); },
+    isPending: false,
+  };
 }
 
-export function useUpdateSong() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<Song> }) =>
-      updateSong(id, updates),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["songs"] }),
-  });
-}
-
-export function useDeleteSong() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => deleteSong(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["songs"] }),
-  });
-}
-
-// ── Exercise mutations ──
-
-export function useCreateExercise() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (data: Partial<Exercise>) => createExercise(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["exercises"] }),
-  });
-}
-
-export function useUpdateExercise() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<Exercise> }) =>
-      updateExercise(id, updates),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["exercises"] }),
-  });
-}
-
-export function useDeleteExercise() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => deleteExercise(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["exercises"] }),
-  });
-}
+export function useCreateSong() { return stubMutation(); }
+export function useUpdateSong() { return stubMutation(); }
+export function useDeleteSong() { return stubMutation(); }
+export function useCreateExercise() { return stubMutation(); }
+export function useUpdateExercise() { return stubMutation(); }
+export function useDeleteExercise() { return stubMutation(); }

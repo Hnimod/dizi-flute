@@ -1,13 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { levelMeta, useSongs } from "@/data";
-import { SongListSkeleton } from "@/shared/ui";
+import { levelMeta, songs as staticSongs } from "@/data";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
-import { useAuthStore } from "@/features/auth";
 import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
-import { AddSongForm } from "./AddSongForm";
 import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
@@ -252,13 +249,11 @@ function SongRow({ song }: { song: Song }) {
 type FilterMode = "all" | "favorites" | "completed";
 
 export function SongLibraryPage() {
-  const { data: songs = [], isLoading } = useSongs();
+  const songs = staticSongs;
   const userSongs = useSongLibraryStore((s) => s.userSongs);
-  const isAdmin = useAuthStore((s) => s.isAdmin);
 
   const completedItems = useProgressStore((s) => s.completedItems);
   const favoritedItems = useProgressStore((s) => s.favoritedItems);
-  const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
   const [selectedLevels, setSelectedLevels] = useState<Set<number>>(new Set());
@@ -343,7 +338,7 @@ export function SongLibraryPage() {
 
   const showUserSection =
     selectedLevels.size === 0 &&
-    (filteredUserSongs.length > 0 || showForm);
+    filteredUserSongs.length > 0;
 
   const totalFiltered = filteredUserSongs.length + [...filteredSongsByLevel.values()].reduce((sum, s) => sum + s.length, 0);
 
@@ -430,49 +425,12 @@ export function SongLibraryPage() {
         </div>
       </div>
 
-      {/* Loading skeleton */}
-      {isLoading && <SongListSkeleton />}
-
       {/* Results count when filtering */}
       {(isSearching || filterMode !== "all" || selectedLevels.size > 0) && (
         <p className="text-xs mb-3" style={{ color: "var(--color-text-secondary)" }}>
           {totalFiltered} {filterMode === "favorites" ? "favorite" : filterMode === "completed" ? "completed" : ""} result{totalFiltered !== 1 ? "s" : ""}
         </p>
       )}
-
-      {/* Add song button (admin only) */}
-      {isAdmin && !showForm && (
-        <button
-          onClick={() => setShowForm(true)}
-          className="mb-4 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-80"
-          style={{ backgroundColor: "var(--color-accent)" }}
-        >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          Add Song
-        </button>
-      )}
-
-      {/* Add song form (admin only) */}
-      <AnimatePresence>
-        {isAdmin && showForm && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            style={{ overflow: "hidden" }}
-          >
-            <div
-              className="mb-4 rounded-xl p-4"
-              style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
-            >
-              <AddSongForm onClose={() => setShowForm(false)} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Favorites section */}
       <AnimatePresence>
@@ -586,7 +544,7 @@ export function SongLibraryPage() {
         })}
 
       {/* No results */}
-      {!isLoading && totalFiltered === 0 && (
+      {totalFiltered === 0 && (
         <p className="text-sm text-center py-12" style={{ color: "var(--color-text-secondary)" }}>
           {isSearching
             ? `No songs found for "${searchQuery}"`
