@@ -5,9 +5,9 @@ export function ReferencePage() {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">Reference Library</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Knowledge</h1>
         <p className="mt-1.5 text-sm text-(--color-text-secondary) md:mt-2 md:text-base">
-          Quick-reference documents for fingerings, notation, ornamentation, and more.
+          Fingerings, notation, ornamentation, and dizi theory.
         </p>
       </div>
 
@@ -15,7 +15,7 @@ export function ReferencePage() {
         {references.map((doc) => (
           <Link
             key={doc.slug}
-            to={`/reference/${doc.slug}`}
+            to={`/knowledge/${doc.slug}`}
             className="group rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-4 shadow-sm transition-all hover:border-(--color-accent) hover:shadow-md active:scale-[0.98] md:p-5"
           >
             <span className="text-2xl">{doc.icon}</span>

@@ -1,1 +1,1 @@
-export { LevelPage } from "./LevelPage";
+export { PracticeView } from "./PracticeView";

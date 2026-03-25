@@ -12,6 +12,7 @@ export const level1Songs: Song[] = [
     jianpu: `3 2 1 2 | 3 3 3 - V | 2 2 2 - | 3 5 5 - V |
 3 2 1 2 | 3 3 3 3 | 2 2 3 2 | 1 - - - ||`,
     description: "Uses only notes 1-5. Perfect first song.",
+    techniques: ["scale-walk", "tonguing"],
   },
   {
     id: "level-1-song-2",
@@ -22,6 +23,7 @@ export const level1Songs: Song[] = [
     timeSignature: "4/4",
     jianpu: `3 2 1 - V | 3 2 1 - V | 1 1 2 2 | 3 2 1 - ||`,
     description: "Very simple, only 3 notes (1, 2, 3).",
+    techniques: ["tonguing"],
   },
   {
     id: "level-1-song-3",
@@ -35,6 +37,7 @@ export const level1Songs: Song[] = [
 2 2 2 2 | 2 3 4 - | 3 3 3 3 | 3 4 5 - V |
 5 3 3 3 | 4 2 2 2 | 1 3 5 5 | 1 - - - ||`,
     description: "A classic beginner melody using notes 1-5.",
+    techniques: ["scale-walk", "step-patterns", "tonguing"],
   },
   {
     id: "level-1-song-4",
@@ -50,6 +53,7 @@ export const level1Songs: Song[] = [
 4 2 | 3 1 | 2 1 | 1 - ||`,
     description: "A well-known Chinese children's song.",
     origin: "Chinese children's song",
+    techniques: ["tonguing", "step-patterns"],
   },
   {
     id: "level-1-song-5",
@@ -65,5 +69,6 @@ export const level1Songs: Song[] = [
 5 4 | 3 1 | 2 3 | 1 - ||`,
     description: "Another Chinese children's classic using notes 1-5.",
     origin: "Chinese children's song",
+    techniques: ["tonguing", "step-patterns"],
   },
 ];

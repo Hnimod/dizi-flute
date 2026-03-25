@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { course } from "@/data";
 import { formatDuration } from "@/shared/utils";
+
+const dailyPractice = [
+  { duration: "10 min", activity: "Long tones & breathing", notes: "Warm up with long sustained notes" },
+  { duration: "10 min", activity: "Technique drills", notes: "Scales, tonguing, ornaments" },
+  { duration: "10 min", activity: "Song practice", notes: "Work on a song you enjoy" },
+];
 import { usePracticeStore } from "./store";
 
 export function PracticePage() {
@@ -94,7 +99,7 @@ export function PracticePage() {
       <div>
         <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Daily Practice Schedule</h2>
         <div className="space-y-2.5 md:space-y-3">
-          {course.dailyPractice.map((item, i) => (
+          {dailyPractice.map((item, i) => (
             <div
               key={i}
               className="flex items-start gap-3 rounded-xl border border-(--color-border) bg-(--color-bg-secondary) p-3.5 shadow-sm md:p-4"

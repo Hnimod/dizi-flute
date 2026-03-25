@@ -48,6 +48,17 @@ export interface Song {
   videoUrl?: string;
   videoUrls?: string[];
   origin?: string;
+  techniques?: string[];
+}
+
+export interface Technique {
+  id: string;
+  name: string;
+  category: "fundamentals" | "articulation" | "ornaments" | "breathing" | "fingering" | "advanced";
+  level: number;
+  description: string;
+  exerciseIds: string[];
+  referenceSlug?: string;
 }
 
 export interface Exercise {

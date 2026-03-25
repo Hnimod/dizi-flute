@@ -1,9 +1,9 @@
-export { course } from "./course";
-export { levels, buildLevels } from "./levels";
+export { levelMeta } from "./levels";
 export { songs } from "./songs";
 export { exercises } from "./exercises";
 export { references } from "./references";
-export { useSongs, useExercises, useLevels } from "./queries";
+export { techniques, getTechnique, getTechniquesByCategory } from "./techniques";
+export { useSongs, useExercises } from "./queries";
 export {
   useCreateSong,
   useUpdateSong,

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSongs } from "@/data";
+import { useSongs, getTechnique } from "@/data";
 import { VideoEmbed, SongDetailSkeleton } from "@/shared/ui";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useAuthStore } from "@/features/auth";
@@ -33,6 +33,13 @@ export function SongDetailPage() {
   const toggleItem = useProgressStore((s) => s.toggleItem);
   const [editing, setEditing] = useState(false);
 
+  const techniqueDetails = useMemo(() => {
+    if (!song?.techniques) return [];
+    return song.techniques
+      .map((id) => getTechnique(id))
+      .filter(Boolean) as NonNullable<ReturnType<typeof getTechnique>>[];
+  }, [song]);
+
   if (isLoading) return <SongDetailSkeleton />;
 
   if (!song) {
@@ -44,8 +51,8 @@ export function SongDetailPage() {
         <p className="mb-6" style={{ color: "var(--color-text-secondary)" }}>
           There is no song with id "{songId}".
         </p>
-        <Link to="/library" className="underline hover:opacity-80" style={{ color: "var(--color-accent)" }}>
-          Back to Song Library
+        <Link to="/" className="underline hover:opacity-80" style={{ color: "var(--color-accent)" }}>
+          Back to Songs
         </Link>
       </div>
     );
@@ -127,6 +134,33 @@ export function SongDetailPage() {
           </p>
         )}
 
+        {/* Technique pills */}
+        {techniqueDetails.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-medium mb-2" style={{ color: "var(--color-text-secondary)" }}>
+              Techniques used:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {techniqueDetails.map((t) => (
+                <Link
+                  key={t.id}
+                  to={`/techniques/${t.id}`}
+                  className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-opacity hover:opacity-80"
+                  style={{
+                    backgroundColor: "var(--color-accent-light)",
+                    color: "var(--color-accent)",
+                  }}
+                >
+                  {t.name}
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
           <VideoEmbed key={i} url={url} className="mb-4" />
         ))}
@@ -144,7 +178,7 @@ export function SongDetailPage() {
           <button
             onClick={() => {
               removeSong(song.id);
-              navigate("/library");
+              navigate("/");
             }}
             className="mt-2 text-sm font-medium text-red-500 hover:opacity-70 transition-opacity"
           >

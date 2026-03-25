@@ -8,44 +8,46 @@
       "dependsOn": ["shared"],
       "crossFeatureDeps": []
     },
-    "audio-playback": {
-      "path": "src/features/audio-playback",
-      "description": "Audio player with speed control — Zustand store for playback state",
-      "routes": [],
-      "exports": ["useAudioStore"],
-      "dependsOn": ["shared"],
-      "crossFeatureDeps": []
-    },
     "progress-tracking": {
       "path": "src/features/progress-tracking",
-      "description": "Completion tracking — Zustand store with persist middleware",
+      "description": "Completion and favorites tracking — Zustand store with persist middleware",
       "routes": [],
       "exports": ["useProgressStore"],
       "dependsOn": ["shared", "data"],
       "crossFeatureDeps": []
     },
-    "course-navigation": {
-      "path": "src/features/course-navigation",
-      "description": "Home page, level cards, sidebar navigation",
-      "routes": ["/"],
-      "exports": ["HomePage", "Sidebar"],
+    "song-library": {
+      "path": "src/features/song-library",
+      "description": "Home page: browse songs by level, search, favorites, song detail with technique links",
+      "routes": ["/", "/song/:songId"],
+      "exports": ["SongLibraryPage", "SongDetailPage", "useSongLibraryStore"],
       "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": ["progress-tracking"]
+      "crossFeatureDeps": ["progress-tracking", "lesson-viewer", "auth", "admin"],
+      "status": "done"
     },
-    "lesson-viewer": {
-      "path": "src/features/lesson-viewer",
-      "description": "Renders level content: prose, songs, exercises with audio",
-      "routes": ["/level/:id"],
-      "exports": ["LevelPage"],
+    "technique-library": {
+      "path": "src/features/technique-library",
+      "description": "Browse techniques by category, technique detail with exercises and related songs",
+      "routes": ["/techniques", "/techniques/:techniqueId"],
+      "exports": ["TechniqueLibraryPage", "TechniqueDetailPage"],
       "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": ["audio-playback", "progress-tracking"]
+      "crossFeatureDeps": ["progress-tracking", "lesson-viewer"],
+      "status": "done"
     },
     "reference-library": {
       "path": "src/features/reference-library",
-      "description": "Reference docs viewer: fingering charts, jianpu guide, theory",
-      "routes": ["/reference", "/reference/:slug"],
+      "description": "Knowledge hub: fingering charts, jianpu guide, dizi theory",
+      "routes": ["/knowledge", "/knowledge/:slug"],
       "exports": ["ReferencePage", "ReferenceDetailPage"],
       "dependsOn": ["shared", "data"]
+    },
+    "lesson-viewer": {
+      "path": "src/features/lesson-viewer",
+      "description": "PracticeView for full-screen song/exercise practice, TempoGuide for jianpu display",
+      "routes": [],
+      "exports": ["PracticeView"],
+      "dependsOn": ["shared", "data"],
+      "crossFeatureDeps": ["progress-tracking"]
     },
     "practice-timer": {
       "path": "src/features/practice-timer",
@@ -56,22 +58,13 @@
       "crossFeatureDeps": [],
       "status": "done"
     },
-    "song-library": {
-      "path": "src/features/song-library",
-      "description": "Browse all songs by level, add custom songs for practice",
-      "routes": ["/library"],
-      "exports": ["SongLibraryPage", "useSongLibraryStore"],
-      "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": ["lesson-viewer"],
-      "status": "done"
-    },
     "auth": {
       "path": "src/features/auth",
       "description": "Two-tier auth: email-only identify for users, email+password for admin. Syncs progress to DB.",
-      "routes": ["/admin/login"],
+      "routes": [],
       "exports": ["useAuthStore", "IdentifyPrompt", "AdminLoginPage", "SyncProvider"],
       "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": ["progress-tracking", "practice-timer", "song-library", "lesson-viewer"],
+      "crossFeatureDeps": ["progress-tracking", "practice-timer", "song-library"],
       "status": "done"
     },
     "admin": {

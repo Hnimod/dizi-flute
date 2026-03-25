@@ -17,5 +17,6 @@ export const reviewSongs: Song[] = [
 [2. 2T 7, 5, | ( (6,)7, - - | 7, ) 1 7, | 5, - - ||`,
     origin: "Jannik",
     description: "Climax section. Play on A♭ dizi. Features fork fingering (叉口) technique.",
+    techniques: ["fork-fingering", "grace-note", "ornament-combo"],
   },
 ];

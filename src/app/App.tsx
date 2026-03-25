@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, NavLink } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { useThemeStore, ThemeToggle } from "@/features/theme";
-import { Sidebar } from "@/features/course-navigation";
 import { useAuthStore } from "@/features/auth";
 import { useProgressStore } from "@/features/progress-tracking";
 import { BottomNav } from "./BottomNav";
@@ -81,6 +80,47 @@ function LoginPopover({ onClose }: { onClose: () => void }) {
         </form>
       </div>
     </>
+  );
+}
+
+const sidebarLinks = [
+  { to: "/", label: "Songs", end: true },
+  { to: "/techniques", label: "Techniques", end: false },
+  { to: "/knowledge", label: "Knowledge", end: false },
+  { to: "/practice", label: "Practice", end: false },
+];
+
+function Sidebar() {
+  return (
+    <nav className="flex h-full flex-col overflow-y-auto">
+      <div className="border-b border-(--color-border) p-4">
+        <NavLink to="/" className="text-lg font-bold text-(--color-accent)">
+          Dizi Flute
+        </NavLink>
+      </div>
+
+      <div className="flex-1 p-3">
+        <ul className="space-y-0.5">
+          {sidebarLinks.map((link) => (
+            <li key={link.to}>
+              <NavLink
+                to={link.to}
+                end={link.end}
+                className={({ isActive }) =>
+                  `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-(--color-accent) text-white shadow-sm"
+                      : "hover:bg-(--color-bg)"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
   );
 }
 

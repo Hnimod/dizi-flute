@@ -10,11 +10,11 @@ export function ReferenceDetailPage() {
     return (
       <div className="mx-auto max-w-3xl">
         <Link
-          to="/reference"
+          to="/knowledge"
           className="inline-block text-sm hover:opacity-80"
           style={{ color: "var(--color-accent)" }}
         >
-          &larr; Back to Reference Library
+          &larr; Back to Knowledge
         </Link>
         <h1 className="mt-4 text-xl font-bold md:text-2xl">Reference Not Found</h1>
         <p className="mt-2 text-sm text-(--color-text-secondary) md:text-base">
@@ -27,11 +27,11 @@ export function ReferenceDetailPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <Link
-        to="/reference"
+        to="/knowledge"
         className="inline-block text-sm hover:opacity-80"
         style={{ color: "var(--color-accent)" }}
       >
-        &larr; Back to Reference Library
+        &larr; Back to Knowledge
       </Link>
 
       <div className="mt-4 flex items-center gap-3">
