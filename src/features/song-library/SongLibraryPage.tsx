@@ -8,6 +8,7 @@ import { useAuthStore } from "@/features/auth";
 import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
 import { AddSongForm } from "./AddSongForm";
+import { reviewSongs as staticReviewSongs } from "@/data/songs/review";
 import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
@@ -253,14 +254,24 @@ type FilterMode = "all" | "favorites" | "completed";
 export function SongLibraryPage() {
   const { data: songs = [], isLoading } = useSongs();
   const userSongs = useSongLibraryStore((s) => s.userSongs);
+  const reviewSongs = useSongLibraryStore((s) => s.reviewSongs);
+  const addReviewSong = useSongLibraryStore((s) => s.addReviewSong);
+  const removeReviewSong = useSongLibraryStore((s) => s.removeReviewSong);
   const isAdmin = useAuthStore((s) => s.isAdmin);
+
+  // Load static review songs into store on mount
+  useEffect(() => {
+    for (const song of staticReviewSongs) {
+      addReviewSong(song);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const completedItems = useProgressStore((s) => s.completedItems);
   const favoritedItems = useProgressStore((s) => s.favoritedItems);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
   const [selectedLevels, setSelectedLevels] = useState<Set<number>>(new Set());
-  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my" | "fav">>(() => {
+  const [collapsedLevels, setCollapsedLevels] = useState<Set<number | "my" | "fav" | "review">>(() => {
     try {
       const saved = localStorage.getItem("dizi-library-collapsed");
       return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -332,7 +343,7 @@ export function SongLibraryPage() {
       .filter((s) => selectedLevels.size === 0 || selectedLevels.has(s.levelId));
   }, [songs, userSongs, favoritedItems, searchQuery, selectedLevels]);
 
-  const toggleLevel = useCallback((id: number | "my" | "fav") => {
+  const toggleLevel = useCallback((id: number | "my" | "fav" | "review") => {
     setCollapsedLevels((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -470,6 +481,52 @@ export function SongLibraryPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Review section */}
+      {reviewSongs.length > 0 && (
+        <section className="mb-6">
+          <button
+            onClick={() => toggleLevel("review")}
+            className="flex w-full items-center gap-2 text-left mb-2"
+          >
+            <svg
+              className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedLevels.has("review") ? "" : "rotate-90"}`}
+              fill="var(--color-text-secondary)"
+              viewBox="0 0 24 24"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <span
+              className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase"
+              style={{ backgroundColor: "var(--color-warning, #f59e0b)", color: "white" }}
+            >
+              Review
+            </span>
+            <h2 className="text-base font-bold" style={{ color: "var(--color-text)" }}>
+              New Songs
+            </h2>
+            <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+              ({reviewSongs.length})
+            </span>
+          </button>
+          {!collapsedLevels.has("review") && (
+            <div className="space-y-2">
+              {reviewSongs.map((song) => (
+                <div key={song.id} className="relative">
+                  <SongRow song={song} />
+                  <button
+                    onClick={() => removeReviewSong(song.id)}
+                    className="absolute top-2 right-2 rounded-md px-2 py-1 text-[10px] font-medium transition-opacity hover:opacity-70"
+                    style={{ backgroundColor: "var(--color-bg-tertiary)", color: "var(--color-text-secondary)", border: "1px solid var(--color-border)" }}
+                  >
+                    Discard
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Favorites section */}
       <AnimatePresence>

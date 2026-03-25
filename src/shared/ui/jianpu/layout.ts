@@ -16,6 +16,8 @@ export function cellWidth(token: Token): number {
     case "tonguing":
     case "ornament":
       return CELL_ANNOTATION;
+    case "volta":
+      return CELL_BAR;
     case "text":
       return CELL_TEXT;
     default:

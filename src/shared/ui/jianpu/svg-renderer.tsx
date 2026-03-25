@@ -1,7 +1,7 @@
 import type { LayoutItem, InteractiveOpts } from "./types";
 import {
   CELL_NOTE, CELL_BAR,
-  Y_MARK, Y_OCTAVE_UP, Y_NOTE, Y_BEAM, Y_BEAM2, Y_OCTAVE_DOWN,
+  Y_VOLTA, Y_MARK, Y_OCTAVE_UP, Y_NOTE, Y_BEAM, Y_BEAM2, Y_OCTAVE_DOWN,
 } from "./constants";
 import { isBeat } from "./parser";
 import { flatFirst, flatLast } from "./layout";
@@ -43,18 +43,20 @@ export function renderSvgItems(
           </text>,
         );
       } else {
+        const isFork = item.token.name === "fork";
         elements.push(
           <text
             key={key}
             x={targetX}
             y={Y_MARK}
             textAnchor="middle"
-            fontSize="8"
-            fontStyle="italic"
+            fontSize={isFork ? "10" : "8"}
+            fontStyle={isFork ? "normal" : "italic"}
+            fontWeight={isFork ? "700" : undefined}
             fontFamily="sans-serif"
             fill="var(--color-text-secondary)"
           >
-            {item.token.name}
+            {isFork ? "又" : item.token.name}
           </text>,
         );
       }
@@ -133,6 +135,50 @@ export function renderSvgItems(
       renderSvgToken(item, activeBeatIndex, elements, key, opts);
     }
   }
+
+  // Post-pass: render volta brackets
+  let currentVolta: { ending: number; startX: number } | null = null;
+  for (let idx = 0; idx < items.length; idx++) {
+    const item = items[idx]!;
+    if (item.token.type === "volta") {
+      if (currentVolta) {
+        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true);
+      }
+      const nextItem = items[idx + 1];
+      const startX = nextItem ? nextItem.x : item.x;
+      currentVolta = { ending: item.token.ending, startX };
+    } else if (item.token.type === "bar" && (item.token.value === ":|" || item.token.value === "||")) {
+      if (currentVolta) {
+        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true);
+        currentVolta = null;
+      }
+    }
+  }
+  // Close volta at end of line if still open (no right edge — continues next line)
+  if (currentVolta && items.length > 0) {
+    const last = items[items.length - 1]!;
+    renderVoltaBracket(currentVolta, last.x + last.width / 2, elements, keyPrefix, false);
+  }
+}
+
+function renderVoltaBracket(
+  volta: { ending: number; startX: number },
+  endX: number,
+  elements: React.ReactNode[],
+  keyPrefix: string,
+  closedEnd: boolean,
+) {
+  const y = Y_VOLTA;
+  elements.push(
+    <g key={`${keyPrefix}-volta-${volta.ending}-${volta.startX}`}>
+      <line x1={volta.startX} y1={y + 5} x2={volta.startX} y2={y} stroke="var(--color-text)" strokeWidth="1" />
+      <line x1={volta.startX} y1={y} x2={endX} y2={y} stroke="var(--color-text)" strokeWidth="1" />
+      {closedEnd && (
+        <line x1={endX} y1={y} x2={endX} y2={y + 5} stroke="var(--color-text)" strokeWidth="1" />
+      )}
+      <text x={volta.startX - 10} y={y + 5} fontSize="7" fontWeight="600" fill="var(--color-text)">{volta.ending}.</text>
+    </g>,
+  );
 }
 
 function renderSvgToken(
@@ -194,23 +240,86 @@ function renderSvgToken(
         );
       }
 
-      // Note number
-      elements.push(
-        <text
-          key={key}
-          x={x}
-          y={Y_NOTE}
-          textAnchor="middle"
-          fontSize="16"
-          fontWeight="600"
-          fill={isSelected ? "var(--color-accent)" : textColor}
-          style={clickable || beatClickable ? { cursor: "pointer" } : undefined}
-          onClick={clickHandler}
-          {...beatAttr}
-        >
-          {token.value}
-        </text>,
-      );
+      // Note number (with grace note handling)
+      const noteColor = isSelected ? "var(--color-accent)" : textColor;
+      const noteStyle = clickable || beatClickable ? { cursor: "pointer" as const } : undefined;
+      const graceMatch = token.value.match(/^\((\d[',]*)\)\((\d[',]*)\)(\d.*)$/)
+        || token.value.match(/^\((\d[',]*)\)(\d.*)$/);
+
+      if (graceMatch) {
+        const isDouble = graceMatch.length === 4;
+        const graceRaws = isDouble ? [graceMatch[1]!, graceMatch[2]!] : [graceMatch[1]!];
+        const graceText = graceRaws.map((g) => g.replace(/[',]/g, "")).join("");
+        const mainText = isDouble ? graceMatch[3]! : graceMatch[2]!;
+        // Grace notes as small superscript
+        const graceX = x - 6;
+        const graceY = Y_OCTAVE_UP - 2;
+        elements.push(
+          <text
+            key={`${key}-grace`}
+            x={graceX}
+            y={graceY}
+            textAnchor="middle"
+            fontSize="8"
+            fontWeight="600"
+            fill={noteColor}
+          >
+            {graceText}
+          </text>,
+        );
+        // Octave dots for grace notes
+        let graceCharIdx = 0;
+        for (const raw of graceRaws) {
+          let oct = 0;
+          for (const c of raw) { if (c === "'") oct++; if (c === ",") oct--; }
+          const dotX = graceX - (graceRaws.length > 1 ? (graceText.length / 2 - graceCharIdx - 0.5) * 5 : 0);
+          if (oct > 0) {
+            for (let d = 0; d < oct; d++) {
+              elements.push(<circle key={`${key}-gou${graceCharIdx}-${d}`} cx={dotX} cy={graceY - 6 - d * 3} r={1} fill={noteColor} />);
+            }
+          }
+          if (oct < 0) {
+            for (let d = 0; d < -oct; d++) {
+              elements.push(<circle key={`${key}-god${graceCharIdx}-${d}`} cx={dotX} cy={graceY + 4 + d * 3} r={1} fill={noteColor} />);
+            }
+          }
+          graceCharIdx++;
+        }
+        // Main note digit
+        elements.push(
+          <text
+            key={key}
+            x={x}
+            y={Y_NOTE}
+            textAnchor="middle"
+            fontSize="16"
+            fontWeight="600"
+            fill={noteColor}
+            style={noteStyle}
+            onClick={clickHandler}
+            {...beatAttr}
+          >
+            {mainText}
+          </text>,
+        );
+      } else {
+        elements.push(
+          <text
+            key={key}
+            x={x}
+            y={Y_NOTE}
+            textAnchor="middle"
+            fontSize="16"
+            fontWeight="600"
+            fill={noteColor}
+            style={noteStyle}
+            onClick={clickHandler}
+            {...beatAttr}
+          >
+            {token.value}
+          </text>,
+        );
+      }
 
       // Octave dots
       if (token.octave > 0) {
@@ -391,6 +500,8 @@ function renderSvgToken(
     }
     case "bar": {
       const isDouble = token.value === "||";
+      const isRepeatStart = token.value === "|:";
+      const isRepeatEnd = token.value === ":|";
       if (isDouble) {
         // Double bar: thin line + thick line
         elements.push(
@@ -414,6 +525,22 @@ function renderSvgToken(
             stroke="var(--color-text)"
             strokeWidth="2.5"
           />,
+        );
+      } else if (isRepeatStart) {
+        // Repeat start: thick line + thin line + two dots
+        elements.push(
+          <line key={`${key}-a`} x1={x - 3} y1={Y_NOTE - 12} x2={x - 3} y2={Y_NOTE + 4} stroke="var(--color-text)" strokeWidth="2.5" />,
+          <line key={`${key}-b`} x1={x + 2} y1={Y_NOTE - 12} x2={x + 2} y2={Y_NOTE + 4} stroke="var(--color-text-secondary)" strokeWidth="1" />,
+          <circle key={`${key}-d1`} cx={x + 5} cy={Y_NOTE - 5} r={1.3} fill="var(--color-text)" />,
+          <circle key={`${key}-d2`} cx={x + 5} cy={Y_NOTE + 1} r={1.3} fill="var(--color-text)" />,
+        );
+      } else if (isRepeatEnd) {
+        // Repeat end: two dots + thin line + thick line
+        elements.push(
+          <circle key={`${key}-d1`} cx={x - 5} cy={Y_NOTE - 5} r={1.3} fill="var(--color-text)" />,
+          <circle key={`${key}-d2`} cx={x - 5} cy={Y_NOTE + 1} r={1.3} fill="var(--color-text)" />,
+          <line key={`${key}-a`} x1={x - 2} y1={Y_NOTE - 12} x2={x - 2} y2={Y_NOTE + 4} stroke="var(--color-text-secondary)" strokeWidth="1" />,
+          <line key={`${key}-b`} x1={x + 3} y1={Y_NOTE - 12} x2={x + 3} y2={Y_NOTE + 4} stroke="var(--color-text)" strokeWidth="2.5" />,
         );
       } else {
         elements.push(
@@ -477,22 +604,25 @@ function renderSvgToken(
         </text>,
       );
       break;
-    case "ornament":
+    case "ornament": {
+      const isFork = token.name === "fork";
       elements.push(
         <text
           key={key}
           x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
-          fontSize="8"
-          fontStyle="italic"
+          fontSize={isFork ? "10" : "8"}
+          fontStyle={isFork ? "normal" : "italic"}
+          fontWeight={isFork ? "700" : undefined}
           fontFamily="sans-serif"
           fill="var(--color-text-secondary)"
         >
-          {token.name}
+          {isFork ? "又" : token.name}
         </text>,
       );
       break;
+    }
     case "text":
       elements.push(
         <text

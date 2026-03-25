@@ -23,7 +23,8 @@ export type Token =
   | { type: "beam-start" }
   | { type: "beam-end" }
   | { type: "tonguing"; technique: string }
-  | { type: "ornament"; name: string };
+  | { type: "ornament"; name: string }
+  | { type: "volta"; ending: number };
 
 export interface LayoutItem {
   token: Token;

@@ -115,7 +115,7 @@ export function JianpuRenderer({
         return (
           <svg
             key={lineIdx}
-            viewBox={`0 0 ${maxWidth} ${LINE_HEIGHT}`}
+            viewBox={`0 -8 ${maxWidth} ${LINE_HEIGHT + 8}`}
             width="100%"
             preserveAspectRatio="xMinYMid meet"
             style={{ display: "block" }}

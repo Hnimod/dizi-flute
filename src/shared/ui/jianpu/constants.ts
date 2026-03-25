@@ -8,6 +8,7 @@ export const CELL_ANNOTATION = 0;
 export const CELL_TEXT = 16;
 
 // Y positions
+export const Y_VOLTA = -6; // volta bracket top
 export const Y_MARK = 6; // tonguing, fermata, staccato, accent, trill
 export const Y_OCTAVE_UP = 16;
 export const Y_NOTE = 30; // text baseline
