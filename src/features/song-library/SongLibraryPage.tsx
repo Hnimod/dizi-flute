@@ -532,9 +532,10 @@ export function SongLibraryPage() {
 
       {/* Songs by difficulty */}
       <div className="space-y-2">
-        {[...filteredSongsByDifficulty.keys()].sort((a, b) => a - b)
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+          .filter((diff) => selectedDifficulties.size === 0 || selectedDifficulties.has(diff))
           .map((diff) => {
-            const diffSongs = filteredSongsByDifficulty.get(diff)!;
+            const diffSongs = filteredSongsByDifficulty.get(diff) ?? [];
             const isCollapsed = collapsedGroups.has(diff);
             return (
               <div key={diff}>
