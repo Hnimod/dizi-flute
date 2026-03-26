@@ -63,6 +63,10 @@ export function parseToken(raw: string): Token {
   // Breath mark
   if (raw === "V") return { type: "breath" };
 
+  // Tie markers
+  if (raw === "~(") return { type: "tie-start" };
+  if (raw === "~)") return { type: "tie-end" };
+
   // Slur markers
   if (raw === "(") return { type: "slur-start" };
   if (raw === ")") return { type: "slur-end" };

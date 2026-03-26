@@ -24,7 +24,9 @@ export type Token =
   | { type: "beam-end" }
   | { type: "tonguing"; technique: string }
   | { type: "ornament"; name: string }
-  | { type: "volta"; ending: number };
+  | { type: "volta"; ending: number }
+  | { type: "tie-start" }
+  | { type: "tie-end" };
 
 export interface LayoutItem {
   token: Token;

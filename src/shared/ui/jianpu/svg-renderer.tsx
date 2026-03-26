@@ -184,6 +184,45 @@ export function renderSvgItems(
     const last = items[items.length - 1]!;
     renderVoltaBracket(currentVolta, last.x + last.width / 2, elements, keyPrefix, false, currentVolta.continuation);
   }
+  // Post-pass: render tie arcs (~( ... ~))
+  // Flatten all items including beam/slur children for tie lookups
+  function flattenItems(list: LayoutItem[]): LayoutItem[] {
+    const flat: LayoutItem[] = [];
+    for (const it of list) {
+      flat.push(it);
+      if (it.children) flat.push(...flattenItems(it.children));
+    }
+    return flat;
+  }
+  const allFlat = flattenItems(items);
+  let tieStartX: number | null = null;
+  for (let fi = 0; fi < allFlat.length; fi++) {
+    const it = allFlat[fi]!;
+    if (it.token.type === "tie-start") {
+      // Find next beat after this marker
+      for (let j = fi + 1; j < allFlat.length; j++) {
+        if (isBeat(allFlat[j]!.token)) { tieStartX = allFlat[j]!.x; break; }
+      }
+    } else if (it.token.type === "tie-end" && tieStartX !== null) {
+      // Find previous beat before this marker
+      let tieEndX = tieStartX;
+      for (let j = fi - 1; j >= 0; j--) {
+        if (isBeat(allFlat[j]!.token)) { tieEndX = allFlat[j]!.x; break; }
+      }
+      const midX = (tieStartX + tieEndX) / 2;
+      elements.push(
+        <path
+          key={`${keyPrefix}-tie-${tieStartX}`}
+          d={`M ${tieStartX + 5} ${Y_NOTE - 8} Q ${midX} ${Y_NOTE - 16} ${tieEndX - 5} ${Y_NOTE - 8}`}
+          fill="none"
+          stroke="var(--color-text-secondary)"
+          strokeWidth="1.2"
+        />,
+      );
+      tieStartX = null;
+    }
+  }
+
   return { openVolta: currentVolta ? { ending: currentVolta.ending } : null };
 }
 
@@ -611,15 +650,7 @@ function renderSvgToken(
       break;
     }
     case "tie":
-      elements.push(
-        <path
-          key={key}
-          d={`M ${x - 5} ${Y_NOTE - 10} Q ${x} ${Y_NOTE - 16} ${x + 5} ${Y_NOTE - 10}`}
-          fill="none"
-          stroke="var(--color-text-secondary)"
-          strokeWidth="1"
-        />,
-      );
+      // Handled in renderSvgItems main loop
       break;
     case "breath":
       elements.push(
