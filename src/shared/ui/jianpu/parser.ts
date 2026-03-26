@@ -116,7 +116,7 @@ export function parseToken(raw: string): Token {
 
     return {
       type: "note",
-      value: digit + dots,
+      value: digit,
       octave,
       dotted: dots.length > 0,
       accidental,

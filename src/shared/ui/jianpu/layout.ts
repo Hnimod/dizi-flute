@@ -84,7 +84,7 @@ export function layoutLine(
       const beamX = x;
       while (i < tokens.length && tokens[i]!.type !== "beam-end") {
         const bt = tokens[i]!;
-        const w = CELL_BEAM_NOTE;
+        const w = isBeat(bt) ? CELL_BEAM_NOTE : cellWidth(bt);
         children.push({
           token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
           beatIndex: isBeat(bt) ? beatCounter.value++ : null,

@@ -114,8 +114,8 @@ export function renderSvgItems(
       const first = item.children[0];
       const last = item.children[item.children.length - 1];
       if (first && last) {
-        const x1 = first.x - first.width * 0.35;
-        const x2 = last.x + last.width * 0.35;
+        const x1 = first.x - 5;
+        const x2 = last.x + 5;
         elements.push(
           <line
             key={`${key}-beam`}
@@ -142,9 +142,9 @@ export function renderSvgItems(
             elements.push(
               <line
                 key={`${key}-beam2-${beam2Idx++}`}
-                x1={rs.x - rs.width * 0.35}
+                x1={rs.x - 5}
                 y1={Y_BEAM2}
-                x2={re.x + re.width * 0.35}
+                x2={re.x + 5}
                 y2={Y_BEAM2}
                 stroke="var(--color-text)"
                 strokeWidth="1.5"
@@ -358,6 +358,19 @@ function renderSvgToken(
           >
             {token.value}
           </text>,
+        );
+      }
+
+      // Augmentation dot (dotted rhythm)
+      if (token.dotted) {
+        elements.push(
+          <circle
+            key={`${key}-dot`}
+            cx={x + 7}
+            cy={Y_NOTE - 4}
+            r={1.5}
+            fill={noteColor}
+          />,
         );
       }
 
