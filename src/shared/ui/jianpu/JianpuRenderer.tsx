@@ -6,6 +6,7 @@ import { parseToken } from "./parser";
 import { layoutLine, findActiveBeat } from "./layout";
 import { renderSvgItems } from "./svg-renderer";
 import { buildNoteTooltip } from "./tooltip";
+import type { NoteTooltipLink } from "./tooltip";
 
 export function JianpuRenderer({
   content,
@@ -78,26 +79,43 @@ export function JianpuRenderer({
   }
 
   // Tooltip state
-  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number; links: NoteTooltipLink[] } | null>(null);
   const [symbolTip, setSymbolTip] = useState<{ x: number; y: number; name: string; id: string; description: string } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const tipHideRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const handleNoteHover = useCallback((token: Token, event: React.MouseEvent, annotations: string[]) => {
-    const text = buildNoteTooltip(token, annotations);
-    if (!text) return;
+    if (tipHideRef.current) clearTimeout(tipHideRef.current);
+    const result = buildNoteTooltip(token, annotations);
+    if (!result) return;
     const rect = (event.target as Element).getBoundingClientRect();
-    setTooltip({ text, x: rect.left + rect.width / 2, y: rect.top });
+    setTooltip({ text: result.text, x: rect.left + rect.width / 2, y: rect.top, links: result.links });
+    setSymbolTip(null);
   }, []);
 
-  const handleNoteLeave = useCallback(() => setTooltip(null), []);
+  const handleNoteLeave = useCallback(() => {
+    tipHideRef.current = setTimeout(() => setTooltip(null), 200);
+  }, []);
 
   const handleSymbolHover = useCallback((event: React.MouseEvent, info: { name: string; id: string; description: string }) => {
+    if (tipHideRef.current) clearTimeout(tipHideRef.current);
     const rect = (event.target as Element).getBoundingClientRect();
     setSymbolTip({ x: rect.left + rect.width / 2, y: rect.top, ...info });
     setTooltip(null);
   }, []);
 
-  const handleSymbolLeave = useCallback(() => setSymbolTip(null), []);
+  const handleSymbolLeave = useCallback(() => {
+    tipHideRef.current = setTimeout(() => setSymbolTip(null), 200);
+  }, []);
+
+  const handleTipEnter = useCallback(() => {
+    if (tipHideRef.current) clearTimeout(tipHideRef.current);
+  }, []);
+
+  const handleTipLeave = useCallback(() => {
+    setTooltip(null);
+    setSymbolTip(null);
+  }, []);
 
   return (
     <div ref={containerRef} className={className} style={{ ...style, position: "relative" }}>
@@ -209,12 +227,13 @@ export function JianpuRenderer({
       {/* Note tooltip */}
       {tooltip && (
         <div
+          onMouseEnter={handleTipEnter}
+          onMouseLeave={handleTipLeave}
           style={{
             position: "fixed",
             left: 0,
             top: 0,
             transform: `translate(${tooltip.x}px, ${tooltip.y - 10}px)`,
-            pointerEvents: "none",
             zIndex: 50,
           }}
         >
@@ -223,17 +242,36 @@ export function JianpuRenderer({
               transform: "translate(-50%, -100%)",
               backgroundColor: "var(--color-bg-secondary)",
               border: "1px solid var(--color-border)",
-              borderRadius: 8,
-              padding: "8px 12px",
+              borderRadius: 10,
+              padding: "10px 14px",
               fontSize: 12,
               lineHeight: 1.5,
               color: "var(--color-text)",
               whiteSpace: "pre-line",
               maxWidth: 280,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
             }}
           >
             {tooltip.text}
+            {tooltip.links.length > 0 && (
+              <div style={{ marginTop: 8, paddingTop: 6, borderTop: "1px solid var(--color-border)", display: "flex", flexWrap: "wrap", gap: "4px 10px" }}>
+                {tooltip.links.map((link) => (
+                  <a
+                    key={link.id}
+                    href={`/${link.type === "technique" ? "techniques" : "knowledge"}/${link.id}`}
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: "var(--color-accent)",
+                      textDecoration: "none",
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                  >
+                    {link.label} &rarr;
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -241,6 +279,8 @@ export function JianpuRenderer({
       {/* Technique symbol tooltip */}
       {symbolTip && (
         <div
+          onMouseEnter={handleTipEnter}
+          onMouseLeave={handleTipLeave}
           style={{
             position: "fixed",
             left: 0,
