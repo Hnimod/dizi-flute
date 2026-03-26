@@ -5,6 +5,11 @@ import {
 } from "./constants";
 import { isBeat } from "./parser";
 
+function beamNoteWidth(token: Token): number {
+  if (!isBeat(token)) return cellWidth(token);
+  return CELL_BEAM_NOTE * 0.55;
+}
+
 export function cellWidth(token: Token): number {
   switch (token.type) {
     case "bar":
@@ -52,7 +57,7 @@ export function layoutLine(
           const beamX = x;
           while (i < tokens.length && tokens[i]!.type !== "beam-end") {
             const bt = tokens[i]!;
-            const w = isBeat(bt) ? CELL_BEAM_NOTE : cellWidth(bt);
+            const w = beamNoteWidth(bt);
             beamChildren.push({
               token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
               beatIndex: isBeat(bt) ? beatCounter.value++ : null,
@@ -86,7 +91,7 @@ export function layoutLine(
       const beamX = x;
       while (i < tokens.length && tokens[i]!.type !== "beam-end") {
         const bt = tokens[i]!;
-        const w = isBeat(bt) ? CELL_BEAM_NOTE : cellWidth(bt);
+        const w = beamNoteWidth(bt);
         children.push({
           token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
           beatIndex: isBeat(bt) ? beatCounter.value++ : null,
