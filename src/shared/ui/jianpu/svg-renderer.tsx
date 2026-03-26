@@ -111,8 +111,8 @@ export function renderSvgItems(
       // Render children
       renderSvgItems(item.children, activeBeatIndex, elements, `${key}-b`, opts);
       // Draw beam line
-      const first = item.children[0];
-      const last = item.children[item.children.length - 1];
+      const first = item.children.find(c => isBeat(c.token));
+      const last = [...item.children].reverse().find(c => isBeat(c.token));
       if (first && last) {
         const x1 = first.x - 5;
         const x2 = last.x + 5;
