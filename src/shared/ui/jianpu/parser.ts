@@ -103,6 +103,13 @@ export function parseToken(raw: string): Token {
     return { type: "tonguing", technique: raw.slice(2) };
   }
 
+  // Tempo markings: rit, accel, atempo
+  const TEMPO_MARKS: Record<string, string> = {
+    "rit": "rit.", "accel": "accel.", "atempo": "a tempo",
+  };
+  const tempoMark = TEMPO_MARKS[raw];
+  if (tempoMark) return { type: "tempo", text: tempoMark };
+
   // Ornament shorthand: Chinese characters or short English names
   const ORNAMENT_SHORTHAND: Record<string, string> = {
     "\u53C8": "fork", "\u53E0": "die", "\u6253": "da", "\u8D60": "zeng", "\u6CE2": "bo", "\u82B1": "flutter",

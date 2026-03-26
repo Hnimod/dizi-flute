@@ -92,6 +92,10 @@ Example: \`\u53E0 5\` is equivalent to \`orn:die 5\` and \`die 5\`.
 
 \`T\` (single tongue), \`TK\` (double tongue), \`TTK\` (triple tongue) — place before note. Full form \`T:single\`, \`T:double\`, \`T:triple\` also accepted.
 
+## Tempo Markings
+
+\`rit\` (ritardando — slow down), \`accel\` (accelerando — speed up), \`atempo\` (return to original speed) — place before note.
+
 ## Ties and Slurs
 
 \`~\` = tie, \`(\` \`)\` = slur boundaries.

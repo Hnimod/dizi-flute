@@ -93,6 +93,28 @@ export function renderSvgItems(
     const key = `${keyPrefix}-${idx}`;
 
     // Annotations: render above the next item's center x
+    if (item.token.type === "tempo") {
+      const next = items[idx + 1];
+      const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
+      elements.push(
+        <text
+          key={key}
+          x={targetX}
+          y={Y_MARK}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontSize={7}
+          fontWeight="600"
+          fontStyle="italic"
+          fontFamily="sans-serif"
+          fill="var(--color-text-secondary)"
+        >
+          {item.token.text}
+        </text>,
+      );
+      continue;
+    }
+
     if (item.token.type === "tonguing" || item.token.type === "ornament") {
       pendingAnnotations.push(
         item.token.type === "tonguing" ? `T:${item.token.technique}` : item.token.name,
@@ -860,6 +882,24 @@ function renderSvgToken(
       );
       break;
     }
+    case "tempo":
+      elements.push(
+        <text
+          key={key}
+          x={x + CELL_NOTE / 2}
+          y={Y_MARK}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontSize={7}
+          fontWeight="600"
+          fontStyle="italic"
+          fontFamily="sans-serif"
+          fill="var(--color-text-secondary)"
+        >
+          {token.text}
+        </text>,
+      );
+      break;
     case "text":
       elements.push(
         <text

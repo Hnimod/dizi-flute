@@ -10,11 +10,12 @@ export const song: Song = {
   titleEnglish: "Old Six Beats",
   key: "C",
   timeSignature: "2/4",
+  tempo: 80,
   jianpu: `
 ( [ 3_ fork 3_ ] [ 6,_ 2_ ]  | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ 6,_ 1 ] | [ fork 1 3 ] 2 ) | ( [ 3 fork 3 ] [ 6, 2 ] | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ 3 2 ] | [ 1_ 6,_ ] 5, ) |
 ( [ 5 fork 5 ] [ 3 fork 3 ] | [ 5 fork 5 ] 2 ) | ( [ 3 2 ] [ 1 fork 1 ] | [ 6, 1 ] 2 ) | ( [ 3 2 ] [ fork 2 3 ] | 5 ) ( [ 5 6 ] | 1' ) ( [ 6 1' ] | [ fork 1' 6 ] 5 ) |
 ( [ 5 6 ] [ 5 3 ] | 2 ) ( [ 2 3 ] | 5 ) ( [ 5 6 ] | [ 5 3 ] 2 ) | ( [ 2 5 ] [ fork 5 2 ] | [ 3 2 ] 1 ) | ( [ 6, 1 ] [ 5, 6, ] | [ 1 3 ] 2 ) |
-( [ 2 5 ] [ fork 5 2 ] | [ 3 2 ] 1 ) | ( [ 3 fork 3 ] [ 6, 2 ] | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ 3 2 ] | [ 1_ 6,_ ] 5, ) ||`,
+( [ 2 5 ] [ fork 5 2 ] | [ 3 2 ] 1 ) | ( [ 3 fork 3 ] [ 6, 2 ] | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ rit 3 2 ] | [ 1_ 6,_ ] 5, ) ||`,
   description:
     "Classic folk piece for practicing overlapping tones (叠音). Pentatonic melody with smooth stepwise motion.",
   origin: "Traditional Chinese folk music (江南丝竹)",

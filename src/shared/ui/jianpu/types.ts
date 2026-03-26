@@ -26,7 +26,8 @@ export type Token =
   | { type: "ornament"; name: string }
   | { type: "volta"; ending: number }
   | { type: "tie-start" }
-  | { type: "tie-end" };
+  | { type: "tie-end" }
+  | { type: "tempo"; text: string };
 
 export interface LayoutItem {
   token: Token;

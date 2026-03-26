@@ -404,6 +404,12 @@ Tempo tells you the speed of the music, measured in BPM (beats per minute).
 | a tempo | \u56DE\u539F\u901F (hu\u00ED yu\u00E1ns\u00F9) | Return to the original tempo |
 | fermata (\uD834\uDD10) | \u5EF6\u957F (y\u00E1nch\u00E1ng) | Hold the note longer than written (at performer's discretion) |
 
+**Notation shorthand:** \`rit\`, \`accel\`, \`atempo\` — place before the note where the tempo change begins.
+
+\`\`\`jianpu
+5 3 rit 2 - | accel 5 3 2 1 | atempo 5 - - -
+\`\`\`
+
 ---
 
 ## Articulation Markings
@@ -597,7 +603,7 @@ Let us walk through reading a real piece of music step by step.
 The rendered notation examples in this guide show elements supported by our interactive renderer. The following printed jianpu elements are **not yet supported** in the interactive renderer and will only appear in printed scores:
 
 - **Dynamics** (pp, p, mp, mf, f, ff) and hairpin crescendo/diminuendo
-- **Tempo text** (rit., accel., a tempo)
+
 - **Navigation marks** (D.C., D.S., Fine, Coda, Segno)
 - **Triplet brackets**
 - **Thirty-second notes** (triple underline)
