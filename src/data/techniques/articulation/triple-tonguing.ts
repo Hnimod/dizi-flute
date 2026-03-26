@@ -27,5 +27,5 @@ Triple tonguing (三吐, sān tǔ) uses the pattern "tu-tu-ku" for groups of thr
 ## In Notation
 
 Triple tonguing is marked with **TTK** above the note.`,
-    notationExample: "T:triple 5 T:triple 5 T:triple 5 | T:triple 6 T:triple 6 T:triple 6 | T:triple 5 - - ||",
+    notationExample: "TTK 5 TTK 5 TTK 5 | TTK 6 TTK 6 TTK 6 | TTK 5 - - ||",
   };

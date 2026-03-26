@@ -28,5 +28,5 @@ Double tonguing (双吐, shuāng tǔ) alternates between "tu" (tongue tip) and "
 ## In Notation
 
 Double tonguing is marked with **TK** above the note.`,
-    notationExample: "T:double 5 T:double 5 T:double 5 T:double 5 | T:double 1 T:double 2 T:double 3 T:double 5 ||",
+    notationExample: "TK 5 TK 5 TK 5 TK 5 | TK 1 TK 2 TK 3 TK 5 ||",
   };

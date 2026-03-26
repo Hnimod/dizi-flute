@@ -34,5 +34,5 @@ Tonguing is marked with **T** above the note.
 - Tonguing too hard (the tongue should be light, not percussive)
 - Stopping airflow between notes (air should be continuous — tongue only interrupts)
 - Using the middle of the tongue instead of the tip`,
-    notationExample: "T:single 5 T:single 5 T:single 5 T:single 5 | T:single 1 T:single 2 T:single 3 T:single 4 | T:single 5 T:single 6 T:single 7 T:single 1' ||",
+    notationExample: "T 5 T 5 T 5 T 5 | T 1 T 2 T 3 T 4 | T 5 T 6 T 7 T 1' ||",
   };

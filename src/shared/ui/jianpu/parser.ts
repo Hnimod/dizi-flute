@@ -95,7 +95,10 @@ export function parseToken(raw: string): Token {
   if (raw === "[") return { type: "beam-start" };
   if (raw === "]") return { type: "beam-end" };
 
-  // Tonguing annotation: T:single, T:double, T:triple
+  // Tonguing annotation: T:single, T:double, T:triple + shorthand T, TK, TTK
+  if (raw === "T") return { type: "tonguing", technique: "single" };
+  if (raw === "TK") return { type: "tonguing", technique: "double" };
+  if (raw === "TTK") return { type: "tonguing", technique: "triple" };
   if (raw.startsWith("T:")) {
     return { type: "tonguing", technique: raw.slice(2) };
   }

@@ -430,7 +430,7 @@ Articulation tells you *how* to play each note \u2014 short, long, emphasized, e
 **Articulation and tonguing examples:**
 
 \`\`\`jianpu
-5; 5> 5^ | T:single 5 T:double [ 5_ 5_ 5_ 5_ ] T:triple [ 5_ 5_ 5_ ]
+5; 5> 5^ | T 5 TK [ 5 5 5 5 ] TTK [ 5 5 5 ]
 \`\`\`
 
 ---

@@ -90,7 +90,7 @@ Example: \`\u53E0 5\` is equivalent to \`orn:die 5\` and \`die 5\`.
 
 ## Tonguing
 
-\`T:single\` (T), \`T:double\` (TK), \`T:triple\` (TTK) — place before note group.
+\`T\` (single tongue), \`TK\` (double tongue), \`TTK\` (triple tongue) — place before note. Full form \`T:single\`, \`T:double\`, \`T:triple\` also accepted.
 
 ## Ties and Slurs
 
