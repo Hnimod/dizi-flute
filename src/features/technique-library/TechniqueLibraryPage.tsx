@@ -114,15 +114,6 @@ export function TechniqueLibraryPage() {
                       {technique.description}
                     </div>
                   </div>
-                  {technique.exerciseIds.length > 0 && (
-                    <span
-                      className="shrink-0 text-[10px] font-medium"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      {technique.exerciseIds.length} exercise
-                      {technique.exerciseIds.length !== 1 ? "s" : ""}
-                    </span>
-                  )}
                   <svg
                     className="h-4 w-4 shrink-0"
                     fill="none"

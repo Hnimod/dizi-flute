@@ -1,68 +1,14 @@
 import { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import { getTechnique, exercises as staticExercises, songs as staticSongs } from "@/data";
-import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
-import type { Exercise } from "@/shared/types";
-
-function ExerciseCard({ exercise }: { exercise: Exercise }) {
-  return (
-    <div
-      className="my-4 rounded-xl bg-(--color-bg-secondary) p-5 shadow-sm"
-      style={{ border: "1px solid var(--color-border)" }}
-    >
-      <div className="mb-1">
-        <h4
-          className="text-base font-semibold"
-          style={{ color: "var(--color-text)" }}
-        >
-          {exercise.title}
-        </h4>
-      </div>
-      <div
-        className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-3"
-        style={{ color: "var(--color-text-secondary)" }}
-      >
-        <span>Key: {exercise.key}</span>
-        <span>Time: {exercise.timeSignature}</span>
-        {exercise.tempo && <span>Tempo: {exercise.tempo} BPM</span>}
-      </div>
-      {exercise.description && (
-        <p
-          className="text-sm mb-3 leading-relaxed whitespace-pre-line"
-          style={{ color: "var(--color-text-secondary)" }}
-        >
-          {exercise.description}
-        </p>
-      )}
-      <TempoGuide
-        content={exercise.jianpu}
-        tempo={exercise.tempo}
-        title={exercise.title}
-        keySignature={exercise.key}
-        timeSignature={exercise.timeSignature}
-        className="rounded-lg p-4 overflow-x-auto"
-        style={{
-          backgroundColor: "var(--color-bg)",
-          border: "1px solid var(--color-border)",
-        }}
-      />
-    </div>
-  );
-}
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { getTechnique, songs as staticSongs } from "@/data";
+import { JianpuRenderer } from "@/shared/ui/jianpu/JianpuRenderer";
 
 export function TechniqueDetailPage() {
   const { techniqueId } = useParams();
   const navigate = useNavigate();
   const technique = getTechnique(techniqueId ?? "");
-  const exercises = useMemo(
-    () =>
-      technique
-        ? technique.exerciseIds
-            .map((id) => staticExercises.find((e) => e.id === id))
-            .filter(Boolean) as Exercise[]
-        : [],
-    [technique],
-  );
 
   const relatedSongs = useMemo(
     () =>
@@ -170,8 +116,62 @@ export function TechniqueDetailPage() {
         </Link>
       )}
 
-      {/* Exercises */}
-      {exercises.length > 0 && (
+      {/* Markdown content */}
+      <section
+        className="prose prose-sm max-w-none mb-8"
+        style={{ color: "var(--color-text)" }}
+      >
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h2: ({ children }) => (
+              <h2
+                className="text-lg font-bold mt-6 mb-2 pb-1"
+                style={{ color: "var(--color-text)", borderBottom: "1px solid var(--color-border)" }}
+              >
+                {children}
+              </h2>
+            ),
+            h3: ({ children }) => (
+              <h3 className="text-base font-semibold mt-4 mb-1" style={{ color: "var(--color-text)" }}>
+                {children}
+              </h3>
+            ),
+            p: ({ children }) => (
+              <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--color-text-secondary)" }}>
+                {children}
+              </p>
+            ),
+            ul: ({ children }) => (
+              <ul className="text-sm leading-relaxed mb-3 pl-5 list-disc" style={{ color: "var(--color-text-secondary)" }}>
+                {children}
+              </ul>
+            ),
+            ol: ({ children }) => (
+              <ol className="text-sm leading-relaxed mb-3 pl-5 list-decimal" style={{ color: "var(--color-text-secondary)" }}>
+                {children}
+              </ol>
+            ),
+            li: ({ children }) => <li className="mb-1">{children}</li>,
+            strong: ({ children }) => (
+              <strong style={{ color: "var(--color-text)" }}>{children}</strong>
+            ),
+            code: ({ children }) => (
+              <code
+                className="rounded px-1.5 py-0.5 text-xs font-mono"
+                style={{ backgroundColor: "var(--color-bg-tertiary)", color: "var(--color-accent)" }}
+              >
+                {children}
+              </code>
+            ),
+          }}
+        >
+          {technique.content}
+        </ReactMarkdown>
+      </section>
+
+      {/* Notation example */}
+      {technique.notationExample && (
         <section className="mb-8">
           <h2
             className="text-lg font-bold mb-3 pb-2"
@@ -180,11 +180,14 @@ export function TechniqueDetailPage() {
               borderBottom: "1px solid var(--color-border)",
             }}
           >
-            Practice Exercises
+            Notation Example
           </h2>
-          {exercises.map((exercise) => (
-            <ExerciseCard key={exercise.id} exercise={exercise} />
-          ))}
+          <div
+            className="rounded-lg p-4 overflow-x-auto"
+            style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
+          >
+            <JianpuRenderer content={technique.notationExample} />
+          </div>
         </section>
       )}
 

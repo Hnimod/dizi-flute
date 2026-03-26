@@ -59,7 +59,8 @@ export interface Technique {
   category: "fundamentals" | "articulation" | "ornaments" | "breathing" | "fingering" | "advanced";
   level: number;
   description: string;
-  exerciseIds: string[];
+  content: string;
+  notationExample?: string;
   referenceSlug?: string;
 }
 

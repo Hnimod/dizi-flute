@@ -47,6 +47,8 @@ export interface InteractiveOpts {
   lineYOffset?: number;
   onNoteHover?: (token: Token, event: React.MouseEvent, annotations: string[]) => void;
   onNoteLeave?: () => void;
+  onSymbolHover?: (event: React.MouseEvent, info: { name: string; id: string; description: string }) => void;
+  onSymbolLeave?: () => void;
 }
 
 export interface JianpuRendererProps {

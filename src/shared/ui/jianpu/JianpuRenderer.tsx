@@ -79,6 +79,7 @@ export function JianpuRenderer({
 
   // Tooltip state
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+  const [symbolTip, setSymbolTip] = useState<{ x: number; y: number; name: string; id: string; description: string } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleNoteHover = useCallback((token: Token, event: React.MouseEvent, annotations: string[]) => {
@@ -89,6 +90,14 @@ export function JianpuRenderer({
   }, []);
 
   const handleNoteLeave = useCallback(() => setTooltip(null), []);
+
+  const handleSymbolHover = useCallback((event: React.MouseEvent, info: { name: string; id: string; description: string }) => {
+    const rect = (event.target as Element).getBoundingClientRect();
+    setSymbolTip({ x: rect.left + rect.width / 2, y: rect.top, ...info });
+    setTooltip(null);
+  }, []);
+
+  const handleSymbolLeave = useCallback(() => setSymbolTip(null), []);
 
   return (
     <div ref={containerRef} className={className} style={{ ...style, position: "relative" }}>
@@ -132,6 +141,8 @@ export function JianpuRenderer({
           lineYOffset: lineIdx * LINE_HEIGHT,
           onNoteHover: handleNoteHover,
           onNoteLeave: handleNoteLeave,
+          onSymbolHover: handleSymbolHover,
+          onSymbolLeave: handleSymbolLeave,
         };
         const voltaResult = renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts, openVolta);
         openVolta = voltaResult.openVolta;
@@ -195,7 +206,7 @@ export function JianpuRenderer({
       });
       })()}
 
-      {/* Tooltip */}
+      {/* Note tooltip */}
       {tooltip && (
         <div
           style={{
@@ -223,6 +234,50 @@ export function JianpuRenderer({
             }}
           >
             {tooltip.text}
+          </div>
+        </div>
+      )}
+
+      {/* Technique symbol tooltip */}
+      {symbolTip && (
+        <div
+          style={{
+            position: "fixed",
+            left: 0,
+            top: 0,
+            transform: `translate(${symbolTip.x}px, ${symbolTip.y - 10}px)`,
+            zIndex: 50,
+          }}
+        >
+          <div
+            style={{
+              transform: "translate(-50%, -100%)",
+              backgroundColor: "var(--color-bg-secondary)",
+              border: "1px solid var(--color-border)",
+              borderRadius: 10,
+              padding: "10px 14px",
+              maxWidth: 260,
+              boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+            }}
+          >
+            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text)", marginBottom: 4 }}>
+              {symbolTip.name}
+            </div>
+            <div style={{ fontSize: 11, lineHeight: 1.5, color: "var(--color-text-secondary)", marginBottom: 8 }}>
+              {symbolTip.description}
+            </div>
+            <a
+              href={`/techniques/${symbolTip.id}`}
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                color: "var(--color-accent)",
+                textDecoration: "none",
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              Learn more &rarr;
+            </a>
           </div>
         </div>
       )}

@@ -15,22 +15,45 @@ const ORNAMENT_CHARS: Record<string, string> = {
   bo: "波",
 };
 
+// Map symbol names to technique page info
+const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: string }> = {
+  fork: { id: "fork-fingering", name: "叉口 Fork Fingering", description: "Alternate fingering for different tone color" },
+  die: { id: "die-yin", name: "叠音 Stacked Grace", description: "Quick grace from one hole above, finger only" },
+  da: { id: "da-yin", name: "打音 Struck Grace", description: "Quick strike from one hole below, finger only" },
+  zeng: { id: "zeng-yin", name: "赠音 Trailing Note", description: "Trailing gift note at end of held note" },
+  bo: { id: "bo-yin", name: "波音 Mordent", description: "Single rapid upper-neighbor flick" },
+  vibrato: { id: "vibrato", name: "气震音 Breath Vibrato", description: "Pulse diaphragm to make notes shimmer" },
+  flutter: { id: "flutter-tongue", name: "花舌 Flutter Tongue", description: "Roll tongue while playing" },
+  "slide-up": { id: "slides", name: "上滑音 Slide Up", description: "Glide pitch upward into note" },
+  "slide-down": { id: "slides", name: "下滑音 Slide Down", description: "Glide pitch downward" },
+  single: { id: "tonguing", name: "吐音 Single Tonguing", description: "Crisp tongue attack — say 'tu'" },
+  double: { id: "double-tonguing", name: "双吐 Double Tonguing", description: "Alternating tu-ku for fast passages" },
+  triple: { id: "triple-tonguing", name: "三吐 Triple Tonguing", description: "Tu-tu-ku pattern for triplets" },
+};
+
 function ornamentDisplay(name: string): { text: string; isChar: boolean } {
   const char = ORNAMENT_CHARS[name];
   if (!char) return { text: name, isChar: false };
   return { text: char, isChar: true };
 }
 
-function renderVibratoWave(x: number, y: number, key: string): React.ReactNode {
+function renderVibratoWave(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
   const w = 5;
+  const info = SYMBOL_TECHNIQUE["vibrato"];
+  const hoverEnter = opts?.onSymbolHover && info
+    ? (e: React.MouseEvent) => opts.onSymbolHover!(e, info)
+    : undefined;
+  const hoverLeave = opts?.onSymbolLeave;
   return (
-    <path
-      key={key}
-      d={`M ${x - w} ${y} q ${w * 0.33} -3 ${w * 0.66} 0 q ${w * 0.33} 3 ${w * 0.66} 0 q ${w * 0.33} -3 ${w * 0.66} 0`}
-      fill="none"
-      stroke="var(--color-text)"
-      strokeWidth="1.2"
-    />
+    <g key={key} style={hoverEnter ? { cursor: "help" } : undefined} onMouseEnter={hoverEnter} onMouseLeave={hoverLeave}>
+      <rect x={x - w} y={y - 4} width={w * 2} height={8} fill="transparent" />
+      <path
+        d={`M ${x - w} ${y} q ${w * 0.33} -3 ${w * 0.66} 0 q ${w * 0.33} 3 ${w * 0.66} 0 q ${w * 0.33} -3 ${w * 0.66} 0`}
+        fill="none"
+        stroke="var(--color-text)"
+        strokeWidth="1.2"
+      />
+    </g>
   );
 }
 
@@ -56,6 +79,8 @@ export function renderSvgItems(
       const next = items[idx + 1];
       const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
       if (item.token.type === "tonguing") {
+        const tInfo = SYMBOL_TECHNIQUE[item.token.technique];
+        const tHover = opts?.onSymbolHover && tInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tInfo) : undefined;
         elements.push(
           <text
             key={key}
@@ -66,6 +91,9 @@ export function renderSvgItems(
             fontWeight="600"
             fontFamily="sans-serif"
             fill="var(--color-accent)"
+            style={tHover ? { cursor: "help" } : undefined}
+            onMouseEnter={tHover}
+            onMouseLeave={opts?.onSymbolLeave}
           >
             {item.token.technique === "single"
               ? "T"
@@ -77,9 +105,11 @@ export function renderSvgItems(
           </text>,
         );
       } else if (item.token.name === "vibrato") {
-        elements.push(renderVibratoWave(targetX, Y_MARK, key));
+        elements.push(renderVibratoWave(targetX, Y_MARK, key, opts));
       } else {
         const { text: ornText, isChar } = ornamentDisplay(item.token.name);
+        const oInfo = SYMBOL_TECHNIQUE[item.token.name];
+        const oHover = opts?.onSymbolHover && oInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, oInfo) : undefined;
         elements.push(
           <text
             key={key}
@@ -91,6 +121,9 @@ export function renderSvgItems(
             fontWeight={isChar ? "700" : undefined}
             fontFamily="sans-serif"
             fill="var(--color-text-secondary)"
+            style={oHover ? { cursor: "help" } : undefined}
+            onMouseEnter={oHover}
+            onMouseLeave={opts?.onSymbolLeave}
           >
             {ornText}
           </text>,
@@ -680,7 +713,9 @@ function renderSvgToken(
         </text>,
       );
       break;
-    case "tonguing":
+    case "tonguing": {
+      const tInfo2 = SYMBOL_TECHNIQUE[token.technique];
+      const tHover2 = opts?.onSymbolHover && tInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tInfo2) : undefined;
       elements.push(
         <text
           key={key}
@@ -691,6 +726,9 @@ function renderSvgToken(
           fontWeight="600"
           fontFamily="sans-serif"
           fill="var(--color-accent)"
+          style={tHover2 ? { cursor: "help" } : undefined}
+          onMouseEnter={tHover2}
+          onMouseLeave={opts?.onSymbolLeave}
         >
           {token.technique === "single"
             ? "T"
@@ -702,12 +740,15 @@ function renderSvgToken(
         </text>,
       );
       break;
+    }
     case "ornament": {
       if (token.name === "vibrato") {
-        elements.push(renderVibratoWave(x + CELL_NOTE / 2, Y_MARK, key));
+        elements.push(renderVibratoWave(x + CELL_NOTE / 2, Y_MARK, key, opts));
         break;
       }
       const { text: ornText2, isChar: isChar2 } = ornamentDisplay(token.name);
+      const oInfo2 = SYMBOL_TECHNIQUE[token.name];
+      const oHover2 = opts?.onSymbolHover && oInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, oInfo2) : undefined;
       elements.push(
         <text
           key={key}
@@ -719,6 +760,9 @@ function renderSvgToken(
           fontWeight={isChar2 ? "700" : undefined}
           fontFamily="sans-serif"
           fill="var(--color-text-secondary)"
+          style={oHover2 ? { cursor: "help" } : undefined}
+          onMouseEnter={oHover2}
+          onMouseLeave={opts?.onSymbolLeave}
         >
           {ornText2}
         </text>,
