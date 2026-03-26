@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate, Link } from "react-router";
 import { songs as staticSongs, getTechnique, difficultyLabels } from "@/data";
 import { VideoEmbed } from "@/shared/ui";
@@ -9,6 +10,42 @@ import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
   return [song.titleChinese, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
+}
+
+function SheetImageAccordion({ src }: { src: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="my-4">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center gap-1 cursor-pointer text-sm font-medium select-none hover:opacity-80"
+        style={{ color: "var(--color-text-secondary)" }}
+      >
+        <svg
+          className={`h-3 w-3 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        Original Sheet
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="mt-2 rounded-lg overflow-hidden" style={{ border: "1px solid var(--color-border)" }}>
+              <img src={src} alt="Jianpu sheet" className="w-full" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }
 
 export function SongDetailPage() {
@@ -131,6 +168,8 @@ export function SongDetailPage() {
       {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
         <VideoEmbed key={i} url={url} className="mb-4" />
       ))}
+
+      {song.sheetImage && <SheetImageAccordion src={song.sheetImage} />}
 
       <div className="my-4">
         <TempoGuide

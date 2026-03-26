@@ -1,4 +1,5 @@
 import type { Song } from "@/shared/types";
+import sheetImg from "./doraemon.png";
 
 export const song: Song = {
   id: "doraemon",
@@ -21,4 +22,5 @@ orn:vibrato 6 orn:vibrato 5 ( [ T:single 2._ 3__ ] ) [ T:single 4._ T:single 2__
     "Theme song from the beloved anime Doraemon. A brisk, lively melody by 菊池俊辅 (Shunsuke Kikuchi), excellent for practicing tonguing and rhythm. Notation by 码农学笛子.",
   origin: "Doraemon OST, 菊池俊辅, 1979",
   techniques: ["tonguing", "step-patterns"],
+  sheetImage: sheetImg,
 };

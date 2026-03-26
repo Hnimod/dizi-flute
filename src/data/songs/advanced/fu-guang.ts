@@ -1,4 +1,5 @@
 import type { Song } from "@/shared/types";
+import sheetImg from "./fu-guang.png";
 
 export const song: Song = {
   id: "fu-guang",
@@ -20,4 +21,5 @@ export const song: Song = {
   description:
     "Climax section. Play on A\u266D dizi. Features fork fingering (\u53C9\u53E3) technique.",
   techniques: ["fork-fingering", "grace-note", "ornament-combo"],
+  sheetImage: sheetImg,
 };

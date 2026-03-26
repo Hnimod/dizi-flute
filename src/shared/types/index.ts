@@ -50,6 +50,7 @@ export interface Song {
   videoUrls?: string[];
   origin?: string;
   techniques?: string[];
+  sheetImage?: string;
 }
 
 export interface Technique {
