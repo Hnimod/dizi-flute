@@ -7,6 +7,7 @@ import { song as maryHadALittleLamb } from "./beginner/mary-had-a-little-lamb";
 import { song as twinkleTwinkleLittleStar } from "./beginner/twinkle-twinkle-little-star";
 
 // Elementary (difficulty 3-4)
+import { song as doraemon } from "./elementary/doraemon";
 import { song as littleWhiteCabbage } from "./elementary/little-white-cabbage";
 import { song as sweetHoney } from "./elementary/sweet-honey";
 import { song as theMoonRepresentsMyHeart } from "./elementary/the-moon-represents-my-heart";
@@ -25,6 +26,7 @@ export const songs: Song[] = [
   maryHadALittleLamb,
   lightlyRow,
   twinkleTwinkleLittleStar,
+  doraemon,
   littleWhiteCabbage,
   theMoonRepresentsMyHeart,
   sweetHoney,

@@ -13,11 +13,14 @@ const ORNAMENT_CHARS: Record<string, string> = {
   da: "打",
   zeng: "赠",
   bo: "波",
+  vibrato: "〜",
 };
 
-function ornamentDisplay(name: string): { text: string; isChar: boolean } {
+function ornamentDisplay(name: string): { text: string; isChar: boolean; fontSize?: number } {
   const char = ORNAMENT_CHARS[name];
-  return char ? { text: char, isChar: true } : { text: name, isChar: false };
+  if (!char) return { text: name, isChar: false };
+  if (name === "vibrato") return { text: char, isChar: true, fontSize: 16 };
+  return { text: char, isChar: true };
 }
 
 export function renderSvgItems(
@@ -62,14 +65,14 @@ export function renderSvgItems(
           </text>,
         );
       } else {
-        const { text: ornText, isChar } = ornamentDisplay(item.token.name);
+        const { text: ornText, isChar, fontSize: ornFs } = ornamentDisplay(item.token.name);
         elements.push(
           <text
             key={key}
             x={targetX}
             y={Y_MARK}
             textAnchor="middle"
-            fontSize={isChar ? "10" : "8"}
+            fontSize={ornFs ?? (isChar ? 10 : 8)}
             fontStyle={isChar ? "normal" : "italic"}
             fontWeight={isChar ? "700" : undefined}
             fontFamily="sans-serif"
@@ -634,14 +637,14 @@ function renderSvgToken(
       );
       break;
     case "ornament": {
-      const { text: ornText2, isChar: isChar2 } = ornamentDisplay(token.name);
+      const { text: ornText2, isChar: isChar2, fontSize: ornFs2 } = ornamentDisplay(token.name);
       elements.push(
         <text
           key={key}
           x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
-          fontSize={isChar2 ? "10" : "8"}
+          fontSize={ornFs2 ?? (isChar2 ? 10 : 8)}
           fontStyle={isChar2 ? "normal" : "italic"}
           fontWeight={isChar2 ? "700" : undefined}
           fontFamily="sans-serif"
