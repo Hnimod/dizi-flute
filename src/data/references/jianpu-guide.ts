@@ -52,6 +52,10 @@ The seven numbers correspond to the seven notes of the major scale:
 | 7 | Ti (Si) | 7th | Five and a half steps above Do |
 | 0 | \u2014 | Rest | Silence |
 
+\`\`\`jianpu
+1 2 3 4 5 6 7
+\`\`\`
+
 ### Note Numbers in Common Dizi Keys
 
 | Number | Solfege | In Key of D (1=D) | In Key of G (1=G) | In Key of C (1=C) | In Key of F (1=F) | In Key of A (1=A) |
@@ -77,6 +81,10 @@ The seven numbers correspond to the seven notes of the major scale:
 
 Sharps (#) and flats (b) are written directly before the number. They apply only to that single note (not the whole measure, unlike staff notation).
 
+\`\`\`jianpu
+#4 b7 | #1 b3
+\`\`\`
+
 ---
 
 ## Octave Markings
@@ -97,10 +105,8 @@ Dots above or below a number shift it up or down by one octave.
 
 This is the standard range when the lowest note (all holes covered) is Sol (5):
 
-\`\`\`
-Low octave:    5,  6,  7,
-Middle octave: 1  2  3  4  5  6  7
-High octave:   1'  2'  3'  4'  5'
+\`\`\`jianpu
+5, 6, 7, | 1 2 3 4 5 6 7 | 1' 2' 3' 4' 5'
 \`\`\`
 
 In actual pitches for a D-key dizi (1=D, \u7B52\u97F3\u4F5C5):
@@ -143,19 +149,24 @@ This section is critical for reading rhythm. In jianpu, duration is shown by **d
 | \`5\u0332\u0332\` | Sixteenth note | \u5341\u516D\u5206\u97F3\u7B26 (sh\u00EDli\u00F9 f\u0113n y\u012Bnf\u00FA) | 1/4 beat | Double underline below |
 | \`5\u0332\u0332\u0332\` | Thirty-second note | \u4E09\u5341\u4E8C\u5206\u97F3\u7B26 | 1/8 beat | Triple underline below (rare) |
 
-**Important note about underlines:** In printed jianpu, shorter notes are shown with horizontal lines (beams) drawn below the numbers. One line = eighth note, two lines = sixteenth note. In plain text, these are hard to represent, so they are often shown with underline marks or by grouping notes with spaces.
+**Important note about underlines:** In printed jianpu, shorter notes are shown with horizontal lines (beams) drawn below the numbers. One line = eighth note, two lines = sixteenth note. Shorter notes are usually grouped under a shared beam:
+
+\`\`\`jianpu
+[ 5_ 3_ ] | [ 5_ 3_ 2_ 1_ ] | [ 5__ 3__ 5__ 3__ ]
+\`\`\`
 
 ### How Dashes Work
 
 Each dash (\`-\`) extends the note by one additional beat:
 
+\`\`\`jianpu
+5 | 5 - | 5 - - | 5 - - -
 \`\`\`
-5           = 1 beat   (quarter note)
-5 -         = 2 beats  (half note)
-5 - -       = 3 beats  (dotted half note)
-5 - - -     = 4 beats  (whole note)
-5 - - - - - = 6 beats  (dotted whole note \u2014 spans a full measure of 3/4 twice)
-\`\`\`
+
+- \`5\` = 1 beat (quarter note)
+- \`5 -\` = 2 beats (half note)
+- \`5 - -\` = 3 beats (dotted half note)
+- \`5 - - -\` = 4 beats (whole note)
 
 Think of each dash as saying "keep holding that note for one more beat."
 
@@ -173,13 +184,7 @@ A small dot placed after a number (not above or below) extends the note's durati
 
 ### Triplets
 
-Three notes played in the time of two are shown with a \`3\` bracket above:
-
-\`\`\`
-  3
-\u250C\u2500\u2500\u2500\u2510
-1 2 3       \u2190 three notes in the time of two (triplet)
-\`\`\`
+Three notes played in the time of two are shown with a \`3\` bracket above the note group. In printed jianpu, a small "3" with a bracket appears over three notes that share the time of two beats. Triplets are relatively uncommon in beginner dizi pieces.
 
 ---
 
@@ -196,6 +201,10 @@ Rests (silence) follow the same duration rules as notes, but use the number \`0\
 | \`0\u0332\u0332\` | Sixteenth rest | \u5341\u516D\u5206\u4F11\u6B62\u7B26 | 1/4 beat of silence |
 
 In printed jianpu, rests use underlines and dashes exactly like notes. A \`0\` with a beam below it is an eighth rest; a \`0\` followed by dashes is a longer rest.
+
+\`\`\`jianpu
+0 | 0 - | [ 0_ 5_ ] | [ 0__ 0__ 5__ 5__ ]
+\`\`\`
 
 ---
 
@@ -264,6 +273,10 @@ Bar lines are vertical lines that divide music into measures:
 | \`||:\` | Repeat start | Beginning of a repeated section |
 | \`||: ... :||\` | Repeat section | Play everything inside twice |
 
+\`\`\`jianpu
+1 2 | 3 5 || |: 1 2 3 5 :| ||
+\`\`\`
+
 ---
 
 ## Ties and Slurs
@@ -272,21 +285,21 @@ Bar lines are vertical lines that divide music into measures:
 
 A curved arc connecting **two notes of the same pitch**. The second note is not re-tongued; you simply hold the first note for the combined duration.
 
-\`\`\`
-  \u2312
-5 - | 5 -       \u2190 Sol held for 4 beats total (2 + 2), crossing the bar line
+\`\`\`jianpu
+~( 5 - | 5 ~) -
 \`\`\`
 
-Ties are common when a note's duration spans across a bar line.
+Sol held for 4 beats total (2 + 2), crossing the bar line. Ties are common when a note's duration spans across a bar line.
 
 ### Slur (\u8FDE\u97F3\u7EBF li\u00E1ny\u012Bnxi\u00E0n)
 
 A curved arc connecting **different notes**. Play them smoothly and connected (legato) \u2014 do not tongue each note separately.
 
+\`\`\`jianpu
+( 1 2 3 5 )
 \`\`\`
-  \u2312
-1 2 3 5         \u2190 Play Do-Re-Mi-Sol smoothly, only tongue the first note
-\`\`\`
+
+Play Do-Re-Mi-Sol smoothly, only tongue the first note.
 
 ### How to Tell Them Apart
 
@@ -310,9 +323,8 @@ In printed jianpu, both use the same arc symbol. Context makes the meaning clear
 
 When a repeated section has a different ending the second time:
 
-\`\`\`
-                    1.              2.
-||: 1 2 3 5 | 5 3 | 2 - :|| 1 - ||
+\`\`\`jianpu
+|: 1 2 3 5 | 5 3 | [1. 2 - :| [2. 1 - ||
 \`\`\`
 
 - First time through: play the \`1.\` ending, then repeat
@@ -415,6 +427,12 @@ Articulation tells you *how* to play each note \u2014 short, long, emphasized, e
 | TK or \u53CC\u5410 | \u53CC\u5410 (shu\u0101ngt\u01D4) | Double tongue | Alternate "tu-ku-tu-ku" \u2014 for fast passages |
 | TTK or \u4E09\u5410 | \u4E09\u5410 (s\u0101nt\u01D4) | Triple tongue | "Tu-tu-ku" pattern \u2014 for triplet passages |
 
+**Articulation and tonguing examples:**
+
+\`\`\`jianpu
+5; 5> 5^ | T:single 5 T:double [ 5_ 5_ 5_ 5_ ] T:triple [ 5_ 5_ 5_ ]
+\`\`\`
+
 ---
 
 ## Ornament Notation in Jianpu
@@ -446,14 +464,22 @@ These ornaments are characteristic of the dizi and central to Chinese flute styl
 | \u6C14\u9707 | \u6C14\u9707\u97F3 (q\u00ECzh\u00E8ny\u012Bn) | Breath vibrato | Vibrato produced by wavering the airstream. |
 | \u6307\u9707 | \u6307\u9707\u97F3 (zh\u01D0zh\u00E8ny\u012Bn) | Finger vibrato | Vibrato produced by rapidly wavering a finger over a hole without fully closing it. |
 
+**Ornament notation examples:**
+
+\`\`\`jianpu
+tr5 | orn:die 5 orn:da 5 | orn:bo 5 orn:zeng 5 | orn:vibrato 5 - | orn:flutter 5 - | orn:slide-up 5 orn:slide-down 5
+\`\`\`
+
 ### Grace Note Examples in Jianpu
 
 In printed jianpu, grace notes appear as smaller-sized numbers before the main note:
 
+\`\`\`jianpu
+(3)5 | (6)(5)3
 \`\`\`
- \u00B35          \u2190 grace note: quick Mi before Sol
- \u2076\u20755         \u2190 two grace notes: quick La-Sol before Mi
-\`\`\`
+
+- \`(3)5\` \u2014 quick Mi before Sol (single grace note)
+- \`(6)(5)3\` \u2014 quick La-Sol before Mi (double grace note)
 
 The grace notes are played very quickly, almost instantaneously, before the main note receives its full beat.
 
@@ -465,13 +491,9 @@ Let us walk through reading a real piece of music step by step.
 
 ### Example: \u8309\u8389\u82B1 (Molihua \u2014 Jasmine Flower)
 
-\`\`\`
-\u8309\u8389\u82B1
-1=D  2/4
-Andante \u2669=72
-
-  3   3 | 5  6\u0332 1\u0332' 6\u0332 | 5   - | 5  6\u0332 1\u0332'  6\u0332 | 5  -  |
-  3  5\u0332 6\u0332 | 1'   6\u0332 5\u0332 | 6   - | 5\u0332 3\u0332 2\u0332 1\u0332 | 2  -  |
+\`\`\`jianpu
+3 3 | 5 [ 6_ 1'_ 6_ ] | 5 - | 5 [ 6_ 1'_ 6_ ] | 5 - |
+3 [ 5_ 6_ ] | 1' [ 6_ 5_ ] | 6 - | [ 5_ 3_ 2_ 1_ ] | 2 - ||
 \`\`\`
 
 ### Element-by-Element Breakdown
@@ -552,5 +574,19 @@ Andante \u2669=72
 
 9. **Use a metronome.** Start at half the marked tempo. Only speed up when you can play perfectly at the slower speed. Rushing leads to sloppy habits.
 
-10. **Listen to recordings.** Find a recording of the piece you are learning and listen to it repeatedly. Your ear will guide your fingers more than any notation can.`,
+10. **Listen to recordings.** Find a recording of the piece you are learning and listen to it repeatedly. Your ear will guide your fingers more than any notation can.
+
+---
+
+## Interactive Notation Support
+
+The rendered notation examples in this guide show elements supported by our interactive renderer. The following printed jianpu elements are **not yet supported** in the interactive renderer and will only appear in printed scores:
+
+- **Dynamics** (pp, p, mp, mf, f, ff) and hairpin crescendo/diminuendo
+- **Tempo text** (rit., accel., a tempo)
+- **Navigation marks** (D.C., D.S., Fine, Coda, Segno)
+- **Triplet brackets**
+- **Thirty-second notes** (triple underline)
+
+These are primarily interpretive markings. The core pitch, rhythm, articulation, and ornamentation notation is fully supported.`,
   };

@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Components } from "react-markdown";
+import { JianpuRenderer } from "./jianpu/JianpuRenderer";
 
 interface MarkdownRendererProps {
   content: string;
@@ -12,10 +13,21 @@ const components: Components = {
     const isJianpu = className?.includes("jianpu");
     const isBlock = String(children).includes("\n");
 
-    if (isBlock || isJianpu) {
+    if (isJianpu) {
+      return (
+        <div
+          className="rounded-lg p-4 overflow-x-auto my-4"
+          style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
+        >
+          <JianpuRenderer content={String(children).trim()} />
+        </div>
+      );
+    }
+
+    if (isBlock) {
       return (
         <pre
-          className={`rounded-lg p-4 overflow-x-auto text-sm my-4 ${isJianpu ? "jianpu" : ""}`}
+          className="rounded-lg p-4 overflow-x-auto text-sm my-4"
           style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
         >
           <code className={className} {...props}>
