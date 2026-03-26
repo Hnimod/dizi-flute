@@ -213,7 +213,7 @@ export function renderSvgItems(
       elements.push(
         <path
           key={`${keyPrefix}-tie-${tieStartX}`}
-          d={`M ${tieStartX + 5} ${Y_NOTE - 8} Q ${midX} ${Y_NOTE - 16} ${tieEndX - 5} ${Y_NOTE - 8}`}
+          d={`M ${tieStartX} ${Y_NOTE - 12} Q ${midX} ${Y_NOTE - 20} ${tieEndX} ${Y_NOTE - 12}`}
           fill="none"
           stroke="var(--color-text-secondary)"
           strokeWidth="1.2"
