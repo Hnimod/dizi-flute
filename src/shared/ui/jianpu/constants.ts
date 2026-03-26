@@ -3,7 +3,7 @@ export const CELL_NOTE = 28;
 export const CELL_BAR = 12;
 export const CELL_TIE = 14;
 export const CELL_BREATH = 0;
-export const CELL_BEAM_NOTE = 18;
+export const CELL_BEAM_NOTE = 28;
 export const CELL_ANNOTATION = 0;
 export const CELL_TEXT = 16;
 
