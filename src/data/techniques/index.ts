@@ -15,6 +15,7 @@ import { technique as duoYin } from "./articulation/duo-yin";
 
 // Ornaments
 import { technique as graceNote } from "./ornaments/grace-note";
+import { technique as appoggiatura } from "./ornaments/appoggiatura";
 import { technique as dieYin } from "./ornaments/die-yin";
 import { technique as daYin } from "./ornaments/da-yin";
 import { technique as zengYin } from "./ornaments/zeng-yin";
@@ -25,6 +26,7 @@ import { technique as ornamentCombo } from "./ornaments/ornament-combo";
 // Breathing
 import { technique as dynamics } from "./breathing/dynamics";
 import { technique as vibrato } from "./breathing/vibrato";
+import { technique as fingerVibrato } from "./breathing/finger-vibrato";
 import { technique as circularBreathing } from "./breathing/circular-breathing";
 
 // Fingering
@@ -40,6 +42,9 @@ import { technique as flutterTongue } from "./advanced/flutter-tongue";
 import { technique as slides } from "./advanced/slides";
 import { technique as sanBan } from "./advanced/san-ban";
 import { technique as liYin } from "./advanced/li-yin";
+import { technique as duoYinChop } from "./advanced/duo-yin-chop";
+import { technique as moYin } from "./advanced/mo-yin";
+import { technique as throatTone } from "./advanced/throat-tone";
 import { technique as harmonics } from "./advanced/harmonics";
 import { technique as sixteenthNotes } from "./advanced/sixteenth-notes";
 import { technique as dottedRhythm } from "./advanced/dotted-rhythm";
@@ -55,6 +60,7 @@ export const techniques: Technique[] = [
   tripleTonguing,
   duoYin,
   graceNote,
+  appoggiatura,
   dieYin,
   daYin,
   zengYin,
@@ -63,6 +69,7 @@ export const techniques: Technique[] = [
   ornamentCombo,
   dynamics,
   vibrato,
+  fingerVibrato,
   circularBreathing,
   pentatonicScale,
   octaveJumps,
@@ -74,6 +81,9 @@ export const techniques: Technique[] = [
   slides,
   sanBan,
   liYin,
+  duoYinChop,
+  moYin,
+  throatTone,
   harmonics,
   sixteenthNotes,
   dottedRhythm,

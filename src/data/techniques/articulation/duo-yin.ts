@@ -27,6 +27,6 @@ export const technique: Technique = {
 ## When to Use
 
 剁音 appears primarily in northern Chinese folk music and Beijing opera styles. It conveys energy, drama, and excitement.`,
-  },
+  };
 
   // ── Ornaments ──;

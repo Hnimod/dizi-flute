@@ -28,6 +28,6 @@ Skip patterns involve jumping over a note (thirds) rather than stepping. For exa
 
 Most melodies combine steps and skips. Skip patterns prepare you for the leaps found in real songs.`,
     notationExample: "1 3 2 4 | 3 5 4 6 | 5 3 6 4 | 5 3 2 1 ||",
-  },
+  };
 
   // ── Articulation ──;

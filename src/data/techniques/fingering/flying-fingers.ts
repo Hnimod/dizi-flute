@@ -28,6 +28,6 @@ export const technique: Technique = {
 ## When to Use
 
 飞指 is a special effect, not a melodic technique. Use it sparingly for dramatic moments: climaxes, transitions, or cadenzas.`,
-  },
+  };
 
   // ── Advanced ──;

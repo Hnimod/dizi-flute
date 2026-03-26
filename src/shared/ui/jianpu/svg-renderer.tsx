@@ -36,6 +36,17 @@ const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: 
   volta1: { id: "rhythm-reading", name: "第一房子 1st Ending", description: "Play this ending the first time through the repeat" },
   volta2: { id: "rhythm-reading", name: "第二房子 2nd Ending", description: "Play this ending the second time — skip the 1st ending" },
   volta3: { id: "rhythm-reading", name: "第三房子 3rd Ending", description: "Play this ending the third time through" },
+  trill: { id: "trill", name: "颤音 Trill", description: "Rapid alternation with upper neighbor note" },
+  staccato: { id: "tonguing", name: "顿音 Staccato", description: "Play short and detached" },
+  fermata: { id: "rhythm-reading", name: "延长记号 Fermata", description: "Hold the note longer than written" },
+  accent: { id: "dynamics", name: "重音 Accent", description: "Emphasize this note" },
+  graceNote: { id: "grace-note", name: "倚音 Grace Note", description: "Quick ornamental note before the main note" },
+  breath: { id: "dynamics", name: "换气 Breath Mark", description: "Take a breath here" },
+  dot: { id: "dotted-rhythm", name: "附点 Dotted Note", description: "Extends duration by half" },
+  octaveUp: { id: "two-octave-range", name: "高音 High Octave", description: "Play one octave higher" },
+  octaveDown: { id: "two-octave-range", name: "低音 Low Octave", description: "Play one octave lower" },
+  rest: { id: "rhythm-reading", name: "休止符 Rest", description: "Silence for the marked duration" },
+  hold: { id: "rhythm-reading", name: "延音线 Hold", description: "Continue holding the previous note" },
 };
 
 function ornamentDisplay(name: string): { text: string; isChar: boolean } {
@@ -393,6 +404,8 @@ function renderSvgToken(
         // Grace notes as small superscript
         const graceX = x - 6;
         const graceY = Y_OCTAVE_UP - 2;
+        const gnInfo = SYMBOL_TECHNIQUE["graceNote"];
+        const gnHover = opts?.onSymbolHover && gnInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, gnInfo) : undefined;
         elements.push(
           <text
             key={`${key}-grace`}
@@ -402,6 +415,9 @@ function renderSvgToken(
             fontSize="8"
             fontWeight="600"
             fill={noteColor}
+            style={gnHover ? { cursor: "help" } : undefined}
+            onMouseEnter={gnHover}
+            onMouseLeave={opts?.onSymbolLeave}
           >
             {graceText}
           </text>,
@@ -466,41 +482,38 @@ function renderSvgToken(
 
       // Augmentation dot (dotted rhythm)
       if (token.dotted) {
+        const dotInfo = SYMBOL_TECHNIQUE["dot"];
+        const dotHover = opts?.onSymbolHover && dotInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, dotInfo) : undefined;
         elements.push(
-          <circle
-            key={`${key}-dot`}
-            cx={x + 7}
-            cy={Y_NOTE - 4}
-            r={1.5}
-            fill={noteColor}
-          />,
+          <g key={`${key}-dot`} style={dotHover ? { cursor: "help" } : undefined} onMouseEnter={dotHover} onMouseLeave={opts?.onSymbolLeave}>
+            <rect x={x + 3} y={Y_NOTE - 8} width={8} height={8} fill="transparent" />
+            <circle cx={x + 7} cy={Y_NOTE - 4} r={1.5} fill={noteColor} />
+          </g>,
         );
       }
 
       // Octave dots
       if (token.octave > 0) {
+        const ouInfo = SYMBOL_TECHNIQUE["octaveUp"];
+        const ouHover = opts?.onSymbolHover && ouInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, ouInfo) : undefined;
         for (let d = 0; d < token.octave; d++) {
           elements.push(
-            <circle
-              key={`${key}-ou${d}`}
-              cx={x}
-              cy={Y_OCTAVE_UP - d * 4}
-              r={1.5}
-              fill={textColor}
-            />,
+            <g key={`${key}-ou${d}`} style={ouHover ? { cursor: "help" } : undefined} onMouseEnter={ouHover} onMouseLeave={opts?.onSymbolLeave}>
+              <rect x={x - 4} y={Y_OCTAVE_UP - d * 4 - 4} width={8} height={8} fill="transparent" />
+              <circle cx={x} cy={Y_OCTAVE_UP - d * 4} r={1.5} fill={textColor} />
+            </g>,
           );
         }
       }
       if (token.octave < 0) {
+        const odInfo = SYMBOL_TECHNIQUE["octaveDown"];
+        const odHover = opts?.onSymbolHover && odInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, odInfo) : undefined;
         for (let d = 0; d < -token.octave; d++) {
           elements.push(
-            <circle
-              key={`${key}-od${d}`}
-              cx={x}
-              cy={Y_OCTAVE_DOWN + d * 4}
-              r={1.5}
-              fill={textColor}
-            />,
+            <g key={`${key}-od${d}`} style={odHover ? { cursor: "help" } : undefined} onMouseEnter={odHover} onMouseLeave={opts?.onSymbolLeave}>
+              <rect x={x - 4} y={Y_OCTAVE_DOWN + d * 4 - 4} width={8} height={8} fill="transparent" />
+              <circle cx={x} cy={Y_OCTAVE_DOWN + d * 4} r={1.5} fill={textColor} />
+            </g>,
           );
         }
       }
@@ -552,25 +565,56 @@ function renderSvgToken(
         );
       }
       if (token.fermata) {
+        const ferInfo = SYMBOL_TECHNIQUE["fermata"];
+        const ferHover = opts?.onSymbolHover && ferInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, ferInfo) : undefined;
         elements.push(
-          <text key={`${key}-fer`} x={x} y={markY} textAnchor="middle" fontSize="10" fill={textColor}>
+          <text
+            key={`${key}-fer`}
+            x={x}
+            y={markY}
+            textAnchor="middle"
+            fontSize="10"
+            fill={textColor}
+            style={ferHover ? { cursor: "help" } : undefined}
+            onMouseEnter={ferHover}
+            onMouseLeave={opts?.onSymbolLeave}
+          >
             𝄐
           </text>,
         );
       }
       if (token.staccato) {
+        const stcInfo = SYMBOL_TECHNIQUE["staccato"];
+        const stcHover = opts?.onSymbolHover && stcInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, stcInfo) : undefined;
         elements.push(
-          <circle key={`${key}-stc`} cx={x} cy={markY} r={1.3} fill={textColor} />,
+          <g key={`${key}-stc`} style={stcHover ? { cursor: "help" } : undefined} onMouseEnter={stcHover} onMouseLeave={opts?.onSymbolLeave}>
+            <rect x={x - 4} y={markY - 4} width={8} height={8} fill="transparent" />
+            <circle cx={x} cy={markY} r={1.3} fill={textColor} />
+          </g>,
         );
       }
       if (token.accent) {
+        const acnInfo = SYMBOL_TECHNIQUE["accent"];
+        const acnHover = opts?.onSymbolHover && acnInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, acnInfo) : undefined;
         elements.push(
-          <text key={`${key}-acn`} x={x} y={markY} textAnchor="middle" fontSize="9" fill={textColor}>
+          <text
+            key={`${key}-acn`}
+            x={x}
+            y={markY}
+            textAnchor="middle"
+            fontSize="9"
+            fill={textColor}
+            style={acnHover ? { cursor: "help" } : undefined}
+            onMouseEnter={acnHover}
+            onMouseLeave={opts?.onSymbolLeave}
+          >
             &gt;
           </text>,
         );
       }
       if (token.trill) {
+        const trInfo = SYMBOL_TECHNIQUE["trill"];
+        const trHover = opts?.onSymbolHover && trInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, trInfo) : undefined;
         elements.push(
           <text
             key={`${key}-trl`}
@@ -580,6 +624,9 @@ function renderSvgToken(
             fontSize="8"
             fontStyle="italic"
             fill={textColor}
+            style={trHover ? { cursor: "help" } : undefined}
+            onMouseEnter={trHover}
+            onMouseLeave={opts?.onSymbolLeave}
           >
             tr
           </text>,
@@ -589,6 +636,8 @@ function renderSvgToken(
     }
     case "rest": {
       const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
+      const restInfo = SYMBOL_TECHNIQUE["rest"];
+      const restHover = opts?.onSymbolHover && restInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, restInfo) : undefined;
       elements.push(
         <text
           key={key}
@@ -598,8 +647,10 @@ function renderSvgToken(
           fontSize="16"
           fontWeight="600"
           fill={isSelected ? "var(--color-accent)" : secondaryColor}
-          style={clickable || beatClickable ? { cursor: "pointer" } : undefined}
+          style={restHover ? { cursor: "help" } : (clickable || beatClickable ? { cursor: "pointer" } : undefined)}
           onClick={clickHandler}
+          onMouseEnter={restHover}
+          onMouseLeave={opts?.onSymbolLeave}
           {...beatAttr}
         >
           0
@@ -636,6 +687,8 @@ function renderSvgToken(
     }
     case "hold": {
       const beatAttr = beatIndex !== null ? { "data-beat": beatIndex } : undefined;
+      const holdInfo = SYMBOL_TECHNIQUE["hold"];
+      const holdHover = opts?.onSymbolHover && holdInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, holdInfo) : undefined;
       elements.push(
         <text
           key={key}
@@ -645,8 +698,10 @@ function renderSvgToken(
           fontSize="16"
           fontWeight="600"
           fill={isSelected ? "var(--color-accent)" : secondaryColor}
-          style={clickable || beatClickable ? { cursor: "pointer" } : undefined}
+          style={holdHover ? { cursor: "help" } : (clickable || beatClickable ? { cursor: "pointer" } : undefined)}
           onClick={clickHandler}
+          onMouseEnter={holdHover}
+          onMouseLeave={opts?.onSymbolLeave}
           {...beatAttr}
         >
           –
@@ -724,7 +779,9 @@ function renderSvgToken(
     case "tie":
       // Handled in renderSvgItems main loop
       break;
-    case "breath":
+    case "breath": {
+      const brInfo = SYMBOL_TECHNIQUE["breath"];
+      const brHover = opts?.onSymbolHover && brInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, brInfo) : undefined;
       elements.push(
         <text
           key={key}
@@ -733,11 +790,15 @@ function renderSvgToken(
           textAnchor="middle"
           fontSize="8"
           fill="var(--color-text-secondary)"
+          style={brHover ? { cursor: "help" } : undefined}
+          onMouseEnter={brHover}
+          onMouseLeave={opts?.onSymbolLeave}
         >
           ∨
         </text>,
       );
       break;
+    }
     case "tonguing": {
       const tInfo2 = SYMBOL_TECHNIQUE[token.technique];
       const tHover2 = opts?.onSymbolHover && tInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tInfo2) : undefined;

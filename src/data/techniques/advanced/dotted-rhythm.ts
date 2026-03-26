@@ -28,11 +28,4 @@ A dotted note is 1.5 times its normal length. A dotted eighth + sixteenth create
 
 The dot appears after the note number as a small circle. The beamed pair shows as a dotted-eighth + sixteenth under one beam.`,
     notationExample: "[ 5._ 1__ ] [ 1._ 3__ ] [ 5._ 3__ ] 5 | [ 5._ 6__ ] [ 5._ 3__ ] [ 4._ 3__ ] 2 ||",
-  },
-];
-
-export function getTechnique(id: string): Technique | undefined {
-  return techniques.find((t) => t.id === id);
-}
-
-export function getTechniquesByCategory(category: Technique["category"]): Technique[;
+  };

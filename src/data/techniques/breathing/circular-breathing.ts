@@ -27,6 +27,6 @@ Circular breathing (循环换气, xúnhuán huànqì) allows you to play indefin
 ## When to Use
 
 Circular breathing is used for extremely long phrases or as a showpiece technique. Many professional pieces require it. However, learning proper breath planning (when to breathe) is more important for beginners.`,
-  },
+  };
 
   // ── Fingering ──;
