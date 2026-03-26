@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { techniques } from "@/data";
+import { SectionDivider } from "@/shared/ui/SectionDivider";
 import type { Technique } from "@/shared/types";
 
 const categories: { key: Technique["category"]; label: string }[] = [
@@ -85,16 +86,8 @@ export function TechniqueLibraryPage() {
 
       {/* Technique cards grouped by category */}
       {grouped.map((group) => (
-        <section key={group.key} className="mb-8">
-          <h2
-            className="text-lg font-bold mb-3 pb-2"
-            style={{
-              color: "var(--color-text)",
-              borderBottom: "1px solid var(--color-border)",
-            }}
-          >
-            {group.label}
-          </h2>
+        <section key={group.key} className="mb-6">
+          <SectionDivider label={group.label} count={group.items.length} />
           <div className="space-y-2">
             {group.items
               .sort((a, b) => a.level - b.level)

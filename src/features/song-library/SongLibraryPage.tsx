@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { difficultyLabels, songs as staticSongs } from "@/data";
+import { SectionDivider } from "@/shared/ui/SectionDivider";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
@@ -467,34 +468,23 @@ export function SongLibraryPage() {
             transition={{ duration: 0.25, ease: "easeOut" }}
             style={{ overflow: "hidden" }}
           >
-            <button
-              onClick={() => toggleGroup("fav")}
-              className="flex w-full items-center gap-2 text-left mb-2"
+            <SectionDivider
+              label="Favorites"
+              count={favoriteSongs.length}
+              collapsed={collapsedGroups.has("fav")}
+              onToggle={() => toggleGroup("fav")}
+              icon={
+                <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="var(--color-accent)" strokeWidth={2}>
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              }
             >
-              <svg
-                className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedGroups.has("fav") ? "" : "rotate-90"}`}
-                fill="var(--color-text-secondary)"
-                viewBox="0 0 24 24"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="var(--color-accent)" strokeWidth={2}>
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-              <h2 className="text-base font-bold" style={{ color: "var(--color-text)" }}>
-                Favorites
-              </h2>
-              <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                ({favoriteSongs.length})
-              </span>
-            </button>
-            {!collapsedGroups.has("fav") && (
               <div className="space-y-2">
                 {favoriteSongs.map((song) => (
                   <SongRow key={song.id} song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
                 ))}
               </div>
-            )}
+            </SectionDivider>
           </motion.section>
         )}
       </AnimatePresence>
@@ -502,31 +492,18 @@ export function SongLibraryPage() {
       {/* User songs section */}
       {showUserSection && (
         <section className="mb-6">
-          <button
-            onClick={() => toggleGroup("my")}
-            className="flex w-full items-center gap-2 text-left mb-2"
+          <SectionDivider
+            label="My Songs"
+            count={filteredUserSongs.length}
+            collapsed={collapsedGroups.has("my")}
+            onToggle={() => toggleGroup("my")}
           >
-            <svg
-              className={`h-3.5 w-3.5 shrink-0 transition-transform ${collapsedGroups.has("my") ? "" : "rotate-90"}`}
-              fill="var(--color-text-secondary)"
-              viewBox="0 0 24 24"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            <h2 className="text-base font-bold" style={{ color: "var(--color-text)" }}>
-              My Songs
-            </h2>
-            <span className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-              ({filteredUserSongs.length})
-            </span>
-          </button>
-          {!collapsedGroups.has("my") && (
             <div className="space-y-2">
               {filteredUserSongs.map((song) => (
                 <SongRow key={song.id} song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
               ))}
             </div>
-          )}
+          </SectionDivider>
         </section>
       )}
 
@@ -539,31 +516,18 @@ export function SongLibraryPage() {
             const isCollapsed = collapsedGroups.has(diff);
             return (
               <div key={diff}>
-                {/* Subtle collapsible divider */}
-                <button
-                  onClick={() => toggleGroup(diff)}
-                  className="flex w-full items-center gap-3 my-3 cursor-pointer"
+                <SectionDivider
+                  label={`${difficultyLabels[diff] ?? ""} · ${diff}/10`}
+                  count={diffSongs.length}
+                  collapsed={isCollapsed}
+                  onToggle={() => toggleGroup(diff)}
                 >
-                  <div className="flex-1 h-px" style={{ backgroundColor: "var(--color-border)" }} />
-                  <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider" style={{ color: "var(--color-text-secondary)" }}>
-                    {difficultyLabels[diff] ?? ""} · {diff}/10 · {diffSongs.length} {diffSongs.length === 1 ? "song" : "songs"}
-                    <svg
-                      className={`h-2.5 w-2.5 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </span>
-                  <div className="flex-1 h-px" style={{ backgroundColor: "var(--color-border)" }} />
-                </button>
-                {!isCollapsed && diffSongs.map((song) => (
-                  <div key={song.id} className="mb-2">
-                    <SongRow song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
-                  </div>
-                ))}
+                  {diffSongs.map((song) => (
+                    <div key={song.id} className="mb-2">
+                      <SongRow song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
+                    </div>
+                  ))}
+                </SectionDivider>
               </div>
             );
           })}
