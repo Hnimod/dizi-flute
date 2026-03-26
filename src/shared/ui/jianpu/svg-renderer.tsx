@@ -132,6 +132,7 @@ export function renderSvgItems(
         let beam2Idx = 0;
         for (let ci = 0; ci <= item.children.length; ci++) {
           const child = item.children[ci];
+          if (child && !isBeat(child.token)) continue; // skip annotations
           const isSixteenth =
             child?.token.type === "note" && child.token.duration === "sixteenth";
           if (isSixteenth && runStart === null) {
