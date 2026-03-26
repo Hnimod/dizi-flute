@@ -29,7 +29,8 @@ export function renderSvgItems(
   elements: React.ReactNode[],
   keyPrefix: string,
   opts?: InteractiveOpts,
-) {
+  incomingVolta?: { ending: number } | null,
+): { openVolta: { ending: number } | null } {
   const pendingAnnotations: string[] = [];
 
   for (let idx = 0; idx < items.length; idx++) {
@@ -160,19 +161,20 @@ export function renderSvgItems(
   }
 
   // Post-pass: render volta brackets
-  let currentVolta: { ending: number; startX: number } | null = null;
+  let currentVolta: { ending: number; startX: number; continuation: boolean } | null =
+    incomingVolta ? { ending: incomingVolta.ending, startX: 0, continuation: true } : null;
   for (let idx = 0; idx < items.length; idx++) {
     const item = items[idx]!;
     if (item.token.type === "volta") {
       if (currentVolta) {
-        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true);
+        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true, currentVolta.continuation);
       }
       const nextItem = items[idx + 1];
       const startX = nextItem ? nextItem.x : item.x;
-      currentVolta = { ending: item.token.ending, startX };
+      currentVolta = { ending: item.token.ending, startX, continuation: false };
     } else if (item.token.type === "bar" && (item.token.value === ":|" || item.token.value === "||")) {
       if (currentVolta) {
-        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true);
+        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true, currentVolta.continuation);
         currentVolta = null;
       }
     }
@@ -180,8 +182,9 @@ export function renderSvgItems(
   // Close volta at end of line if still open (no right edge — continues next line)
   if (currentVolta && items.length > 0) {
     const last = items[items.length - 1]!;
-    renderVoltaBracket(currentVolta, last.x + last.width / 2, elements, keyPrefix, false);
+    renderVoltaBracket(currentVolta, last.x + last.width / 2, elements, keyPrefix, false, currentVolta.continuation);
   }
+  return { openVolta: currentVolta ? { ending: currentVolta.ending } : null };
 }
 
 function renderVoltaBracket(
@@ -190,16 +193,21 @@ function renderVoltaBracket(
   elements: React.ReactNode[],
   keyPrefix: string,
   closedEnd: boolean,
+  continuation: boolean = false,
 ) {
   const y = Y_VOLTA;
   elements.push(
-    <g key={`${keyPrefix}-volta-${volta.ending}-${volta.startX}`}>
-      <line x1={volta.startX} y1={y + 5} x2={volta.startX} y2={y} stroke="var(--color-text)" strokeWidth="1" />
+    <g key={`${keyPrefix}-volta-${volta.ending}-${volta.startX}-${continuation ? "cont" : "start"}`}>
+      {!continuation && (
+        <line x1={volta.startX} y1={y + 5} x2={volta.startX} y2={y} stroke="var(--color-text)" strokeWidth="1" />
+      )}
       <line x1={volta.startX} y1={y} x2={endX} y2={y} stroke="var(--color-text)" strokeWidth="1" />
       {closedEnd && (
         <line x1={endX} y1={y} x2={endX} y2={y + 5} stroke="var(--color-text)" strokeWidth="1" />
       )}
-      <text x={volta.startX - 10} y={y + 5} fontSize="7" fontWeight="600" fill="var(--color-text)">{volta.ending}.</text>
+      {!continuation && (
+        <text x={volta.startX - 10} y={y + 5} fontSize="7" fontWeight="600" fill="var(--color-text)">{volta.ending}.</text>
+      )}
     </g>,
   );
 }

@@ -119,7 +119,9 @@ export function JianpuRenderer({
         </div>
       )}
 
-      {lineLayouts.map((layout, lineIdx) => {
+      {(() => {
+        let openVolta: { ending: number } | null = null;
+        return lineLayouts.map((layout, lineIdx) => {
         if (layout.isEmpty) {
           return <div key={lineIdx} className="h-2" />;
         }
@@ -131,7 +133,8 @@ export function JianpuRenderer({
           onNoteHover: handleNoteHover,
           onNoteLeave: handleNoteLeave,
         };
-        renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts);
+        const voltaResult = renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts, openVolta);
+        openVolta = voltaResult.openVolta;
 
         // Per-line highlight
         const activeItem = findActiveBeat(layout.items, activeBeatIndex);
@@ -189,7 +192,8 @@ export function JianpuRenderer({
             {svgElements}
           </svg>
         );
-      })}
+      });
+      })()}
 
       {/* Tooltip */}
       {tooltip && (
