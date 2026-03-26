@@ -11,7 +11,9 @@ export const song: Song = {
   key: "C",
   timeSignature: "2/4",
   jianpu: `
-( [ 3_ orn:fork 3_ ] [ 6,_ 2_ ]  | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ 6,_ 1 ] | [ orn:fork 1 3 ] 2 ) ||`,
+( [ 3_ fork 3_ ] [ 6,_ 2_ ]  | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ 6,_ 1 ] | [ fork 1 3 ] 2 ) | ( [ 3 fork 3 ] [ 6, 2 ] | 1 ) ( [ 5,_ 6,_ ] | 1 ) ( [ 3 2 ] | [ 1_ 6,_ ] 5, ) |
+( [ 5 fork 5 ] [ 3 fork 3 ] | [ 5 fork 5 ] 2 ) | [ 3 2 ] [ 1 1 ] | [ 6, 1 ] 2
+||`,
   description:
     "Classic folk piece for practicing overlapping tones (叠音). Pentatonic melody with smooth stepwise motion.",
   origin: "Traditional Chinese folk music (江南丝竹)",

@@ -134,7 +134,8 @@ export function renderSvgItems(
             x={targetX}
             y={Y_MARK}
             textAnchor="middle"
-            fontSize={isChar ? 10 : 8}
+            dominantBaseline="central"
+            fontSize={8}
             fontStyle={isChar ? "normal" : "italic"}
             fontWeight={isChar ? "700" : undefined}
             fontFamily="sans-serif"
@@ -841,7 +842,8 @@ function renderSvgToken(
           x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
-          fontSize={isChar2 ? 10 : 8}
+          dominantBaseline="central"
+          fontSize={8}
           fontStyle={isChar2 ? "normal" : "italic"}
           fontWeight={isChar2 ? "700" : undefined}
           fontFamily="sans-serif"

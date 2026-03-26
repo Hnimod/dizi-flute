@@ -31,6 +31,21 @@ function beatDuration(token: Token): number {
   return 1.0;
 }
 
+/** Auto-assign duration to notes/rests inside beam groups based on nesting depth */
+export function normalizeBeamDurations(tokens: Token[]): Token[] {
+  let depth = 0;
+  for (const token of tokens) {
+    if (token.type === "beam-start") { depth++; continue; }
+    if (token.type === "beam-end") { depth--; continue; }
+    if (depth > 0 && (token.type === "note" || token.type === "rest")) {
+      if (!(token as { duration?: string }).duration) {
+        (token as { duration?: string }).duration = depth >= 2 ? "sixteenth" : "eighth";
+      }
+    }
+  }
+  return tokens;
+}
+
 /** Returns duration multiplier per beat index: 1.0=quarter, 0.5=eighth, 0.25=sixteenth */
 export function buildBeatSchedule(content: string): number[] {
   const schedule: number[] = [];
@@ -39,7 +54,7 @@ export function buildBeatSchedule(content: string): number[] {
     const trimmed = line.trim();
     if (trimmed === "") continue;
 
-    const tokens = trimmed.split(/\s+/).map(parseToken);
+    const tokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
     for (const t of tokens) {
       if (isBeat(t)) {
         schedule.push(beatDuration(t));
@@ -84,6 +99,15 @@ export function parseToken(raw: string): Token {
   if (raw.startsWith("T:")) {
     return { type: "tonguing", technique: raw.slice(2) };
   }
+
+  // Ornament shorthand: Chinese characters or short English names
+  const ORNAMENT_SHORTHAND: Record<string, string> = {
+    "\u53C8": "fork", "\u53E0": "die", "\u6253": "da", "\u8D60": "zeng", "\u6CE2": "bo", "\u82B1": "flutter",
+    "fork": "fork", "die": "die", "da": "da", "zeng": "zeng", "bo": "bo",
+    "vib": "vibrato", "flutter": "flutter", "su": "slide-up", "sd": "slide-down",
+  };
+  const ornShort = ORNAMENT_SHORTHAND[raw];
+  if (ornShort) return { type: "ornament", name: ornShort };
 
   // Ornament annotation: orn:slide-up, orn:vibrato, etc.
   if (raw.startsWith("orn:")) {

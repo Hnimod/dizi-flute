@@ -28,11 +28,11 @@ Breath vibrato (气震音, qì zhèn yīn) is the signature expressive technique
 
 ## In Notation
 
-Vibrato is marked with a wavy line **∿** above the note. In notation: \`orn:vibrato\` before the note.
+Vibrato is marked with a wavy line **∿** above the note. In notation: \`vib\` before the note.
 
 ## Styles
 
 - **Southern style:** Gentle, narrow vibrato — subtle and refined
 - **Northern style:** Wider, more pronounced vibrato — dramatic and passionate`,
-    notationExample: "orn:vibrato 5 - - - | orn:vibrato 3 - orn:vibrato 6 - ||",
+    notationExample: "vib 5 - - - | vib 3 - vib 6 - ||",
   };

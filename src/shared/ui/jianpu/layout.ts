@@ -55,8 +55,11 @@ export function layoutLine(
           const beamChildren: LayoutItem[] = [];
           i++;
           const beamX = x;
-          while (i < tokens.length && tokens[i]!.type !== "beam-end") {
+          let beamDepth = 1;
+          while (i < tokens.length && beamDepth > 0) {
             const bt = tokens[i]!;
+            if (bt.type === "beam-start") { beamDepth++; i++; continue; }
+            if (bt.type === "beam-end") { beamDepth--; if (beamDepth === 0) break; i++; continue; }
             const w = beamNoteWidth(bt);
             beamChildren.push({
               token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
@@ -65,7 +68,7 @@ export function layoutLine(
             x += w;
             i++;
           }
-          i++; // skip beam-end
+          i++; // skip outer beam-end
           children.push({
             token: { type: "beam-start" }, x: beamX + (x - beamX) / 2,
             width: x - beamX, beatIndex: null, tokenIdx: ti, children: beamChildren, groupType: "beam",
@@ -89,8 +92,11 @@ export function layoutLine(
       const children: LayoutItem[] = [];
       i++;
       const beamX = x;
-      while (i < tokens.length && tokens[i]!.type !== "beam-end") {
+      let beamDepth = 1;
+      while (i < tokens.length && beamDepth > 0) {
         const bt = tokens[i]!;
+        if (bt.type === "beam-start") { beamDepth++; i++; continue; }
+        if (bt.type === "beam-end") { beamDepth--; if (beamDepth === 0) break; i++; continue; }
         const w = beamNoteWidth(bt);
         children.push({
           token: bt, x: x + w / 2, width: w, tokenIdx: tokenIdxOffset + i,
@@ -99,7 +105,7 @@ export function layoutLine(
         x += w;
         i++;
       }
-      i++; // skip beam-end
+      i++; // skip outer beam-end
       items.push({
         token: { type: "beam-start" }, x: beamX + (x - beamX) / 2,
         width: x - beamX, beatIndex: null, tokenIdx: ti, children, groupType: "beam",

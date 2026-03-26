@@ -44,7 +44,11 @@ Header → blank line → notation lines (space-separated tokens).
 
 ## Beamed Groups
 
-\`[ 3_ 5_ 6_ 1'_ ]\` — group notes under a shared underline beam.
+\`[ 3 5 6 1' ]\` — group notes under a shared beam (eighth notes). The \`_\` suffix is optional inside beams; notes auto-default to eighth.
+
+\`[ [ 3 5 ] [ 6 1' ] ]\` — nested beams render double beam lines (sixteenth notes).
+
+\`[ 3_ 5_ 6_ 1'_ ]\` — explicit \`_\` also works and is equivalent to the above.
 
 ## Accidentals
 
@@ -64,7 +68,25 @@ Combine: \`#5'_^\` = sharp 5, octave up, eighth, fermata.
 
 - **Trill**: \`tr3\` — "tr" above note
 - **Grace note**: \`(2)3\` — grace note 2 before main note 3
-- **Ornament annotations**: \`orn:vibrato\`, \`orn:slide-up\`, \`orn:slide-down\`, \`orn:flutter\`, \`orn:tap\`, \`orn:stack\`, \`orn:trail\`, \`orn:gliss\`
+- **Double grace note**: \`(2)(3)5\` — two grace notes before main note
+
+### Ornament Annotations
+
+Place before the note. Three equivalent syntaxes: full (\`orn:xxx\`), Chinese character, or short English name.
+
+| Full | Chinese | Short | Display | Description |
+|------|---------|-------|---------|-------------|
+| \`orn:fork\` | \`\u53C8\` | \`fork\` | \u53C8 | Fork fingering (alternate tone color) |
+| \`orn:die\` | \`\u53E0\` | \`die\` | \u53E0 | Stacked grace (from above) |
+| \`orn:da\` | \`\u6253\` | \`da\` | \u6253 | Struck grace (from below) |
+| \`orn:zeng\` | \`\u8D60\` | \`zeng\` | \u8D60 | Trailing note at end |
+| \`orn:bo\` | \`\u6CE2\` | \`bo\` | \u6CE2 | Mordent (upper-neighbor flick) |
+| \`orn:vibrato\` | — | \`vib\` | \u223F | Breath vibrato |
+| \`orn:flutter\` | \`\u82B1\` | \`flutter\` | \u82B1 | Flutter tongue |
+| \`orn:slide-up\` | — | \`su\` | \u2197 | Slide up |
+| \`orn:slide-down\` | — | \`sd\` | \u2198 | Slide down |
+
+Example: \`\u53E0 5\` is equivalent to \`orn:die 5\` and \`die 5\`.
 
 ## Tonguing
 
@@ -100,5 +122,5 @@ Combine: \`#5'_^\` = sharp 5, octave up, eighth, fermata.
 > \\\`\\\`\\\`
 > [paste jianpu]
 > \\\`\\\`\\\`
-> Please suggest: tonguing (T:single/double/triple), ornaments (orn:vibrato etc.), breathing points, dynamics.`,
+> Please suggest: tonguing (T:single/double/triple), ornaments (\u53E0/\u6253/\u6CE2/\u53C8/\u8D60 or orn:vibrato/orn:die/orn:da etc.), breathing points, dynamics.`,
   };

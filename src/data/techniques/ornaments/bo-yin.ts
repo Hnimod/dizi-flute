@@ -26,6 +26,6 @@ export const technique: Technique = {
 
 ## In Notation
 
-波音 is marked with **波** above the note. In notation: \`orn:bo\` before the note.`,
-    notationExample: "orn:bo 5 - - - | orn:bo 3 - orn:bo 6 - ||",
+波音 is marked with **波** above the note. In notation: \`bo\` before the note.`,
+    notationExample: "bo 5 - - - | bo 3 - bo 6 - ||",
   };

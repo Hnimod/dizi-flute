@@ -29,7 +29,7 @@ Real dizi music rarely uses just one ornament type. Skilled players mix 叠音, 
 ## Key Principle
 
 Ornaments should enhance the music, not clutter it. Less is more — a well-placed ornament is worth more than a dozen random ones.`,
-    notationExample: "(2)3 orn:die 5 orn:da 3 - | orn:bo 6 - (5)6 orn:die 5 ||",
+    notationExample: "(2)3 die 5 da 3 - | bo 6 - (5)6 die 5 ||",
   };
 
   // ── Breathing ──;

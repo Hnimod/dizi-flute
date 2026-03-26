@@ -27,10 +27,10 @@ export const technique: Technique = {
 
 ## In Notation
 
-Flutter tongue is marked with the text "flutter" above the note. In notation: \`orn:flutter\` before the note.
+Flutter tongue is marked with the text "flutter" above the note. In notation: \`flutter\` before the note.
 
 ## Note
 
 Some people physically cannot roll their tongue. If after weeks of practice you still can't, it may be a genetic limitation — this is normal and there are other techniques to achieve similar effects.`,
-    notationExample: "orn:flutter 5 - - - | orn:flutter 3 - orn:flutter 6 - ||",
+    notationExample: "flutter 5 - - - | flutter 3 - flutter 6 - ||",
   };

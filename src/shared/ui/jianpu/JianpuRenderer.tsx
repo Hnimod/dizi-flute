@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Token, JianpuRendererProps, InteractiveOpts, LayoutItem } from "./types";
 import { Y_MARK, Y_NOTE, LINE_HEIGHT } from "./constants";
-import { parseToken } from "./parser";
+import { parseToken, normalizeBeamDurations } from "./parser";
 import { layoutLine, findActiveBeat } from "./layout";
 import { renderSvgItems } from "./svg-renderer";
 import { buildNoteTooltip } from "./tooltip";
@@ -39,7 +39,7 @@ export function JianpuRenderer({
         tokenIdxOffset++; // account for \n
         return { items: [], totalWidth: 0, isEmpty: true };
       }
-      const rawTokens = trimmed.split(/\s+/).map(parseToken);
+      const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
       const result = { ...layoutLine(rawTokens, beatCounter, tokenIdxOffset), isEmpty: false };
       tokenIdxOffset += rawTokens.length + 1; // +1 for the implicit \n between lines
       return result;

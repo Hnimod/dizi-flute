@@ -33,5 +33,5 @@ Slides (滑音, huá yīn) create a smooth, continuous pitch change between two 
 ## In Notation
 
 Slides are marked with a curved arrow between notes.`,
-    notationExample: "5 - orn:slide-up 6 - | 6 - orn:slide-down 5 - ||",
+    notationExample: "5 - su 6 - | 6 - sd 5 - ||",
   };

@@ -464,10 +464,24 @@ These ornaments are characteristic of the dizi and central to Chinese flute styl
 | \u6C14\u9707 | \u6C14\u9707\u97F3 (q\u00ECzh\u00E8ny\u012Bn) | Breath vibrato | Vibrato produced by wavering the airstream. |
 | \u6307\u9707 | \u6307\u9707\u97F3 (zh\u01D0zh\u00E8ny\u012Bn) | Finger vibrato | Vibrato produced by rapidly wavering a finger over a hole without fully closing it. |
 
-**Ornament notation examples:**
+**Notation shorthand:** Ornaments support three equivalent syntaxes. For example, stacked grace can be written as \`orn:die\`, \`\u53E0\`, or \`die\`. Chinese characters are recommended for readability.
+
+| Full syntax | Chinese | Short |
+|------------|---------|-------|
+| \`orn:fork\` | \`\u53C8\` | \`fork\` |
+| \`orn:die\` | \`\u53E0\` | \`die\` |
+| \`orn:da\` | \`\u6253\` | \`da\` |
+| \`orn:zeng\` | \`\u8D60\` | \`zeng\` |
+| \`orn:bo\` | \`\u6CE2\` | \`bo\` |
+| \`orn:vibrato\` | \u2014 | \`vib\` |
+| \`orn:flutter\` | \`\u82B1\` | \`flutter\` |
+| \`orn:slide-up\` | \u2014 | \`su\` |
+| \`orn:slide-down\` | \u2014 | \`sd\` |
+
+**Ornament notation examples (using shorthand):**
 
 \`\`\`jianpu
-tr5 | orn:die 5 orn:da 5 | orn:bo 5 orn:zeng 5 | orn:vibrato 5 - | orn:flutter 5 - | orn:slide-up 5 orn:slide-down 5
+tr5 | \u53E0 5 \u6253 5 | \u6CE2 5 \u8D60 5 | vib 5 - | \u82B1 5 - | su 5 sd 5
 \`\`\`
 
 ### Grace Note Examples in Jianpu

@@ -26,6 +26,6 @@ export const technique: Technique = {
 
 ## In Notation
 
-赠音 is marked with **赠** above the note. In notation: \`orn:zeng\` before the note.`,
-    notationExample: "5 - - orn:zeng 5 | 3 - - orn:zeng 3 ||",
+赠音 is marked with **赠** above the note. In notation: \`zeng\` before the note.`,
+    notationExample: "5 - - zeng 5 | 3 - - zeng 3 ||",
   };

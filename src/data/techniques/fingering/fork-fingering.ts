@@ -25,6 +25,6 @@ Fork fingering (叉口, chā kǒu) means having an open hole between two closed 
 
 ## In Notation
 
-Fork fingering is marked with **又** above the note. In notation: \`orn:fork\` before the note.`,
-    notationExample: "orn:fork 5 - orn:fork 3 - | 5 orn:fork 5 3 orn:fork 3 ||",
+Fork fingering is marked with **又** above the note. In notation: \`fork\` before the note.`,
+    notationExample: "fork 5 - fork 3 - | 5 fork 5 3 fork 3 ||",
   };

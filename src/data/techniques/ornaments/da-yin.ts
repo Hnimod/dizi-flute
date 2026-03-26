@@ -26,6 +26,6 @@ export const technique: Technique = {
 
 ## In Notation
 
-打音 is marked with **打** above the note. In notation: \`orn:da\` before the note.`,
-    notationExample: "orn:da 5 - orn:da 5 - | orn:da 3 - orn:da 3 - ||",
+打音 is marked with **打** above the note. In notation: \`da\` before the note.`,
+    notationExample: "da 5 - da 5 - | da 3 - da 3 - ||",
   };
