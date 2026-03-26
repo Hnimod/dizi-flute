@@ -52,7 +52,7 @@ export function TechniqueLibraryPage() {
           Techniques
         </h1>
         <p className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
-          Learn dizi techniques — tap any to see exercises and songs.
+          Learn dizi techniques — tap any to learn more and find related songs.
         </p>
       </header>
 
