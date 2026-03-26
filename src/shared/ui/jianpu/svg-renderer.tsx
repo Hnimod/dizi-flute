@@ -29,6 +29,13 @@ const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: 
   single: { id: "tonguing", name: "吐音 Single Tonguing", description: "Crisp tongue attack — say 'tu'" },
   double: { id: "double-tonguing", name: "双吐 Double Tonguing", description: "Alternating tu-ku for fast passages" },
   triple: { id: "triple-tonguing", name: "三吐 Triple Tonguing", description: "Tu-tu-ku pattern for triplets" },
+  tie: { id: "long-tones", name: "连音线 Tie", description: "Hold the note continuously — don't re-tongue the second note" },
+  slur: { id: "long-tones", name: "圆滑线 Slur", description: "Play all notes smoothly in one breath without re-tonguing" },
+  repeatStart: { id: "rhythm-reading", name: "反复记号 Repeat Start", description: "Play from here, then go back and repeat when you reach the repeat end" },
+  repeatEnd: { id: "rhythm-reading", name: "反复记号 Repeat End", description: "Go back to the repeat start and play the section again" },
+  volta1: { id: "rhythm-reading", name: "第一房子 1st Ending", description: "Play this ending the first time through the repeat" },
+  volta2: { id: "rhythm-reading", name: "第二房子 2nd Ending", description: "Play this ending the second time — skip the 1st ending" },
+  volta3: { id: "rhythm-reading", name: "第三房子 3rd Ending", description: "Play this ending the third time through" },
 };
 
 function ornamentDisplay(name: string): { text: string; isChar: boolean } {
@@ -143,14 +150,14 @@ export function renderSvgItems(
         const ex = last.x;
         const midX = (sx + ex) / 2;
         const arcHeight = Math.min(10, (ex - sx) * 0.15 + 4);
+        const slurInfo = SYMBOL_TECHNIQUE["slur"];
+        const slurHover = opts?.onSymbolHover && slurInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, slurInfo) : undefined;
+        const slurD = `M ${sx} ${Y_OCTAVE_UP - 4} Q ${midX} ${Y_OCTAVE_UP - 4 - arcHeight} ${ex} ${Y_OCTAVE_UP - 4}`;
         elements.push(
-          <path
-            key={`${key}-arc`}
-            d={`M ${sx} ${Y_OCTAVE_UP - 4} Q ${midX} ${Y_OCTAVE_UP - 4 - arcHeight} ${ex} ${Y_OCTAVE_UP - 4}`}
-            fill="none"
-            stroke="var(--color-text-secondary)"
-            strokeWidth="1.2"
-          />,
+          <g key={`${key}-arc`} style={slurHover ? { cursor: "help" } : undefined} onMouseEnter={slurHover} onMouseLeave={opts?.onSymbolLeave}>
+            <path d={slurD} fill="none" stroke="transparent" strokeWidth="6" />
+            <path d={slurD} fill="none" stroke="var(--color-text-secondary)" strokeWidth="1.2" />
+          </g>,
         );
       }
     } else if (item.groupType === "beam" && item.children) {
@@ -214,14 +221,14 @@ export function renderSvgItems(
     const item = items[idx]!;
     if (item.token.type === "volta") {
       if (currentVolta) {
-        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true, currentVolta.continuation);
+        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true, currentVolta.continuation, opts);
       }
       const nextItem = items[idx + 1];
       const startX = nextItem ? nextItem.x : item.x;
       currentVolta = { ending: item.token.ending, startX, continuation: false };
     } else if (item.token.type === "bar" && (item.token.value === ":|" || item.token.value === "||")) {
       if (currentVolta) {
-        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true, currentVolta.continuation);
+        renderVoltaBracket(currentVolta, item.x, elements, keyPrefix, true, currentVolta.continuation, opts);
         currentVolta = null;
       }
     }
@@ -229,7 +236,7 @@ export function renderSvgItems(
   // Close volta at end of line if still open (no right edge — continues next line)
   if (currentVolta && items.length > 0) {
     const last = items[items.length - 1]!;
-    renderVoltaBracket(currentVolta, last.x + last.width / 2, elements, keyPrefix, false, currentVolta.continuation);
+    renderVoltaBracket(currentVolta, last.x + last.width / 2, elements, keyPrefix, false, currentVolta.continuation, opts);
   }
   // Post-pass: render tie arcs (~( ... ~))
   // Flatten all items including beam/slur children for tie lookups
@@ -257,14 +264,14 @@ export function renderSvgItems(
         if (isBeat(allFlat[j]!.token)) { tieEndX = allFlat[j]!.x; break; }
       }
       const midX = (tieStartX + tieEndX) / 2;
+      const tieInfo = SYMBOL_TECHNIQUE["tie"];
+      const tieHover = opts?.onSymbolHover && tieInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tieInfo) : undefined;
+      const arcD = `M ${tieStartX} ${Y_NOTE - 12} Q ${midX} ${Y_NOTE - 20} ${tieEndX} ${Y_NOTE - 12}`;
       elements.push(
-        <path
-          key={`${keyPrefix}-tie-${tieStartX}`}
-          d={`M ${tieStartX} ${Y_NOTE - 12} Q ${midX} ${Y_NOTE - 20} ${tieEndX} ${Y_NOTE - 12}`}
-          fill="none"
-          stroke="var(--color-text-secondary)"
-          strokeWidth="1.2"
-        />,
+        <g key={`${keyPrefix}-tie-${tieStartX}`} style={tieHover ? { cursor: "help" } : undefined} onMouseEnter={tieHover} onMouseLeave={opts?.onSymbolLeave}>
+          <path d={arcD} fill="none" stroke="transparent" strokeWidth="6" />
+          <path d={arcD} fill="none" stroke="var(--color-text-secondary)" strokeWidth="1.2" />
+        </g>,
       );
       tieStartX = null;
     }
@@ -280,10 +287,20 @@ function renderVoltaBracket(
   keyPrefix: string,
   closedEnd: boolean,
   continuation: boolean = false,
+  opts?: InteractiveOpts,
 ) {
   const y = Y_VOLTA;
+  const vKey = `volta${volta.ending}` as keyof typeof SYMBOL_TECHNIQUE;
+  const vInfo = SYMBOL_TECHNIQUE[vKey] ?? SYMBOL_TECHNIQUE["volta1"];
+  const vHover = opts?.onSymbolHover && vInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, vInfo) : undefined;
   elements.push(
-    <g key={`${keyPrefix}-volta-${volta.ending}-${volta.startX}-${continuation ? "cont" : "start"}`}>
+    <g
+      key={`${keyPrefix}-volta-${volta.ending}-${volta.startX}-${continuation ? "cont" : "start"}`}
+      style={vHover ? { cursor: "help" } : undefined}
+      onMouseEnter={vHover}
+      onMouseLeave={opts?.onSymbolLeave}
+    >
+      <rect x={volta.startX} y={y - 2} width={endX - volta.startX} height={10} fill="transparent" />
       {!continuation && (
         <line x1={volta.startX} y1={y + 5} x2={volta.startX} y2={y} stroke="var(--color-text)" strokeWidth="1" />
       )}
@@ -666,20 +683,28 @@ function renderSvgToken(
           />,
         );
       } else if (isRepeatStart) {
-        // Repeat start: thick line + thin line + two dots
+        const rsInfo = SYMBOL_TECHNIQUE["repeatStart"];
+        const rsHover = opts?.onSymbolHover && rsInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, rsInfo) : undefined;
         elements.push(
-          <line key={`${key}-a`} x1={x - 3} y1={Y_NOTE - 12} x2={x - 3} y2={Y_NOTE + 4} stroke="var(--color-text)" strokeWidth="2.5" />,
-          <line key={`${key}-b`} x1={x + 2} y1={Y_NOTE - 12} x2={x + 2} y2={Y_NOTE + 4} stroke="var(--color-text-secondary)" strokeWidth="1" />,
-          <circle key={`${key}-d1`} cx={x + 5} cy={Y_NOTE - 5} r={1.3} fill="var(--color-text)" />,
-          <circle key={`${key}-d2`} cx={x + 5} cy={Y_NOTE + 1} r={1.3} fill="var(--color-text)" />,
+          <g key={key} style={rsHover ? { cursor: "help" } : undefined} onMouseEnter={rsHover} onMouseLeave={opts?.onSymbolLeave}>
+            <rect x={x - 5} y={Y_NOTE - 12} width={12} height={18} fill="transparent" />
+            <line x1={x - 3} y1={Y_NOTE - 12} x2={x - 3} y2={Y_NOTE + 4} stroke="var(--color-text)" strokeWidth="2.5" />
+            <line x1={x + 2} y1={Y_NOTE - 12} x2={x + 2} y2={Y_NOTE + 4} stroke="var(--color-text-secondary)" strokeWidth="1" />
+            <circle cx={x + 5} cy={Y_NOTE - 5} r={1.3} fill="var(--color-text)" />
+            <circle cx={x + 5} cy={Y_NOTE + 1} r={1.3} fill="var(--color-text)" />
+          </g>,
         );
       } else if (isRepeatEnd) {
-        // Repeat end: two dots + thin line + thick line
+        const reInfo = SYMBOL_TECHNIQUE["repeatEnd"];
+        const reHover = opts?.onSymbolHover && reInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, reInfo) : undefined;
         elements.push(
-          <circle key={`${key}-d1`} cx={x - 5} cy={Y_NOTE - 5} r={1.3} fill="var(--color-text)" />,
-          <circle key={`${key}-d2`} cx={x - 5} cy={Y_NOTE + 1} r={1.3} fill="var(--color-text)" />,
-          <line key={`${key}-a`} x1={x - 2} y1={Y_NOTE - 12} x2={x - 2} y2={Y_NOTE + 4} stroke="var(--color-text-secondary)" strokeWidth="1" />,
-          <line key={`${key}-b`} x1={x + 3} y1={Y_NOTE - 12} x2={x + 3} y2={Y_NOTE + 4} stroke="var(--color-text)" strokeWidth="2.5" />,
+          <g key={key} style={reHover ? { cursor: "help" } : undefined} onMouseEnter={reHover} onMouseLeave={opts?.onSymbolLeave}>
+            <rect x={x - 7} y={Y_NOTE - 12} width={12} height={18} fill="transparent" />
+            <circle cx={x - 5} cy={Y_NOTE - 5} r={1.3} fill="var(--color-text)" />
+            <circle cx={x - 5} cy={Y_NOTE + 1} r={1.3} fill="var(--color-text)" />
+            <line x1={x - 2} y1={Y_NOTE - 12} x2={x - 2} y2={Y_NOTE + 4} stroke="var(--color-text-secondary)" strokeWidth="1" />
+            <line x1={x + 3} y1={Y_NOTE - 12} x2={x + 3} y2={Y_NOTE + 4} stroke="var(--color-text)" strokeWidth="2.5" />
+          </g>,
         );
       } else {
         elements.push(
