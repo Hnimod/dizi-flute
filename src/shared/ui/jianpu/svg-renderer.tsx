@@ -13,6 +13,9 @@ const ORNAMENT_CHARS: Record<string, string> = {
   da: "打",
   zeng: "赠",
   bo: "波",
+  flutter: "花",
+  "slide-up": "↗",
+  "slide-down": "↘",
 };
 
 // Map symbol names to technique page info
