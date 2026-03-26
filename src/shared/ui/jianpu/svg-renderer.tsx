@@ -32,6 +32,9 @@ const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: 
   single: { id: "tonguing", name: "吐音 Single Tonguing", description: "Crisp tongue attack — say 'tu'" },
   double: { id: "double-tonguing", name: "双吐 Double Tonguing", description: "Alternating tu-ku for fast passages" },
   triple: { id: "triple-tonguing", name: "三吐 Triple Tonguing", description: "Tu-tu-ku pattern for triplets" },
+  "rit.": { id: "rhythm-reading", name: "渐慢 Ritardando", description: "Gradually slow down from this point" },
+  "accel.": { id: "rhythm-reading", name: "渐快 Accelerando", description: "Gradually speed up from this point" },
+  "a tempo": { id: "rhythm-reading", name: "回原速 A Tempo", description: "Return to the original tempo" },
   tie: { id: "long-tones", name: "连音线 Tie", description: "Hold the note continuously — don't re-tongue the second note" },
   slur: { id: "long-tones", name: "圆滑线 Slur", description: "Play all notes smoothly in one breath without re-tonguing" },
   repeatStart: { id: "rhythm-reading", name: "反复记号 Repeat Start", description: "Play from here, then go back and repeat when you reach the repeat end" },
@@ -96,6 +99,8 @@ export function renderSvgItems(
     if (item.token.type === "tempo") {
       const next = items[idx + 1];
       const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
+      const tpInfo = SYMBOL_TECHNIQUE[item.token.text];
+      const tpHover = opts?.onSymbolHover && tpInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tpInfo) : undefined;
       elements.push(
         <text
           key={key}
@@ -108,6 +113,9 @@ export function renderSvgItems(
           fontStyle="italic"
           fontFamily="sans-serif"
           fill="var(--color-text-secondary)"
+          style={tpHover ? { cursor: "help" } : undefined}
+          onMouseEnter={tpHover}
+          onMouseLeave={opts?.onSymbolLeave}
         >
           {item.token.text}
         </text>,
@@ -882,7 +890,9 @@ function renderSvgToken(
       );
       break;
     }
-    case "tempo":
+    case "tempo": {
+      const tpInfo2 = SYMBOL_TECHNIQUE[token.text];
+      const tpHover2 = opts?.onSymbolHover && tpInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tpInfo2) : undefined;
       elements.push(
         <text
           key={key}
@@ -895,11 +905,15 @@ function renderSvgToken(
           fontStyle="italic"
           fontFamily="sans-serif"
           fill="var(--color-text-secondary)"
+          style={tpHover2 ? { cursor: "help" } : undefined}
+          onMouseEnter={tpHover2}
+          onMouseLeave={opts?.onSymbolLeave}
         >
           {token.text}
         </text>,
       );
       break;
+    }
     case "text":
       elements.push(
         <text
