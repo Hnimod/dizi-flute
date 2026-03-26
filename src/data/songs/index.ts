@@ -9,6 +9,7 @@ import { song as twinkleTwinkleLittleStar } from "./beginner/twinkle-twinkle-lit
 
 // Elementary (difficulty 3-4)
 import { song as doraemon } from "./elementary/doraemon";
+import { song as kangdingLoveSong } from "./elementary/kangding-love-song";
 import { song as littleWhiteCabbage } from "./elementary/little-white-cabbage";
 
 // Intermediate (difficulty 5-6)
@@ -26,6 +27,7 @@ export const songs: Song[] = [
   twinkleTwinkleLittleStar,
   laoLiuBan,
   doraemon,
+  kangdingLoveSong,
   littleWhiteCabbage,
   daughtersLove,
   beautifulMyth,
