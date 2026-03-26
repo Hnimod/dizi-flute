@@ -13,14 +13,25 @@ const ORNAMENT_CHARS: Record<string, string> = {
   da: "打",
   zeng: "赠",
   bo: "波",
-  vibrato: "〜",
 };
 
-function ornamentDisplay(name: string): { text: string; isChar: boolean; fontSize?: number } {
+function ornamentDisplay(name: string): { text: string; isChar: boolean } {
   const char = ORNAMENT_CHARS[name];
   if (!char) return { text: name, isChar: false };
-  if (name === "vibrato") return { text: char, isChar: true, fontSize: 16 };
   return { text: char, isChar: true };
+}
+
+function renderVibratoWave(x: number, y: number, key: string): React.ReactNode {
+  const w = 5;
+  return (
+    <path
+      key={key}
+      d={`M ${x - w} ${y} q ${w * 0.33} -3 ${w * 0.66} 0 q ${w * 0.33} 3 ${w * 0.66} 0 q ${w * 0.33} -3 ${w * 0.66} 0`}
+      fill="none"
+      stroke="var(--color-text)"
+      strokeWidth="1.2"
+    />
+  );
 }
 
 export function renderSvgItems(
@@ -65,15 +76,17 @@ export function renderSvgItems(
                   : item.token.technique}
           </text>,
         );
+      } else if (item.token.name === "vibrato") {
+        elements.push(renderVibratoWave(targetX, Y_MARK, key));
       } else {
-        const { text: ornText, isChar, fontSize: ornFs } = ornamentDisplay(item.token.name);
+        const { text: ornText, isChar } = ornamentDisplay(item.token.name);
         elements.push(
           <text
             key={key}
             x={targetX}
             y={Y_MARK}
             textAnchor="middle"
-            fontSize={ornFs ?? (isChar ? 10 : 8)}
+            fontSize={isChar ? 10 : 8}
             fontStyle={isChar ? "normal" : "italic"}
             fontWeight={isChar ? "700" : undefined}
             fontFamily="sans-serif"
@@ -690,14 +703,18 @@ function renderSvgToken(
       );
       break;
     case "ornament": {
-      const { text: ornText2, isChar: isChar2, fontSize: ornFs2 } = ornamentDisplay(token.name);
+      if (token.name === "vibrato") {
+        elements.push(renderVibratoWave(x + CELL_NOTE / 2, Y_MARK, key));
+        break;
+      }
+      const { text: ornText2, isChar: isChar2 } = ornamentDisplay(token.name);
       elements.push(
         <text
           key={key}
           x={x + CELL_NOTE / 2}
           y={Y_MARK}
           textAnchor="middle"
-          fontSize={ornFs2 ?? (isChar2 ? 10 : 8)}
+          fontSize={isChar2 ? 10 : 8}
           fontStyle={isChar2 ? "normal" : "italic"}
           fontWeight={isChar2 ? "700" : undefined}
           fontFamily="sans-serif"
