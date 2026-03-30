@@ -83,7 +83,7 @@ export function DualNotationRenderer({
   });
 
   const renderBeforeLine = useCallback(
-    (_lineIdx: number, items: LayoutItem[], maxWidth: number) => {
+    (lineIdx: number, items: LayoutItem[], maxWidth: number) => {
       if (containerWidth <= 0) return null;
       maxWidthRef.current = maxWidth;
       return (
@@ -94,6 +94,7 @@ export function DualNotationRenderer({
           timeSignature={timeSignature}
           containerWidth={containerWidth}
           showJianpu={false}
+          lineIndex={lineIdx}
           onNotePositions={handleNotePositions}
         />
       );

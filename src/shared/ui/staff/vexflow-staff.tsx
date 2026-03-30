@@ -144,11 +144,12 @@ interface VexFlowStaffLineProps {
   timeSignature?: string;
   containerWidth: number;
   showJianpu?: boolean;
+  lineIndex?: number;
   /** Callback with positions after VexFlow renders */
   onNotePositions?: (positions: Map<number, number>, noteStartX: number, noteEndX: number) => void;
 }
 
-export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature, containerWidth, showJianpu = true, onNotePositions }: VexFlowStaffLineProps) {
+export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature, containerWidth, showJianpu = true, lineIndex = 0, onNotePositions }: VexFlowStaffLineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -332,7 +333,8 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
             if (noteIdx < vfNotes.length) {
               const xPx = vfNotes[noteIdx]!.getAbsoluteX();
               if (t === "bar") {
-                positions.set(-(barSeq + 1), xPx);
+                // Unique bar key per line: -(lineIndex * 1000 + barSeq + 1)
+                positions.set(-(lineIndex * 1000 + barSeq + 1), xPx);
                 barSeq++;
               } else if (fi.beatIndex !== null) {
                 positions.set(fi.beatIndex, xPx);

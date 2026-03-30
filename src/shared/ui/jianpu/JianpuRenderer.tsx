@@ -8,7 +8,7 @@ import { renderSvgItems } from "./svg-renderer";
 import { buildNoteTooltip } from "./tooltip";
 import type { NoteTooltipLink } from "./tooltip";
 
-function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>): void {
+function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>, lineIndex = 0): void {
   // First pass: apply direct overrides to beat items and bars
   let barSeq = 0;
   for (const item of items) {
@@ -16,9 +16,9 @@ function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>): v
     if (item.beatIndex !== null && overrides.has(item.beatIndex)) {
       item.x = overrides.get(item.beatIndex)!;
     }
-    // Bar items: match by sequence using negative keys -(barSeq+1)
+    // Bar items: match by sequence using negative keys -(lineIndex * 1000 + barSeq + 1)
     if (item.token.type === "bar") {
-      const barKey = -(barSeq + 1);
+      const barKey = -(lineIndex * 1000 + barSeq + 1);
       if (overrides.has(barKey)) {
         item.x = overrides.get(barKey)!;
       }
@@ -26,7 +26,7 @@ function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>): v
     }
     // Recurse into groups
     if (item.children) {
-      applyXOverrides(item.children, overrides);
+      applyXOverrides(item.children, overrides, lineIndex);
       if (item.children.length > 0) {
         const minX = Math.min(...item.children.map(c => c.x - c.width / 2));
         const maxX = Math.max(...item.children.map(c => c.x + c.width / 2));
@@ -112,9 +112,11 @@ export function JianpuRenderer({
 
   // Apply x-position overrides from staff alignment
   if (xOverrides && xOverrides.size > 0) {
+    let lineIdx = 0;
     for (const layout of lineLayouts) {
-      if (layout.isEmpty) continue;
-      applyXOverrides(layout.items, xOverrides);
+      if (layout.isEmpty) { lineIdx++; continue; }
+      applyXOverrides(layout.items, xOverrides, lineIdx);
+      lineIdx++;
     }
   }
 
