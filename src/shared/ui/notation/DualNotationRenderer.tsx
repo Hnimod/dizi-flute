@@ -21,7 +21,11 @@ export function DualNotationRenderer({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
-  // Track container width for VexFlow rendering
+  // xOverrides: beatIndex → SVG viewBox x coordinate
+  const [xOverrides, setXOverrides] = useState<Map<number, number> | undefined>();
+  const maxWidthRef = useRef(0);
+  const positionsCollected = useRef(false);
+
   useEffect(() => {
     if (!showStaff || !containerRef.current) return;
     const observer = new ResizeObserver((entries) => {
@@ -34,19 +38,62 @@ export function DualNotationRenderer({
     return () => observer.disconnect();
   }, [showStaff]);
 
+  // Reset positions when content/key/time changes
+  useEffect(() => {
+    positionsCollected.current = false;
+    setXOverrides(undefined);
+  }, [content, keySignature, timeSignature, containerWidth]);
+
+  // Collect note positions from VexFlow — called from useEffect in VexFlowStaffLine
+  // Only applies overrides once to avoid infinite loop
+  const allPositions = useRef(new Map<number, number>());
+
+  const handleNotePositions = useCallback(
+    (positions: Map<number, number>) => {
+      if (positionsCollected.current) return; // only collect once
+
+      for (const [beatIdx, xPx] of positions) {
+        allPositions.current.set(beatIdx, xPx);
+      }
+    },
+    [],
+  );
+
+  // After first render with VexFlow, apply collected positions
+  useEffect(() => {
+    if (!showStaff || positionsCollected.current || allPositions.current.size === 0) return;
+    const mw = maxWidthRef.current;
+    if (containerWidth <= 0 || mw <= 0) return;
+
+    // Schedule override application after VexFlow has rendered
+    const timer = setTimeout(() => {
+      const overrides = new Map<number, number>();
+      for (const [beatIdx, xPx] of allPositions.current) {
+        overrides.set(beatIdx, xPx * (mw / containerWidth));
+      }
+      positionsCollected.current = true;
+      setXOverrides(overrides);
+    }, 50);
+    return () => clearTimeout(timer);
+  });
+
   const renderBeforeLine = useCallback(
     (_lineIdx: number, items: LayoutItem[], maxWidth: number) => {
       if (containerWidth <= 0) return null;
+      maxWidthRef.current = maxWidth;
       return (
         <VexFlowStaffLine
           items={items}
           maxWidth={maxWidth}
           keySignature={keySignature || "C"}
+          timeSignature={timeSignature}
           containerWidth={containerWidth}
+          showJianpu={false}
+          onNotePositions={handleNotePositions}
         />
       );
     },
-    [keySignature, containerWidth],
+    [keySignature, timeSignature, containerWidth, handleNotePositions],
   );
 
   return (
@@ -58,6 +105,7 @@ export function DualNotationRenderer({
         tempo={tempo}
         renderBeforeLine={showStaff && containerWidth > 0 ? renderBeforeLine : undefined}
         viewBoxPadLeft={0}
+        xOverrides={xOverrides}
         {...jianpuProps}
       />
     </div>

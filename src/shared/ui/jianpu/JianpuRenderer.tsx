@@ -8,6 +8,25 @@ import { renderSvgItems } from "./svg-renderer";
 import { buildNoteTooltip } from "./tooltip";
 import type { NoteTooltipLink } from "./tooltip";
 
+function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>): void {
+  for (const item of items) {
+    if (item.beatIndex !== null && overrides.has(item.beatIndex)) {
+      const newX = overrides.get(item.beatIndex)!;
+      item.x = newX;
+    }
+    if (item.children) {
+      applyXOverrides(item.children, overrides);
+      // Recalculate group x as center of children
+      if (item.children.length > 0) {
+        const minX = Math.min(...item.children.map(c => c.x - c.width / 2));
+        const maxX = Math.max(...item.children.map(c => c.x + c.width / 2));
+        item.x = (minX + maxX) / 2;
+        item.width = maxX - minX;
+      }
+    }
+  }
+}
+
 export function JianpuRenderer({
   content,
   className = "",
@@ -23,6 +42,7 @@ export function JianpuRenderer({
   origin,
   renderBeforeLine,
   viewBoxPadLeft = 0,
+  xOverrides,
   interactive,
   selectedTokenIdx,
   onTokenClick,
@@ -46,6 +66,14 @@ export function JianpuRenderer({
       tokenIdxOffset += rawTokens.length + 1; // +1 for the implicit \n between lines
       return result;
     });
+
+  // Apply x-position overrides from staff alignment
+  if (xOverrides && xOverrides.size > 0) {
+    for (const layout of lineLayouts) {
+      if (layout.isEmpty) continue;
+      applyXOverrides(layout.items, xOverrides);
+    }
+  }
 
   const maxWidth = Math.max(...lineLayouts.map((l) => l.totalWidth), 1);
 

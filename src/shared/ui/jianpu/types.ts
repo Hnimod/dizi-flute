@@ -69,6 +69,8 @@ export interface JianpuRendererProps {
   renderBeforeLine?: (lineIdx: number, items: LayoutItem[], maxWidth: number) => React.ReactNode;
   /** Extra left padding in SVG units added to viewBox for clef/key sig space */
   viewBoxPadLeft?: number;
+  /** Override x-positions for layout items (map from beatIndex to SVG x). Used for staff alignment. */
+  xOverrides?: Map<number, number>;
   // Interactive editor props
   interactive?: boolean;
   selectedTokenIdx?: number | null;
