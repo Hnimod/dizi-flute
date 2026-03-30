@@ -147,7 +147,7 @@ interface VexFlowStaffLineProps {
   timeSignature?: string;
   containerWidth: number;
   showJianpu?: boolean;
-  /** Callback with note positions (beatIndex → pixel x) after VexFlow renders, for aligning jianpu below */
+  /** Callback with positions after VexFlow renders: beatIndex → pixel x for notes, barIndex (negative) → pixel x for bars */
   onNotePositions?: (positions: Map<number, number>) => void;
 }
 
@@ -332,16 +332,25 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
 
       voice.draw(context, stave);
 
-      // Extract note x-positions keyed by beatIndex for jianpu alignment
+      // Extract x-positions for jianpu alignment
+      // Notes/rests: keyed by beatIndex (positive)
+      // Bars: keyed by -(barSequence + 1) (negative, starting from -1)
       if (onNotePositions) {
         const positions = new Map<number, number>();
         let noteIdx = 0;
+        let barSeq = 0;
         for (let i = 0; i < flat.length; i++) {
           const fi = flat[i]!;
           const t = fi.token.type;
           if (t === "note" || t === "rest" || t === "bar") {
-            if (noteIdx < vfNotes.length && fi.beatIndex !== null) {
-              positions.set(fi.beatIndex, vfNotes[noteIdx]!.getAbsoluteX());
+            if (noteIdx < vfNotes.length) {
+              const xPx = vfNotes[noteIdx]!.getAbsoluteX();
+              if (t === "bar") {
+                positions.set(-(barSeq + 1), xPx);
+                barSeq++;
+              } else if (fi.beatIndex !== null) {
+                positions.set(fi.beatIndex, xPx);
+              }
             }
             noteIdx++;
           }

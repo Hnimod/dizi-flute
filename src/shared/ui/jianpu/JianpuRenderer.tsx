@@ -9,20 +9,63 @@ import { buildNoteTooltip } from "./tooltip";
 import type { NoteTooltipLink } from "./tooltip";
 
 function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>): void {
+  // First pass: apply direct overrides to beat items and bars
+  let barSeq = 0;
   for (const item of items) {
+    // Beat items (notes, rests, holds)
     if (item.beatIndex !== null && overrides.has(item.beatIndex)) {
-      const newX = overrides.get(item.beatIndex)!;
-      item.x = newX;
+      item.x = overrides.get(item.beatIndex)!;
     }
+    // Bar items: match by sequence using negative keys -(barSeq+1)
+    if (item.token.type === "bar") {
+      const barKey = -(barSeq + 1);
+      if (overrides.has(barKey)) {
+        item.x = overrides.get(barKey)!;
+      }
+      barSeq++;
+    }
+    // Recurse into groups
     if (item.children) {
       applyXOverrides(item.children, overrides);
-      // Recalculate group x as center of children
       if (item.children.length > 0) {
         const minX = Math.min(...item.children.map(c => c.x - c.width / 2));
         const maxX = Math.max(...item.children.map(c => c.x + c.width / 2));
         item.x = (minX + maxX) / 2;
         item.width = maxX - minX;
       }
+    }
+  }
+
+  // Helper: check if an item was directly overridden
+  const isOverridden = (it: LayoutItem) =>
+    (it.beatIndex !== null && overrides.has(it.beatIndex)) ||
+    it.token.type === "bar" ||
+    (it.children && it.children.length > 0);
+
+  // Second pass: interpolate remaining non-overridden items (holds, breaths, ties)
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]!;
+    if (isOverridden(item)) continue;
+
+    // Find nearest overridden neighbor to left and right
+    let leftItem: LayoutItem | null = null;
+    for (let j = i - 1; j >= 0; j--) {
+      if (isOverridden(items[j]!)) { leftItem = items[j]!; break; }
+    }
+    let rightItem: LayoutItem | null = null;
+    for (let j = i + 1; j < items.length; j++) {
+      if (isOverridden(items[j]!)) { rightItem = items[j]!; break; }
+    }
+
+    if (leftItem && rightItem) {
+      const leftIdx = items.indexOf(leftItem);
+      const rightIdx = items.indexOf(rightItem);
+      const t = (i - leftIdx) / (rightIdx - leftIdx);
+      item.x = leftItem.x + t * (rightItem.x - leftItem.x);
+    } else if (leftItem) {
+      item.x = leftItem.x + item.width;
+    } else if (rightItem) {
+      item.x = rightItem.x - item.width;
     }
   }
 }
