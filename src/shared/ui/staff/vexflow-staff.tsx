@@ -93,7 +93,7 @@ function noteToVexKey(digit: string, octave: number, scaleInfo: ScaleEntry[]): s
  * Map jianpu duration to VexFlow duration string.
  * VexFlow durations: "w" (whole), "h" (half), "q" (quarter), "8" (eighth), "16" (sixteenth)
  */
-function toVexDuration(token: Token): string {
+function toVexDuration(token: Token, holdCount = 0): string {
   if (token.type !== "note" && token.type !== "rest") return "q";
 
   const dur = (token as { duration?: string }).duration;
@@ -101,6 +101,11 @@ function toVexDuration(token: Token): string {
 
   if (dur === "sixteenth") return dotted ? "16d" : "16";
   if (dur === "eighth") return dotted ? "8d" : "8";
+
+  // Quarter note + holds → longer visual duration
+  if (holdCount >= 3) return "w";
+  if (holdCount === 2) return "hd"; // dotted half = 3 beats
+  if (holdCount === 1) return dotted ? "hd" : "h";
   return dotted ? "qd" : "q";
 }
 
@@ -203,7 +208,14 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
         const vexKey = noteToVexKey(mainDigit, token.octave, scaleInfo);
         if (!vexKey) continue;
 
-        const duration = toVexDuration(token);
+        // Count following holds for visual duration
+        let holdCount = 0;
+        for (let j = i + 1; j < flat.length; j++) {
+          if (flat[j]!.token.type === "hold") holdCount++;
+          else break;
+        }
+
+        const duration = toVexDuration(token, holdCount);
         const note = new StaveNote({
           keys: [vexKey],
           duration,
