@@ -47,14 +47,18 @@ export function DualNotationRenderer({
   // Collect note positions from VexFlow — called from useEffect in VexFlowStaffLine
   // Only applies overrides once to avoid infinite loop
   const allPositions = useRef(new Map<number, number>());
+  const noteStartXRef = useRef(0);
+  const noteEndXRef = useRef(0);
 
   const handleNotePositions = useCallback(
-    (positions: Map<number, number>) => {
-      if (positionsCollected.current) return; // only collect once
+    (positions: Map<number, number>, noteStartX: number, noteEndX: number) => {
+      if (positionsCollected.current) return;
 
       for (const [beatIdx, xPx] of positions) {
         allPositions.current.set(beatIdx, xPx);
       }
+      noteStartXRef.current = noteStartX;
+      noteEndXRef.current = noteEndX;
     },
     [],
   );
@@ -68,6 +72,7 @@ export function DualNotationRenderer({
     // Schedule override application after VexFlow has rendered
     const timer = setTimeout(() => {
       const overrides = new Map<number, number>();
+      // Direct pixel-to-SVG mapping: containerWidth px = maxWidth SVG units
       for (const [beatIdx, xPx] of allPositions.current) {
         overrides.set(beatIdx, xPx * (mw / containerWidth));
       }

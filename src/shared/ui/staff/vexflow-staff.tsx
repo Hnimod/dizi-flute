@@ -16,6 +16,7 @@ import {
   AnnotationVerticalJustify,
   BarNote,
   BarlineType,
+  GhostNote,
 } from "vexflow";
 import type { LayoutItem, Token } from "../jianpu/types";
 
@@ -92,7 +93,7 @@ function noteToVexKey(digit: string, octave: number, scaleInfo: ScaleEntry[]): s
  * Map jianpu duration to VexFlow duration string.
  * VexFlow durations: "w" (whole), "h" (half), "q" (quarter), "8" (eighth), "16" (sixteenth)
  */
-function toVexDuration(token: Token, holdCount: number): string {
+function toVexDuration(token: Token): string {
   if (token.type !== "note" && token.type !== "rest") return "q";
 
   const dur = (token as { duration?: string }).duration;
@@ -100,10 +101,6 @@ function toVexDuration(token: Token, holdCount: number): string {
 
   if (dur === "sixteenth") return dotted ? "16d" : "16";
   if (dur === "eighth") return dotted ? "8d" : "8";
-
-  // Quarter + holds
-  if (holdCount >= 3) return dotted ? "wd" : "w";
-  if (holdCount === 1) return dotted ? "hd" : "h";
   return dotted ? "qd" : "q";
 }
 
@@ -147,8 +144,8 @@ interface VexFlowStaffLineProps {
   timeSignature?: string;
   containerWidth: number;
   showJianpu?: boolean;
-  /** Callback with positions after VexFlow renders: beatIndex → pixel x for notes, barIndex (negative) → pixel x for bars */
-  onNotePositions?: (positions: Map<number, number>) => void;
+  /** Callback with positions after VexFlow renders */
+  onNotePositions?: (positions: Map<number, number>, noteStartX: number, noteEndX: number) => void;
 }
 
 export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature, containerWidth, showJianpu = true, onNotePositions }: VexFlowStaffLineProps) {
@@ -196,19 +193,6 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
     let currentBeamGroup: StaveNote[] | null = null;
     const slurPairs: Map<number, { first: StaveNote; last: StaveNote }> = new Map();
 
-    // First pass: count holds per note
-    const holdCounts: number[] = [];
-    for (let i = 0; i < flat.length; i++) {
-      let count = 0;
-      if (flat[i]!.token.type === "note") {
-        for (let j = i + 1; j < flat.length; j++) {
-          if (flat[j]!.token.type === "hold") count++;
-          else break;
-        }
-      }
-      holdCounts.push(count);
-    }
-
     for (let i = 0; i < flat.length; i++) {
       const item = flat[i]!;
       const token = item.token;
@@ -218,24 +202,21 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
         const vexKey = noteToVexKey(mainDigit, token.octave, scaleInfo);
         if (!vexKey) continue;
 
-        const duration = toVexDuration(token, holdCounts[i]!);
+        const duration = toVexDuration(token);
         const note = new StaveNote({
           keys: [vexKey],
           duration,
           autoStem: true,
         });
 
-        // Add dot for dotted notes
         if (duration.endsWith("d")) {
           Dot.buildAndAttach([note]);
         }
 
-        // Add jianpu number annotation below the note
         if (showJianpu) {
           let jianpuText = mainDigit;
-          // Add octave dots: · below for lower, · above for upper
-          if (token.octave < 0) jianpuText += "\u0323".repeat(-token.octave); // combining dot below
-          if (token.octave > 0) jianpuText += "\u0307".repeat(token.octave);  // combining dot above
+          if (token.octave < 0) jianpuText += "\u0323".repeat(-token.octave);
+          if (token.octave > 0) jianpuText += "\u0307".repeat(token.octave);
           note.addModifier(
             new Annotation(jianpuText)
               .setVerticalJustification(AnnotationVerticalJustify.BOTTOM)
@@ -267,7 +248,7 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
         }
 
       } else if (token.type === "rest") {
-        const duration = toVexDuration(token, 0);
+        const duration = toVexDuration(token);
         const note = new StaveNote({
           keys: ["b/4"],
           duration: `${duration}r`,
@@ -283,29 +264,33 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
 
         vfNotes.push(note);
 
-        // End beam group on rest
+        if (currentBeamGroup && currentBeamGroup.length >= 2) {
+          beamGroups.push(currentBeamGroup);
+        }
+        currentBeamGroup = null;
+
+      } else if (token.type === "hold" || token.type === "breath") {
+        // Invisible spacer — takes up a beat but renders nothing on staff
+        vfNotes.push(new GhostNote({ duration: "q" }) as unknown as StaveNote);
+
         if (currentBeamGroup && currentBeamGroup.length >= 2) {
           beamGroups.push(currentBeamGroup);
         }
         currentBeamGroup = null;
 
       } else if (token.type === "bar") {
-        // Insert bar line
         let barType = BarlineType.SINGLE;
         if (token.value === "||") barType = BarlineType.DOUBLE;
         else if (token.value === ":|" || token.value === ":||") barType = BarlineType.REPEAT_END;
         else if (token.value === "|:") barType = BarlineType.REPEAT_BEGIN;
 
-        const barNote = new BarNote().setType(barType);
-        vfNotes.push(barNote as unknown as StaveNote);
+        vfNotes.push(new BarNote().setType(barType) as unknown as StaveNote);
 
-        // End beam group at bar line
         if (currentBeamGroup && currentBeamGroup.length >= 2) {
           beamGroups.push(currentBeamGroup);
         }
         currentBeamGroup = null;
       }
-      // Skip holds, ties, breath, etc. — handled via duration/decorations
     }
 
     // End any remaining beam group
@@ -342,7 +327,8 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
         for (let i = 0; i < flat.length; i++) {
           const fi = flat[i]!;
           const t = fi.token.type;
-          if (t === "note" || t === "rest" || t === "bar") {
+          // All types that have vfNotes entries
+          if (t === "note" || t === "rest" || t === "hold" || t === "breath" || t === "bar") {
             if (noteIdx < vfNotes.length) {
               const xPx = vfNotes[noteIdx]!.getAbsoluteX();
               if (t === "bar") {
@@ -355,7 +341,7 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
             noteIdx++;
           }
         }
-        onNotePositions(positions);
+        onNotePositions(positions, noteStartX, noteEndX);
       }
 
       // Draw beams after voice
