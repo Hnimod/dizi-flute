@@ -21,6 +21,8 @@ export function JianpuRenderer({
   timeSignature,
   tempo,
   origin,
+  renderBeforeLine,
+  viewBoxPadLeft = 0,
   interactive,
   selectedTokenIdx,
   onTokenClick,
@@ -174,15 +176,18 @@ export function JianpuRenderer({
         // Start marker
         const startItem = startBeatIndex !== undefined ? findActiveBeat(layout.items, startBeatIndex) : undefined;
 
+        const vbWidth = maxWidth + viewBoxPadLeft;
         return (
+          <div key={lineIdx}>
+            {renderBeforeLine?.(lineIdx, layout.items, maxWidth)}
           <svg
-            key={lineIdx}
-            viewBox={`0 -8 ${maxWidth} ${LINE_HEIGHT + 8}`}
+            viewBox={`0 -8 ${vbWidth} ${LINE_HEIGHT + 8}`}
             width="100%"
             preserveAspectRatio="xMinYMid meet"
             style={{ display: "block" }}
             className="jianpu-svg"
           >
+            <g transform={viewBoxPadLeft ? `translate(${viewBoxPadLeft}, 0)` : undefined}>
             <AnimatePresence>
               {activeItem && (
                 <motion.rect
@@ -219,7 +224,9 @@ export function JianpuRenderer({
               />
             )}
             {svgElements}
+            </g>
           </svg>
+          </div>
         );
       });
       })()}

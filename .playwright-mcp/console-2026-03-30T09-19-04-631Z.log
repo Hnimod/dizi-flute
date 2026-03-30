@@ -1,0 +1,15 @@
+[  106627ms] [ERROR] Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `JianpuRenderer`.  @ http://localhost:5174/@vite/client:509
+[  774693ms] [ERROR] Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `JianpuRenderer`.  @ http://localhost:5174/@vite/client:509
+[  775608ms] [ERROR] Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `JianpuRenderer`.  @ http://localhost:5174/@vite/client:509
+[  896922ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep) @ http://localhost:5174/node_modules/.vite/deps/vexflow.js?v=76a358ba:0
+[  896923ms] [ERROR] [vite] Failed to reload /src/shared/ui/notation/DualNotationRenderer.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5174/@vite/client:509
+[  907271ms] [ERROR] [vite] Failed to reload /src/shared/ui/notation/DualNotationRenderer.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5174/@vite/client:509
+[  925551ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep) @ http://localhost:5174/node_modules/.vite/deps/vexflow.js?v=76a358ba:0
+[  993354ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep) @ http://localhost:5174/node_modules/.vite/deps/vexflow.js?v=76a358ba:0
+[ 1004027ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep) @ http://localhost:5174/node_modules/.vite/deps/vexflow.js?v=76a358ba:0

@@ -1,0 +1,51 @@
+/* Theme-aware styling for abcjs staff notation */
+.staff-notation {
+  color: var(--color-text);
+}
+
+.staff-notation svg {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Use CSS variables from the app's theme system */
+.staff-notation .abcjs-staff,
+.staff-notation .abcjs-staff-extra,
+.staff-notation .abcjs-bar {
+  stroke: var(--color-text);
+}
+
+.staff-notation .abcjs-note,
+.staff-notation .abcjs-notehead,
+.staff-notation .abcjs-rest,
+.staff-notation .abcjs-clef,
+.staff-notation .abcjs-key-signature,
+.staff-notation .abcjs-time-signature {
+  fill: var(--color-text);
+}
+
+.staff-notation .abcjs-stem,
+.staff-notation .abcjs-beam-elem,
+.staff-notation .abcjs-flag {
+  fill: var(--color-text);
+  stroke: var(--color-text);
+}
+
+.staff-notation .abcjs-slur,
+.staff-notation .abcjs-tie {
+  stroke: var(--color-text);
+  fill: none;
+}
+
+.staff-notation .abcjs-ledger {
+  stroke: var(--color-text);
+}
+
+.staff-notation .abcjs-top-line {
+  fill: var(--color-text);
+  stroke: var(--color-text);
+}
+
+.staff-notation text {
+  fill: var(--color-text);
+}

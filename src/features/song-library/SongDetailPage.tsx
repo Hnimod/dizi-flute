@@ -174,6 +174,7 @@ export function SongDetailPage() {
       <div className="my-4">
         <TempoGuide
           content={song.jianpu}
+          abc={song.abc}
           tempo={song.tempo}
           title={getTitle(song)}
           keySignature={song.key}

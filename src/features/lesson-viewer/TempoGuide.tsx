@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { JianpuRenderer, buildBeatSchedule } from "@/shared/ui";
+import { DualNotationRenderer, useNotationPreference, buildBeatSchedule } from "@/shared/ui";
 
 interface TempoGuideProps {
   content: string;
@@ -10,9 +10,10 @@ interface TempoGuideProps {
   keySignature?: string;
   timeSignature?: string;
   origin?: string;
+  abc?: string;
 }
 
-export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin }: TempoGuideProps) {
+export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin, abc }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [startBeat, setStartBeat] = useState(-1);
@@ -91,6 +92,9 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
     }
   }, [currentBeat]);
 
+  const showStaff = useNotationPreference((s) => s.showStaff);
+  const toggleStaff = useNotationPreference((s) => s.toggleStaff);
+
   return (
     <div>
       {/* Controls */}
@@ -150,6 +154,24 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           </button>
         </div>
 
+        {/* Staff notation toggle */}
+        <button
+          onClick={toggleStaff}
+          className="flex h-7 items-center gap-1 rounded-md px-2 transition-opacity hover:opacity-70"
+          style={{
+            color: showStaff ? "var(--color-accent)" : "var(--color-text-secondary)",
+            border: "1px solid var(--color-border)",
+            fontSize: 11,
+          }}
+          title={showStaff ? "Hide staff notation" : "Show staff notation"}
+        >
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 10h18M3 14h18M3 18h18" strokeLinecap="round" />
+            <ellipse cx="16" cy="8" rx="2.5" ry="2" fill="currentColor" stroke="none" transform="rotate(-15 16 8)" />
+          </svg>
+          <span>Staff</span>
+        </button>
+
         {/* Beat counter / start indicator */}
         <span className="ml-auto text-xs" style={{ color: "var(--color-text-secondary)" }}>
           {currentBeat >= 0 ? (
@@ -162,10 +184,11 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
         </span>
       </div>
 
-      {/* Jianpu with highlight */}
+      {/* Notation with highlight */}
       <div ref={containerRef}>
-        <JianpuRenderer
+        <DualNotationRenderer
           content={content}
+          abc={abc}
           activeBeatIndex={currentBeat >= 0 ? currentBeat : undefined}
           beatDurationMs={isPlaying && currentBeat >= 0 ? (60 / bpm) * 1000 * (schedule[currentBeat] ?? 1) : undefined}
           startBeatIndex={startBeat >= 0 && currentBeat < 0 ? startBeat : undefined}

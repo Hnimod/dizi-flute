@@ -65,6 +65,10 @@ export interface JianpuRendererProps {
   timeSignature?: string;
   tempo?: number;
   origin?: string;
+  /** Render custom content before each notation line (e.g., staff notation) */
+  renderBeforeLine?: (lineIdx: number, items: LayoutItem[], maxWidth: number) => React.ReactNode;
+  /** Extra left padding in SVG units added to viewBox for clef/key sig space */
+  viewBoxPadLeft?: number;
   // Interactive editor props
   interactive?: boolean;
   selectedTokenIdx?: number | null;

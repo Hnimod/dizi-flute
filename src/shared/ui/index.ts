@@ -6,3 +6,6 @@ export { JianpuRenderer, parseToken, isNotationLine, buildBeatSchedule } from ".
 export type { Token } from "./jianpu";
 export { JianpuEditor } from "./JianpuEditor";
 export { SongListSkeleton, SongDetailSkeleton, LevelSkeleton } from "./Skeleton";
+export { DualNotationRenderer } from "./notation/DualNotationRenderer";
+export { useNotationPreference } from "./notation/useNotationPreference";
+export { jianpuToAbc } from "./jianpu/abc-converter";

@@ -51,6 +51,7 @@ export interface Song {
   origin?: string;
   techniques?: string[];
   sheetImage?: string;
+  abc?: string;
 }
 
 export interface Technique {

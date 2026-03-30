@@ -1,0 +1,1 @@
+[     101ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep) @ http://localhost:5174/node_modules/.vite/deps/vexflow.js?v=76a358ba:0
