@@ -1,9 +1,9 @@
 import type { Token } from "./types";
 import { parseToken, normalizeBeamDurations } from "./parser";
+import { buildScaleInfo, KEY_TO_NORM, CHROMATIC } from "./scale-utils";
 
 /**
- * Maps jianpu key strings (as used in song data) to ABC key notation.
- * Jianpu uses "1=X" convention; we store just the key letter in song data.
+ * Maps jianpu key strings to ABC key notation.
  */
 const KEY_TO_ABC: Record<string, string> = {
   C: "C", D: "D", E: "E", F: "F", G: "G", A: "A", B: "B",
@@ -11,39 +11,23 @@ const KEY_TO_ABC: Record<string, string> = {
   "#C": "C#", "#F": "F#",
 };
 
-// Chromatic note names for computing scale degrees
-const CHROMATIC = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-// Enharmonic map for flat keys (so we output Bb not A#, etc.)
-const ENHARMONIC_FLAT: Record<string, string> = {
-  "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab", "A#": "Bb",
-};
-
-// Major scale intervals in semitones
-const MAJOR_INTERVALS = [0, 2, 4, 5, 7, 9, 11];
-
 /**
- * Build a map from jianpu digit (1-7) to { noteName, semitonesFromC }.
- * noteName is the ABC-friendly name (e.g., "F" not "F#" when key sig handles it).
+ * Build scale map for ABC conversion (noteName + semitones).
+ * Uses shared buildScaleInfo and adds semitones field.
  */
 function buildScaleMap(key: string): { noteName: string; semitones: number }[] {
-  const abcKey = KEY_TO_ABC[key] || key;
-  // Normalize to chromatic index
-  let baseNote = abcKey.replace(/[#b]/, "");
+  const scaleInfo = buildScaleInfo(key);
+  const normKey = KEY_TO_NORM[key] || key;
+  let baseNote = normKey.replace(/[#b]/, "");
   let baseSemitone = CHROMATIC.indexOf(baseNote);
-  if (abcKey.includes("#")) baseSemitone = (baseSemitone + 1) % 12;
-  if (abcKey.includes("b")) baseSemitone = (baseSemitone + 11) % 12;
+  if (normKey.includes("#")) baseSemitone = (baseSemitone + 1) % 12;
+  if (normKey.includes("b")) baseSemitone = (baseSemitone + 11) % 12;
 
-  const useFlats = abcKey.includes("b") || ["F", "Bb", "Eb", "Ab", "Db", "Gb"].includes(abcKey);
-
-  // Map degrees 1-7 (index 0-6) to chromatic pitches
-  return MAJOR_INTERVALS.map((interval) => {
-    const semitones = (baseSemitone + interval) % 12;
-    let noteName = CHROMATIC[semitones]!;
-    if (useFlats && ENHARMONIC_FLAT[noteName]) {
-      noteName = ENHARMONIC_FLAT[noteName]!;
-    }
-    return { noteName, semitones };
-  });
+  const MAJOR_INTERVALS = [0, 2, 4, 5, 7, 9, 11];
+  return MAJOR_INTERVALS.map((interval, i) => ({
+    noteName: scaleInfo[i]!.noteName,
+    semitones: (baseSemitone + interval) % 12,
+  }));
 }
 
 /**

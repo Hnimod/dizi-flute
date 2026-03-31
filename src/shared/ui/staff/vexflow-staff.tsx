@@ -14,26 +14,14 @@ import {
   Dot,
   Annotation,
   AnnotationVerticalJustify,
+  Accidental,
   BarNote,
   BarlineType,
   GhostNote,
 } from "vexflow";
 import type { LayoutItem, Token } from "../jianpu/types";
-
-// --- Pitch mapping (reused from custom renderer) ---
-
-const NOTE_ORDER = ["C", "D", "E", "F", "G", "A", "B"];
-const MAJOR_INTERVALS = [0, 2, 4, 5, 7, 9, 11];
-const CHROMATIC = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-const ENHARMONIC_FLAT: Record<string, string> = {
-  "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab", "A#": "Bb",
-};
-
-const KEY_TO_NORM: Record<string, string> = {
-  C: "C", D: "D", E: "E", F: "F", G: "G", A: "A", B: "B",
-  "bD": "Db", "bE": "Eb", "bB": "Bb", "bA": "Ab", "bG": "Gb",
-  "#C": "C#", "#F": "F#",
-};
+import { buildScaleInfo, KEY_TO_NORM } from "../jianpu/scale-utils";
+import type { ScaleEntry } from "../jianpu/scale-utils";
 
 // VexFlow key signature names
 const KEY_TO_VF: Record<string, string> = {
@@ -41,32 +29,6 @@ const KEY_TO_VF: Record<string, string> = {
   "Db": "Db", "Eb": "Eb", "Bb": "Bb", "Ab": "Ab", "Gb": "Gb",
   "C#": "C#", "F#": "F#",
 };
-
-interface ScaleEntry {
-  noteName: string;
-  letter: string;
-  diatonicBase: number;
-}
-
-function buildScaleInfo(key: string): ScaleEntry[] {
-  const normKey = KEY_TO_NORM[key] || key;
-  let baseNote = normKey.replace(/[#b]/, "");
-  let baseSemitone = CHROMATIC.indexOf(baseNote);
-  if (normKey.includes("#")) baseSemitone = (baseSemitone + 1) % 12;
-  if (normKey.includes("b")) baseSemitone = (baseSemitone + 11) % 12;
-  const useFlats = normKey.includes("b") || ["F", "Bb", "Eb", "Ab", "Db", "Gb"].includes(normKey);
-
-  return MAJOR_INTERVALS.map((interval) => {
-    const semitones = (baseSemitone + interval) % 12;
-    let noteName = CHROMATIC[semitones]!;
-    if (useFlats && ENHARMONIC_FLAT[noteName]) {
-      noteName = ENHARMONIC_FLAT[noteName]!;
-    }
-    const letter = noteName[0]!;
-    const diatonicBase = NOTE_ORDER.indexOf(letter);
-    return { noteName, letter, diatonicBase };
-  });
-}
 
 function extractMainDigit(value: string): string {
   const graceMatch = value.match(/^\(([1-7][',]*)\)(?:\(([1-7][',]*)\))?([1-7])/);
@@ -221,6 +183,11 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
           duration,
           autoStem: true,
         });
+
+        // Explicit accidentals from jianpu (#/b relative to scale degree)
+        if (token.accidental) {
+          note.addModifier(new Accidental(token.accidental));
+        }
 
         if (duration.endsWith("d")) {
           Dot.buildAndAttach([note]);
