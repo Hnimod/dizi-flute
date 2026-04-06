@@ -71,22 +71,31 @@ Screen descriptions for each page in the app.
 │                                     │
 │  [YouTube embed if videoUrls]       │
 │                                     │
-│  ┌─ Jianpu ──────────────────────┐  │
+│  ┌─ Controls ────────────────────┐  │
+│  │  ▶ Play  ■ Stop  ♩=72 [-][+]│  │
+│  │                    [≡ Staff] │  │
+│  └───────────────────────────────┘  │
+│  ┌─ Notation ────────────────────┐  │
 │  │        月亮代表我的心          │  │
 │  │       Teresa Teng, 1977       │  │
-│  │  1=D  4/4                     │  │
-│  │  ♩=72                         │  │
-│  │  ( 1 1 ) 1 - | ( 3 5 ) 6 -  │  │
+│  │  1=D  4/4  ♩=72              │  │
+│  │                               │  │
+│  │  [Staff: treble clef, ## 4/4] │  │ ← Only when Staff toggle ON
+│  │  𝅘𝅥 𝅘𝅥  𝅗𝅥 | 𝅘𝅥 𝅘𝅥  𝅗𝅥         │  │
+│  │                               │  │
+│  │  ( 1 1 ) 1 - | ( 3 5 ) 6 -  │  │ ← Jianpu aligned with staff
 │  │  ...                          │  │
-│  │  ▶ Play  ♩=72 [-][+]         │  │
 │  └───────────────────────────────┘  │
 └─────────────────────────────────────┘
 ```
 
 - Difficulty badge with label + difficultyNote below
 - Technique pills link to `/techniques/:id`
-- Jianpu rendered with standard header (centered title, origin, left-aligned key+time, tempo)
-- TempoGuide provides playback controls
+- **Staff toggle** in playback controls shows/hides Western staff notation above jianpu
+- When Staff is ON: VexFlow renders treble clef, key sig, time sig, notes, beams, slurs, bar lines; jianpu below is repositioned to align with staff note positions
+- When Staff is OFF: jianpu-only view with default spacing
+- TempoGuide provides playback controls (play, stop, BPM adjust, beat counter)
+- Playback beat highlighting works on jianpu regardless of staff toggle
 
 ---
 

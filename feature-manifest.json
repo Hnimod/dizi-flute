@@ -36,14 +36,14 @@
     },
     "reference-library": {
       "path": "src/features/reference-library",
-      "description": "Knowledge hub: fingering charts, jianpu guide, dizi theory",
+      "description": "Knowledge hub: fingering charts, jianpu guide, staff notation mapping, dizi theory",
       "routes": ["/knowledge", "/knowledge/:slug"],
       "exports": ["ReferencePage", "ReferenceDetailPage"],
       "dependsOn": ["shared", "data"]
     },
     "lesson-viewer": {
       "path": "src/features/lesson-viewer",
-      "description": "PracticeView for full-screen song/exercise practice, TempoGuide for jianpu display",
+      "description": "PracticeView for full-screen song/exercise practice, TempoGuide for dual notation display (staff + jianpu) with playback",
       "routes": [],
       "exports": ["PracticeView"],
       "dependsOn": ["shared", "data"],
