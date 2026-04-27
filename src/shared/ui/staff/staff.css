@@ -1,4 +1,10 @@
-/* Theme-aware styling for abcjs staff notation */
+/* Theme-aware styling for VexFlow staff notation.
+   VexFlow renders SVG with inline fill="black" / stroke="black" on
+   paths, rects, and lines. CSS overrides those presentation attributes
+   so the staff tracks --color-text. Wrapping the staff in
+   .notation-card (defined in index.css) re-scopes --color-text to a
+   fixed dark ink so the staff stays readable on the card's light bg
+   regardless of app theme. */
 .staff-notation {
   color: var(--color-text);
 }
@@ -8,44 +14,15 @@
   max-width: 100%;
 }
 
-/* Use CSS variables from the app's theme system */
-.staff-notation .abcjs-staff,
-.staff-notation .abcjs-staff-extra,
-.staff-notation .abcjs-bar {
-  stroke: var(--color-text);
-}
-
-.staff-notation .abcjs-note,
-.staff-notation .abcjs-notehead,
-.staff-notation .abcjs-rest,
-.staff-notation .abcjs-clef,
-.staff-notation .abcjs-key-signature,
-.staff-notation .abcjs-time-signature {
+.staff-notation svg path,
+.staff-notation svg rect,
+.staff-notation svg polygon,
+.staff-notation svg text {
   fill: var(--color-text);
 }
 
-.staff-notation .abcjs-stem,
-.staff-notation .abcjs-beam-elem,
-.staff-notation .abcjs-flag {
-  fill: var(--color-text);
+.staff-notation svg line,
+.staff-notation svg path[stroke],
+.staff-notation svg rect[stroke] {
   stroke: var(--color-text);
-}
-
-.staff-notation .abcjs-slur,
-.staff-notation .abcjs-tie {
-  stroke: var(--color-text);
-  fill: none;
-}
-
-.staff-notation .abcjs-ledger {
-  stroke: var(--color-text);
-}
-
-.staff-notation .abcjs-top-line {
-  fill: var(--color-text);
-  stroke: var(--color-text);
-}
-
-.staff-notation text {
-  fill: var(--color-text);
 }

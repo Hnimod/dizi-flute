@@ -481,8 +481,8 @@ function renderSvgToken(
             x={x}
             y={Y_NOTE}
             textAnchor="middle"
-            fontSize="16"
-            fontWeight="600"
+            fontSize="18"
+            fontWeight="700"
             fill={noteColor}
             style={noteHoverEnter ? { ...noteStyle, cursor: "help" } : noteStyle}
             onClick={clickHandler}
@@ -500,8 +500,8 @@ function renderSvgToken(
             x={x}
             y={Y_NOTE}
             textAnchor="middle"
-            fontSize="16"
-            fontWeight="600"
+            fontSize="18"
+            fontWeight="700"
             fill={noteColor}
             style={noteHoverEnter ? { ...noteStyle, cursor: "help" } : noteStyle}
             onClick={clickHandler}
@@ -678,8 +678,8 @@ function renderSvgToken(
           x={x}
           y={Y_NOTE}
           textAnchor="middle"
-          fontSize="16"
-          fontWeight="600"
+          fontSize="18"
+          fontWeight="700"
           fill={isSelected ? "var(--color-accent)" : secondaryColor}
           style={restHover ? { cursor: "help" } : (clickable || beatClickable ? { cursor: "pointer" } : undefined)}
           onClick={clickHandler}
@@ -729,8 +729,8 @@ function renderSvgToken(
           x={x}
           y={Y_NOTE}
           textAnchor="middle"
-          fontSize="16"
-          fontWeight="600"
+          fontSize="18"
+          fontWeight="700"
           fill={isSelected ? "var(--color-accent)" : secondaryColor}
           style={holdHover ? { cursor: "help" } : (clickable || beatClickable ? { cursor: "pointer" } : undefined)}
           onClick={clickHandler}

@@ -16,6 +16,7 @@ import { song as littleWhiteCabbage } from "./elementary/little-white-cabbage";
 import { song as beautifulMyth } from "./intermediate/beautiful-myth";
 import { song as chiQingZhong } from "./intermediate/chi-qing-zhong";
 import { song as daughtersLove } from "./intermediate/daughters-love";
+import { song as wuJi } from "./intermediate/wu-ji";
 
 // Advanced (difficulty 7+)
 import { song as fuGuang } from "./advanced/fu-guang";
@@ -32,5 +33,6 @@ export const songs: Song[] = [
   daughtersLove,
   beautifulMyth,
   chiQingZhong,
+  wuJi,
   fuGuang,
 ];

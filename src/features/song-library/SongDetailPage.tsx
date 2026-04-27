@@ -180,8 +180,7 @@ export function SongDetailPage() {
           keySignature={song.key}
           timeSignature={song.timeSignature}
           origin={song.origin}
-          className="rounded-lg p-4 overflow-x-auto"
-          style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
+          className="notation-card rounded-lg p-4 overflow-x-auto"
         />
       </div>
     </div>
