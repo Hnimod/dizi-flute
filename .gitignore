@@ -4,3 +4,4 @@ dist
 .wrangler
 *.local
 .dev.vars
+.playwright-mcp/
