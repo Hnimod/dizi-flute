@@ -7,7 +7,7 @@ import type { Song, Exercise } from "@/shared/types";
 
 function getItemTitle(item: Song | Exercise): string {
   if (item.type === "song") {
-    return [item.titleChinese, item.titleVietnamese, item.titleEnglish]
+    return [item.titleChinese, item.titlePinyin, item.titleVietnamese, item.titleEnglish]
       .filter(Boolean)
       .join(" / ");
   }

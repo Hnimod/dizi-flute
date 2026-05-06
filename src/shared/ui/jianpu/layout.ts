@@ -25,6 +25,8 @@ export function cellWidth(token: Token): number {
     case "volta":
     case "tie-start":
     case "tie-end":
+    case "cue-start":
+    case "cue-end":
       return 0;
     case "text":
       return CELL_TEXT;
@@ -46,7 +48,36 @@ export function layoutLine(
     const token = tokens[i]!;
     const ti = tokenIdxOffset + i;
 
-    if (token.type === "slur-start") {
+    if (token.type === "cue-start") {
+      i++;
+      const cueX = x;
+      const cueStartIdx = i;
+      let depth = 1;
+      while (i < tokens.length && depth > 0) {
+        const t = tokens[i]!;
+        if (t.type === "cue-start") depth++;
+        else if (t.type === "cue-end") { depth--; if (depth === 0) break; }
+        i++;
+      }
+      const innerTokens = tokens.slice(cueStartIdx, i);
+      const innerBeatCounter = { value: 0 };
+      const inner = layoutLine(innerTokens, innerBeatCounter, tokenIdxOffset + cueStartIdx);
+      function shiftAndStripBeats(list: LayoutItem[], dx: number) {
+        for (const it of list) {
+          it.x += dx;
+          it.beatIndex = null;
+          if (it.children) shiftAndStripBeats(it.children, dx);
+        }
+      }
+      const CUE_PAD = 16; // space reserved on each side for the parenthesis
+      shiftAndStripBeats(inner.items, x + CUE_PAD);
+      x += inner.totalWidth + CUE_PAD * 2;
+      i++; // skip cue-end
+      items.push({
+        token: { type: "cue-start" }, x: cueX + (x - cueX) / 2,
+        width: x - cueX, beatIndex: null, tokenIdx: ti, children: inner.items, groupType: "cue",
+      });
+    } else if (token.type === "slur-start") {
       const children: LayoutItem[] = [];
       i++;
       const slurX = x;
@@ -111,7 +142,7 @@ export function layoutLine(
         token: { type: "beam-start" }, x: beamX + (x - beamX) / 2,
         width: x - beamX, beatIndex: null, tokenIdx: ti, children, groupType: "beam",
       });
-    } else if (token.type === "slur-end" || token.type === "beam-end") {
+    } else if (token.type === "slur-end" || token.type === "beam-end" || token.type === "cue-end") {
       i++;
     } else {
       const w = cellWidth(token);

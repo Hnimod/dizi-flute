@@ -39,6 +39,7 @@ export interface Song {
   difficulty: number;
   difficultyNote?: string;
   titleChinese?: string;
+  titlePinyin?: string;
   titleVietnamese?: string;
   titleEnglish: string;
   key: string;
@@ -52,6 +53,8 @@ export interface Song {
   techniques?: string[];
   sheetImage?: string;
   abc?: string;
+  /** Scale degree (1-7) of the all-holes-covered note in the source jianpu. Defaults to 5 (筒音作Sol). */
+  sourceTongyin?: number;
 }
 
 export interface Technique {

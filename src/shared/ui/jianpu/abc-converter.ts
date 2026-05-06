@@ -152,7 +152,11 @@ function convertTokensToAbcLine(
     }
   }
 
+  let cueDepth = 0;
   for (const { token, holdCount } of merged) {
+    if (token.type === "cue-start") { cueDepth++; continue; }
+    if (token.type === "cue-end") { cueDepth = Math.max(0, cueDepth - 1); continue; }
+    if (cueDepth > 0) continue; // Skip cue notes — they're for-reference-only, not in staff
     switch (token.type) {
       case "note": {
         const { mainDigit, graces } = parseNoteValue(token.value);
@@ -257,6 +261,8 @@ function convertTokensToAbcLine(
       case "tempo":
       case "volta":
       case "text":
+      case "cue-start":
+      case "cue-end":
         // Skip dizi-specific annotations in staff notation
         break;
     }

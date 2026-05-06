@@ -88,7 +88,9 @@ export function renderSvgItems(
   keyPrefix: string,
   opts?: InteractiveOpts,
   incomingVolta?: { ending: number } | null,
-): { openVolta: { ending: number } | null } {
+  incomingTie?: boolean,
+  lineEndX?: number,
+): { openVolta: { ending: number } | null; openTie: boolean } {
   const pendingAnnotations: string[] = [];
 
   for (let idx = 0; idx < items.length; idx++) {
@@ -181,6 +183,52 @@ export function renderSvgItems(
           </text>,
         );
       }
+      continue;
+    }
+
+    if (item.groupType === "cue" && item.children) {
+      const cueElements: React.ReactNode[] = [];
+      renderSvgItems(item.children, activeBeatIndex, cueElements, `${key}-cue`, opts);
+      const first = flatFirst(item.children);
+      const last = flatLast(item.children);
+      const sx = (first ? first.x : item.x - item.width / 2) - 14;
+      const ex = (last ? last.x : item.x + item.width / 2) + 14;
+      const midX = (sx + ex) / 2;
+      const topY = Y_OCTAVE_UP - 4;
+      const botY = Y_OCTAVE_DOWN + 4;
+      const hook = 4;
+      const stroke = "var(--color-text-secondary)";
+      const bowDepth = 4;
+      elements.push(
+        <g key={key} opacity="0.55" fontStyle="italic">
+          {cueElements}
+          {/* Round parentheses around the cue group */}
+          <path
+            d={`M ${sx} ${topY} Q ${sx - bowDepth} ${(topY + botY) / 2} ${sx} ${botY}`}
+            fill="none"
+            stroke={stroke}
+            strokeWidth="0.9"
+          />
+          <path
+            d={`M ${ex} ${topY} Q ${ex + bowDepth} ${(topY + botY) / 2} ${ex} ${botY}`}
+            fill="none"
+            stroke={stroke}
+            strokeWidth="0.9"
+          />
+          <text
+            x={midX}
+            y={topY - 3}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize={5.5}
+            fontFamily="sans-serif"
+            fontStyle="normal"
+            fill={stroke}
+          >
+            cue
+          </text>
+        </g>,
+      );
       continue;
     }
 
@@ -294,7 +342,20 @@ export function renderSvgItems(
     return flat;
   }
   const allFlat = flattenItems(items);
-  let tieStartX: number | null = null;
+  // Continuation tie from previous line: arc enters from left edge.
+  let tieStartX: number | null = incomingTie ? 0 : null;
+  const tieInfo = SYMBOL_TECHNIQUE["tie"];
+  const drawTieArc = (x1: number, x2: number, idKey: string) => {
+    const midX = (x1 + x2) / 2;
+    const tieHover = opts?.onSymbolHover && tieInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tieInfo) : undefined;
+    const arcD = `M ${x1} ${Y_NOTE - 12} Q ${midX} ${Y_NOTE - 20} ${x2} ${Y_NOTE - 12}`;
+    elements.push(
+      <g key={idKey} style={tieHover ? { cursor: "help" } : undefined} onMouseEnter={tieHover} onMouseLeave={opts?.onSymbolLeave}>
+        <path d={arcD} fill="none" stroke="transparent" strokeWidth="6" />
+        <path d={arcD} fill="none" stroke="var(--color-text-secondary)" strokeWidth="1.2" />
+      </g>,
+    );
+  };
   for (let fi = 0; fi < allFlat.length; fi++) {
     const it = allFlat[fi]!;
     if (it.token.type === "tie-start") {
@@ -308,21 +369,18 @@ export function renderSvgItems(
       for (let j = fi - 1; j >= 0; j--) {
         if (isBeat(allFlat[j]!.token)) { tieEndX = allFlat[j]!.x; break; }
       }
-      const midX = (tieStartX + tieEndX) / 2;
-      const tieInfo = SYMBOL_TECHNIQUE["tie"];
-      const tieHover = opts?.onSymbolHover && tieInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tieInfo) : undefined;
-      const arcD = `M ${tieStartX} ${Y_NOTE - 12} Q ${midX} ${Y_NOTE - 20} ${tieEndX} ${Y_NOTE - 12}`;
-      elements.push(
-        <g key={`${keyPrefix}-tie-${tieStartX}`} style={tieHover ? { cursor: "help" } : undefined} onMouseEnter={tieHover} onMouseLeave={opts?.onSymbolLeave}>
-          <path d={arcD} fill="none" stroke="transparent" strokeWidth="6" />
-          <path d={arcD} fill="none" stroke="var(--color-text-secondary)" strokeWidth="1.2" />
-        </g>,
-      );
+      drawTieArc(tieStartX, tieEndX, `${keyPrefix}-tie-${tieStartX}-${tieEndX}`);
       tieStartX = null;
     }
   }
+  // Tie still open at end of line: trail arc to right edge and tell next line to continue.
+  let openTie = false;
+  if (tieStartX !== null && lineEndX !== undefined) {
+    drawTieArc(tieStartX, lineEndX, `${keyPrefix}-tie-trail-${tieStartX}`);
+    openTie = true;
+  }
 
-  return { openVolta: currentVolta ? { ending: currentVolta.ending } : null };
+  return { openVolta: currentVolta ? { ending: currentVolta.ending } : null, openTie };
 }
 
 function renderVoltaBracket(

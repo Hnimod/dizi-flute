@@ -2,14 +2,15 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate, Link } from "react-router";
 import { songs as staticSongs, getTechnique, difficultyLabels } from "@/data";
-import { VideoEmbed } from "@/shared/ui";
+import { VideoEmbed, transposeJianpu, transposeKey, tongyinShift } from "@/shared/ui";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
+import { useTongyinPreference, TONGYIN_OPTIONS } from "@/features/lesson-viewer";
 import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
-  return [song.titleChinese, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
+  return [song.titleChinese, song.titlePinyin, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
 }
 
 function SheetImageAccordion({ src }: { src: string }) {
@@ -67,6 +68,19 @@ export function SongDetailPage() {
       .filter(Boolean) as NonNullable<ReturnType<typeof getTechnique>>[];
   }, [song]);
 
+  const userTongyin = useTongyinPreference((s) => s.tongyin);
+  const setUserTongyin = useTongyinPreference((s) => s.setTongyin);
+  const sourceTongyin = song?.sourceTongyin ?? 5;
+  const shift = tongyinShift(sourceTongyin, userTongyin);
+  const displayJianpu = useMemo(
+    () => (song ? transposeJianpu(song.jianpu, shift) : ""),
+    [song, shift],
+  );
+  const displayKey = useMemo(
+    () => (song ? transposeKey(song.key, sourceTongyin, userTongyin) : ""),
+    [song, sourceTongyin, userTongyin],
+  );
+
   if (!song) {
     return (
       <div className="mx-auto max-w-3xl py-12 text-center">
@@ -120,7 +134,12 @@ export function SongDetailPage() {
           >
             {song.difficulty}/10 · {difficultyLabels[song.difficulty] ?? ""}
           </span>
-          <span>Key: {song.key}</span>
+          <span>
+            Key: {displayKey}
+            {displayKey !== song.key && (
+              <span style={{ opacity: 0.6 }}> (orig {song.key})</span>
+            )}
+          </span>
           <span>Time: {song.timeSignature}</span>
           {song.tempo && <span>Tempo: {song.tempo} BPM</span>}
           {song.origin && <span>Origin: {song.origin}</span>}
@@ -171,13 +190,45 @@ export function SongDetailPage() {
 
       {song.sheetImage && <SheetImageAccordion src={song.sheetImage} />}
 
+      <div
+        className="my-4 flex flex-wrap items-center gap-2 text-xs"
+        style={{ color: "var(--color-text-secondary)" }}
+      >
+        <span>筒音作 (all-holes-covered):</span>
+        <div className="flex gap-1">
+          {TONGYIN_OPTIONS.map((opt) => {
+            const active = opt.value === userTongyin;
+            return (
+              <button
+                key={opt.value}
+                onClick={() => setUserTongyin(opt.value)}
+                className="rounded px-2 py-0.5 transition-opacity hover:opacity-80"
+                style={{
+                  backgroundColor: active ? "var(--color-accent-light)" : "transparent",
+                  color: active ? "var(--color-accent)" : "var(--color-text-secondary)",
+                  border: "1px solid var(--color-border)",
+                  fontWeight: active ? 600 : 400,
+                }}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+        {sourceTongyin !== 5 && (
+          <span style={{ opacity: 0.6 }}>
+            (source: 筒音作 {sourceTongyin})
+          </span>
+        )}
+      </div>
+
       <div className="my-4">
         <TempoGuide
-          content={song.jianpu}
+          content={displayJianpu}
           abc={song.abc}
           tempo={song.tempo}
           title={getTitle(song)}
-          keySignature={song.key}
+          keySignature={displayKey}
           timeSignature={song.timeSignature}
           origin={song.origin}
           className="notation-card rounded-lg p-4 overflow-x-auto"

@@ -27,6 +27,8 @@ export type Token =
   | { type: "volta"; ending: number }
   | { type: "tie-start" }
   | { type: "tie-end" }
+  | { type: "cue-start" }
+  | { type: "cue-end" }
   | { type: "tempo"; text: string };
 
 export interface LayoutItem {
@@ -36,7 +38,7 @@ export interface LayoutItem {
   beatIndex: number | null;
   tokenIdx: number;
   children?: LayoutItem[];
-  groupType?: "beam" | "slur";
+  groupType?: "beam" | "slur" | "cue";
 }
 
 export interface InteractiveOpts {

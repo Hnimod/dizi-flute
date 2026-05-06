@@ -223,6 +223,7 @@ export function JianpuRenderer({
 
       {(() => {
         let openVolta: { ending: number } | null = null;
+        let openTie = false;
         return lineLayouts.map((layout, lineIdx) => {
         if (layout.isEmpty) {
           return <div key={lineIdx} className="h-2" />;
@@ -237,8 +238,10 @@ export function JianpuRenderer({
           onSymbolHover: handleSymbolHover,
           onSymbolLeave: handleSymbolLeave,
         };
-        const voltaResult = renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts, openVolta);
-        openVolta = voltaResult.openVolta;
+        const tieEndX = lineEndXMap.get(lineIdx) ?? layout.totalWidth;
+        const renderResult = renderSvgItems(layout.items, activeBeatIndex, svgElements, `L${lineIdx}`, interOpts, openVolta, openTie, tieEndX);
+        openVolta = renderResult.openVolta;
+        openTie = renderResult.openTie;
 
         // Per-line highlight
         const activeItem = findActiveBeat(layout.items, activeBeatIndex);

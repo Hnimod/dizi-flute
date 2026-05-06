@@ -55,7 +55,11 @@ export function buildBeatSchedule(content: string): number[] {
     if (trimmed === "") continue;
 
     const tokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
+    let cueDepth = 0;
     for (const t of tokens) {
+      if (t.type === "cue-start") { cueDepth++; continue; }
+      if (t.type === "cue-end") { cueDepth = Math.max(0, cueDepth - 1); continue; }
+      if (cueDepth > 0) continue;
       if (isBeat(t)) {
         schedule.push(beatDuration(t));
       }
@@ -81,6 +85,10 @@ export function parseToken(raw: string): Token {
   // Tie markers
   if (raw === "~(") return { type: "tie-start" };
   if (raw === "~)") return { type: "tie-end" };
+
+  // Cue markers (notes the dizi player doesn't play — accompaniment for context)
+  if (raw === "cue(") return { type: "cue-start" };
+  if (raw === ")cue") return { type: "cue-end" };
 
   // Slur markers
   if (raw === "(") return { type: "slur-start" };

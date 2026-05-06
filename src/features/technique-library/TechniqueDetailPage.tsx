@@ -38,8 +38,8 @@ export function TechniqueDetailPage() {
     );
   }
 
-  function getTitle(song: { titleChinese?: string; titleVietnamese?: string; titleEnglish: string }) {
-    return [song.titleChinese, song.titleVietnamese, song.titleEnglish]
+  function getTitle(song: { titleChinese?: string; titlePinyin?: string; titleVietnamese?: string; titleEnglish: string }) {
+    return [song.titleChinese, song.titlePinyin, song.titleVietnamese, song.titleEnglish]
       .filter(Boolean)
       .join(" / ");
   }

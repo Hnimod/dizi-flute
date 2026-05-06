@@ -9,7 +9,7 @@ import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
-  return [song.titleChinese, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
+  return [song.titleChinese, song.titlePinyin, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
 }
 
 function matchesSearch(song: Song, query: string): boolean {
@@ -17,6 +17,7 @@ function matchesSearch(song: Song, query: string): boolean {
   const q = query.toLowerCase();
   return (
     (song.titleChinese?.toLowerCase().includes(q) ?? false) ||
+    (song.titlePinyin?.toLowerCase().includes(q) ?? false) ||
     (song.titleVietnamese?.toLowerCase().includes(q) ?? false) ||
     song.titleEnglish.toLowerCase().includes(q) ||
     (song.origin?.toLowerCase().includes(q) ?? false)
