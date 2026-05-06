@@ -163,6 +163,11 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
     const beamGroups: StaveNote[][] = [];
     let currentBeamGroup: StaveNote[] | null = null;
     const slurPairs: Map<number, { first: StaveNote; last: StaveNote }> = new Map();
+    // Holds absorbed into a preceding note's inflated duration: keep a
+    // ghost spacer for layout (so the jianpu has somewhere to put the
+    // dash) but mark it to ignore ticks so it doesn't double-count the
+    // note's already-inflated rhythmic budget.
+    const absorbedHolds = new Set<number>();
 
     for (let i = 0; i < flat.length; i++) {
       const item = flat[i]!;
@@ -176,8 +181,10 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
         // Count following holds for visual duration
         let holdCount = 0;
         for (let j = i + 1; j < flat.length; j++) {
-          if (flat[j]!.token.type === "hold") holdCount++;
-          else break;
+          if (flat[j]!.token.type === "hold") {
+            holdCount++;
+            absorbedHolds.add(j);
+          } else break;
         }
 
         const duration = toVexDuration(token, holdCount);
@@ -254,7 +261,13 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
 
       } else if (token.type === "hold" || token.type === "breath") {
         // Invisible spacer — takes up a beat but renders nothing on staff
-        vfNotes.push(new GhostNote({ duration: "q" }) as unknown as StaveNote);
+        const ghost = new GhostNote({ duration: "q" });
+        if (token.type === "hold" && absorbedHolds.has(i)) {
+          // Don't add ticks to the voice (the inflated note already covers them),
+          // but keep the ghost as a layout placeholder so the jianpu has a slot.
+          ghost.setIgnoreTicks(true);
+        }
+        vfNotes.push(ghost as unknown as StaveNote);
 
         if (currentBeamGroup && currentBeamGroup.length >= 2) {
           beamGroups.push(currentBeamGroup);
@@ -310,7 +323,6 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
         for (let i = 0; i < flat.length; i++) {
           const fi = flat[i]!;
           const t = fi.token.type;
-          // All types that have vfNotes entries
           if (t === "note" || t === "rest" || t === "hold" || t === "breath" || t === "bar") {
             if (noteIdx < vfNotes.length) {
               const xPx = vfNotes[noteIdx]!.getAbsoluteX();

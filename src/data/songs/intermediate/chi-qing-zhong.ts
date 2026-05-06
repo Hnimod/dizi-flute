@@ -21,7 +21,7 @@ export const song: Song = {
     6 [ 5 6 ] 3 [ 2 1 ] | 2 [ 2 3 ] 6, - | [ 2 3 ] [ 1 6, ] 2 [ 3 5 ] | 3 - - - | 6 [ 5 6 ] 3 [ 2 1 ] |
     2 [ 2 3 ] 6, - | [ 2 3 ] [ 1 6, ] 5, [ 3, 5, ] | 6, - - - | 6 [ 5 6 ] 3 [ 2 1 ] | 2 [ 2 3 ] 6, - |
     [ 2 3 ] [ 1 6, ] 2 [ 3 5 ] | 3 - - - | 6 [ 5 6 ] 3 [ 2 1 ] | 2 [ 2 3 ] 6, - | [ 2 3 ] [ 1 6, ] 5, [ 3, 5 ] |
-    6, - - - |
+    6, - - - ||
    `,
   description:
     "Insert song from the 2003 TV series Demi-Gods and Semi-Devils (天龙八部). A haunting, melancholic melody by Lin Hai (林海). Notation by 码农学笛子.",

@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Token, JianpuRendererProps, InteractiveOpts, LayoutItem } from "./types";
 import { Y_MARK, Y_NOTE, LINE_HEIGHT } from "./constants";
@@ -24,8 +25,11 @@ function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>, li
       }
       barSeq++;
     }
-    // Recurse into groups
-    if (item.children) {
+    // Recurse into groups — but skip cue groups: their inner items have
+    // beatIndex stripped (cue notes don't drive playback), so the second-pass
+    // interpolator below would mis-position them. The initial layout already
+    // gave them correct sequential x positions.
+    if (item.children && item.groupType !== "cue") {
       applyXOverrides(item.children, overrides, lineIndex);
       if (item.children.length > 0) {
         const minX = Math.min(...item.children.map(c => c.x - c.width / 2));
@@ -67,6 +71,59 @@ function applyXOverrides(items: LayoutItem[], overrides: Map<number, number>, li
     } else if (rightItem) {
       item.x = rightItem.x - item.width;
     }
+  }
+
+  // Third pass: fit cue groups between their surrounding bars. The cue's
+  // initial layout span doesn't follow staff stretching, so adjacent bars
+  // can end up inside the cue's parenthesis region. Re-fit so the bracket
+  // sits cleanly between the previous and next bar.
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]!;
+    if (item.groupType !== "cue" || !item.children || item.children.length === 0) continue;
+
+    let leftBound: number | null = null;
+    for (let j = i - 1; j >= 0; j--) {
+      if (items[j]!.token.type === "bar") {
+        leftBound = items[j]!.x + items[j]!.width / 2;
+        break;
+      }
+    }
+    let rightBound: number | null = null;
+    for (let j = i + 1; j < items.length; j++) {
+      if (items[j]!.token.type === "bar") {
+        rightBound = items[j]!.x - items[j]!.width / 2;
+        break;
+      }
+    }
+    if (leftBound === null || rightBound === null) continue;
+
+    // Small breathing room between the bar and the parenthesis bow.
+    const PAD = 4;
+    const targetLeft = leftBound + PAD;
+    const targetRight = rightBound - PAD;
+    const targetWidth = targetRight - targetLeft;
+    if (targetWidth <= 0) continue;
+
+    const currentLeft = item.x - item.width / 2;
+    const currentWidth = item.width;
+    if (currentWidth <= 0) continue;
+    // Only shrink to fit; never stretch beyond the cue's natural span,
+    // since stretching would push children apart and look loose.
+    const scale = Math.min(1, targetWidth / currentWidth);
+    const newWidth = currentWidth * scale;
+    const newLeft = targetLeft + (targetWidth - newWidth) / 2;
+
+    const transform = (children: LayoutItem[]): void => {
+      for (const child of children) {
+        child.x = newLeft + (child.x - currentLeft) * scale;
+        child.width *= scale;
+        if (child.children) transform(child.children);
+      }
+    };
+    transform(item.children);
+
+    item.x = newLeft + newWidth / 2;
+    item.width = newWidth;
   }
 }
 
@@ -307,8 +364,9 @@ export function JianpuRenderer({
       });
       })()}
 
-      {/* Note tooltip */}
-      {tooltip && (
+      {/* Note tooltip — portaled to body so it escapes .notation-card's
+          forced-light theme variables and inherits the page theme. */}
+      {tooltip && createPortal(
         <div
           onMouseEnter={handleTipEnter}
           onMouseLeave={handleTipLeave}
@@ -356,11 +414,12 @@ export function JianpuRenderer({
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
       {/* Technique symbol tooltip */}
-      {symbolTip && (
+      {symbolTip && createPortal(
         <div
           onMouseEnter={handleTipEnter}
           onMouseLeave={handleTipLeave}
@@ -402,7 +461,8 @@ export function JianpuRenderer({
               Learn more &rarr;
             </a>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

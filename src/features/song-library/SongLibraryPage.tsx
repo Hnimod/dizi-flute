@@ -199,8 +199,7 @@ function SongRow({ song, expanded, onToggle }: { song: Song; expanded: boolean; 
                 keySignature={song.key}
                 timeSignature={song.timeSignature}
                 origin={song.origin}
-                className="rounded-lg p-4 overflow-x-auto"
-                style={{ backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)" }}
+                className="notation-card rounded-lg p-4 overflow-x-auto"
               />
               <div className="mt-3">
                 <Link
