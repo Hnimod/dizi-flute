@@ -111,3 +111,30 @@ export function transposeKey(key: string, sourceTongyin: number, targetTongyin: 
 export function tongyinShift(sourceTongyin: number, targetTongyin: number): number {
   return targetTongyin - sourceTongyin;
 }
+
+/**
+ * Derive the physical dizi-key implied by a (key, tongyin) pair.
+ *
+ * Convention: an "X-key dizi" is the flute that produces 1=X *when played
+ * at 筒音作 5*. The all-holes-covered absolute pitch is a physical property
+ * of the dizi and equals digit-5 of the dizi-key major scale (i.e.
+ * dizi_key + 7 semitones).
+ *
+ * For any (key, tongyin), the all-press absolute pitch is
+ *   key + interval(tongyin)
+ * Setting that equal to dizi_key + 7 gives
+ *   dizi_key = key + interval(tongyin) - 7.
+ *
+ * Examples:
+ *   diziKeyFor("D", "Sol") === "D"  // by definition
+ *   diziKeyFor("D", "Re")  === "A"  // D-major Re=E; E−7 = A
+ *   diziKeyFor("D", "La")  === "E"  // D-major La=B; B−7 = E
+ */
+export function diziKeyFor(key: string, tongyinDigit: number): string {
+  const keySemi = semitoneOfKey(key);
+  const interval = MAJOR_INTERVALS[tongyinDigit - 1] ?? 0;
+  const diziSemi = keySemi + interval - 7;
+  const norm = KEY_TO_NORM[key] ?? key;
+  const useFlat = norm.includes("b") || ["F", "Bb", "Eb", "Ab", "Db", "Gb"].includes(norm);
+  return semitoneToKey(diziSemi, useFlat);
+}

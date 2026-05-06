@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate, Link } from "react-router";
 import { songs as staticSongs, getTechnique, difficultyLabels } from "@/data";
-import { VideoEmbed, transposeJianpu, transposeKey, tongyinShift } from "@/shared/ui";
+import { VideoEmbed, transposeJianpu, transposeKey, tongyinShift, diziKeyFor } from "@/shared/ui";
 import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useTongyinPreference, TONGYIN_OPTIONS } from "@/features/lesson-viewer";
 import { useProgressStore } from "@/features/progress-tracking";
@@ -82,6 +82,14 @@ export function SongDetailPage() {
   const displayKey = useMemo(
     () => (song ? transposeKey(song.key, sourceDigit, userDigit) : ""),
     [song, sourceDigit, userDigit],
+  );
+  // Dizi-key implied by the source page. Position-shift transposition
+  // preserves fingerings, so it stays the same regardless of the user's
+  // chosen tongyin — it's a property of the physical flute the source
+  // notation was written for.
+  const diziKey = useMemo(
+    () => (song ? diziKeyFor(song.key, sourceDigit) : ""),
+    [song, sourceDigit],
   );
 
   if (!song) {
@@ -218,6 +226,10 @@ export function SongDetailPage() {
             );
           })}
         </div>
+        <span aria-hidden style={{ opacity: 0.5 }}>·</span>
+        <span title="Physical dizi this notation is written for. Same fingerings on this flute regardless of which tongyin you select.">
+          {diziKey}-key dizi
+        </span>
         {sourceTongyin !== "Sol" && (
           <span style={{ opacity: 0.6 }}>
             (source: 筒音作 {sourceTongyin})

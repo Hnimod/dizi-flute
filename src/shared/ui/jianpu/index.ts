@@ -1,4 +1,4 @@
 export { JianpuRenderer } from "./JianpuRenderer";
 export { parseToken, isNotationLine, buildBeatSchedule } from "./parser";
 export type { Token } from "./types";
-export { transposeJianpu, transposeKey, tongyinShift } from "./transpose";
+export { transposeJianpu, transposeKey, tongyinShift, diziKeyFor } from "./transpose";

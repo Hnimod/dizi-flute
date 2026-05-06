@@ -18,5 +18,5 @@ export const song: Song = {
   origin: "陈情令 The Untamed OST, 林海, 2019",
   videoUrls: [],
   techniques: ["long-tones", "rhythm-reading"],
-  sourceTongyin: "La",
+  sourceTongyin: "Re",
 };
