@@ -9,7 +9,7 @@ export const song: Song = {
   titleChinese: "痴情冢",
   titlePinyin: "Chī Qíng Zhǒng",
   titleEnglish: "Grave of Infatuation",
-  key: "F",
+  key: "C",
   timeSignature: "4/4",
   tempo: 72,
   jianpu: `
@@ -27,5 +27,10 @@ export const song: Song = {
     "Insert song from the 2003 TV series Demi-Gods and Semi-Devils (天龙八部). A haunting, melancholic melody by Lin Hai (林海). Notation by 码农学笛子.",
   origin: "天龙八部 OST, 林海, 2003",
   techniques: ["long-tones", "pentatonic-scale"],
-  sourceTongyin: 2,
+  sourceTongyin: "Re",
+  staffBaseOctave: 5,
+  videoUrls: [
+    "https://www.youtube.com/watch?v=qjjROCqCfys&list=RDUMDTDFETGaQ&index=26",
+    "https://www.youtube.com/watch?v=48OFA3uX4J8",
+  ],
 };

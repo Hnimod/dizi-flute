@@ -20,7 +20,7 @@ import {
   GhostNote,
 } from "vexflow";
 import type { LayoutItem, Token } from "../jianpu/types";
-import { buildScaleInfo, KEY_TO_NORM } from "../jianpu/scale-utils";
+import { buildScaleInfo, KEY_TO_NORM, naturalOctaveForDigit } from "../jianpu/scale-utils";
 import type { ScaleEntry } from "../jianpu/scale-utils";
 
 // VexFlow key signature names
@@ -40,12 +40,13 @@ function extractMainDigit(value: string): string {
  * Convert jianpu digit + octave + key to VexFlow key string.
  * Returns e.g. "f#/4", "a/4", "b/3"
  */
-function noteToVexKey(digit: string, octave: number, scaleInfo: ScaleEntry[]): string | null {
+function noteToVexKey(digit: string, octave: number, scaleInfo: ScaleEntry[], baseOctave = 4): string | null {
   const idx = parseInt(digit) - 1;
   if (idx < 0 || idx > 6) return null;
 
   const entry = scaleInfo[idx]!;
-  const absOctave = 4 + octave;
+  const tonicLetter = scaleInfo[0]!.letter;
+  const absOctave = naturalOctaveForDigit(idx + 1, tonicLetter, baseOctave) + octave;
 
   // VexFlow format: "letter/octave" (lowercase for sharps/flats via Accidental)
   return `${entry.letter.toLowerCase()}/${absOctave}`;
@@ -112,11 +113,13 @@ interface VexFlowStaffLineProps {
   containerWidth: number;
   showJianpu?: boolean;
   lineIndex?: number;
+  /** Octave that digit 1 (Do) sits in. Defaults to 4. */
+  baseOctave?: number;
   /** Callback with positions after VexFlow renders */
   onNotePositions?: (positions: Map<number, number>, noteStartX: number, noteEndX: number) => void;
 }
 
-export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature, containerWidth, showJianpu = true, lineIndex = 0, onNotePositions }: VexFlowStaffLineProps) {
+export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature, containerWidth, showJianpu = true, lineIndex = 0, baseOctave = 4, onNotePositions }: VexFlowStaffLineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -167,7 +170,7 @@ export function VexFlowStaffLine({ items, maxWidth, keySignature, timeSignature,
 
       if (token.type === "note") {
         const mainDigit = extractMainDigit(token.value);
-        const vexKey = noteToVexKey(mainDigit, token.octave, scaleInfo);
+        const vexKey = noteToVexKey(mainDigit, token.octave, scaleInfo, baseOctave);
         if (!vexKey) continue;
 
         // Count following holds for visual duration

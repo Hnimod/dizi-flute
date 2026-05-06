@@ -1,6 +1,6 @@
 import type { Token } from "./types";
 import { parseToken, normalizeBeamDurations } from "./parser";
-import { buildScaleInfo, KEY_TO_NORM, CHROMATIC } from "./scale-utils";
+import { buildScaleInfo, KEY_TO_NORM, CHROMATIC, naturalOctaveForDigit } from "./scale-utils";
 
 /**
  * Maps jianpu key strings to ABC key notation.
@@ -15,7 +15,7 @@ const KEY_TO_ABC: Record<string, string> = {
  * Build scale map for ABC conversion (noteName + semitones).
  * Uses shared buildScaleInfo and adds semitones field.
  */
-function buildScaleMap(key: string): { noteName: string; semitones: number }[] {
+function buildScaleMap(key: string): { noteName: string; semitones: number; naturalOctave: number }[] {
   const scaleInfo = buildScaleInfo(key);
   const normKey = KEY_TO_NORM[key] || key;
   let baseNote = normKey.replace(/[#b]/, "");
@@ -23,24 +23,23 @@ function buildScaleMap(key: string): { noteName: string; semitones: number }[] {
   if (normKey.includes("#")) baseSemitone = (baseSemitone + 1) % 12;
   if (normKey.includes("b")) baseSemitone = (baseSemitone + 11) % 12;
 
+  const tonicLetter = baseNote;
   const MAJOR_INTERVALS = [0, 2, 4, 5, 7, 9, 11];
   return MAJOR_INTERVALS.map((interval, i) => ({
     noteName: scaleInfo[i]!.noteName,
     semitones: (baseSemitone + interval) % 12,
+    naturalOctave: naturalOctaveForDigit(i + 1, tonicLetter),
   }));
 }
 
 /**
- * Convert a note letter + octave to ABC notation.
+ * Convert a note letter + jianpu octave marker to ABC notation.
  * ABC convention: C = C4, c = C5, c' = C6, C, = C3
- * The `abcAccidental` param is an explicit ABC accidental prefix (e.g., "^", "_", "=")
- * that should only be set for jianpu # or b markings — scale degree sharps/flats
- * are handled by the ABC key signature automatically.
+ * `naturalOctave` is the absolute octave of the digit at no-marker (e.g., 5 in F major's
+ * unmarked "6" since D5 lies above F4).
  */
-function noteToAbc(letter: string, octave: number, abcAccidental = ""): string {
-  // octave 0 in jianpu (no dots) = octave 4 for dizi (middle register)
-  // For dizi 筒音作5: the unmarked 5 is typically A4, so 1 (D) is D4
-  const absOctave = 4 + octave;
+function noteToAbc(letter: string, octaveMarker: number, naturalOctave: number, abcAccidental = ""): string {
+  const absOctave = naturalOctave + octaveMarker;
 
   if (absOctave >= 5) {
     const ticks = "'".repeat(absOctave - 5);
@@ -180,7 +179,7 @@ function convertTokensToAbcLine(
           abcAccidental = "_";
         }
 
-        const abcNote = noteToAbc(baseLetter, token.octave, abcAccidental);
+        const abcNote = noteToAbc(baseLetter, token.octave, scale.naturalOctave, abcAccidental);
         const dur = durationSuffix(token.duration, token.dotted, holdCount);
 
         // Grace notes
@@ -190,7 +189,8 @@ function convertTokensToAbcLine(
               const { digit, octave } = parseGraceOctave(g);
               const gIdx = parseInt(digit) - 1;
               if (gIdx < 0 || gIdx > 6) return "";
-              return noteToAbc(scaleMap[gIdx]!.noteName[0]!, octave);
+              const gScale = scaleMap[gIdx]!;
+              return noteToAbc(gScale.noteName[0]!, octave, gScale.naturalOctave);
             })
             .join("");
           parts.push(`{${graceNotes}}`);

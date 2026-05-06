@@ -53,9 +53,24 @@ export interface Song {
   techniques?: string[];
   sheetImage?: string;
   abc?: string;
-  /** Scale degree (1-7) of the all-holes-covered note in the source jianpu. Defaults to 5 (筒音作Sol). */
-  sourceTongyin?: number;
+  /** Solfège name of the all-holes-covered note in the source jianpu (筒音作 X). Defaults to "Sol". */
+  sourceTongyin?: Tongyin;
+  /** Octave that digit 1 (Do) sits in on the staff. Default 4 (= middle C for C major).
+   *  Songs notated for higher dizi register may use 5 to anchor the staff one octave higher. */
+  staffBaseOctave?: number;
 }
+
+/** Solfège name for a tongyin (筒音作) — which scale degree the all-holes-covered note represents. */
+export type Tongyin = "Do" | "Re" | "Mi" | "Sol" | "La";
+
+/** Map from solfège name to scale degree (1-7). */
+export const TONGYIN_TO_DIGIT: Record<Tongyin, number> = {
+  Do: 1,
+  Re: 2,
+  Mi: 3,
+  Sol: 5,
+  La: 6,
+};
 
 export interface Technique {
   id: string;

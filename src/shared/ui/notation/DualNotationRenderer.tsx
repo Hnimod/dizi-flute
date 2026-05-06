@@ -1,12 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { JianpuRenderer } from "../jianpu/JianpuRenderer";
 import { VexFlowStaffLine } from "../staff/vexflow-staff";
 import { useNotationPreference } from "./useNotationPreference";
+import { layoutLine } from "../jianpu/layout";
+import { parseToken, normalizeBeamDurations } from "../jianpu/parser";
 import type { JianpuRendererProps, LayoutItem } from "../jianpu/types";
 import "../staff/staff.css";
 
 interface DualNotationRendererProps extends JianpuRendererProps {
   abc?: string;
+  staffBaseOctave?: number;
+  /** If set, the staff renders this content instead of `content` (used to keep
+   *  the staff at source pitches while the jianpu shows transposed digits). */
+  staffContent?: string;
+  /** Source key for staff rendering (paired with staffContent). */
+  staffKey?: string;
 }
 
 export function DualNotationRenderer({
@@ -15,6 +23,9 @@ export function DualNotationRenderer({
   keySignature,
   timeSignature,
   tempo,
+  staffBaseOctave,
+  staffContent,
+  staffKey,
   ...jianpuProps
 }: DualNotationRendererProps) {
   const showStaff = useNotationPreference((s) => s.showStaff);
@@ -82,24 +93,48 @@ export function DualNotationRenderer({
     return () => clearTimeout(timer);
   });
 
+  // Pre-compute per-line layouts of the source-content used for staff rendering.
+  // The jianpu and staff share beat indices because both have the same beat structure;
+  // tongyin transposition only relabels digits, not the rhythm.
+  const staffLineItems = useMemo(() => {
+    if (!staffContent) return null;
+    const counter = { value: 0 };
+    let tokenIdxOffset = 0;
+    return staffContent.split("\n").map((line) => {
+      const trimmed = line.trim();
+      if (trimmed === "") {
+        tokenIdxOffset++;
+        return [] as LayoutItem[];
+      }
+      const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
+      const result = layoutLine(rawTokens, counter, tokenIdxOffset);
+      tokenIdxOffset += rawTokens.length + 1;
+      return result.items;
+    });
+  }, [staffContent]);
+
+  const effectiveStaffKey = staffKey ?? keySignature ?? "C";
+
   const renderBeforeLine = useCallback(
     (lineIdx: number, items: LayoutItem[], maxWidth: number) => {
       if (containerWidth <= 0) return null;
       maxWidthRef.current = maxWidth;
+      const itemsForStaff = staffLineItems?.[lineIdx] ?? items;
       return (
         <VexFlowStaffLine
-          items={items}
+          items={itemsForStaff}
           maxWidth={maxWidth}
-          keySignature={keySignature || "C"}
+          keySignature={effectiveStaffKey}
           timeSignature={timeSignature}
           containerWidth={containerWidth}
           showJianpu={false}
           lineIndex={lineIdx}
+          baseOctave={staffBaseOctave}
           onNotePositions={handleNotePositions}
         />
       );
     },
-    [keySignature, timeSignature, containerWidth, handleNotePositions],
+    [effectiveStaffKey, timeSignature, containerWidth, handleNotePositions, staffBaseOctave, staffLineItems],
   );
 
   return (

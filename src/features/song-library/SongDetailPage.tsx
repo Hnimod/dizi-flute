@@ -7,6 +7,7 @@ import { TempoGuide } from "@/features/lesson-viewer/TempoGuide";
 import { useTongyinPreference, TONGYIN_OPTIONS } from "@/features/lesson-viewer";
 import { useProgressStore } from "@/features/progress-tracking";
 import { useSongLibraryStore } from "./store";
+import { TONGYIN_TO_DIGIT } from "@/shared/types";
 import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
@@ -70,15 +71,17 @@ export function SongDetailPage() {
 
   const userTongyin = useTongyinPreference((s) => s.tongyin);
   const setUserTongyin = useTongyinPreference((s) => s.setTongyin);
-  const sourceTongyin = song?.sourceTongyin ?? 5;
-  const shift = tongyinShift(sourceTongyin, userTongyin);
+  const sourceTongyin = song?.sourceTongyin ?? "Sol";
+  const sourceDigit = TONGYIN_TO_DIGIT[sourceTongyin];
+  const userDigit = TONGYIN_TO_DIGIT[userTongyin];
+  const shift = tongyinShift(sourceDigit, userDigit);
   const displayJianpu = useMemo(
     () => (song ? transposeJianpu(song.jianpu, shift) : ""),
     [song, shift],
   );
   const displayKey = useMemo(
-    () => (song ? transposeKey(song.key, sourceTongyin, userTongyin) : ""),
-    [song, sourceTongyin, userTongyin],
+    () => (song ? transposeKey(song.key, sourceDigit, userDigit) : ""),
+    [song, sourceDigit, userDigit],
   );
 
   if (!song) {
@@ -215,7 +218,7 @@ export function SongDetailPage() {
             );
           })}
         </div>
-        {sourceTongyin !== 5 && (
+        {sourceTongyin !== "Sol" && (
           <span style={{ opacity: 0.6 }}>
             (source: 筒音作 {sourceTongyin})
           </span>
@@ -231,6 +234,9 @@ export function SongDetailPage() {
           keySignature={displayKey}
           timeSignature={song.timeSignature}
           origin={song.origin}
+          staffBaseOctave={song.staffBaseOctave}
+          staffContent={song.jianpu}
+          staffKey={song.key}
           className="notation-card rounded-lg p-4 overflow-x-auto"
         />
       </div>

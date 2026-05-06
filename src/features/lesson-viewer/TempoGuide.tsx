@@ -11,9 +11,13 @@ interface TempoGuideProps {
   timeSignature?: string;
   origin?: string;
   abc?: string;
+  staffBaseOctave?: number;
+  /** Source content for staff rendering (when jianpu shows transposed digits). */
+  staffContent?: string;
+  staffKey?: string;
 }
 
-export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin, abc }: TempoGuideProps) {
+export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin, abc, staffBaseOctave, staffContent, staffKey }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [startBeat, setStartBeat] = useState(-1);
@@ -200,6 +204,9 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           timeSignature={timeSignature}
           tempo={tempo}
           origin={origin}
+          staffBaseOctave={staffBaseOctave}
+          staffContent={staffContent}
+          staffKey={staffKey}
         />
       </div>
     </div>

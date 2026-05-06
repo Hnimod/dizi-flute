@@ -57,8 +57,12 @@ function shiftToken(raw: string, shift: number): string {
 }
 
 /**
- * Transpose all jianpu digits by `shift` scale degrees, with octave wrapping.
- * Non-note tokens (bars, ties, slurs, voltas, ornaments) pass through unchanged.
+ * Transpose all jianpu digits by `shift` scale degrees (with octave wrapping).
+ * Used to relabel a song from one tongyin (筒音作 X) convention to another while
+ * keeping the same physical fingerings on the dizi. Pitches change in lockstep —
+ * same fingerings produce a different sounding key when relabeled.
+ *
+ * Non-note tokens (bars, ties, slurs, voltas, ornaments, cue markers) pass through unchanged.
  */
 export function transposeJianpu(content: string, shift: number): string {
   if (shift === 0) return content;
@@ -90,7 +94,7 @@ function semitoneToKey(semi: number, useFlat: boolean): string {
 
 /**
  * Compute the new key signature when shifting tongyin (筒音作) from `source` to `target`.
- * Same physical pitches, different scale-degree labels → key shifts to keep pitches consistent.
+ * The displayed key changes because the same fingerings now imply a different tonic.
  */
 export function transposeKey(key: string, sourceTongyin: number, targetTongyin: number): string {
   if (sourceTongyin === targetTongyin) return key;

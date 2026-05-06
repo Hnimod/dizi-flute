@@ -67,3 +67,22 @@ export function buildScaleInfo(key: string): ScaleEntry[] {
     return { noteName, letter, diatonicBase };
   });
 }
+
+/**
+ * Natural absolute octave of a digit in the given key, anchored at tonic = `baseOctave`.
+ * The diatonic letter wraps past B→C when ascending the scale; once it does, the
+ * note sits in `baseOctave + 1`.
+ *
+ * E.g., baseOctave=4, F major: 1=F4, 2=G4, 3=A4, 4=Bb4, 5=C5, 6=D5, 7=E5
+ *       baseOctave=4, C major: 1=C4 ... 7=B4 (no wrap)
+ *       baseOctave=5, C major: 1=C5 ... 7=B5
+ */
+export function naturalOctaveForDigit(
+  digit: number,
+  keyTonicLetter: string,
+  baseOctave = 4,
+): number {
+  const tonicIdx = NOTE_ORDER.indexOf(keyTonicLetter);
+  if (tonicIdx < 0) return baseOctave;
+  return tonicIdx + (digit - 1) >= 7 ? baseOctave + 1 : baseOctave;
+}
