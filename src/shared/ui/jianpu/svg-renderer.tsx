@@ -196,7 +196,6 @@ export function renderSvgItems(
       const midX = (sx + ex) / 2;
       const topY = Y_OCTAVE_UP - 4;
       const botY = Y_OCTAVE_DOWN + 4;
-      const hook = 4;
       const stroke = "var(--color-text-secondary)";
       const bowDepth = 4;
       elements.push(

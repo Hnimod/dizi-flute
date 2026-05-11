@@ -261,8 +261,6 @@ function convertTokensToAbcLine(
       case "tempo":
       case "volta":
       case "text":
-      case "cue-start":
-      case "cue-end":
         // Skip dizi-specific annotations in staff notation
         break;
     }
