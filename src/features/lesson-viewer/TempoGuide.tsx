@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { DualNotationRenderer, useNotationPreference, buildBeatSchedule } from "@/shared/ui";
 
 interface TempoGuideProps {
@@ -22,6 +23,7 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [startBeat, setStartBeat] = useState(-1);
   const [bpm, setBpm] = useState(tempo ?? 60);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const beatRef = useRef(-1);
@@ -99,11 +101,26 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
   const showStaff = useNotationPreference((s) => s.showStaff);
   const toggleStaff = useNotationPreference((s) => s.toggleStaff);
 
-  return (
-    <div>
+  // Escape exits fullscreen; lock body scroll while open.
+  useEffect(() => {
+    if (!isFullscreen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setIsFullscreen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isFullscreen]);
+
+  const body = (
+    <>
       {/* Controls */}
       <div
-        className="flex items-center gap-3 rounded-lg px-3 py-2 mb-2 text-sm"
+        className="flex flex-wrap items-center gap-3 rounded-lg px-3 py-2 mb-2 text-sm"
         style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
       >
         {/* Play / Pause */}
@@ -176,6 +193,30 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           <span>Staff</span>
         </button>
 
+        {/* Fullscreen toggle */}
+        <button
+          onClick={() => setIsFullscreen((v) => !v)}
+          className="flex h-7 items-center gap-1 rounded-md px-2 transition-opacity hover:opacity-70"
+          style={{
+            color: isFullscreen ? "var(--color-accent)" : "var(--color-text-secondary)",
+            border: "1px solid var(--color-border)",
+            fontSize: 11,
+          }}
+          title={isFullscreen ? "Exit fullscreen (Esc)" : "Enter fullscreen (focus practice)"}
+          aria-pressed={isFullscreen}
+        >
+          {isFullscreen ? (
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 4v5H4M20 9h-5V4M4 15h5v5M15 20v-5h5" />
+            </svg>
+          ) : (
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+            </svg>
+          )}
+          <span>{isFullscreen ? "Exit" : "Focus"}</span>
+        </button>
+
         {/* Beat counter / start indicator */}
         <span className="ml-auto text-xs" style={{ color: "var(--color-text-secondary)" }}>
           {currentBeat >= 0 ? (
@@ -209,6 +250,46 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           staffKey={staffKey}
         />
       </div>
-    </div>
+    </>
   );
+
+  if (isFullscreen) {
+    return createPortal(
+      <div
+        className="fixed inset-0 z-50 flex flex-col"
+        style={{ backgroundColor: "var(--color-bg)" }}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title ? `${title} — focus practice` : "Focus practice"}
+      >
+        {title && (
+          <div
+            className="flex shrink-0 items-center justify-between gap-3 border-b px-4 py-2"
+            style={{ borderColor: "var(--color-border)" }}
+          >
+            <h2 className="truncate text-sm font-semibold md:text-base" style={{ color: "var(--color-text)" }}>
+              {title}
+            </h2>
+            <button
+              onClick={() => setIsFullscreen(false)}
+              className="shrink-0 rounded-md p-1 transition-opacity hover:opacity-70"
+              style={{ color: "var(--color-text-secondary)" }}
+              title="Exit fullscreen (Esc)"
+              aria-label="Exit fullscreen"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+        <div className="flex-1 overflow-auto p-4">
+          <div className="mx-auto max-w-5xl">{body}</div>
+        </div>
+      </div>,
+      document.body,
+    );
+  }
+
+  return <div>{body}</div>;
 }

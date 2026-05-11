@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation, NavLink } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useThemeStore, ThemeToggle } from "@/features/theme";
@@ -126,6 +126,14 @@ export function App() {
   const isAdmin = useAuthStore((s) => s.isAdmin);
   const logout = useAuthStore((s) => s.logout);
   const [showLogin, setShowLogin] = useState(false);
+
+  // Mirror the theme class onto <html> so portaled overlays (e.g. fullscreen
+  // notation) inherit the same CSS variables as the in-tree wrapper below.
+  useEffect(() => {
+    const cl = document.documentElement.classList;
+    if (theme === "dark") cl.add("dark");
+    else cl.remove("dark");
+  }, [theme]);
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
