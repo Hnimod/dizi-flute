@@ -201,42 +201,6 @@ export function SongDetailPage() {
 
       {song.sheetImage && <SheetImageAccordion src={song.sheetImage} />}
 
-      <div
-        className="my-4 flex flex-wrap items-center gap-2 text-xs"
-        style={{ color: "var(--color-text-secondary)" }}
-      >
-        <span>筒音作 (all-holes-covered):</span>
-        <div className="flex gap-1">
-          {TONGYIN_OPTIONS.map((opt) => {
-            const active = opt.value === userTongyin;
-            return (
-              <button
-                key={opt.value}
-                onClick={() => setUserTongyin(opt.value)}
-                className="rounded px-2 py-0.5 transition-opacity hover:opacity-80"
-                style={{
-                  backgroundColor: active ? "var(--color-accent-light)" : "transparent",
-                  color: active ? "var(--color-accent)" : "var(--color-text-secondary)",
-                  border: "1px solid var(--color-border)",
-                  fontWeight: active ? 600 : 400,
-                }}
-              >
-                {opt.label}
-              </button>
-            );
-          })}
-        </div>
-        <span aria-hidden style={{ opacity: 0.5 }}>·</span>
-        <span title="Physical dizi this notation is written for. Same fingerings on this flute regardless of which tongyin you select.">
-          {diziKey}-key dizi
-        </span>
-        {sourceTongyin !== "Sol" && (
-          <span style={{ opacity: 0.6 }}>
-            (source: 筒音作 {sourceTongyin})
-          </span>
-        )}
-      </div>
-
       <div className="my-4">
         <TempoGuide
           content={displayJianpu}
@@ -250,6 +214,43 @@ export function SongDetailPage() {
           staffContent={song.jianpu}
           staffKey={song.key}
           className="notation-card rounded-lg p-4 overflow-x-auto"
+          extraControls={
+            <div
+              className="flex flex-wrap items-center gap-2 text-xs"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              <span>筒音作 (all-holes-covered):</span>
+              <div className="flex gap-1">
+                {TONGYIN_OPTIONS.map((opt) => {
+                  const active = opt.value === userTongyin;
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setUserTongyin(opt.value)}
+                      className="rounded px-2 py-0.5 transition-opacity hover:opacity-80"
+                      style={{
+                        backgroundColor: active ? "var(--color-accent-light)" : "transparent",
+                        color: active ? "var(--color-accent)" : "var(--color-text-secondary)",
+                        border: "1px solid var(--color-border)",
+                        fontWeight: active ? 600 : 400,
+                      }}
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <span aria-hidden style={{ opacity: 0.5 }}>·</span>
+              <span title="Physical dizi this notation is written for. Same fingerings on this flute regardless of which tongyin you select.">
+                {diziKey}-key dizi
+              </span>
+              {sourceTongyin !== "Sol" && (
+                <span style={{ opacity: 0.6 }}>
+                  (source: 筒音作 {sourceTongyin})
+                </span>
+              )}
+            </div>
+          }
         />
       </div>
     </div>

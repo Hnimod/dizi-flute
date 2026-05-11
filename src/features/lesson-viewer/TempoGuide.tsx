@@ -16,9 +16,11 @@ interface TempoGuideProps {
   /** Source content for staff rendering (when jianpu shows transposed digits). */
   staffContent?: string;
   staffKey?: string;
+  /** Slot rendered below the playback controls — moves with focus/fullscreen. */
+  extraControls?: React.ReactNode;
 }
 
-export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin, abc, staffBaseOctave, staffContent, staffKey }: TempoGuideProps) {
+export function TempoGuide({ content, tempo, className, style, title, keySignature, timeSignature, origin, abc, staffBaseOctave, staffContent, staffKey, extraControls }: TempoGuideProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [startBeat, setStartBeat] = useState(-1);
@@ -228,6 +230,8 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           ) : null}
         </span>
       </div>
+
+      {extraControls && <div className="mb-2">{extraControls}</div>}
 
       {/* Notation with highlight */}
       <div ref={containerRef}>
