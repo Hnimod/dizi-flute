@@ -1,8 +1,8 @@
 import { CHROMATIC, ENHARMONIC_FLAT, KEY_TO_NORM, MAJOR_INTERVALS } from "./scale-utils";
 
 const NOTE_RE = /^(tr)?(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
-const GRACE_RE = /^(tr)?\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
-const DOUBLE_GRACE_RE = /^(tr)?\(([1-7][',]*)\)\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
+const GRACE_RE = /^(tr)?\(((?:#|b)?[1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
+const DOUBLE_GRACE_RE = /^(tr)?\(((?:#|b)?[1-7][',]*)\)\(((?:#|b)?[1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
 
 const NORM_TO_KEY: Record<string, string> = Object.fromEntries(
   Object.entries(KEY_TO_NORM).map(([k, v]) => [v, k]),
@@ -27,14 +27,19 @@ function octaveMarkers(octave: number): string {
 }
 
 function shiftDigitWithMarkers(s: string, shift: number): string {
-  const digit = parseInt(s[0]!, 10);
+  // Grace notes may carry a leading accidental (#5, b6). Preserve it: the
+  // chromatic modifier rides along with the relabeled digit.
+  let acc = "";
+  let start = 0;
+  if (s[0] === "#" || s[0] === "b") { acc = s[0]; start = 1; }
+  const digit = parseInt(s[start]!, 10);
   let octave = 0;
-  for (const c of s.slice(1)) {
+  for (const c of s.slice(start + 1)) {
     if (c === "'") octave++;
     else if (c === ",") octave--;
   }
   const r = shiftPosition(digit, octave, shift);
-  return `${r.digit}${octaveMarkers(r.octave)}`;
+  return `${acc}${r.digit}${octaveMarkers(r.octave)}`;
 }
 
 function shiftToken(raw: string, shift: number): string {
