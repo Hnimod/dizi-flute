@@ -88,13 +88,13 @@ When you see \`1=D\` at the top of a piece, every \`1\` is a D, every \`2\` is a
 
 Dots above or below a number shift its pitch up or down by one octave. In this text format, dots become apostrophes (high) or commas (low) after the digit.
 
-| Token | Octave |
-|-------|--------|
-| \`1\` | Middle octave (中音 zhōng yīn) — default |
-| \`1'\` | One octave up (高音 gāo yīn) — dot above |
-| \`1''\` | Two octaves up — rare |
-| \`5,\` | One octave down (低音 dī yīn) — dot below |
-| \`5,,\` | Two octaves down — rare |
+| Token | Rendered | Octave |
+|-------|----------|--------|
+| \`1\` | \`jianpu:1\` | Middle octave (中音 zhōng yīn) — default |
+| \`1'\` | \`jianpu:1'\` | One octave up (高音 gāo yīn) — dot above |
+| \`1''\` | \`jianpu:1''\` | Two octaves up — rare |
+| \`5,\` | \`jianpu:5,\` | One octave down (低音 dī yīn) — dot below |
+| \`5,,\` | \`jianpu:5,,\` | Two octaves down — rare |
 
 \`\`\`jianpu
 5, 6, 7, | 1 2 3 4 5 6 7 | 1' 2' 3' 5'
@@ -123,15 +123,15 @@ Notes: low register needs gentle breath; high register requires overblowing. Not
 
 Duration is shown by **dashes after the number** (longer notes) and **underlines below the number** (shorter notes). In this text format, every underline becomes one level of \`[ ... ]\` bracket nesting — one bracket pair for eighth, two for sixteenth.
 
-| Token | Duration | Beats in 4/4 |
-|-------|----------|--------------|
-| \`3\` | Quarter (四分音符) | 1 |
-| \`[ 3 ]\` | Eighth (八分音符) | 1/2 |
-| \`[ [ 3 ] ]\` | Sixteenth (十六分音符) | 1/4 |
-| \`3.\` | Dotted note (附点) | 1.5× |
-| \`3 -\` | Half note (二分) | 2 |
-| \`3 - -\` | Dotted half | 3 |
-| \`3 - - -\` | Whole note (全音符) | 4 |
+| Token | Rendered | Duration | Beats in 4/4 |
+|-------|----------|----------|--------------|
+| \`3\` | \`jianpu:3\` | Quarter (四分音符) | 1 |
+| \`[ 3 ]\` | \`jianpu:[ 3 ]\` | Eighth (八分音符) | 1/2 |
+| \`[ [ 3 ] ]\` | \`jianpu:[ [ 3 ] ]\` | Sixteenth (十六分音符) | 1/4 |
+| \`3.\` | \`jianpu:3.\` | Dotted note (附点) | 1.5× |
+| \`3 -\` | \`jianpu:3 -\` | Half note (二分) | 2 |
+| \`3 - -\` | \`jianpu:3 - -\` | Dotted half | 3 |
+| \`3 - - -\` | \`jianpu:3 - - -\` | Whole note (全音符) | 4 |
 
 \`\`\`jianpu
 3 3 3 3 | [ 3 3 3 3 3 3 3 3 ] | [ [ 3 3 3 3 3 3 3 3 ] ] | 3. [ 3 ] 3 3 | 3 - 3 - | 3 - - -
@@ -145,13 +145,13 @@ Each dash extends the note by one additional beat. Think of each \`-\` as "keep 
 
 Rests follow the same duration rules as notes, but use \`0\`:
 
-| Token | Duration |
-|-------|----------|
-| \`0\` | Quarter rest |
-| \`0 -\` | Half rest |
-| \`0 - - -\` | Whole rest |
-| \`[ 0 ]\` | Eighth rest |
-| \`[ [ 0 ] ]\` | Sixteenth rest |
+| Token | Rendered | Duration |
+|-------|----------|----------|
+| \`0\` | \`jianpu:0\` | Quarter rest |
+| \`0 -\` | \`jianpu:0 -\` | Half rest |
+| \`0 - - -\` | \`jianpu:0 - - -\` | Whole rest |
+| \`[ 0 ]\` | \`jianpu:[ 0 ]\` | Eighth rest |
+| \`[ [ 0 ] ]\` | \`jianpu:[ [ 0 ] ]\` | Sixteenth rest |
 
 \`\`\`jianpu
 0 | 0 - | [ 0 5 ] | [ [ 0 0 5 5 ] ]
@@ -163,8 +163,8 @@ Rests follow the same duration rules as notes, but use \`0\`:
 
 \`[ ... ]\` groups notes under a shared beam — and is the **only way** to write eighths and sixteenths. Notes inside one pair of brackets are eighths; nested brackets render as sixteenths (double beam line). For a single isolated eighth or sixteenth, wrap the lone note: \`[ 3 ]\` or \`[ [ 3 ] ]\`.
 
-- \`[ 3 5 6 1' ]\` — eighth-note beam group
-- \`[ [ 3 5 ] [ 6 1' ] ]\` — nested beams render double beam lines (sixteenths)
+- \`[ 3 5 6 1' ]\` → \`jianpu:[ 3 5 6 1' ]\` — eighth-note beam group
+- \`[ [ 3 5 ] [ 6 1' ] ]\` → \`jianpu:[ [ 3 5 ] [ 6 1' ] ]\` — nested beams render double beam lines (sixteenths)
 
 \`\`\`jianpu
 [ 3 5 6 1' ] [ 3 5 6 1' ] | [ [ 3 5 ] [ 6 1' ] ] [ [ 3 5 ] [ 6 1' ] ]
@@ -271,13 +271,13 @@ For beginners, focus on 2/4 and 4/4 first.
 
 ### Bar Lines
 
-| Token | Meaning |
-|-------|---------|
-| \`|\` | Single bar line |
-| \`||\` | Double bar line / section end |
-| \`|:\` | Repeat start |
-| \`:|\` | Repeat end |
-| \`:|:\` | Repeat end + new repeat start |
+| Token | Rendered | Meaning |
+|-------|----------|---------|
+| \`|\` | \`jianpu:3 \| 3\` | Single bar line |
+| \`||\` | \`jianpu:3 \|\| 3\` | Double bar line / section end |
+| \`|:\` | \`jianpu:3 \|: 3\` | Repeat start |
+| \`:|\` | \`jianpu:3 :\| 3\` | Repeat end |
+| \`:|:\` | \`jianpu:3 :\|: 3\` | Repeat end + new repeat start |
 
 \`\`\`jianpu
 3 3 3 3 | 3 3 3 3 || |: 3 3 3 3 :| 3 3 3 3
@@ -289,11 +289,11 @@ For beginners, focus on 2/4 and 4/4 first.
 
 ### Suffixes on a single note
 
-| Suffix | Name | Meaning |
-|--------|------|---------|
-| \`^\` | Fermata | Hold longer than written. Renders as an arc with a dot above the note. |
-| \`;\` | Staccato | Short and detached. Renders as a small dot above the note. |
-| \`>\` | Accent | Emphasize the note. Renders as a horizontal wedge above the note. |
+| Suffix | Example | Rendered | Name | Meaning |
+|--------|---------|----------|------|---------|
+| \`^\` | \`3^\` | \`jianpu:3^\` | Fermata | Hold longer than written. Renders as an arc with a dot above the note. |
+| \`;\` | \`3;\` | \`jianpu:3;\` | Staccato | Short and detached. Renders as a small dot above the note. |
+| \`>\` | \`3>\` | \`jianpu:3>\` | Accent | Emphasize the note. Renders as a horizontal wedge above the note. |
 
 Combine: \`[ #5'^ ]\` = sharp 5, octave up, eighth, fermata.
 
@@ -303,11 +303,11 @@ Combine: \`[ #5'^ ]\` = sharp 5, octave up, eighth, fermata.
 
 ### Tonguing
 
-| Token | Name (Chinese) | Technique |
-|-------|----------------|-----------|
-| \`T\` | 单吐 (dāntǔ) | Single tongue — say "tu" |
-| \`TK\` | 双吐 (shuāngtǔ) | Double tongue — "tu-ku" |
-| \`TTK\` | 三吐 (sāntǔ) | Triple tongue — "tu-tu-ku" |
+| Token | Example | Rendered | Name (Chinese) | Technique |
+|-------|---------|----------|----------------|-----------|
+| \`T\` | \`T 3\` | \`jianpu:T 3\` | 单吐 (dāntǔ) | Single tongue — say "tu" |
+| \`TK\` | \`TK 3\` | \`jianpu:TK 3\` | 双吐 (shuāngtǔ) | Double tongue — "tu-ku" |
+| \`TTK\` | \`TTK 3\` | \`jianpu:TTK 3\` | 三吐 (sāntǔ) | Triple tongue — "tu-tu-ku" |
 
 Full form \`T:single\`, \`T:double\`, \`T:triple\` is also accepted. Place the token before the note.
 
@@ -319,8 +319,8 @@ T 3 T 3 T 3 T 3 | TK 3 TK 3 TK 3 TK 3 | TTK 3 TTK 3 TTK 3
 
 ## Ties and Slurs
 
-- \`~\` = **tie** — connect two notes of the same pitch; hold for the combined duration without re-tonguing.
-- \`( ... )\` = **slur** — play different notes smoothly (legato); tongue only the first.
+- \`~\` = **tie** — connect two notes of the same pitch; hold for the combined duration without re-tonguing. → \`jianpu:~( 3 ~) 3\`
+- \`( ... )\` = **slur** — play different notes smoothly (legato); tongue only the first. → \`jianpu:( 3 5 6 5 )\`
 
 \`\`\`jianpu
 3 ~ 3 - | ( 3 5 6 5 ) | ( 1 3 5 ) - -
@@ -334,9 +334,9 @@ In printed jianpu, both use the same arc symbol; context (same pitch vs differen
 
 ### Inline ornaments
 
-- **Trill**: \`tr3\` — "tr~~~" above note, rapid alternation with the upper neighbor
-- **Grace note**: \`(2)3\` — small note 2 before main note 3
-- **Double grace note**: \`(2)(3)5\` — two grace notes before main note
+- **Trill**: \`tr3\` → \`jianpu:tr3\` — "tr~~~" above note, rapid alternation with the upper neighbor
+- **Grace note**: \`(2)3\` → \`jianpu:(2)3\` — small note 2 before main note 3
+- **Double grace note**: \`(2)(3)5\` → \`jianpu:(2)(3)5\` — two grace notes before main note
 
 \`\`\`jianpu
 tr3 - - - | (2)3 - (2)3 - | (2)(3)5 - - -
@@ -346,21 +346,23 @@ tr3 - - - | (2)3 - (2)3 - | (2)(3)5 - - -
 
 Place before the note. Three equivalent syntaxes: full (\`orn:xxx\`), Chinese character, or short English name.
 
-| Full | Symbol | Short | Chinese Name | Description |
-|------|--------|-------|--------------|-------------|
-| \`orn:die\` | 又 | \`die\` | 叠音 (dié yīn) | Stacked grace — quick upper-neighbor flick (finger only, no tongue) |
-| \`orn:da\` | ⺘ | \`da\` | 打音 (dǎ yīn) | Struck grace — quick lower-neighbor strike (finger only) |
-| \`orn:zeng\` | 赠 | \`zeng\` | 赠音 (zèng yīn) | Trailing "gift" note at end of a held note |
-| \`orn:bo\` | ∽ | \`bo\` | 上波音 (shàng bō yīn) | Upper mordent — single flick to upper neighbor and back |
-| \`orn:lower-bo\` | ≁ | \`lower-bo\` | 下波音 (xià bō yīn) | Lower mordent — single flick to lower neighbor and back |
-| \`orn:vibrato\` | ∿ | \`vib\` | 气震音 (qì zhèn yīn) | Breath vibrato — pulse diaphragm to shimmer the note |
-| \`orn:flutter\` | * | \`flutter\` | 花舌 (huā shé) | Flutter tongue — rolling tongue while blowing |
-| \`orn:slide-up\` | ↗ | \`su\` | 上滑音 (shàng huá yīn) | Slide up — continuous pitch glide upward |
-| \`orn:slide-down\` | ↘ | \`sd\` | 下滑音 (xià huá yīn) | Slide down — continuous pitch glide downward |
-| \`orn:return-slide\` | 回 | \`rs\` | 回滑音 (huí huá yīn) | Return slide — up to upper neighbor and back, one rounded arch |
-| \`orn:glide-up\` | ⇗ | \`gu\` | 上历音 (shàng lì yīn) | Upper glissando run — rapid ascending scalar sweep |
-| \`orn:glide-down\` | ⇘ | \`gd\` | 下历音 (xià lì yīn) | Lower glissando run — rapid descending scalar sweep |
-| \`orn:fly\` | 飞 | \`fly\` | 飞指 (fēi zhǐ) | Flying finger — rapid finger flutter for shimmering effect |
+| Short | Rendered | Chinese Name | Description |
+|-------|----------|--------------|-------------|
+| \`die 5\` | \`jianpu:die 5\` | 叠音 (dié yīn) | Stacked grace — quick upper-neighbor flick (finger only, no tongue) |
+| \`da 5\` | \`jianpu:da 5\` | 打音 (dǎ yīn) | Struck grace — quick lower-neighbor strike (finger only) |
+| \`zeng 5\` | \`jianpu:zeng 5\` | 赠音 (zèng yīn) | Trailing "gift" note at end of a held note |
+| \`bo 5\` | \`jianpu:bo 5\` | 上波音 (shàng bō yīn) | Upper mordent — single flick to upper neighbor and back |
+| \`lower-bo 5\` | \`jianpu:lower-bo 5\` | 下波音 (xià bō yīn) | Lower mordent — single flick to lower neighbor and back |
+| \`vib 5\` | \`jianpu:vib 5\` | 气震音 (qì zhèn yīn) | Breath vibrato — pulse diaphragm to shimmer the note |
+| \`flutter 5\` | \`jianpu:flutter 5\` | 花舌 (huā shé) | Flutter tongue — rolling tongue while blowing |
+| \`su 5\` | \`jianpu:su 5\` | 上滑音 (shàng huá yīn) | Slide up — continuous pitch glide upward |
+| \`sd 5\` | \`jianpu:sd 5\` | 下滑音 (xià huá yīn) | Slide down — continuous pitch glide downward |
+| \`rs 5\` | \`jianpu:rs 5\` | 回滑音 (huí huá yīn) | Return slide — up to upper neighbor and back, one rounded arch |
+| \`gu 5\` | \`jianpu:gu 5\` | 上历音 (shàng lì yīn) | Upper glissando run — rapid ascending scalar sweep |
+| \`gd 5\` | \`jianpu:gd 5\` | 下历音 (xià lì yīn) | Lower glissando run — rapid descending scalar sweep |
+| \`fly 5\` | \`jianpu:fly 5\` | 飞指 (fēi zhǐ) | Flying finger — rapid finger flutter for shimmering effect |
+
+The full \`orn:xxx\` form and Chinese characters (\`又\`, \`⺘\`, \`赠\`, etc.) are also accepted as input.
 
 Example: \`又 5\` is equivalent to \`orn:die 5\` and \`die 5\`.
 

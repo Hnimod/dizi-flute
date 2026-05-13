@@ -55,7 +55,8 @@ export function extractHeadings(markdown: string): HeadingEntry[] {
 const components: Components = {
   code({ className, children, ...props }) {
     const isJianpu = className?.includes("jianpu");
-    const isBlock = String(children).includes("\n");
+    const text = String(children);
+    const isBlock = text.includes("\n");
 
     if (isJianpu) {
       return (
@@ -63,8 +64,19 @@ const components: Components = {
           className="rounded-lg p-4 overflow-x-auto my-4"
           style={{ backgroundColor: "var(--color-bg-secondary)", border: "1px solid var(--color-border)" }}
         >
-          <JianpuRenderer content={String(children).trim()} />
+          <JianpuRenderer content={text.trim()} />
         </div>
+      );
+    }
+
+    // Inline jianpu: \`jianpu:<content>\` renders the snippet visually next to the text.
+    // Useful in table cells and bullets to show "this text → this picture".
+    if (!isBlock && text.startsWith("jianpu:")) {
+      const snippet = text.slice("jianpu:".length).trim();
+      return (
+        <span className="inline-block align-middle [&_svg]:!w-auto [&_svg]:!h-14 [&_svg]:!inline-block [&_svg]:!align-middle">
+          <JianpuRenderer content={snippet} />
+        </span>
       );
     }
 
