@@ -74,7 +74,7 @@ const components: Components = {
     if (!isBlock && text.startsWith("jianpu:")) {
       const snippet = text.slice("jianpu:".length).trim();
       return (
-        <span className="inline-block align-middle [&_svg]:!w-auto [&_svg]:!h-14 [&_svg]:!inline-block [&_svg]:!align-middle">
+        <span className="inline-block align-middle [&_svg]:!w-auto [&_svg]:!h-20 [&_svg]:!inline-block [&_svg]:!align-middle">
           <JianpuRenderer content={snippet} />
         </span>
       );
