@@ -1,4 +1,5 @@
 import type { Song } from "@/shared/types";
+import sheetImg from "./chi-qing-zhong.jpg";
 
 export const song: Song = {
   id: "chi-qing-zhong",
@@ -13,8 +14,8 @@ export const song: Song = {
   timeSignature: "4/4",
   tempo: 72,
   jianpu: `
-    (5,)6, [ 1 (2)3 ] 2 [ 1 7, ] | 6, [ 6, 5, ] 3, - | [ 0 6, ] [ 7, 1 ] 7, [ 5, ~( 5, ] | [ 5, ~) ~( 6, ] 6, ~) - - | 6, [ 1 3 ] 2 [ 1 2 ] |
-    3 [ 5 3 ] 3 - | [ 0 6, ] [ 7, 1 ] 7, [ 5, ~( 5, ] | [ 5, ~) ~( 6, ] 6, ~) - - | 6 [ 5 6 ] 3 [ 2 1 ] | 2 [ 2 3 ] 6, - |
+    (5,)6, [ ~( 1 (2)3 ~) ] 2 [ ~( 1 7, ~) ] | 6, [ ~( orn:die 6, 5, ~) ] 3, - | [ 0 (5,)6, ] [ 7, 1 ] 7, [ 6, ~( 5, ] | [ 5, ~) ~( (5,)6, ] 6, ~) - - | (5,)6, [ ~( 1 (2)3 ~) ] 2 [ ~( 1 2 ~) ] |
+    orn:die 3 [ ~( 5 3 ~) ] orn:da 3 - | [ 0 (5,)6, ] [ 7, 1 ] 7, [ 6, ~( 5, ] | [ 5, ~) ~( (5,)6, ] 6, ~) - - | 6 [ 5 6 ] 3 [ 2 1 ] | 2 [ 2 3 ] 6, - |
     [ 2 3 ] [ 1 6, ] 2 [ 3 5 ] | 3 - - - | 6 [ 5 6 ] 3 [ 2 1 ] | 2 [ 2 3 ] 6, - | [ 2 3 ] [ 1 6, ] 5, [ 3, 5, ] |
     6, - - - | cue( 3, [ 7, 6, ] 2 3 )cue | 6, [ 1 3 ] 2 [ 1 7, ] | 6, [ 6, 5, ] 3, - | [ 0 6, ] [ 7, 1 ] 7, [ 5, ~( 5, ] |
     [ 5, ~) 6, ] 6, - - | 6, [ 1 3 ] 2 [ 1 2 ] | 3 [ 5 3 ] 3 - | [ 0 6, ] [ 7, 1 ] 7, [ 5, ~( 5, ] | [ 5, ~) 6, ] 6, - - |
@@ -29,6 +30,7 @@ export const song: Song = {
   techniques: ["long-tones", "pentatonic-scale"],
   sourceTongyin: "Re",
   staffBaseOctave: 5,
+  sheetImage: sheetImg,
   videoUrls: [
     "https://www.youtube.com/watch?v=qjjROCqCfys&list=RDUMDTDFETGaQ&index=26",
     "https://www.youtube.com/watch?v=48OFA3uX4J8",

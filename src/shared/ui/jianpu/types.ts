@@ -29,7 +29,22 @@ export type Token =
   | { type: "tie-end" }
   | { type: "cue-start" }
   | { type: "cue-end" }
-  | { type: "tempo"; text: string };
+  | { type: "tempo"; text: string }
+  | {
+      type: "nav";
+      kind:
+        | "segno"
+        | "coda"
+        | "ds"
+        | "dc"
+        | "fine"
+        | "to-coda"
+        | "ds-al-fine"
+        | "ds-al-coda"
+        | "dc-al-fine"
+        | "dc-al-coda";
+      text: string;
+    };
 
 export interface LayoutItem {
   token: Token;
@@ -50,7 +65,7 @@ export interface InteractiveOpts {
   lineYOffset?: number;
   onNoteHover?: (token: Token, event: React.MouseEvent, annotations: string[]) => void;
   onNoteLeave?: () => void;
-  onSymbolHover?: (event: React.MouseEvent, info: { name: string; id: string; description: string }) => void;
+  onSymbolHover?: (event: React.MouseEvent, info: { name: string; id: string; description: string; href?: string }) => void;
   onSymbolLeave?: () => void;
 }
 

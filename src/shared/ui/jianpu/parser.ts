@@ -118,6 +118,29 @@ export function parseToken(raw: string): Token {
   const tempoMark = TEMPO_MARKS[raw];
   if (tempoMark) return { type: "tempo", text: tempoMark };
 
+  // Navigation marks: segno, coda, D.S., D.C., Fine, to-coda, and combos.
+  // Tokens are split on whitespace, so multi-word labels use camelCase aliases.
+  const NAV_TOKENS: Record<string, { kind: "segno" | "coda" | "ds" | "dc" | "fine" | "to-coda" | "ds-al-fine" | "ds-al-coda" | "dc-al-fine" | "dc-al-coda"; text: string }> = {
+    "segno": { kind: "segno", text: "𝄋" },
+    "𝄋": { kind: "segno", text: "𝄋" },
+    "coda": { kind: "coda", text: "𝄌" },
+    "𝄌": { kind: "coda", text: "𝄌" },
+    "D.S.": { kind: "ds", text: "D.S." },
+    "DS": { kind: "ds", text: "D.S." },
+    "D.C.": { kind: "dc", text: "D.C." },
+    "DC": { kind: "dc", text: "D.C." },
+    "Fine": { kind: "fine", text: "Fine" },
+    "fine": { kind: "fine", text: "Fine" },
+    "toCoda": { kind: "to-coda", text: "To Coda" },
+    "to-coda": { kind: "to-coda", text: "To Coda" },
+    "D.S.alFine": { kind: "ds-al-fine", text: "D.S. al Fine" },
+    "D.S.alCoda": { kind: "ds-al-coda", text: "D.S. al Coda" },
+    "D.C.alFine": { kind: "dc-al-fine", text: "D.C. al Fine" },
+    "D.C.alCoda": { kind: "dc-al-coda", text: "D.C. al Coda" },
+  };
+  const navMark = NAV_TOKENS[raw];
+  if (navMark) return { type: "nav", kind: navMark.kind, text: navMark.text };
+
   // Ornament shorthand: Chinese characters or short English names
   const ORNAMENT_SHORTHAND: Record<string, string> = {
     "\u53C8": "die", "\u53E0": "die", "\u2E98": "da", "\u6253": "da",

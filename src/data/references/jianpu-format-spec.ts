@@ -434,15 +434,29 @@ When a repeated section has a different ending the second time:
 - First time through: play the \`1.\` ending, then repeat back to \`|:\`
 - Second time through: skip \`1.\`, play \`2.\` instead
 
-### Navigation marks (printed, not yet rendered)
+### Navigation marks
 
-| Symbol | Italian | Meaning |
-|--------|---------|---------|
-| D.C. | Da Capo | Back to the very beginning |
-| D.S. | Dal Segno | Back to the segno sign |
-| Fine | — | The end (used with D.C./D.S.) |
-| Coda | 尾声 (wěishēng) | Jump to the coda |
-| 𝄋 or % | Segno | The sign — D.S. sends you here |
+These are rendered above the staff. Tokens are split on whitespace, so multi-word labels use a camelCase shorthand. (The live example below shows what each one looks like in a real score.)
+
+| Token | Italian | Meaning |
+|-------|---------|---------|
+| \`segno\` | Segno | The sign — D.S. instructions send you back here. Renders as a stylized S with a diagonal slash and two dots. |
+| \`coda\` | Coda | Marks the start of the coda section. Renders as a circle with a cross through it. |
+| \`D.S.\` (or \`DS\`) | Dal Segno | Back to the segno sign |
+| \`D.C.\` (or \`DC\`) | Da Capo | Back to the very beginning |
+| \`Fine\` | — | The end (used with D.C./D.S.) |
+| \`toCoda\` | — | On the repeat, jump from here to the coda |
+| \`D.S.alFine\` | — | Back to segno, play through to \`Fine\` |
+| \`D.S.alCoda\` | — | Back to segno, play until \`toCoda\`, then jump to \`coda\` |
+| \`D.C.alFine\` | — | Back to the start, play through to \`Fine\` |
+| \`D.C.alCoda\` | — | Back to the start, play until \`toCoda\`, then jump to \`coda\` |
+
+Nav tokens are zero-width annotations: they float above the **next** item, so place them right before a bar line or note to anchor them visually.
+
+\`\`\`jianpu
+segno 1 2 3 4 | 5 6 5 - toCoda | 1 - - - D.S.alCoda ||
+coda 5 - 1 - ||
+\`\`\`
 
 ---
 

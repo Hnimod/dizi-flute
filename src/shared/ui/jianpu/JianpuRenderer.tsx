@@ -212,7 +212,7 @@ export function JianpuRenderer({
 
   // Tooltip state
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number; links: NoteTooltipLink[] } | null>(null);
-  const [symbolTip, setSymbolTip] = useState<{ x: number; y: number; name: string; id: string; description: string } | null>(null);
+  const [symbolTip, setSymbolTip] = useState<{ x: number; y: number; name: string; id: string; description: string; href?: string } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tipHideRef = useRef<ReturnType<typeof setTimeout>>(null);
 
@@ -229,7 +229,7 @@ export function JianpuRenderer({
     tipHideRef.current = setTimeout(() => setTooltip(null), 200);
   }, []);
 
-  const handleSymbolHover = useCallback((event: React.MouseEvent, info: { name: string; id: string; description: string }) => {
+  const handleSymbolHover = useCallback((event: React.MouseEvent, info: { name: string; id: string; description: string; href?: string }) => {
     if (tipHideRef.current) clearTimeout(tipHideRef.current);
     const rect = (event.target as Element).getBoundingClientRect();
     setSymbolTip({ x: rect.left + rect.width / 2, y: rect.top, ...info });
@@ -449,7 +449,7 @@ export function JianpuRenderer({
               {symbolTip.description}
             </div>
             <a
-              href={`/techniques/${symbolTip.id}`}
+              href={symbolTip.href ?? `/techniques/${symbolTip.id}`}
               style={{
                 fontSize: 11,
                 fontWeight: 600,

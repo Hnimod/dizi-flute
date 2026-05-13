@@ -22,8 +22,9 @@ const ORNAMENT_CHARS: Record<string, string> = {
   "glide-down": "⇘",
 };
 
-// Map symbol names to technique page info
-const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: string }> = {
+// Map symbol names to technique page info. `href` overrides the default
+// `/techniques/${id}` link target (used for marks that live in knowledge docs).
+const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: string; href?: string }> = {
   die: { id: "die-yin", name: "叠音 Stacked Grace", description: "Quick grace from one hole above, finger only" },
   da: { id: "da-yin", name: "打音 Struck Grace", description: "Quick strike from one hole below, finger only" },
   zeng: { id: "zeng-yin", name: "赠音 Trailing Note", description: "Trailing gift note at end of held note" },
@@ -61,12 +62,103 @@ const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: 
   octaveDown: { id: "two-octave-range", name: "低音 Low Octave", description: "Play one octave lower" },
   rest: { id: "rhythm-reading", name: "休止符 Rest", description: "Silence for the marked duration" },
   hold: { id: "rhythm-reading", name: "延音线 Hold", description: "Continue holding the previous note" },
+  "nav:segno": { id: "jianpu-format-spec", name: "Segno", description: "The sign — D.S. instructions send you back to this point", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:coda": { id: "jianpu-format-spec", name: "Coda", description: "Start of the coda section. 'To Coda' / 'al Coda' jumps you here", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:ds": { id: "jianpu-format-spec", name: "D.S. (Dal Segno)", description: "Italian for 'from the sign' — jump back to the segno", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:dc": { id: "jianpu-format-spec", name: "D.C. (Da Capo)", description: "Italian for 'from the head' — jump back to the very beginning", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:fine": { id: "jianpu-format-spec", name: "Fine", description: "End of the piece, used with D.C. or D.S. to mark where to stop", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:to-coda": { id: "jianpu-format-spec", name: "To Coda", description: "On a repeat triggered by D.S./D.C. al Coda, jump from here to the coda", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:ds-al-fine": { id: "jianpu-format-spec", name: "D.S. al Fine", description: "Jump back to the segno, play through to the 'Fine' mark", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:ds-al-coda": { id: "jianpu-format-spec", name: "D.S. al Coda", description: "Jump to segno, play until 'To Coda', then jump to the coda", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:dc-al-fine": { id: "jianpu-format-spec", name: "D.C. al Fine", description: "Jump to the beginning, play through to the 'Fine' mark", href: "/knowledge/jianpu-format-spec#navigation-marks" },
+  "nav:dc-al-coda": { id: "jianpu-format-spec", name: "D.C. al Coda", description: "Jump to the beginning, play until 'To Coda', then jump to the coda", href: "/knowledge/jianpu-format-spec#navigation-marks" },
 };
 
 function ornamentDisplay(name: string): { text: string; isChar: boolean } {
   const char = ORNAMENT_CHARS[name];
   if (!char) return { text: name, isChar: false };
   return { text: char, isChar: true };
+}
+
+// Authentic glyph path data adapted from Wikimedia Commons SVGs (public domain).
+// Each entry: source bbox (sx0, sy0, sw, sh) for centering math, and the path `d`.
+//
+// SegnoTeken.svg  — https://commons.wikimedia.org/wiki/File:SegnoTeken.svg
+// Coda_sign.svg   — https://commons.wikimedia.org/wiki/File:Coda_sign.svg
+// Music-mordent.svg / Music-inverted-mordent.svg — same Wikimedia Commons category.
+
+const GLYPH_SEGNO_PATH = "m 0.9,8.8 c -0.1,1.1 -0.1,2.2 0.2,3.4 0.4,1.6 1.2,3.1 2,4.3 1.3,1.7 2.9,3.2 4.5,4.3 1.4,1.1 2.8,1.8 4.1,2.7 -3.5,6 -7.6,13.3 -10.9,19.1 l 3.9,0 c 3.3,-5.7 6.9,-12.3 9.9,-17.3 1.2,0.6 2.3,1.5 3.3,2.3 1.1,0.9 1.9,1.8 2.8,2.8 0.9,1.1 1.5,2.3 2.1,3.5 0.7,1.9 1.1,4.2 -0.5,6 -1,0.9 -2,1 -3,0.7 -1.1,-0.3 -1.8,-1.1 -2.1,-1.9 0.1,-0.4 0.8,-0.4 1.3,-1.2 0.7,-1.1 1,-2.2 0.8,-3.5 -0.2,-1.2 -0.8,-2.1 -1.7,-2.8 -0.6,-0.4 -1.3,-0.4 -1.9,-0.4 -0.6,-0.1 -1.4,0.1 -1.8,0.3 -0.5,0.3 -0.9,0.8 -1.2,1.4 -0.3,0.6 -0.4,1.4 -0.4,2.2 0.1,1.3 0.4,2.5 1,3.7 0.6,1.1 1.4,2 2.5,2.8 1.6,1.1 3.3,1.5 5.1,1.4 1.8,-0.2 3.4,-0.9 4.8,-2.3 C 27.1,38.8 28,37 28.2,34.9 28.3,33.8 28.3,32.7 28,31.5 27.8,30.6 27.5,29.8 27.2,29.1 26.7,27.6 25.3,26.2 24.3,25.2 23.5,24.4 22.6,23.6 21.5,22.8 20.1,21.7 18.7,21 17.4,20.1 20.9,14.1 25,6.8 28.3,1 L 24.4,1 C 21.2,6.6 17.4,13.2 14.5,18.3 13.4,17.9 12.1,16.8 11.1,16 10,15.1 9.1,14.3 8.3,13.2 7.4,12.1 6.8,11.1 6.2,9.7 5.9,8.9 5.7,8.1 5.6,7.2 5.4,5.7 5.7,4.7 6.7,3.6 c 1,-0.9 1.8,-1 3,-0.7 1.1,0.3 1.8,1 2.1,1.9 -0.4,0.5 -1,0.6 -1.3,1.2 -0.7,1.1 -1,2.2 -0.8,3.5 0.2,1.2 0.8,2.1 1.7,2.8 0.6,0.4 1.3,0.4 1.9,0.4 0.8,0 1.2,-0.1 1.8,-0.3 C 15.6,12.1 16,11.6 16.3,11 16.6,10.4 16.7,9.6 16.7,8.7 16.6,7.4 16.3,6.2 15.7,5.1 15.1,4 14.3,3.1 13.2,2.3 12.5,1.8 11.7,1.5 11,1.3 9.9,1 8.7,1 7.6,1.1 6.9,1.2 6.1,1.4 5.3,1.8 4.5,2.2 4,2.7 3.3,3.4 1.9,4.9 1.1,6.9 0.9,8.8 Z m 20.7,8.9 c 0,0.7 0.4,1.5 1.1,1.8 0.6,0.3 1.4,0.1 2,-0.2 0.5,-0.4 0.7,-1 0.7,-1.5 0,-1 -0.6,-1.7 -1.4,-1.9 -0.5,-0.1 -1.2,0 -1.75,0.4 -0.55,0.4 -0.55,0.9 -0.65,1.4 z M 4.2,27 c 0.3,0.5 0.9,0.9 1.7,1 0.8,0.1 1.4,-0.4 1.7,-1.1 C 8,26.2 7.8,25.3 7.3,24.7 6.8,24 6,24 5.2,24.2 4.6,24.3 4.3,24.8 4.05,25.35 3.8,25.9 3.9,26.5 4.2,27 Z";
+const GLYPH_SEGNO_BBOX = { x: 0, y: 1, w: 28.3, h: 43 };
+
+const GLYPH_CODA_PATHS = [
+  "M0.513184,13.2156L0.54834,12.5166L4.55835,12.4785C4.84717,8.28442,7.67236,5.20239,11.5413,4.47046L11.5493,0.508545C11.8704,0.508545,11.7593,0.514404,12.1033,0.514404L12.0862,13.0854Z M11.5364,5.32544C8.82837,6.17944,8.44434,10.7385,8.39526,12.3965L11.4343,12.4146Z",
+  "M23.4873,13.2156C23.4722,11.6836,23.4521,13.9236,23.4521,12.5166L19.4412,12.4785C19.1523,8.28442,16.3284,5.20239,12.4592,4.47046L12.4502,0.508545L11.8972,0.514404L11.9143,13.0854C15.8943,13.0854,19.4082,13.2156,23.4873,13.2156Z M12.4644,5.32544C15.1724,6.17944,15.5552,10.7385,15.6052,12.3965L12.5662,12.4146Z",
+  "M0.512939,12.7876C0.528076,14.3196,0.548096,12.0796,0.548096,13.4866L4.55811,13.5247C4.84692,17.7188,7.67212,20.8008,11.541,21.5327L11.5491,25.4946L12.103,25.4888L12.0859,12.9177Z M11.5361,20.6777C8.82813,19.8237,8.44409,15.2646,8.39502,13.6067L11.4341,13.5886Z",
+  "M23.4871,12.7876L23.4519,13.4866L19.4409,13.5247C19.1521,17.7188,16.3281,20.8008,12.459,21.5327L12.45,25.4946L11.897,25.4888L11.9141,12.9177C15.894,12.9177,19.408,12.7876,23.4871,12.7876Z M12.4641,20.6777C15.1721,19.8237,15.5549,15.2646,15.605,13.6067L12.5659,13.5886Z",
+];
+const GLYPH_CODA_BBOX = { x: 0, y: 0, w: 24, h: 26 };
+
+const GLYPH_MORDENT_PATH = "m 71,27.9 14,-14.7 12.6,10.7 10.4,-10.8 13.5,11 5.7,-6.3 0,4.7 L 114.9,36 101.8,25.2 92.1,36.3 78.7,25.2 71,33.7 z";
+const GLYPH_MORDENT_BBOX = { x: 71, y: 13.2, w: 49.6, h: 23.1 };
+
+function renderScaledGlyph(
+  d: string | string[],
+  bbox: { x: number; y: number; w: number; h: number },
+  targetW: number,
+  cx: number,
+  cy: number,
+  key: string,
+  info: { name: string; id: string; description: string; href?: string } | undefined,
+  opts: InteractiveOpts | undefined,
+  extra?: React.ReactNode,
+): React.ReactNode {
+  const scale = targetW / bbox.w;
+  const tx = cx - (bbox.x + bbox.w / 2) * scale;
+  const ty = cy - (bbox.y + bbox.h / 2) * scale;
+  const hoverEnter = opts?.onSymbolHover && info ? (e: React.MouseEvent) => opts.onSymbolHover!(e, info) : undefined;
+  const paths = Array.isArray(d) ? d : [d];
+  return (
+    <g
+      key={key}
+      transform={`translate(${tx} ${ty}) scale(${scale})`}
+      style={hoverEnter ? { cursor: "help" } : undefined}
+      onMouseEnter={hoverEnter}
+      onMouseLeave={opts?.onSymbolLeave}
+    >
+      <rect x={bbox.x} y={bbox.y} width={bbox.w} height={bbox.h} fill="transparent" />
+      {paths.map((p, i) => <path key={i} d={p} fill="var(--color-text)" fillRule="evenodd" />)}
+      {extra}
+    </g>
+  );
+}
+
+function renderSegnoGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
+  return renderScaledGlyph(GLYPH_SEGNO_PATH, GLYPH_SEGNO_BBOX, 7, x, y, key, SYMBOL_TECHNIQUE["nav:segno"], opts);
+}
+
+function renderCodaGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
+  return renderScaledGlyph(GLYPH_CODA_PATHS, GLYPH_CODA_BBOX, 9, x, y, key, SYMBOL_TECHNIQUE["nav:coda"], opts);
+}
+
+function renderMordentGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
+  return renderScaledGlyph(GLYPH_MORDENT_PATH, GLYPH_MORDENT_BBOX, 10, x, y, key, SYMBOL_TECHNIQUE["bo"], opts);
+}
+
+function renderLowerMordentGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
+  // Same zigzag plus a vertical line through the center (the "lower" variant).
+  const cx = GLYPH_MORDENT_BBOX.x + GLYPH_MORDENT_BBOX.w / 2;
+  const extra = (
+    <line
+      x1={cx}
+      y1={GLYPH_MORDENT_BBOX.y - 8}
+      x2={cx}
+      y2={GLYPH_MORDENT_BBOX.y + GLYPH_MORDENT_BBOX.h + 8}
+      stroke="var(--color-text)"
+      strokeWidth={7}
+      strokeLinecap="square"
+    />
+  );
+  return renderScaledGlyph(GLYPH_MORDENT_PATH, GLYPH_MORDENT_BBOX, 10, x, y, key, SYMBOL_TECHNIQUE["lower-bo"], opts, extra);
 }
 
 function renderVibratoWave(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
@@ -133,6 +225,43 @@ export function renderSvgItems(
       continue;
     }
 
+    if (item.token.type === "nav") {
+      const next = items[idx + 1];
+      const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
+      if (item.token.kind === "segno") {
+        elements.push(renderSegnoGlyph(targetX, Y_MARK, key, opts));
+      } else if (item.token.kind === "coda") {
+        elements.push(renderCodaGlyph(targetX, Y_MARK, key, opts));
+      } else {
+        // Text labels (D.S./D.C./Fine/To Coda/...) — right-align so the label sits
+        // BEFORE the next item rather than extending past it (which would clip at the
+        // SVG viewBox edge when placed near the line end).
+        const labelEndX = next ? targetX - (next.width / 2) - 2 : item.x;
+        const navInfo = SYMBOL_TECHNIQUE[`nav:${item.token.kind}`];
+        const navHover = opts?.onSymbolHover && navInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, navInfo) : undefined;
+        elements.push(
+          <text
+            key={key}
+            x={labelEndX}
+            y={Y_MARK}
+            textAnchor="end"
+            dominantBaseline="central"
+            fontSize={7}
+            fontWeight={600}
+            fontStyle="italic"
+            fontFamily="sans-serif"
+            fill="var(--color-text)"
+            style={navHover ? { cursor: "help" } : undefined}
+            onMouseEnter={navHover}
+            onMouseLeave={opts?.onSymbolLeave}
+          >
+            {item.token.text}
+          </text>,
+        );
+      }
+      continue;
+    }
+
     if (item.token.type === "tonguing" || item.token.type === "ornament") {
       pendingAnnotations.push(
         item.token.type === "tonguing" ? `T:${item.token.technique}` : item.token.name,
@@ -167,6 +296,10 @@ export function renderSvgItems(
         );
       } else if (item.token.name === "vibrato") {
         elements.push(renderVibratoWave(targetX, Y_MARK, key, opts));
+      } else if (item.token.name === "bo") {
+        elements.push(renderMordentGlyph(targetX, Y_MARK, key, opts));
+      } else if (item.token.name === "lower-bo") {
+        elements.push(renderLowerMordentGlyph(targetX, Y_MARK, key, opts));
       } else {
         const { text: ornText, isChar } = ornamentDisplay(item.token.name);
         const oInfo = SYMBOL_TECHNIQUE[item.token.name];
@@ -931,6 +1064,14 @@ function renderSvgToken(
         elements.push(renderVibratoWave(x + CELL_NOTE / 2, Y_MARK, key, opts));
         break;
       }
+      if (token.name === "bo") {
+        elements.push(renderMordentGlyph(x + CELL_NOTE / 2, Y_MARK, key, opts));
+        break;
+      }
+      if (token.name === "lower-bo") {
+        elements.push(renderLowerMordentGlyph(x + CELL_NOTE / 2, Y_MARK, key, opts));
+        break;
+      }
       const { text: ornText2, isChar: isChar2 } = ornamentDisplay(token.name);
       const oInfo2 = SYMBOL_TECHNIQUE[token.name];
       const oHover2 = opts?.onSymbolHover && oInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, oInfo2) : undefined;
@@ -977,6 +1118,36 @@ function renderSvgToken(
           {token.text}
         </text>,
       );
+      break;
+    }
+    case "nav": {
+      if (token.kind === "segno") {
+        elements.push(renderSegnoGlyph(x, Y_MARK, key, opts));
+      } else if (token.kind === "coda") {
+        elements.push(renderCodaGlyph(x, Y_MARK, key, opts));
+      } else {
+        const navInfo2 = SYMBOL_TECHNIQUE[`nav:${token.kind}`];
+        const navHover2 = opts?.onSymbolHover && navInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, navInfo2) : undefined;
+        elements.push(
+          <text
+            key={key}
+            x={x}
+            y={Y_MARK}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize={7}
+            fontWeight={600}
+            fontStyle="italic"
+            fontFamily="sans-serif"
+            fill="var(--color-text)"
+            style={navHover2 ? { cursor: "help" } : undefined}
+            onMouseEnter={navHover2}
+            onMouseLeave={opts?.onSymbolLeave}
+          >
+            {token.text}
+          </text>,
+        );
+      }
       break;
     }
     case "text":
