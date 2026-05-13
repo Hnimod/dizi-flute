@@ -411,14 +411,17 @@ Gradual changes: \`cresc.\` (渐强 jiànqiáng) = get louder, \`dim.\` (渐弱 
 
 ### First and second endings (volta brackets)
 
-When a repeated section has a different ending the second time:
+When a repeated section has a different ending the second time, mark each ending with \`[N.\` where \`N\` is the ending number. The bracket extends until the next \`:|\` (loop again) or \`||\` (final). Place the volta token **before** the first note of the ending.
+
+- \`[1.\` — first ending begins → \`jianpu:|: 3 [1. 5 :| [2. 6 ||\`
+- \`[2.\` — second ending begins (and \`[3.\`, \`[4.\` for further endings)
 
 \`\`\`jianpu
 |: 1 2 3 5 | 5 3 [1. 2 - :| [2. 1 - ||
 \`\`\`
 
-- First time through: play the \`1.\` ending, then repeat back to \`|:\`
-- Second time through: skip \`1.\`, play \`2.\` instead
+- First time through: play the \`1.\` ending, then repeat back to \`|:\`.
+- Second time through: skip \`1.\`, play \`2.\` instead.
 
 ### Navigation marks
 
