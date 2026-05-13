@@ -271,13 +271,11 @@ For beginners, focus on 2/4 and 4/4 first.
 
 ### Bar Lines
 
-| Token | Rendered | Meaning |
-|-------|----------|---------|
-| \`|\` | \`jianpu:3 \| 3\` | Single bar line |
-| \`||\` | \`jianpu:3 \|\| 3\` | Double bar line / section end |
-| \`|:\` | \`jianpu:3 \|: 3\` | Repeat start |
-| \`:|\` | \`jianpu:3 :\| 3\` | Repeat end |
-| \`:|:\` | \`jianpu:3 :\|: 3\` | Repeat end + new repeat start |
+- \`|\` — Single bar line → \`jianpu:3 | 3\`
+- \`||\` — Double bar line / section end → \`jianpu:3 || 3\`
+- \`|:\` — Repeat start → \`jianpu:3 |: 3\`
+- \`:|\` — Repeat end → \`jianpu:3 :| 3\`
+- \`:|:\` — Repeat end + new repeat start → \`jianpu:3 :|: 3\`
 
 \`\`\`jianpu
 3 3 3 3 | 3 3 3 3 || |: 3 3 3 3 :| 3 3 3 3
