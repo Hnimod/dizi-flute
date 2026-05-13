@@ -81,5 +81,14 @@ That said, "fast" doesn't mean "tense." Your fingers should move quickly but sta
 - **散板 (sǎn bǎn) free-time sections** — In traditional Chinese music, free-rhythm passages often feature 历音 as an expressive tool, building tension or releasing it.
 - **Climactic moments** — Right before a big melody entrance or at the peak of an emotional phrase, a 历音 can heighten the drama.
 
-It's one of those techniques that audiences love — when you hear that sweeping rush of notes on the dizi, it's immediately impressive and evocative.`,
+It's one of those techniques that audiences love — when you hear that sweeping rush of notes on the dizi, it's immediately impressive and evocative.
+
+## In Notation
+
+历音 splits by direction in printed notation:
+
+- **上历音 (shàng lì yīn)** — upward run, marked with a rising wavy line connecting the starting (lower) note to the destination (upper) note. In notation: \`glide-up\` (or short \`gu\`) before the destination note.
+- **下历音 (xià lì yīn)** — downward run, marked with a descending wavy line. In notation: \`glide-down\` (or short \`gd\`) before the destination note.
+
+Use the directional marker on the *target* note — the one you're sweeping to — not on the starting note.`,
   };

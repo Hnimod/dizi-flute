@@ -58,6 +58,6 @@ export const technique: Technique = {
 
 ## In Notation
 
-叠音 is marked with **叠** above the note. In notation: \`die\` before the note.`,
+叠音 is marked with **又** above the note. In notation: \`die\` before the note.`,
     notationExample: "die 3 - die 3 - | die 5 - die 5 - ||",
   };

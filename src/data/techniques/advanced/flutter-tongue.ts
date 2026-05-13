@@ -27,7 +27,7 @@ export const technique: Technique = {
 
 ## In Notation
 
-Flutter tongue is marked with the text "flutter" above the note. In notation: \`flutter\` before the note.
+花舌 is marked with an asterisk **\*** above the note — the standard dizi convention for flutter tongue. In notation: \`flutter\` before the note.
 
 ## Can't Roll Your Tongue? Alternatives
 

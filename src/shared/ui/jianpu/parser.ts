@@ -120,9 +120,15 @@ export function parseToken(raw: string): Token {
 
   // Ornament shorthand: Chinese characters or short English names
   const ORNAMENT_SHORTHAND: Record<string, string> = {
-    "\u53C8": "fork", "\u53E0": "die", "\u6253": "da", "\u8D60": "zeng", "\u6CE2": "bo", "\u82B1": "flutter",
-    "fork": "fork", "die": "die", "da": "da", "zeng": "zeng", "bo": "bo",
+    "\u53C8": "die", "\u53E0": "die", "\u2E98": "da", "\u6253": "da",
+    "\u8D60": "zeng", "\u6CE2": "bo", "\u82B1": "flutter",
+    "\u98DE": "fly", "\u56DE": "return-slide",
+    "die": "die", "da": "da", "zeng": "zeng", "bo": "bo", "lower-bo": "lower-bo",
     "vib": "vibrato", "flutter": "flutter", "su": "slide-up", "sd": "slide-down",
+    "fly": "fly", "fei": "fly",
+    "return-slide": "return-slide", "rs": "return-slide",
+    "glide-up": "glide-up", "gu": "glide-up",
+    "glide-down": "glide-down", "gd": "glide-down",
   };
   const ornShort = ORNAMENT_SHORTHAND[raw];
   if (ornShort) return { type: "ornament", name: ornShort };

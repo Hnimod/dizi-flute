@@ -8,27 +8,35 @@ import { flatFirst, flatLast } from "./layout";
 
 // Ornament names that render as Chinese characters (non-italic, bold)
 const ORNAMENT_CHARS: Record<string, string> = {
-  fork: "又",
-  die: "叠",
-  da: "打",
+  die: "又",
+  da: "⺘",
   zeng: "赠",
-  bo: "波",
-  flutter: "花",
+  bo: "∽",
+  "lower-bo": "≁",
+  flutter: "*",
   "slide-up": "↗",
   "slide-down": "↘",
+  fly: "飞",
+  "return-slide": "回",
+  "glide-up": "⇗",
+  "glide-down": "⇘",
 };
 
 // Map symbol names to technique page info
 const SYMBOL_TECHNIQUE: Record<string, { id: string; name: string; description: string }> = {
-  fork: { id: "fork-fingering", name: "叉口 Fork Fingering", description: "Alternate fingering for different tone color" },
   die: { id: "die-yin", name: "叠音 Stacked Grace", description: "Quick grace from one hole above, finger only" },
   da: { id: "da-yin", name: "打音 Struck Grace", description: "Quick strike from one hole below, finger only" },
   zeng: { id: "zeng-yin", name: "赠音 Trailing Note", description: "Trailing gift note at end of held note" },
-  bo: { id: "bo-yin", name: "波音 Mordent", description: "Single rapid upper-neighbor flick" },
+  bo: { id: "bo-yin", name: "上波音 Upper Mordent", description: "Single rapid upper-neighbor flick" },
+  "lower-bo": { id: "lower-bo-yin", name: "下波音 Lower Mordent", description: "Single rapid lower-neighbor flick" },
   vibrato: { id: "vibrato", name: "气震音 Breath Vibrato", description: "Pulse diaphragm to make notes shimmer" },
   flutter: { id: "flutter-tongue", name: "花舌 Flutter Tongue", description: "Roll tongue while playing" },
   "slide-up": { id: "slides", name: "上滑音 Slide Up", description: "Glide pitch upward into note" },
   "slide-down": { id: "slides", name: "下滑音 Slide Down", description: "Glide pitch downward" },
+  fly: { id: "flying-fingers", name: "飞指 Flying Fingers", description: "Rapid finger flutter across tone holes for shimmering effect" },
+  "return-slide": { id: "hui-hua-yin", name: "回滑音 Return Slide", description: "Slide up then immediately back down — rounded arch gesture" },
+  "glide-up": { id: "li-yin", name: "上历音 Upper Glissando", description: "Rapid ascending scalar run blurring into one sweep" },
+  "glide-down": { id: "li-yin", name: "下历音 Lower Glissando", description: "Rapid descending scalar run blurring into one sweep" },
   single: { id: "tonguing", name: "吐音 Single Tonguing", description: "Crisp tongue attack — say 'tu'" },
   double: { id: "double-tonguing", name: "双吐 Double Tonguing", description: "Alternating tu-ku for fast passages" },
   triple: { id: "triple-tonguing", name: "三吐 Triple Tonguing", description: "Tu-tu-ku pattern for triplets" },

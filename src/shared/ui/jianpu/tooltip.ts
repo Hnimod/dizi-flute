@@ -35,18 +35,8 @@ const FINGERING_SHARP: Record<string, string> = {
   "5:0":  "○●●●●◐",
 };
 
-// Fork fingering variants
-const FINGERING_FORK: Record<string, string> = {
-  "2:0":  "●○●○○○",
-  "3:0":  "○●○○○○",
-  "5:0":  "●●○●●●",
-  "6:0":  "●●○●●○",
-  "5:-1": "●●○●●●",
-};
-
-function getFingering(digit: string, octave: number, accidental?: string, hasFork?: boolean): string | null {
+function getFingering(digit: string, octave: number, accidental?: string): string | null {
   const key = `${digit}:${octave}`;
-  if (hasFork && FINGERING_FORK[key]) return FINGERING_FORK[key]!;
   if (accidental === "#" && FINGERING_SHARP[key]) return FINGERING_SHARP[key]!;
   return FINGERING[key] ?? null;
 }
@@ -86,8 +76,7 @@ export function buildNoteTooltip(token: Token, annotations: string[]): NoteToolt
   lines.push(noteLabel);
 
   // Fingering chart
-  const hasFork = annotations.includes("fork");
-  const fingering = getFingering(mainDigit, token.octave, token.accidental, hasFork);
+  const fingering = getFingering(mainDigit, token.octave, token.accidental);
   if (fingering) {
     lines.push(`Fingering: ${fingering}`);
     addLink("d-key-dizi", "D-Key Fingering Chart", "reference");
@@ -122,15 +111,19 @@ export function buildNoteTooltip(token: Token, annotations: string[]): NoteToolt
 
   // Annotations from preceding tokens
   for (const ann of annotations) {
-    if (ann === "fork") { lines.push("Fork fingering (又) — alternate fingering for different tone color"); addLink("fork-fingering", "Fork Fingering"); }
-    else if (ann === "die") { lines.push("叠音 (Dié Yīn) — quick grace from ONE hole above, finger only (no tongue)"); addLink("die-yin", "叠音 Die Yin"); }
+    if (ann === "die") { lines.push("叠音 (Dié Yīn) — quick grace from ONE hole above, finger only (no tongue)"); addLink("die-yin", "叠音 Die Yin"); }
     else if (ann === "da") { lines.push("打音 (Dǎ Yīn) — quick strike from ONE hole below, finger only (no tongue)"); addLink("da-yin", "打音 Da Yin"); }
     else if (ann === "zeng") { lines.push("赠音 (Zèng Yīn) — trailing gift note at end of held note, release finger as breath stops"); addLink("zeng-yin", "赠音 Zeng Yin"); }
-    else if (ann === "bo") { lines.push("波音 (Bō Yīn) — single rapid upper-neighbor flick (one oscillation, like a short trill)"); addLink("bo-yin", "波音 Bo Yin"); }
+    else if (ann === "bo") { lines.push("上波音 (Shàng Bō Yīn) — single rapid UPPER-neighbor flick (one oscillation, like a short trill)"); addLink("bo-yin", "上波音 Upper Mordent"); }
+    else if (ann === "lower-bo") { lines.push("下波音 (Xià Bō Yīn) — single rapid LOWER-neighbor flick (the downward mirror of 上波音)"); addLink("lower-bo-yin", "下波音 Lower Mordent"); }
     else if (ann === "vibrato") { lines.push("Vibrato — oscillate pitch for expression"); addLink("vibrato", "Vibrato"); }
     else if (ann === "slide-up") { lines.push("Slide up — glide pitch upward into note"); addLink("slides", "Slides"); }
     else if (ann === "slide-down") { lines.push("Slide down — glide pitch downward"); addLink("slides", "Slides"); }
     else if (ann === "flutter") { lines.push("Flutter tongue (花舌) — roll tongue while playing"); addLink("flutter-tongue", "Flutter Tongue"); }
+    else if (ann === "fly") { lines.push("飞指 (Fēi Zhǐ) — rapid finger flutter across tone holes, a shimmering cascade effect"); addLink("flying-fingers", "飞指 Flying Fingers"); }
+    else if (ann === "return-slide") { lines.push("回滑音 (Huí Huá Yīn) — slide UP to upper neighbor and immediately back DOWN, one rounded arch"); addLink("hui-hua-yin", "回滑音 Return Slide"); }
+    else if (ann === "glide-up") { lines.push("上历音 (Shàng Lì Yīn) — rapid ascending scalar run, notes blur into one sweep"); addLink("li-yin", "历音 Glissando"); }
+    else if (ann === "glide-down") { lines.push("下历音 (Xià Lì Yīn) — rapid descending scalar run, notes blur into one sweep"); addLink("li-yin", "历音 Glissando"); }
     else if (ann.startsWith("T:")) {
       const tech = ann.slice(2);
       if (tech === "single") { lines.push("Single tonguing (T) — one tongue attack per note"); addLink("tonguing", "Single Tonguing"); }

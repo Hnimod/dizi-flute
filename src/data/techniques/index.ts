@@ -20,6 +20,8 @@ import { technique as dieYin } from "./ornaments/die-yin";
 import { technique as daYin } from "./ornaments/da-yin";
 import { technique as zengYin } from "./ornaments/zeng-yin";
 import { technique as boYin } from "./ornaments/bo-yin";
+import { technique as lowerBoYin } from "./ornaments/lower-bo-yin";
+import { technique as huiHuaYin } from "./ornaments/hui-hua-yin";
 import { technique as trill } from "./ornaments/trill";
 import { technique as ornamentCombo } from "./ornaments/ornament-combo";
 
@@ -42,7 +44,6 @@ import { technique as flutterTongue } from "./advanced/flutter-tongue";
 import { technique as slides } from "./advanced/slides";
 import { technique as sanBan } from "./advanced/san-ban";
 import { technique as liYin } from "./advanced/li-yin";
-import { technique as duoYinChop } from "./advanced/duo-yin-chop";
 import { technique as moYin } from "./advanced/mo-yin";
 import { technique as throatTone } from "./advanced/throat-tone";
 import { technique as harmonics } from "./advanced/harmonics";
@@ -65,6 +66,8 @@ export const techniques: Technique[] = [
   daYin,
   zengYin,
   boYin,
+  lowerBoYin,
+  huiHuaYin,
   trill,
   ornamentCombo,
   dynamics,
@@ -81,7 +84,6 @@ export const techniques: Technique[] = [
   slides,
   sanBan,
   liYin,
-  duoYinChop,
   moYin,
   throatTone,
   harmonics,

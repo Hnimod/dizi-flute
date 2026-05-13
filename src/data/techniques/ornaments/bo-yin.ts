@@ -2,15 +2,17 @@ import type { Technique } from "@/shared/types";
 
 export const technique: Technique = {
     id: "bo-yin",
-    name: "波音 (Mordent)",
+    name: "上波音 (Upper Mordent)",
     category: "ornaments",
     level: 4,
-    description: "A single rapid flick to the upper neighbor and back — like a one-cycle trill. Creates a brief 'wave' at the start of a note.",
-    content: `## What is 波音?
+    description: "A single rapid flick UP to the upper neighbor and back — like a one-cycle trill. Creates a brief 'wave' at the start of a note. See also 下波音 (lower mordent) for the downward variant.",
+    content: `## What is 上波音?
 
-**Everyday analogy:** Imagine dropping a single pebble into still water — one ripple expands and fades. That's 波音: a single "wave" of pitch that decorates the start of a note. Just one ripple, not a continuous vibration.
+**Everyday analogy:** Imagine dropping a single pebble into still water — one ripple expands and fades. That's 上波音: a single "wave" of pitch that decorates the start of a note. Just one ripple, not a continuous vibration.
 
-波音 (bō yīn, "wave sound") is a single rapid oscillation to the upper neighbor note and back. Think of it as a trill that happens only **once** — one quick up-and-back cycle.
+上波音 (shàng bō yīn, "upper wave sound") is a single rapid oscillation to the **upper neighbor** note and back. Think of it as a trill that happens only **once** — one quick up-and-back cycle.
+
+> If the flick goes DOWN to the lower neighbor instead, it's 下波音 (xià bō yīn) — see the [lower mordent technique](/techniques/lower-bo-yin).
 
 **What you'll hear:** The note starts with a brief, bright "shimmer" — a quick wavering in pitch that immediately settles. It's like the note has a tiny spark at its beginning. The effect is more lively than a plain note but more controlled than a trill.
 
@@ -59,6 +61,6 @@ The key distinction: **trill = many cycles, 波音 = exactly one cycle.** If you
 
 ## In Notation
 
-波音 is marked with **波** above the note. In notation: \`bo\` before the note.`,
+上波音 is marked with a wavy **∽** above the note. In notation: \`bo\` before the note.`,
     notationExample: "bo 5 - - - | bo 3 - bo 6 - ||",
   };

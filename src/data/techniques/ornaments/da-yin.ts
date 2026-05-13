@@ -54,6 +54,6 @@ export const technique: Technique = {
 
 ## In Notation
 
-打音 is marked with **打** above the note. In notation: \`da\` before the note.`,
+打音 is marked with **⺘** above the note. In notation: \`da\` before the note.`,
     notationExample: "da 5 - da 5 - | da 3 - da 3 - ||",
   };

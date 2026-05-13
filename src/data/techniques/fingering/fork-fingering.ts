@@ -44,7 +44,7 @@ Think of it like speaking the same word in a different tone of voice \u2014 the 
 
 ### In beginner pieces like \u8001\u516D\u677F (Old Six Beats)
 
-You'll see \`fork\` (or \u53C8) marked above certain notes. This tells the player: "use the alternate fingering here for a softer/different tone color." **For beginners, this is entirely optional.** You can play every note with standard fingering and the melody sounds perfectly fine. The fork marks are suggestions for adding nuance once you're comfortable with the basic melody.
+Fork fingering is not marked in the jianpu \u2014 the player applies it at their own discretion, or following a teacher's guidance, to add tone color on selected notes. **For beginners, this is entirely optional.** You can play every note with standard fingering and the melody sounds perfectly fine; reach for fork fingering once you're comfortable with the basic melody.
 
 ### Common situations where fork fingering is used
 
@@ -62,7 +62,7 @@ You'll see \`fork\` (or \u53C8) marked above certain notes. This tells the playe
 - **Pitch isn't always exact** \u2014 Fork fingerings often produce a slightly sharper or flatter version of the note, requiring embouchure and breath adjustment to stay in tune
 - **Regional tradition** \u2014 Northern dizi (bangdi) and southern dizi (qudi) traditions may use different fork fingerings for the same musical passage
 
-When you see \`fork\` (\u53C8) marked in notation, it means **"use an alternate fingering here"** \u2014 the specific fingering is left to the player based on their instrument, their teacher's guidance, and the musical context. This is why fork fingering is learned through practice and imitation rather than from a chart.
+Because there's no single correct alternative, fork fingering isn't notated in the jianpu \u2014 the choice of when and which alternate fingering to use is left to the player based on their instrument, their teacher's guidance, and the musical context. This is why fork fingering is learned through practice and imitation rather than from a chart.
 
 ## How to Practice
 
@@ -73,8 +73,5 @@ When you see \`fork\` (\u53C8) marked in notation, it means **"use an alternate 
 
 ## In Notation
 
-Fork fingering is marked with **\u53C8** above the note. In notation: \`fork\` before the note.
-
-Example: \`fork 5\` means "play Sol using the fork fingering."`,
-    notationExample: "fork 5 - fork 3 - | 5 fork 5 3 fork 3 ||",
+Fork fingering isn't marked in jianpu \u2014 apply it freely on notes where you want a different tone color, based on your teacher's guidance or your own ear.`,
   };

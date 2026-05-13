@@ -6,7 +6,7 @@ export const technique: Technique = {
     category: "fundamentals",
     level: 0,
     description: "Reading jianpu rhythm by clapping. Foundation for all playing.",
-    referenceSlug: "jianpu-guide",
+    referenceSlug: "jianpu-format-spec",
     content: `## What is Rhythm Reading?
 
 Before playing any notes, you need to internalize rhythm. Jianpu (numbered notation) uses dashes and underlines to show note duration:
