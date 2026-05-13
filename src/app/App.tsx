@@ -1,9 +1,26 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, NavLink } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { useThemeStore, ThemeToggle } from "@/features/theme";
 import { useAuthStore } from "@/features/auth";
 import { BottomNav } from "./BottomNav";
+
+interface SidebarState {
+  collapsed: boolean;
+  toggle: () => void;
+}
+
+const useSidebarStore = create<SidebarState>()(
+  persist(
+    (set) => ({
+      collapsed: false,
+      toggle: () => set((s) => ({ collapsed: !s.collapsed })),
+    }),
+    { name: "dizi-sidebar" },
+  ),
+);
 
 function LoginPopover({ onClose }: { onClose: () => void }) {
   const login = useAuthStore((s) => s.login);
@@ -79,43 +96,112 @@ function LoginPopover({ onClose }: { onClose: () => void }) {
   );
 }
 
+const ICON_CLASS = "h-5 w-5 shrink-0";
+
 const sidebarLinks = [
-  { to: "/", label: "Songs", end: true },
-  { to: "/techniques", label: "Techniques", end: false },
-  { to: "/knowledge", label: "Knowledge", end: false },
-  { to: "/practice", label: "Practice", end: false },
+  {
+    to: "/",
+    label: "Songs",
+    end: true,
+    icon: (
+      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+      </svg>
+    ),
+  },
+  {
+    to: "/techniques",
+    label: "Techniques",
+    end: false,
+    icon: (
+      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.121 14.121A3 3 0 1 0 9.879 9.879m4.242 4.242L9.879 9.879m4.242 4.242l2.122 2.122M9.879 9.879L7.757 7.757m0 0A7.5 7.5 0 1 0 16.243 16.243M7.757 7.757l-1.414-1.414" />
+      </svg>
+    ),
+  },
+  {
+    to: "/knowledge",
+    label: "Knowledge",
+    end: false,
+    icon: (
+      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+    ),
+  },
+  {
+    to: "/practice",
+    label: "Practice",
+    end: false,
+    icon: (
+      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
 ];
 
-function Sidebar() {
+function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   return (
-    <nav className="flex h-full flex-col overflow-y-auto">
-      <div className="border-b border-(--color-border) p-4">
-        <NavLink to="/" className="text-lg font-bold text-(--color-accent)">
-          Dizi Flute
+    <nav className="flex h-full flex-col overflow-y-auto overflow-x-hidden">
+      <div
+        className={`flex items-center border-b border-(--color-border) ${
+          collapsed ? "justify-center px-2 py-4" : "px-4 py-4"
+        }`}
+      >
+        <NavLink
+          to="/"
+          className="text-lg font-bold text-(--color-accent) whitespace-nowrap"
+          title={collapsed ? "Dizi Flute" : undefined}
+        >
+          {collapsed ? "D" : "Dizi Flute"}
         </NavLink>
       </div>
 
-      <div className="flex-1 p-3">
+      <div className={`flex-1 ${collapsed ? "p-2" : "p-3"}`}>
         <ul className="space-y-0.5">
           {sidebarLinks.map((link) => (
             <li key={link.to}>
               <NavLink
                 to={link.to}
                 end={link.end}
+                title={collapsed ? link.label : undefined}
                 className={({ isActive }) =>
-                  `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                  `flex items-center gap-3 rounded-lg text-sm font-medium transition-colors ${
+                    collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5"
+                  } ${
                     isActive
                       ? "bg-(--color-accent) text-white shadow-sm"
                       : "hover:bg-(--color-bg)"
                   }`
                 }
               >
-                {link.label}
+                {link.icon}
+                {!collapsed && <span className="whitespace-nowrap">{link.label}</span>}
               </NavLink>
             </li>
           ))}
         </ul>
       </div>
+
+      <button
+        onClick={onToggle}
+        title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        className={`flex items-center border-t border-(--color-border) text-(--color-text-secondary) transition-colors hover:bg-(--color-bg) ${
+          collapsed ? "justify-center px-2 py-3" : "justify-end px-3 py-3"
+        }`}
+      >
+        <svg
+          className={`h-4 w-4 transition-transform ${collapsed ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
     </nav>
   );
 }
@@ -125,6 +211,8 @@ export function App() {
   const location = useLocation();
   const isAdmin = useAuthStore((s) => s.isAdmin);
   const logout = useAuthStore((s) => s.logout);
+  const sidebarCollapsed = useSidebarStore((s) => s.collapsed);
+  const toggleSidebar = useSidebarStore((s) => s.toggle);
   const [showLogin, setShowLogin] = useState(false);
 
   // Mirror the theme class onto <html> so portaled overlays (e.g. fullscreen
@@ -139,8 +227,12 @@ export function App() {
     <div className={theme === "dark" ? "dark" : ""}>
       <div className="flex h-screen bg-(--color-bg) text-(--color-text)">
         {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-(--color-border) bg-(--color-bg-secondary) md:block">
-          <Sidebar />
+        <aside
+          className={`hidden shrink-0 border-r border-(--color-border) bg-(--color-bg-secondary) transition-[width] duration-200 ease-out md:block ${
+            sidebarCollapsed ? "w-16" : "w-64"
+          }`}
+        >
+          <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} />
         </aside>
 
         {/* Main content */}

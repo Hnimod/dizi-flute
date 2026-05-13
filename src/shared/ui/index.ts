@@ -1,4 +1,5 @@
-export { MarkdownRenderer } from "./MarkdownRenderer";
+export { MarkdownRenderer, slugify, extractHeadings } from "./MarkdownRenderer";
+export type { HeadingEntry } from "./MarkdownRenderer";
 export { ProgressBar } from "./ProgressBar";
 export { Checkbox } from "./Checkbox";
 export { VideoEmbed } from "./VideoEmbed";

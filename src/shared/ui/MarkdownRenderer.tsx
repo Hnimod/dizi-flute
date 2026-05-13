@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Components } from "react-markdown";
@@ -6,6 +7,49 @@ import { JianpuRenderer } from "./jianpu/JianpuRenderer";
 interface MarkdownRendererProps {
   content: string;
   className?: string;
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function nodeText(children: ReactNode): string {
+  if (children == null || typeof children === "boolean") return "";
+  if (typeof children === "string" || typeof children === "number") return String(children);
+  if (Array.isArray(children)) return children.map(nodeText).join("");
+  if (typeof children === "object" && "props" in children) {
+    return nodeText((children as { props: { children?: ReactNode } }).props.children);
+  }
+  return "";
+}
+
+export interface HeadingEntry {
+  level: 2 | 3;
+  text: string;
+  slug: string;
+}
+
+export function extractHeadings(markdown: string): HeadingEntry[] {
+  const out: HeadingEntry[] = [];
+  let inFence = false;
+  for (const rawLine of markdown.split("\n")) {
+    if (/^\s*```/.test(rawLine)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    const m = rawLine.match(/^(#{2,3})\s+(.+?)\s*#*\s*$/);
+    if (!m) continue;
+    const level = m[1]!.length as 2 | 3;
+    const text = m[2]!.replace(/\*\*(.+?)\*\*/g, "$1").replace(/[*_`]/g, "").trim();
+    out.push({ level, text, slug: slugify(text) });
+  }
+  return out;
 }
 
 const components: Components = {
@@ -48,13 +92,13 @@ const components: Components = {
     );
   },
   h1({ children }) {
-    return <h1 className="text-3xl font-bold mb-4 mt-6" style={{ color: "var(--color-text)" }}>{children}</h1>;
+    return <h1 id={slugify(nodeText(children))} className="text-3xl font-bold mb-4 mt-6 scroll-mt-20" style={{ color: "var(--color-text)" }}>{children}</h1>;
   },
   h2({ children }) {
-    return <h2 className="text-2xl font-bold mb-3 mt-5" style={{ color: "var(--color-text)" }}>{children}</h2>;
+    return <h2 id={slugify(nodeText(children))} className="text-2xl font-bold mb-3 mt-5 scroll-mt-20" style={{ color: "var(--color-text)" }}>{children}</h2>;
   },
   h3({ children }) {
-    return <h3 className="text-xl font-semibold mb-2 mt-4" style={{ color: "var(--color-text)" }}>{children}</h3>;
+    return <h3 id={slugify(nodeText(children))} className="text-xl font-semibold mb-2 mt-4 scroll-mt-20" style={{ color: "var(--color-text)" }}>{children}</h3>;
   },
   p({ children }) {
     return <p className="mb-3 leading-relaxed" style={{ color: "var(--color-text)" }}>{children}</p>;

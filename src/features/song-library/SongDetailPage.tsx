@@ -108,8 +108,18 @@ export function SongDetailPage() {
     );
   }
 
+  const videoUrls = song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : []);
+  const hasVideos = videoUrls.length > 0;
+
   return (
-    <div className="mx-auto max-w-3xl">
+    <div
+      className={
+        hasVideos
+          ? "mx-auto max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-8"
+          : "mx-auto max-w-3xl"
+      }
+    >
+      <div className="min-w-0 lg:max-w-3xl">
       <button
         onClick={() => navigate(-1)}
         className="inline-flex items-center gap-1 text-sm hover:opacity-80 mb-4"
@@ -195,9 +205,14 @@ export function SongDetailPage() {
         </div>
       )}
 
-      {(song.videoUrls ?? (song.videoUrl ? [song.videoUrl] : [])).map((url, i) => (
-        <VideoEmbed key={i} url={url} className="mb-4" />
-      ))}
+      {/* Videos: inline on mobile/tablet (preserves current ordering above the score) */}
+      {videoUrls.length > 0 && (
+        <div className="lg:hidden">
+          {videoUrls.map((url, i) => (
+            <VideoEmbed key={i} url={url} className="mb-4" />
+          ))}
+        </div>
+      )}
 
       {song.sheetImage && <SheetImageAccordion src={song.sheetImage} />}
 
@@ -253,6 +268,21 @@ export function SongDetailPage() {
           }
         />
       </div>
+      </div>
+
+      {videoUrls.length > 0 && (
+        <aside className="hidden space-y-4 lg:block">
+          <p
+            className="text-[11px] font-semibold uppercase tracking-wider"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Reference video{videoUrls.length > 1 ? "s" : ""}
+          </p>
+          {videoUrls.map((url, i) => (
+            <VideoEmbed key={i} url={url} />
+          ))}
+        </aside>
+      )}
     </div>
   );
 }
