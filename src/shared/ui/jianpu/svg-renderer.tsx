@@ -101,6 +101,19 @@ const GLYPH_CODA_BBOX = { x: 0, y: 0, w: 24, h: 26 };
 const GLYPH_MORDENT_PATH = "m 71,27.9 14,-14.7 12.6,10.7 10.4,-10.8 13.5,11 5.7,-6.3 0,4.7 L 114.9,36 101.8,25.2 92.1,36.3 78.7,25.2 71,33.7 z";
 const GLYPH_MORDENT_BBOX = { x: 71, y: 13.2, w: 49.6, h: 23.1 };
 
+// Music-fermata.svg — https://commons.wikimedia.org/wiki/File:Music-fermata.svg
+// Arc + center dot. Drops the original SVG's note glyph; bbox covers arc + dot.
+const GLYPH_FERMATA_PATHS = [
+  "M 68,36 C 68,25.5 76.6,3 99.4,3 120.1,3 130.9,23.2 131,36 l -3.6,0 C 127.7,30.9 121,11.8 99.5,12 83.5,12.1 71.2,24.4 71.4,36 z",
+  "m 104,31 a 3.5,3.5 0 1 1 -9.5,0 3.5,3.5 0 1 1 9.5,0 z",
+];
+const GLYPH_FERMATA_BBOX = { x: 68, y: 3, w: 63, h: 33 };
+
+// Accent.svg — https://commons.wikimedia.org/wiki/File:Accent.svg
+// A right-pointing wedge (>) traced as a single filled outline.
+const GLYPH_ACCENT_PATH = "M 0.056,0.148 C 0.024,0.14 0,0.112 0,0.076 0,0.036 0.036,0 0.076,0 0.084,0 0.088,0.004 0.092,0.004 l 1.632,0.42 C 1.776,0.424 1.8,0.448 1.8,0.5 1.8,0.552 1.776,0.576 1.724,0.576 L 0.092,0.996 C 0.088,0.996 0.084,1 0.076,1 0.036,1 0,0.964 0,0.924 0,0.888 0.024,0.86 0.056,0.852 L 1.06,0.592 1.62,0.5 1.06,0.408 Z";
+const GLYPH_ACCENT_BBOX = { x: 0, y: 0, w: 1.8, h: 1 };
+
 function renderScaledGlyph(
   d: string | string[],
   bbox: { x: number; y: number; w: number; h: number },
@@ -142,6 +155,14 @@ function renderCodaGlyph(x: number, y: number, key: string, opts?: InteractiveOp
 
 function renderMordentGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
   return renderScaledGlyph(GLYPH_MORDENT_PATH, GLYPH_MORDENT_BBOX, 10, x, y, key, SYMBOL_TECHNIQUE["bo"], opts);
+}
+
+function renderFermataGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
+  return renderScaledGlyph(GLYPH_FERMATA_PATHS, GLYPH_FERMATA_BBOX, 10, x, y, key, SYMBOL_TECHNIQUE["fermata"], opts);
+}
+
+function renderAccentGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
+  return renderScaledGlyph(GLYPH_ACCENT_PATH, GLYPH_ACCENT_BBOX, 7, x, y, key, SYMBOL_TECHNIQUE["accent"], opts);
 }
 
 function renderLowerMordentGlyph(x: number, y: number, key: string, opts?: InteractiveOpts): React.ReactNode {
@@ -797,23 +818,7 @@ function renderSvgToken(
         );
       }
       if (token.fermata) {
-        const ferInfo = SYMBOL_TECHNIQUE["fermata"];
-        const ferHover = opts?.onSymbolHover && ferInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, ferInfo) : undefined;
-        elements.push(
-          <text
-            key={`${key}-fer`}
-            x={x}
-            y={markY}
-            textAnchor="middle"
-            fontSize="10"
-            fill={textColor}
-            style={ferHover ? { cursor: "help" } : undefined}
-            onMouseEnter={ferHover}
-            onMouseLeave={opts?.onSymbolLeave}
-          >
-            𝄐
-          </text>,
-        );
+        elements.push(renderFermataGlyph(x, markY, `${key}-fer`, opts));
       }
       if (token.staccato) {
         const stcInfo = SYMBOL_TECHNIQUE["staccato"];
@@ -826,23 +831,7 @@ function renderSvgToken(
         );
       }
       if (token.accent) {
-        const acnInfo = SYMBOL_TECHNIQUE["accent"];
-        const acnHover = opts?.onSymbolHover && acnInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, acnInfo) : undefined;
-        elements.push(
-          <text
-            key={`${key}-acn`}
-            x={x}
-            y={markY}
-            textAnchor="middle"
-            fontSize="9"
-            fill={textColor}
-            style={acnHover ? { cursor: "help" } : undefined}
-            onMouseEnter={acnHover}
-            onMouseLeave={opts?.onSymbolLeave}
-          >
-            &gt;
-          </text>,
-        );
+        elements.push(renderAccentGlyph(x, markY, `${key}-acn`, opts));
       }
       if (token.trill) {
         const trInfo = SYMBOL_TECHNIQUE["trill"];

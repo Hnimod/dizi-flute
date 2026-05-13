@@ -292,9 +292,9 @@ For beginners, focus on 2/4 and 4/4 first.
 
 | Suffix | Name | Meaning |
 |--------|------|---------|
-| \`^\` | Fermata (𝄐) | Hold longer than written |
-| \`;\` | Staccato | Short and detached |
-| \`>\` | Accent | Emphasize |
+| \`^\` | Fermata | Hold longer than written. Renders as an arc with a dot above the note. |
+| \`;\` | Staccato | Short and detached. Renders as a small dot above the note. |
+| \`>\` | Accent | Emphasize the note. Renders as a horizontal wedge above the note. |
 
 Combine: \`#5'_^\` = sharp 5, octave up, eighth, fermata.
 
