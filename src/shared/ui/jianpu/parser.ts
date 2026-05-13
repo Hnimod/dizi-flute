@@ -2,17 +2,17 @@ import type { Token } from "./types";
 
 // Extended note regex:
 // optional tr prefix, optional # or b, digit 1-7, optional octave ',
-// optional dot, optional _ or __, optional articulation ^;>
+// optional dot, optional articulation ^;>T. Duration comes from `[ ... ]` nesting depth.
 const EXT_NOTE_RE =
-  /^(tr)?(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
+  /^(tr)?(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
 
 // Grace note: (x)... same extensions — octave markers allowed inside parens
 const EXT_GRACE_RE =
-  /^(tr)?\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
+  /^(tr)?\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
 
 // Double grace note: (x)(y)... two grace notes before main note
 const EXT_DOUBLE_GRACE_RE =
-  /^(tr)?\(([1-7][',]*)\)\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?(__?)?([;^>T])?$/;
+  /^(tr)?\(([1-7][',]*)\)\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
 
 export function isNotationLine(line: string): boolean {
   return /[1-7]/.test(line) && /[|\-]/.test(line);
@@ -161,10 +161,8 @@ export function parseToken(raw: string): Token {
     return { type: "ornament", name: raw.slice(4) };
   }
 
-  // Rest (with optional duration)
+  // Rest. Duration comes from `[ ... ]` nesting depth via normalizeBeamDurations.
   if (raw === "0") return { type: "rest" };
-  if (raw === "0_") return { type: "rest", duration: "eighth" };
-  if (raw === "0__") return { type: "rest", duration: "sixteenth" };
 
   // Hold
   if (raw === "-") return { type: "hold" };
@@ -177,8 +175,7 @@ export function parseToken(raw: string): Token {
     const digit = m[3]!;
     const octaveChars = m[4] || "";
     const dots = m[5] || "";
-    const underscores = m[6] || "";
-    const articulation = m[7] || "";
+    const articulation = m[6] || "";
 
     let octave = 0;
     for (const c of octaveChars) {
@@ -186,16 +183,12 @@ export function parseToken(raw: string): Token {
       if (c === ",") octave--;
     }
 
-    const duration =
-      underscores === "__" ? "sixteenth" : underscores === "_" ? "eighth" : undefined;
-
     return {
       type: "note",
       value: digit,
       octave,
       dotted: dots.length > 0,
       accidental,
-      duration,
       fermata: articulation === "^",
       staccato: articulation === ";",
       accent: articulation === ">",
@@ -214,8 +207,7 @@ export function parseToken(raw: string): Token {
     const mainNote = dg[5]!;
     const octaveChars = dg[6] || "";
     const dots = dg[7] || "";
-    const underscores = dg[8] || "";
-    const articulation = dg[9] || "";
+    const articulation = dg[8] || "";
 
     let octave = 0;
     for (const c of octaveChars) {
@@ -223,16 +215,12 @@ export function parseToken(raw: string): Token {
       if (c === ",") octave--;
     }
 
-    const duration =
-      underscores === "__" ? "sixteenth" : underscores === "_" ? "eighth" : undefined;
-
     return {
       type: "note",
       value: `(${grace1})(${grace2})${mainNote}${dots}`,
       octave,
       dotted: dots.length > 0,
       accidental,
-      duration,
       fermata: articulation === "^",
       staccato: articulation === ";",
       accent: articulation === ">",
@@ -250,8 +238,7 @@ export function parseToken(raw: string): Token {
     const mainNote = g[4]!;
     const octaveChars = g[5] || "";
     const dots = g[6] || "";
-    const underscores = g[7] || "";
-    const articulation = g[8] || "";
+    const articulation = g[7] || "";
 
     let octave = 0;
     for (const c of octaveChars) {
@@ -259,16 +246,12 @@ export function parseToken(raw: string): Token {
       if (c === ",") octave--;
     }
 
-    const duration =
-      underscores === "__" ? "sixteenth" : underscores === "_" ? "eighth" : undefined;
-
     return {
       type: "note",
       value: `(${graceNote})${mainNote}${dots}`,
       octave,
       dotted: dots.length > 0,
       accidental,
-      duration,
       fermata: articulation === "^",
       staccato: articulation === ";",
       accent: articulation === ">",

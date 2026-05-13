@@ -121,20 +121,20 @@ Notes: low register needs gentle breath; high register requires overblowing. Not
 
 ## Durations
 
-Duration is shown by **dashes after the number** (longer notes) and **underlines below the number** (shorter notes). In this text format, the underline becomes a trailing \`_\`.
+Duration is shown by **dashes after the number** (longer notes) and **underlines below the number** (shorter notes). In this text format, every underline becomes one level of \`[ ... ]\` bracket nesting — one bracket pair for eighth, two for sixteenth.
 
 | Token | Duration | Beats in 4/4 |
 |-------|----------|--------------|
 | \`3\` | Quarter (四分音符) | 1 |
-| \`3_\` | Eighth (八分音符) | 1/2 |
-| \`3__\` | Sixteenth (十六分音符) | 1/4 |
+| \`[ 3 ]\` | Eighth (八分音符) | 1/2 |
+| \`[ [ 3 ] ]\` | Sixteenth (十六分音符) | 1/4 |
 | \`3.\` | Dotted note (附点) | 1.5× |
 | \`3 -\` | Half note (二分) | 2 |
 | \`3 - -\` | Dotted half | 3 |
 | \`3 - - -\` | Whole note (全音符) | 4 |
 
 \`\`\`jianpu
-3 3 3 3 | 3_ 3_ 3_ 3_ 3_ 3_ 3_ 3_ | 3__ 3__ 3__ 3__ 3__ 3__ 3__ 3__ | 3. 3_ 3 3 | 3 - 3 - | 3 - - -
+3 3 3 3 | [ 3 3 3 3 3 3 3 3 ] | [ [ 3 3 3 3 3 3 3 3 ] ] | 3. [ 3 ] 3 3 | 3 - 3 - | 3 - - -
 \`\`\`
 
 Each dash extends the note by one additional beat. Think of each \`-\` as "keep holding for one more beat." A dot **after** a digit = dotted note (extends by half). A dot **above** or **below** = octave marker. Position makes the meaning clear.
@@ -150,22 +150,21 @@ Rests follow the same duration rules as notes, but use \`0\`:
 | \`0\` | Quarter rest |
 | \`0 -\` | Half rest |
 | \`0 - - -\` | Whole rest |
-| \`0_\` | Eighth rest |
-| \`0__\` | Sixteenth rest |
+| \`[ 0 ]\` | Eighth rest |
+| \`[ [ 0 ] ]\` | Sixteenth rest |
 
 \`\`\`jianpu
-0 | 0 - | [ 0_ 5_ ] | [ 0__ 0__ 5__ 5__ ]
+0 | 0 - | [ 0 5 ] | [ [ 0 0 5 5 ] ]
 \`\`\`
 
 ---
 
 ## Beamed Groups
 
-\`[ ... ]\` groups notes under a shared beam. The \`_\` suffix is optional inside beams; notes default to eighth.
+\`[ ... ]\` groups notes under a shared beam — and is the **only way** to write eighths and sixteenths. Notes inside one pair of brackets are eighths; nested brackets render as sixteenths (double beam line). For a single isolated eighth or sixteenth, wrap the lone note: \`[ 3 ]\` or \`[ [ 3 ] ]\`.
 
 - \`[ 3 5 6 1' ]\` — eighth-note beam group
 - \`[ [ 3 5 ] [ 6 1' ] ]\` — nested beams render double beam lines (sixteenths)
-- \`[ 3_ 5_ 6_ 1'_ ]\` — explicit \`_\` is equivalent
 
 \`\`\`jianpu
 [ 3 5 6 1' ] [ 3 5 6 1' ] | [ [ 3 5 ] [ 6 1' ] ] [ [ 3 5 ] [ 6 1' ] ]
@@ -222,19 +221,19 @@ Here is the opening of 茉莉花 written three ways. Same flute, same fingerings
 **Original — 筒音作5 (1=D):**
 
 \`\`\`jianpu
-3 3 | 5 [ 6_ 1'_ 6_ ] | 5 -
+3 3 | 5 [ 6 1' 6 ] | 5 -
 \`\`\`
 
 **Same physical phrase relabeled to 筒音作6 (1=C):**
 
 \`\`\`jianpu
-4 4 | 6 [ 7_ 2'_ 7_ ] | 6 -
+4 4 | 6 [ 7 2' 7 ] | 6 -
 \`\`\`
 
 **Same physical phrase relabeled to 筒音作2 (1=G):**
 
 \`\`\`jianpu
-7, 7, | 2 [ 3_ 5_ 3_ ] | 2 -
+7, 7, | 2 [ 3 5 3 ] | 2 -
 \`\`\`
 
 Notice that the **key signature changes too** (D → C → G). Digits and key always move together — the same flute appears to "live" in a different key depending on the convention you read.
@@ -296,7 +295,7 @@ For beginners, focus on 2/4 and 4/4 first.
 | \`;\` | Staccato | Short and detached. Renders as a small dot above the note. |
 | \`>\` | Accent | Emphasize the note. Renders as a horizontal wedge above the note. |
 
-Combine: \`#5'_^\` = sharp 5, octave up, eighth, fermata.
+Combine: \`[ #5'^ ]\` = sharp 5, octave up, eighth, fermata.
 
 \`\`\`jianpu
 3 - - 3^ | 3; 3; 3; 3; | 3> 3> 3 3
@@ -465,18 +464,18 @@ coda 5 - 1 - ||
 A classic Chinese folk song. Header: \`1=D\`, \`2/4\`, Andante ♩=72.
 
 \`\`\`jianpu
-3 3 | 5 [ 6_ 1'_ 6_ ] | 5 - | 5 [ 6_ 1'_ 6_ ] | 5 - |
-3 [ 5_ 6_ ] | 1' [ 6_ 5_ ] | 6 - | [ 5_ 3_ 2_ 1_ ] | 2 - ||
+3 3 | 5 [ 6 1' 6 ] | 5 - | 5 [ 6 1' 6 ] | 5 - |
+3 [ 5 6 ] | 1' [ 6 5 ] | 6 - | [ 5 3 2 1 ] | 2 - ||
 \`\`\`
 
 | Measure | Reading |
 |---------|---------|
 | \`3 3\` | Mi, Mi — two quarter notes |
-| \`5 [ 6_ 1'_ 6_ ]\` | Sol (quarter); then La – high Do – La beamed as eighths |
+| \`5 [ 6 1' 6 ]\` | Sol (quarter); then La – high Do – La beamed as eighths |
 | \`5 -\` | Sol held for the full measure (half note) |
-| \`3 [ 5_ 6_ ]\` | Mi quarter; Sol-La beamed eighths |
-| \`1' [ 6_ 5_ ]\` | High Do quarter; La-Sol beamed eighths |
-| \`[ 5_ 3_ 2_ 1_ ]\` | Sol-Mi-Re-Do beamed sixteenths-like run |
+| \`3 [ 5 6 ]\` | Mi quarter; Sol-La beamed eighths |
+| \`1' [ 6 5 ]\` | High Do quarter; La-Sol beamed eighths |
+| \`[ 5 3 2 1 ]\` | Sol-Mi-Re-Do beamed sixteenths-like run |
 | \`2 -\` | Re held to end of phrase |
 
 ---
@@ -547,8 +546,7 @@ Core pitch, rhythm, articulation, and ornamentation are fully supported.
 > I have a jianpu (简谱) score image. Please convert it to text format:
 > - Notes: digits 1-7, octave up \`'\`, octave down \`,\`
 > - Rests: \`0\`, Holds: \`-\`
-> - Eighth notes: \`_\` suffix, sixteenth: \`__\`
-> - Beamed groups: \`[ notes ]\`
+> - Eighth notes: wrap in \`[ ... ]\`, sixteenth: nested \`[ [ ... ] ]\`
 > - Accidentals: \`#\` or \`b\` prefix
 > - Ties: \`~\`, Slurs: \`( notes )\`
 > - Fermata: \`^\`, Staccato: \`;\`, Accent: \`>\`

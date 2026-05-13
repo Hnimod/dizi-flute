@@ -55,8 +55,8 @@ For dizi, the middle octave (no dots) centers around D4-C#5 in the key of D.
 | Jianpu | Western | Beats |
 |--------|---------|-------|
 | 5 | Quarter note ♩ | 1 |
-| 5_ | Eighth note ♪ | 0.5 |
-| 5__ | Sixteenth note | 0.25 |
+| [ 5 ] | Eighth note ♪ | 0.5 |
+| [ [ 5 ] ] | Sixteenth note | 0.25 |
 | 5 - | Half note 𝅗𝅥 | 2 |
 | 5 - - | Dotted half note 𝅗𝅥. | 3 |
 | 5 - - - | Whole note 𝅝 | 4 |
@@ -72,7 +72,7 @@ For dizi, the middle octave (no dots) centers around D4-C#5 in the key of D.
 | Jianpu | Western |
 |--------|---------|
 | 0 | Quarter rest 𝄾 |
-| 0_ | Eighth rest |
+| [ 0 ] | Eighth rest |
 | 0 - | Half rest |
 | 0 - - - | Whole rest |
 

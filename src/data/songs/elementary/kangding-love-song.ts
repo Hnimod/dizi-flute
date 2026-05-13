@@ -13,8 +13,8 @@ export const song: Song = {
   timeSignature: "2/4",
   tempo: 88,
   jianpu: `
-( [ 3 5 ] [ 6 [ [ 6 5 ] ] ] | [ 6. [ 3 ] ] 2 ) V | ( [ 3 5 ] [ 6 [ [ 6 5 ] ] ] | 6 3. ) | ( [ 3 5 ] [ 6 [ [ 6 5 ] ] ] | [ 6. [ 3 ] ] 2 ) V | ( [ 5 3 ] [ [ 2 3 2 1 ] ] | 2_ 6,. ) V |
-( [ 5 3 ] [ [ 2 3 2 1 ] ] ) [1. | ( 2_ 6,. ) :| [2. | ( 2_ 6. ) ||`,
+( [ 3 5 ] [ 6 [ [ 6 5 ] ] ] | [ 6. [ 3 ] ] 2 ) V | ( [ 3 5 ] [ 6 [ [ 6 5 ] ] ] | 6 3. ) | ( [ 3 5 ] [ 6 [ [ 6 5 ] ] ] | [ 6. [ 3 ] ] 2 ) V | ( [ 5 3 ] [ [ 2 3 2 1 ] ] | [ 2 ] 6,. ) V |
+( [ 5 3 ] [ [ 2 3 2 1 ] ] ) [1. | ( [ 2 ] 6,. ) :| [2. | ( [ 2 ] 6. ) ||`,
   description:
     "One of China's most beloved folk songs, from the Kangding region of Sichuan. A lyrical love song with a flowing pentatonic melody. Great for practicing dotted rhythms and eighth-sixteenth beam patterns.",
   origin: "四川民歌 (Sichuan folk song)",
