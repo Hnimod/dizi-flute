@@ -308,7 +308,8 @@ T 3 T 3 T 3 T 3 | TK 3 TK 3 TK 3 TK 3 | TTK 3 TTK 3 TTK 3
 
 ## Ties and Slurs
 
-- \`~\` = **tie** — connect two notes of the same pitch; hold for the combined duration without re-tonguing. → \`jianpu:~( 3 ~) 3\`
+- \`~( ... ~)\` = **tie** — connect two notes of the same pitch; hold for the combined duration without re-tonguing. → \`jianpu:~( 3 ~) 3\`
+- \`~~\` = **tie-chain pivot** — placed *before* the shared note: closes the previous arc at this note and opens a new one from it. Use for 3+ notes tied in a chain. → \`jianpu:~( 3 - | ~~ 3 - | 3 ~)\`
 - \`( ... )\` = **slur** — play different notes smoothly (legato); tongue only the first. → \`jianpu:( 3 5 6 5 )\`
 
 \`\`\`jianpu

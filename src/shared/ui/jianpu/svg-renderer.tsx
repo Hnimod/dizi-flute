@@ -356,41 +356,48 @@ export function renderSvgItems(
       renderSvgItems(item.children, activeBeatIndex, cueElements, `${key}-cue`, opts);
       const first = flatFirst(item.children);
       const last = flatLast(item.children);
-      const sx = (first ? first.x : item.x - item.width / 2) - 14;
-      const ex = (last ? last.x : item.x + item.width / 2) + 14;
+      const openLeft = item.cueOpenLeft === true;
+      const openRight = item.cueOpenRight === true;
+      const sx = (first ? first.x : item.x - item.width / 2) - (openLeft ? 4 : 14);
+      const ex = (last ? last.x : item.x + item.width / 2) + (openRight ? 4 : 14);
       const midX = (sx + ex) / 2;
       const topY = Y_OCTAVE_UP - 4;
       const botY = Y_OCTAVE_DOWN + 4;
       const stroke = "var(--color-text-secondary)";
       const bowDepth = 4;
       elements.push(
-        <g key={key} opacity="0.55" fontStyle="italic">
+        <g key={key} opacity="0.55">
           {cueElements}
-          {/* Round parentheses around the cue group */}
-          <path
-            d={`M ${sx} ${topY} Q ${sx - bowDepth} ${(topY + botY) / 2} ${sx} ${botY}`}
-            fill="none"
-            stroke={stroke}
-            strokeWidth="0.9"
-          />
-          <path
-            d={`M ${ex} ${topY} Q ${ex + bowDepth} ${(topY + botY) / 2} ${ex} ${botY}`}
-            fill="none"
-            stroke={stroke}
-            strokeWidth="0.9"
-          />
-          <text
-            x={midX}
-            y={topY - 3}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fontSize={5.5}
-            fontFamily="sans-serif"
-            fontStyle="normal"
-            fill={stroke}
-          >
-            cue
-          </text>
+          {!openLeft && (
+            <path
+              d={`M ${sx} ${topY} Q ${sx - bowDepth} ${(topY + botY) / 2} ${sx} ${botY}`}
+              fill="none"
+              stroke={stroke}
+              strokeWidth="0.9"
+            />
+          )}
+          {!openRight && (
+            <path
+              d={`M ${ex} ${topY} Q ${ex + bowDepth} ${(topY + botY) / 2} ${ex} ${botY}`}
+              fill="none"
+              stroke={stroke}
+              strokeWidth="0.9"
+            />
+          )}
+          {!openLeft && (
+            <text
+              x={midX}
+              y={topY - 3}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize={5.5}
+              fontFamily="sans-serif"
+              fontStyle="normal"
+              fill={stroke}
+            >
+              cue
+            </text>
+          )}
         </g>,
       );
       continue;
@@ -535,6 +542,19 @@ export function renderSvgItems(
       }
       drawTieArc(tieStartX, tieEndX, `${keyPrefix}-tie-${tieStartX}-${tieEndX}`);
       tieStartX = null;
+    } else if (it.token.type === "tie-continue" && tieStartX !== null) {
+      // Pivot note: the next beat after this marker. Close the open arc
+      // here, then start a new arc from the same x so two arcs converge
+      // cleanly at the shared pivot note. The marker sits *before* the
+      // pivot — mirrors how `~(` sits before the tie's opening note.
+      let pivotX: number | null = null;
+      for (let j = fi + 1; j < allFlat.length; j++) {
+        if (isBeat(allFlat[j]!.token)) { pivotX = allFlat[j]!.x; break; }
+      }
+      if (pivotX !== null) {
+        drawTieArc(tieStartX, pivotX, `${keyPrefix}-tie-${tieStartX}-${pivotX}`);
+        tieStartX = pivotX;
+      }
     }
   }
   // Tie still open at end of line: trail arc to right edge and tell next line to continue.

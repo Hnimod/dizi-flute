@@ -139,6 +139,7 @@ interface ConvertOptions {
 function convertTokensToAbcLine(
   tokens: Token[],
   scaleMap: ReturnType<typeof buildScaleMap>,
+  cueState: { depth: number },
 ): string {
   const parts: string[] = [];
 
@@ -156,11 +157,10 @@ function convertTokensToAbcLine(
     }
   }
 
-  let cueDepth = 0;
   for (const { token, holdCount } of merged) {
-    if (token.type === "cue-start") { cueDepth++; continue; }
-    if (token.type === "cue-end") { cueDepth = Math.max(0, cueDepth - 1); continue; }
-    if (cueDepth > 0) continue; // Skip cue notes — they're for-reference-only, not in staff
+    if (token.type === "cue-start") { cueState.depth++; continue; }
+    if (token.type === "cue-end") { cueState.depth = Math.max(0, cueState.depth - 1); continue; }
+    if (cueState.depth > 0) continue; // Skip cue notes — they're for-reference-only, not in staff
     switch (token.type) {
       case "note": {
         const { mainDigit, graces } = parseNoteValue(token.value);
@@ -234,6 +234,7 @@ function convertTokensToAbcLine(
 
       case "tie":
       case "tie-start":
+      case "tie-continue":
         // Mark that the next note should be tied
         if (parts.length > 0) {
           parts[parts.length - 1] += "-";
@@ -285,13 +286,14 @@ export function jianpuToAbcLines(
   const { key } = options;
   const scaleMap = buildScaleMap(key);
 
+  const cueState = { depth: 0 };
   const lines = content.split("\n");
   return lines.map((line) => {
     const trimmed = line.trim();
     if (trimmed === "") return "";
 
     const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
-    return convertTokensToAbcLine(rawTokens, scaleMap);
+    return convertTokensToAbcLine(rawTokens, scaleMap, cueState);
   });
 }
 
@@ -304,11 +306,12 @@ export function jianpuToAbc(content: string, options: ConvertOptions): string {
   const abcKey = KEY_TO_ABC[key] || key;
   const scaleMap = buildScaleMap(key);
 
+  const cueState = { depth: 0 };
   const abcLines = content.split("\n").map((line) => {
     const trimmed = line.trim();
     if (trimmed === "") return "";
     const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
-    return convertTokensToAbcLine(rawTokens, scaleMap);
+    return convertTokensToAbcLine(rawTokens, scaleMap, cueState);
   });
 
   const header = [

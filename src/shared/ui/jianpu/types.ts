@@ -27,8 +27,9 @@ export type Token =
   | { type: "volta"; ending: number }
   | { type: "tie-start" }
   | { type: "tie-end" }
-  | { type: "cue-start" }
-  | { type: "cue-end" }
+  | { type: "tie-continue" }
+  | { type: "cue-start"; synthetic?: boolean }
+  | { type: "cue-end"; synthetic?: boolean }
   | { type: "tempo"; text: string }
   | {
       type: "nav";
@@ -54,6 +55,10 @@ export interface LayoutItem {
   tokenIdx: number;
   children?: LayoutItem[];
   groupType?: "beam" | "slur" | "cue";
+  /** Cue group continues from a previous line — suppress left paren. */
+  cueOpenLeft?: boolean;
+  /** Cue group continues onto the next line — suppress right paren. */
+  cueOpenRight?: boolean;
 }
 
 export interface InteractiveOpts {

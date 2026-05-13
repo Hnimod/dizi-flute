@@ -50,13 +50,11 @@ export function normalizeBeamDurations(tokens: Token[]): Token[] {
 /** Returns duration multiplier per beat index: 1.0=quarter, 0.5=eighth, 0.25=sixteenth */
 export function buildBeatSchedule(content: string): number[] {
   const schedule: number[] = [];
-
+  let cueDepth = 0;
   for (const line of content.split("\n")) {
     const trimmed = line.trim();
     if (trimmed === "") continue;
-
     const tokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
-    let cueDepth = 0;
     for (const t of tokens) {
       if (t.type === "cue-start") { cueDepth++; continue; }
       if (t.type === "cue-end") { cueDepth = Math.max(0, cueDepth - 1); continue; }
@@ -67,6 +65,42 @@ export function buildBeatSchedule(content: string): number[] {
     }
   }
   return schedule;
+}
+
+/**
+ * Parse jianpu content into per-line token arrays, with synthetic cue-start/cue-end
+ * markers injected at line boundaries so that a `cue( ... )cue` block spanning
+ * multiple lines renders consistently on every line. Each returned line is
+ * cue-balanced; downstream consumers (layout, beat schedule, ABC converter)
+ * don't need to track depth across lines.
+ */
+export function parseLines(content: string): { tokens: Token[]; isEmpty: boolean }[] {
+  let cueDepth = 0;
+  return content.split("\n").map((line) => {
+    const trimmed = line.trim();
+    if (trimmed === "") return { tokens: [], isEmpty: true };
+
+    const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
+
+    const leading: Token[] = [];
+    for (let d = 0; d < cueDepth; d++) {
+      leading.push({ type: "cue-start", synthetic: true });
+    }
+
+    let depth = cueDepth;
+    for (const t of rawTokens) {
+      if (t.type === "cue-start") depth++;
+      else if (t.type === "cue-end") depth = Math.max(0, depth - 1);
+    }
+
+    const trailing: Token[] = [];
+    for (let d = 0; d < depth; d++) {
+      trailing.push({ type: "cue-end", synthetic: true });
+    }
+
+    cueDepth = depth;
+    return { tokens: [...leading, ...rawTokens, ...trailing], isEmpty: false };
+  });
 }
 
 export function parseToken(raw: string): Token {
@@ -86,6 +120,10 @@ export function parseToken(raw: string): Token {
   // Tie markers
   if (raw === "~(") return { type: "tie-start" };
   if (raw === "~)") return { type: "tie-end" };
+  // `~~` chains ties: close the open arc and open a new one on the same note.
+  // Lets the user write `~( A - - | A ~~ - - | A ~)` for a 3-note tie chain
+  // instead of the verbose `~( A - - | A ~) ~( - - | A ~)`.
+  if (raw === "~~") return { type: "tie-continue" };
 
   // Cue markers (notes the dizi player doesn't play — accompaniment for context)
   if (raw === "cue(") return { type: "cue-start" };

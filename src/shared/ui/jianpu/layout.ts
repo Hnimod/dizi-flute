@@ -26,6 +26,7 @@ export function cellWidth(token: Token): number {
     case "volta":
     case "tie-start":
     case "tie-end":
+    case "tie-continue":
     case "cue-start":
     case "cue-end":
       return 0;
@@ -50,6 +51,7 @@ export function layoutLine(
     const ti = tokenIdxOffset + i;
 
     if (token.type === "cue-start") {
+      const openSynthetic = token.synthetic === true;
       i++;
       const cueX = x;
       const cueStartIdx = i;
@@ -60,6 +62,11 @@ export function layoutLine(
         else if (t.type === "cue-end") { depth--; if (depth === 0) break; }
         i++;
       }
+      const closeToken = tokens[i];
+      const closeSynthetic =
+        closeToken !== undefined &&
+        closeToken.type === "cue-end" &&
+        closeToken.synthetic === true;
       const innerTokens = tokens.slice(cueStartIdx, i);
       const innerBeatCounter = { value: 0 };
       const inner = layoutLine(innerTokens, innerBeatCounter, tokenIdxOffset + cueStartIdx);
@@ -70,13 +77,19 @@ export function layoutLine(
           if (it.children) shiftAndStripBeats(it.children, dx);
         }
       }
-      const CUE_PAD = 16; // space reserved on each side for the parenthesis
-      shiftAndStripBeats(inner.items, x + CUE_PAD);
-      x += inner.totalWidth + CUE_PAD * 2;
+      // Less side padding when the bracket is suppressed (continuation segments).
+      const PAD_FULL = 16;
+      const PAD_OPEN = 4;
+      const padLeft = openSynthetic ? PAD_OPEN : PAD_FULL;
+      const padRight = closeSynthetic ? PAD_OPEN : PAD_FULL;
+      shiftAndStripBeats(inner.items, x + padLeft);
+      x += inner.totalWidth + padLeft + padRight;
       i++; // skip cue-end
       items.push({
         token: { type: "cue-start" }, x: cueX + (x - cueX) / 2,
         width: x - cueX, beatIndex: null, tokenIdx: ti, children: inner.items, groupType: "cue",
+        cueOpenLeft: openSynthetic,
+        cueOpenRight: closeSynthetic,
       });
     } else if (token.type === "slur-start") {
       const children: LayoutItem[] = [];

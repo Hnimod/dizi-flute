@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Token, JianpuRendererProps, InteractiveOpts, LayoutItem } from "./types";
 import { Y_MARK, Y_NOTE, LINE_HEIGHT } from "./constants";
-import { parseToken, normalizeBeamDurations } from "./parser";
+import { parseLines } from "./parser";
 import { layoutLine, findActiveBeat } from "./layout";
 import { renderSvgItems } from "./svg-renderer";
 import { buildNoteTooltip } from "./tooltip";
@@ -148,22 +148,22 @@ export function JianpuRenderer({
   onTokenClick,
   onGapClick,
 }: JianpuRendererProps) {
-  const notationLines = content.split("\n");
+  // parseLines tracks cue depth across lines and injects synthetic cue markers
+  // at line boundaries, so multi-line cue blocks render on every line.
+  const linesData = parseLines(content);
 
   const beatCounter = { value: 0 };
   let tokenIdxOffset = 0;
 
   // Pre-compute layouts for all notation lines to find max width
   const lineLayouts: { items: LayoutItem[]; totalWidth: number; isEmpty: boolean }[] =
-    notationLines.map((line) => {
-      const trimmed = line.trim();
-      if (trimmed === "") {
+    linesData.map(({ tokens, isEmpty }) => {
+      if (isEmpty) {
         tokenIdxOffset++; // account for \n
         return { items: [], totalWidth: 0, isEmpty: true };
       }
-      const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
-      const result = { ...layoutLine(rawTokens, beatCounter, tokenIdxOffset), isEmpty: false };
-      tokenIdxOffset += rawTokens.length + 1; // +1 for the implicit \n between lines
+      const result = { ...layoutLine(tokens, beatCounter, tokenIdxOffset), isEmpty: false };
+      tokenIdxOffset += tokens.length + 1; // +1 for the implicit \n between lines
       return result;
     });
 

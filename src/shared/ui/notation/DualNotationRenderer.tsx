@@ -3,7 +3,7 @@ import { JianpuRenderer } from "../jianpu/JianpuRenderer";
 import { VexFlowStaffLine } from "../staff/vexflow-staff";
 import { useNotationPreference } from "./useNotationPreference";
 import { layoutLine } from "../jianpu/layout";
-import { parseToken, normalizeBeamDurations } from "../jianpu/parser";
+import { parseLines } from "../jianpu/parser";
 import type { JianpuRendererProps, LayoutItem } from "../jianpu/types";
 import "../staff/staff.css";
 
@@ -100,15 +100,13 @@ export function DualNotationRenderer({
     if (!staffContent) return null;
     const counter = { value: 0 };
     let tokenIdxOffset = 0;
-    return staffContent.split("\n").map((line) => {
-      const trimmed = line.trim();
-      if (trimmed === "") {
+    return parseLines(staffContent).map(({ tokens, isEmpty }) => {
+      if (isEmpty) {
         tokenIdxOffset++;
         return [] as LayoutItem[];
       }
-      const rawTokens = normalizeBeamDurations(trimmed.split(/\s+/).map(parseToken));
-      const result = layoutLine(rawTokens, counter, tokenIdxOffset);
-      tokenIdxOffset += rawTokens.length + 1;
+      const result = layoutLine(tokens, counter, tokenIdxOffset);
+      tokenIdxOffset += tokens.length + 1;
       return result.items;
     });
   }, [staffContent]);

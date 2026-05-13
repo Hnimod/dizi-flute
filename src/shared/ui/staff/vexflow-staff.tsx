@@ -87,6 +87,7 @@ interface FlatItem {
 function flattenItems(items: LayoutItem[], inBeam = false, inSlur = false, slurIdx = -1): FlatItem[] {
   const result: FlatItem[] = [];
   for (const item of items) {
+    if (item.groupType === "cue") continue; // cue notes are for-reference-only — not on staff
     if (item.children && item.children.length > 0) {
       const isBeam = item.groupType === "beam";
       const isSlur = item.groupType === "slur";
