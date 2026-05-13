@@ -253,18 +253,22 @@ export function renderSvgItems(
       } else if (item.token.kind === "coda") {
         elements.push(renderCodaGlyph(targetX, Y_MARK, key, opts));
       } else {
-        // Text labels (D.S./D.C./Fine/To Coda/...) — right-align so the label sits
-        // BEFORE the next item rather than extending past it (which would clip at the
-        // SVG viewBox edge when placed near the line end).
-        const labelEndX = next ? targetX - (next.width / 2) - 2 : item.x;
+        // Text labels (D.S./D.C./Fine/To Coda/...).
+        //   - If the next item is a bar line, center the label above the bar
+        //     (standard music-notation placement for end-of-section marks).
+        //   - Otherwise right-align it before the next note, so the label
+        //     doesn't extend past the SVG viewBox edge.
+        const isBarNext = next?.token.type === "bar";
+        const labelX = isBarNext ? targetX : next ? targetX - (next.width / 2) - 2 : item.x;
+        const labelAnchor = isBarNext ? "middle" : "end";
         const navInfo = SYMBOL_TECHNIQUE[`nav:${item.token.kind}`];
         const navHover = opts?.onSymbolHover && navInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, navInfo) : undefined;
         elements.push(
           <text
             key={key}
-            x={labelEndX}
+            x={labelX}
             y={Y_MARK}
-            textAnchor="end"
+            textAnchor={labelAnchor}
             dominantBaseline="central"
             fontSize={7}
             fontWeight={600}
