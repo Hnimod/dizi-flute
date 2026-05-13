@@ -45,11 +45,10 @@ shared/ → data/ → features/ → app/
 | `/techniques/:id` | TechniqueDetailPage | technique-library |
 | `/knowledge` | ReferencePage | reference-library |
 | `/knowledge/:slug` | ReferenceDetailPage | reference-library |
-| `/practice` | PracticePage | practice-timer |
 
 ### Navigation
-- **Desktop:** Left sidebar with links (Songs, Techniques, Knowledge, Practice)
-- **Mobile:** Bottom tab bar (4 tabs), top bar with login/theme toggle
+- **Desktop:** Left sidebar with links (Songs, Techniques, Knowledge)
+- **Mobile:** Bottom tab bar (3 tabs), top bar with login/theme toggle
 
 ## Data Model
 
@@ -114,7 +113,6 @@ Every feature lives in `src/features/{name}/` and MUST have:
 - `technique-library/` — Technique browsing by category, technique detail with exercises and related songs
 - `reference-library/` — Knowledge hub (fingering charts, jianpu guide, theory articles)
 - `lesson-viewer/` — PracticeView (full-screen song practice) + TempoGuide (dual notation renderer with playback)
-- `practice-timer/` — Timer + session history
 - `progress-tracking/` — Favorites tracking (localStorage via Zustand persist)
 - `auth/` — Local-only admin toggle (no API). Password checked client-side.
 - `admin/` — SongEditor, ExerciseEditor (kept but not wired to UI currently)

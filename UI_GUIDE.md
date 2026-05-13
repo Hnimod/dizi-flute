@@ -4,8 +4,8 @@ Screen descriptions for each page in the app.
 
 ## Navigation
 
-**Desktop:** Left sidebar (Songs, Techniques, Knowledge, Practice) + top bar (Login, Theme toggle)
-**Mobile:** Bottom tab bar (Songs, Techniques, Knowledge, Practice) + top bar (app name, Login, Theme toggle)
+**Desktop:** Left sidebar (Songs, Techniques, Knowledge) + top bar (Login, Theme toggle)
+**Mobile:** Bottom tab bar (Songs, Techniques, Knowledge) + top bar (app name, Login, Theme toggle)
 
 ---
 
@@ -192,31 +192,3 @@ Screen descriptions for each page in the app.
 - Icon + title
 - Markdown rendered content (tables, headings, code blocks)
 
----
-
-## Practice (`/practice`)
-
-```
-┌─────────────────────────────────────┐
-│  Practice Timer                     │
-│                                     │
-│       ┌──────────────┐              │
-│       │    05:23     │              │
-│       └──────────────┘              │
-│    [Start]  [Pause]  [Reset]        │
-│    [Save Session]                   │
-│                                     │
-│  ── Daily Practice Schedule ──      │
-│  [10 min] Long tones & breathing    │
-│  [10 min] Technique drills          │
-│  [10 min] Song practice             │
-│                                     │
-│  ── Session History ──              │
-│  Mar 25 — 15:00 (notes...)         │
-│  Mar 24 — 20:00 (notes...)         │
-└─────────────────────────────────────┘
-```
-
-- Timer with start/pause/reset
-- Save session with optional notes
-- Session history from localStorage

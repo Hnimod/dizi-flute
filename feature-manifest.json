@@ -49,22 +49,13 @@
       "dependsOn": ["shared", "data"],
       "crossFeatureDeps": ["progress-tracking"]
     },
-    "practice-timer": {
-      "path": "src/features/practice-timer",
-      "description": "Guided practice sessions with timer",
-      "routes": ["/practice"],
-      "exports": ["PracticePage", "usePracticeStore"],
-      "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": [],
-      "status": "done"
-    },
     "auth": {
       "path": "src/features/auth",
       "description": "Two-tier auth: email-only identify for users, email+password for admin. Syncs progress to DB.",
       "routes": [],
       "exports": ["useAuthStore", "IdentifyPrompt", "AdminLoginPage", "SyncProvider"],
       "dependsOn": ["shared", "data"],
-      "crossFeatureDeps": ["progress-tracking", "practice-timer", "song-library"],
+      "crossFeatureDeps": ["progress-tracking", "song-library"],
       "status": "done"
     },
     "admin": {
