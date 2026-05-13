@@ -99,7 +99,7 @@ function durationSuffix(
  * Handles: "3", "(2)3", "(2)(3)4"
  */
 function parseNoteValue(value: string): { mainDigit: string; graces: string[] } {
-  const graceMatch = value.match(/^\(([1-7][',]*)\)(?:\(([1-7][',]*)\))?([1-7])/);
+  const graceMatch = value.match(/^\(((?:#|b)?[1-7][',]*)\)(?:\(((?:#|b)?[1-7][',]*)\))?([1-7])/);
   if (graceMatch) {
     const graces = [graceMatch[1]!];
     if (graceMatch[2]) graces.push(graceMatch[2]);
@@ -110,16 +110,21 @@ function parseNoteValue(value: string): { mainDigit: string; graces: string[] } 
 }
 
 /**
- * Parse a grace note string like "2" or "2'" into digit and octave offset.
+ * Parse a grace note string like "2", "2'", "#4", or "b6,"
+ * into accidental, digit and octave offset.
  */
-function parseGraceOctave(grace: string): { digit: string; octave: number } {
-  const digit = grace[0]!;
+function parseGraceOctave(grace: string): { digit: string; octave: number; accidental: "" | "^" | "_" } {
+  let accidental: "" | "^" | "_" = "";
+  let start = 0;
+  if (grace[0] === "#") { accidental = "^"; start = 1; }
+  else if (grace[0] === "b") { accidental = "_"; start = 1; }
+  const digit = grace[start]!;
   let octave = 0;
-  for (let i = 1; i < grace.length; i++) {
+  for (let i = start + 1; i < grace.length; i++) {
     if (grace[i] === "'") octave++;
     if (grace[i] === ",") octave--;
   }
-  return { digit, octave };
+  return { digit, octave, accidental };
 }
 
 interface ConvertOptions {
@@ -186,11 +191,11 @@ function convertTokensToAbcLine(
         if (graces.length > 0) {
           const graceNotes = graces
             .map((g) => {
-              const { digit, octave } = parseGraceOctave(g);
+              const { digit, octave, accidental } = parseGraceOctave(g);
               const gIdx = parseInt(digit) - 1;
               if (gIdx < 0 || gIdx > 6) return "";
               const gScale = scaleMap[gIdx]!;
-              return noteToAbc(gScale.noteName[0]!, octave, gScale.naturalOctave);
+              return noteToAbc(gScale.noteName[0]!, octave, gScale.naturalOctave, accidental);
             })
             .join("");
           parts.push(`{${graceNotes}}`);

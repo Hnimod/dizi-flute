@@ -645,8 +645,8 @@ function renderSvgToken(
       // Note number (with grace note handling)
       const noteColor = isSelected ? "var(--color-accent)" : textColor;
       const noteStyle = clickable || beatClickable ? { cursor: "pointer" as const } : undefined;
-      const graceMatch = token.value.match(/^\((\d[',]*)\)\((\d[',]*)\)(\d.*)$/)
-        || token.value.match(/^\((\d[',]*)\)(\d.*)$/);
+      const graceMatch = token.value.match(/^\(((?:#|b)?\d[',]*)\)\(((?:#|b)?\d[',]*)\)(\d.*)$/)
+        || token.value.match(/^\(((?:#|b)?\d[',]*)\)(\d.*)$/);
 
       if (graceMatch) {
         const isDouble = graceMatch.length === 4;

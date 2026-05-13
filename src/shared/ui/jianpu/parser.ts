@@ -6,13 +6,14 @@ import type { Token } from "./types";
 const EXT_NOTE_RE =
   /^(tr)?(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
 
-// Grace note: (x)... same extensions — octave markers allowed inside parens
+// Grace note: (x)... same extensions — octave markers and `#`/`b` accidentals
+// allowed inside parens.
 const EXT_GRACE_RE =
-  /^(tr)?\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
+  /^(tr)?\(((?:#|b)?[1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
 
 // Double grace note: (x)(y)... two grace notes before main note
 const EXT_DOUBLE_GRACE_RE =
-  /^(tr)?\(([1-7][',]*)\)\(([1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
+  /^(tr)?\(((?:#|b)?[1-7][',]*)\)\(((?:#|b)?[1-7][',]*)\)(#|b)?([1-7])([',]*)(\.*)?([;^>T])?$/;
 
 export function isNotationLine(line: string): boolean {
   return /[1-7]/.test(line) && /[|\-]/.test(line);
