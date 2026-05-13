@@ -166,10 +166,6 @@ Rests follow the same duration rules as notes, but use \`0\`:
 - \`[ 3 5 6 1' ]\` → \`jianpu:[ 3 5 6 1' ]\` — eighth-note beam group
 - \`[ [ 3 5 ] [ 6 1' ] ]\` → \`jianpu:[ [ 3 5 ] [ 6 1' ] ]\` — nested beams render double beam lines (sixteenths)
 
-\`\`\`jianpu
-[ 3 5 6 1' ] [ 3 5 6 1' ] | [ [ 3 5 ] [ 6 1' ] ] [ [ 3 5 ] [ 6 1' ] ]
-\`\`\`
-
 ---
 
 ## Accidentals
@@ -277,10 +273,6 @@ For beginners, focus on 2/4 and 4/4 first.
 - \`:|\` — Repeat end → \`jianpu:3 :| 3\`
 - \`:|:\` — Repeat end + new repeat start → \`jianpu:3 :|: 3\`
 
-\`\`\`jianpu
-3 3 3 3 | 3 3 3 3 || |: 3 3 3 3 :| 3 3 3 3
-\`\`\`
-
 ---
 
 ## Articulation
@@ -292,8 +284,7 @@ For beginners, focus on 2/4 and 4/4 first.
 | \`^\` | \`3^\` | \`jianpu:3^\` | Fermata | Hold longer than written. Renders as an arc with a dot above the note. |
 | \`;\` | \`3;\` | \`jianpu:3;\` | Staccato | Short and detached. Renders as a small dot above the note. |
 | \`>\` | \`3>\` | \`jianpu:3>\` | Accent | Emphasize the note. Renders as a horizontal wedge above the note. |
-
-Combine: \`[ #5'^ ]\` = sharp 5, octave up, eighth, fermata.
+| stacked | \`[ #5'^ ]\` | \`jianpu:[ #5'^ ]\` | — | All modifiers stack: sharp 5, octave up, eighth, fermata. |
 
 \`\`\`jianpu
 3 - - 3^ | 3; 3; 3; 3; | 3> 3> 3 3
@@ -335,10 +326,6 @@ In printed jianpu, both use the same arc symbol; context (same pitch vs differen
 - **Trill**: \`tr3\` → \`jianpu:tr3\` — "tr~~~" above note, rapid alternation with the upper neighbor
 - **Grace note**: \`(2)3\` → \`jianpu:(2)3\` — small note 2 before main note 3
 - **Double grace note**: \`(2)(3)5\` → \`jianpu:(2)(3)5\` — two grace notes before main note
-
-\`\`\`jianpu
-tr3 - - - | (2)3 - (2)3 - | (2)(3)5 - - -
-\`\`\`
 
 ### Ornament Annotations
 
@@ -395,11 +382,11 @@ su 5 sd 5 rs 5 - | gu 5 - gd 5 - | 飞 5 - - -
 
 ### Tempo Changes (text tokens)
 
-\`rit\` (ritardando — slow down), \`accel\` (accelerando — speed up), \`atempo\` (return to original speed). Place before the note where the change begins.
+Place before the note where the change begins.
 
-\`\`\`jianpu
-rit 3 - - - | accel 3 3 3 3 | atempo 3 - - -
-\`\`\`
+- \`rit\` — ritardando, gradually slow down → \`jianpu:rit 3 3 3 3\`
+- \`accel\` — accelerando, gradually speed up → \`jianpu:accel 3 3 3 3\`
+- \`atempo\` — return to the original speed → \`jianpu:atempo 3 3 3 3\`
 
 ---
 
@@ -437,18 +424,18 @@ When a repeated section has a different ending the second time:
 
 These are rendered above the staff. Tokens are split on whitespace, so multi-word labels use a camelCase shorthand. (The live example below shows what each one looks like in a real score.)
 
-| Token | Italian | Meaning |
-|-------|---------|---------|
-| \`segno\` | Segno | The sign — D.S. instructions send you back here. Renders as a stylized S with a diagonal slash and two dots. |
-| \`coda\` | Coda | Marks the start of the coda section. Renders as a circle with a cross through it. |
-| \`D.S.\` (or \`DS\`) | Dal Segno | Back to the segno sign |
-| \`D.C.\` (or \`DC\`) | Da Capo | Back to the very beginning |
-| \`Fine\` | — | The end (used with D.C./D.S.) |
-| \`toCoda\` | — | On the repeat, jump from here to the coda |
-| \`D.S.alFine\` | — | Back to segno, play through to \`Fine\` |
-| \`D.S.alCoda\` | — | Back to segno, play until \`toCoda\`, then jump to \`coda\` |
-| \`D.C.alFine\` | — | Back to the start, play through to \`Fine\` |
-| \`D.C.alCoda\` | — | Back to the start, play until \`toCoda\`, then jump to \`coda\` |
+| Token | Rendered | Meaning |
+|-------|----------|---------|
+| \`segno\` | \`jianpu:segno 1\` | The sign — D.S. instructions send you back here. |
+| \`coda\` | \`jianpu:coda 1\` | Marks the start of the coda section. |
+| \`D.S.\` (or \`DS\`) | \`jianpu:D.S. 1\` | Dal Segno — back to the segno sign. |
+| \`D.C.\` (or \`DC\`) | \`jianpu:D.C. 1\` | Da Capo — back to the very beginning. |
+| \`Fine\` | \`jianpu:Fine 1\` | The end (used with D.C./D.S.). |
+| \`toCoda\` | \`jianpu:toCoda 1\` | On the repeat, jump from here to the coda. |
+| \`D.S.alFine\` | \`jianpu:D.S.alFine 1\` | Back to segno, play through to \`Fine\`. |
+| \`D.S.alCoda\` | \`jianpu:D.S.alCoda 1\` | Back to segno, play until \`toCoda\`, then jump to \`coda\`. |
+| \`D.C.alFine\` | \`jianpu:D.C.alFine 1\` | Back to the start, play through to \`Fine\`. |
+| \`D.C.alCoda\` | \`jianpu:D.C.alCoda 1\` | Back to the start, play until \`toCoda\`, then jump to \`coda\`. |
 
 Nav tokens are zero-width annotations: they float above the **next** item, so place them right before a bar line or note to anchor them visually.
 
@@ -468,15 +455,15 @@ A classic Chinese folk song. Header: \`1=D\`, \`2/4\`, Andante ♩=72.
 3 [ 5 6 ] | 1' [ 6 5 ] | 6 - | [ 5 3 2 1 ] | 2 - ||
 \`\`\`
 
-| Measure | Reading |
-|---------|---------|
-| \`3 3\` | Mi, Mi — two quarter notes |
-| \`5 [ 6 1' 6 ]\` | Sol (quarter); then La – high Do – La beamed as eighths |
-| \`5 -\` | Sol held for the full measure (half note) |
-| \`3 [ 5 6 ]\` | Mi quarter; Sol-La beamed eighths |
-| \`1' [ 6 5 ]\` | High Do quarter; La-Sol beamed eighths |
-| \`[ 5 3 2 1 ]\` | Sol-Mi-Re-Do beamed sixteenths-like run |
-| \`2 -\` | Re held to end of phrase |
+| Measure | Rendered | Reading |
+|---------|----------|---------|
+| \`3 3\` | \`jianpu:3 3\` | Mi, Mi — two quarter notes |
+| \`5 [ 6 1' 6 ]\` | \`jianpu:5 [ 6 1' 6 ]\` | Sol (quarter); then La – high Do – La beamed as eighths |
+| \`5 -\` | \`jianpu:5 -\` | Sol held for the full measure (half note) |
+| \`3 [ 5 6 ]\` | \`jianpu:3 [ 5 6 ]\` | Mi quarter; Sol-La beamed eighths |
+| \`1' [ 6 5 ]\` | \`jianpu:1' [ 6 5 ]\` | High Do quarter; La-Sol beamed eighths |
+| \`[ 5 3 2 1 ]\` | \`jianpu:[ 5 3 2 1 ]\` | Sol-Mi-Re-Do beamed eighth-note run |
+| \`2 -\` | \`jianpu:2 -\` | Re held to end of phrase |
 
 ---
 
@@ -530,14 +517,11 @@ A classic Chinese folk song. Header: \`1=D\`, \`2/4\`, Andante ♩=72.
 
 ## Interactive Notation Support
 
-The rendered notation in this page demonstrates elements the app's interactive renderer supports. These printed elements are **not yet rendered** and only appear in static scores:
+The rendered notation throughout this page demonstrates elements the interactive renderer supports — pitch, rhythm, articulation, ornamentation, ties, slurs, voltas, bar lines, and navigation marks. These printed elements are **not yet rendered** and only appear in static scores:
 
 - Dynamics (pp, p, mp, mf, f, ff) and hairpin crescendo/diminuendo
-- Navigation marks (D.C., D.S., Fine, Coda, Segno)
 - Triplet brackets
 - Thirty-second notes (triple underline)
-
-Core pitch, rhythm, articulation, and ornamentation are fully supported.
 
 ---
 
@@ -560,5 +544,5 @@ Core pitch, rhythm, articulation, and ornamentation are fully supported.
 > \\\`\\\`\\\`
 > [paste jianpu]
 > \\\`\\\`\\\`
-> Please suggest: tonguing (T:single/double/triple), ornaments (又/⺘/∽/≁/赠/回/飞 or orn:vibrato/orn:die/orn:da/orn:bo/orn:lower-bo/orn:return-slide/orn:glide-up/orn:glide-down/orn:fly etc.), breathing points, dynamics.`,
+> Please suggest: tonguing (T:single/double/triple), ornaments (又/⺘/赠/波/花/飞/回 or orn:vibrato/orn:die/orn:da/orn:bo/orn:lower-bo/orn:return-slide/orn:glide-up/orn:glide-down/orn:fly etc.), breathing points, dynamics.`,
   };
