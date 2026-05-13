@@ -653,11 +653,22 @@ function renderSvgToken(
         const graceRaws = isDouble ? [graceMatch[1]!, graceMatch[2]!] : [graceMatch[1]!];
         const graceText = graceRaws.map((g) => g.replace(/[',]/g, "")).join("");
         const mainText = isDouble ? graceMatch[3]! : graceMatch[2]!;
-        // Grace notes as small superscript
+        // Grace notes as small superscript. Accidentals render at ~half the
+        // digit size, mirroring how the main note's `♯`/`♭` (9pt) reads as
+        // smaller than the 18pt digit.
         const graceX = x - 6;
         const graceY = Y_OCTAVE_UP - 2;
         const gnInfo = SYMBOL_TECHNIQUE["graceNote"];
         const gnHover = opts?.onSymbolHover && gnInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, gnInfo) : undefined;
+        const graceTspans = graceRaws.flatMap((g, gi) => {
+          const stripped = g.replace(/[',]/g, "");
+          const accChar = stripped[0] === "#" ? "♯" : stripped[0] === "b" ? "♭" : "";
+          const digit = accChar ? stripped.slice(1) : stripped;
+          const out: React.ReactNode[] = [];
+          if (accChar) out.push(<tspan key={`a${gi}`} fontSize="5">{accChar}</tspan>);
+          out.push(<tspan key={`d${gi}`}>{digit}</tspan>);
+          return out;
+        });
         elements.push(
           <text
             key={`${key}-grace`}
@@ -671,7 +682,7 @@ function renderSvgToken(
             onMouseEnter={gnHover}
             onMouseLeave={opts?.onSymbolLeave}
           >
-            {graceText}
+            {graceTspans}
           </text>,
         );
         // Octave dots for grace notes
