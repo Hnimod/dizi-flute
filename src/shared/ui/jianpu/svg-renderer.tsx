@@ -1,6 +1,5 @@
 import type { LayoutItem, InteractiveOpts } from "./types";
 import {
-  CELL_NOTE, CELL_BAR,
   Y_VOLTA, Y_MARK, Y_OCTAVE_UP, Y_NOTE, Y_BEAM, Y_BEAM2, Y_OCTAVE_DOWN,
 } from "./constants";
 import { isBeat } from "./parser";
@@ -998,7 +997,8 @@ function renderSvgToken(
       break;
     }
     case "tie":
-      // Handled in renderSvgItems main loop
+      // `~` is a documented spacer — visible tie arcs are drawn from `~(` / `~)`
+      // markers in the tie post-pass of renderSvgItems.
       break;
     case "breath": {
       const brInfo = SYMBOL_TECHNIQUE["breath"];
@@ -1006,7 +1006,7 @@ function renderSvgToken(
       elements.push(
         <text
           key={key}
-          x={x + CELL_BAR / 2}
+          x={x}
           y={Y_NOTE - 14}
           textAnchor="middle"
           fontSize="8"
@@ -1020,125 +1020,8 @@ function renderSvgToken(
       );
       break;
     }
-    case "tonguing": {
-      const tInfo2 = SYMBOL_TECHNIQUE[token.technique];
-      const tHover2 = opts?.onSymbolHover && tInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tInfo2) : undefined;
-      elements.push(
-        <text
-          key={key}
-          x={x + CELL_NOTE / 2}
-          y={Y_MARK}
-          textAnchor="middle"
-          fontSize="8"
-          fontWeight="600"
-          fontFamily="sans-serif"
-          fill="var(--color-accent)"
-          style={tHover2 ? { cursor: "help" } : undefined}
-          onMouseEnter={tHover2}
-          onMouseLeave={opts?.onSymbolLeave}
-        >
-          {token.technique === "single"
-            ? "T"
-            : token.technique === "double"
-              ? "TK"
-              : token.technique === "triple"
-                ? "TTK"
-                : token.technique}
-        </text>,
-      );
-      break;
-    }
-    case "ornament": {
-      if (token.name === "vibrato") {
-        elements.push(renderVibratoWave(x + CELL_NOTE / 2, Y_MARK, key, opts));
-        break;
-      }
-      if (token.name === "bo") {
-        elements.push(renderMordentGlyph(x + CELL_NOTE / 2, Y_MARK, key, opts));
-        break;
-      }
-      if (token.name === "lower-bo") {
-        elements.push(renderLowerMordentGlyph(x + CELL_NOTE / 2, Y_MARK, key, opts));
-        break;
-      }
-      const { text: ornText2, isChar: isChar2 } = ornamentDisplay(token.name);
-      const oInfo2 = SYMBOL_TECHNIQUE[token.name];
-      const oHover2 = opts?.onSymbolHover && oInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, oInfo2) : undefined;
-      elements.push(
-        <text
-          key={key}
-          x={x + CELL_NOTE / 2}
-          y={Y_MARK}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fontSize={8}
-          fontStyle={isChar2 ? "normal" : "italic"}
-          fontWeight={isChar2 ? "700" : undefined}
-          fontFamily="sans-serif"
-          fill="var(--color-text-secondary)"
-          style={oHover2 ? { cursor: "help" } : undefined}
-          onMouseEnter={oHover2}
-          onMouseLeave={opts?.onSymbolLeave}
-        >
-          {ornText2}
-        </text>,
-      );
-      break;
-    }
-    case "tempo": {
-      const tpInfo2 = SYMBOL_TECHNIQUE[token.text];
-      const tpHover2 = opts?.onSymbolHover && tpInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tpInfo2) : undefined;
-      elements.push(
-        <text
-          key={key}
-          x={x + CELL_NOTE / 2}
-          y={Y_MARK}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fontSize={7}
-          fontWeight="600"
-          fontStyle="italic"
-          fontFamily="sans-serif"
-          fill="var(--color-text-secondary)"
-          style={tpHover2 ? { cursor: "help" } : undefined}
-          onMouseEnter={tpHover2}
-          onMouseLeave={opts?.onSymbolLeave}
-        >
-          {token.text}
-        </text>,
-      );
-      break;
-    }
-    case "nav": {
-      if (token.kind === "segno") {
-        elements.push(renderSegnoGlyph(x, Y_MARK, key, opts));
-      } else if (token.kind === "coda") {
-        elements.push(renderCodaGlyph(x, Y_MARK, key, opts));
-      } else {
-        const navInfo2 = SYMBOL_TECHNIQUE[`nav:${token.kind}`];
-        const navHover2 = opts?.onSymbolHover && navInfo2 ? (e: React.MouseEvent) => opts.onSymbolHover!(e, navInfo2) : undefined;
-        elements.push(
-          <text
-            key={key}
-            x={x}
-            y={Y_MARK}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fontSize={7}
-            fontWeight={600}
-            fontStyle="italic"
-            fontFamily="sans-serif"
-            fill="var(--color-text)"
-            style={navHover2 ? { cursor: "help" } : undefined}
-            onMouseEnter={navHover2}
-            onMouseLeave={opts?.onSymbolLeave}
-          >
-            {token.text}
-          </text>,
-        );
-      }
-      break;
-    }
+    // `tonguing`, `ornament`, `tempo`, and `nav` tokens are handled directly in
+    // renderSvgItems' main loop (which `continue`s past them) and never reach this switch.
     case "text":
       elements.push(
         <text
