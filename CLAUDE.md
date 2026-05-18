@@ -25,7 +25,7 @@ shared/ → data/ → features/ → app/
 
 - `shared/` — Types, UI primitives (JianpuRenderer, DualNotationRenderer, VexFlowStaffLine, VideoEmbed, Checkbox, etc.), utils. Zero business logic.
 - `data/` — Static content only. Key files:
-  - `songs/` — Individual song files organized by difficulty (`beginner/`, `elementary/`, `advanced/`)
+  - `songs/` — Each song lives in its own folder `songs/{slug}/` with an `index.ts` (and any image assets alongside)
   - `songs/index.ts` — Aggregates all songs into flat `songs: Song[]` array
   - `exercises.ts` — All exercises (technique drills)
   - `techniques.ts` — Technique catalog (links exercises to techniques)
@@ -77,13 +77,13 @@ interface Song {
 ### Song file structure
 ```
 src/data/songs/
-  beginner/       # difficulty 1-2
-  elementary/     # difficulty 3-4
-  advanced/       # difficulty 7+
+  {song-slug}/
+    index.ts      # exports `export const song: Song = { ... }`
+    {song-slug}.png   # optional sheet image, imported relatively
   index.ts        # aggregates all into songs[]
 ```
 
-Each song is a single file exporting `export const song: Song = { ... }`.
+Each song lives in its own folder; difficulty is a numeric field on the song, not a directory grouping.
 
 ### Technique (`src/data/techniques.ts`)
 ```typescript
@@ -161,7 +161,7 @@ Currently local-only. Admin mode is a simple password check stored in localStora
 
 | To change content... | Do this... |
 |---------------------|------------|
-| Add a song | Create file in `src/data/songs/{difficulty}/`, import in `songs/index.ts` |
+| Add a song | Create folder `src/data/songs/{slug}/` with `index.ts`, import in `songs/index.ts` |
 | Edit a song | Edit the song's `.ts` file directly |
 | Add an exercise | Add to `src/data/exercises.ts` |
 | Add a technique | Add to `src/data/techniques.ts` with exercise IDs |

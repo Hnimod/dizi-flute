@@ -42,10 +42,12 @@ function extractMainDigit(value: string): string {
  */
 function noteToVexKey(digit: string, octave: number, scaleInfo: ScaleEntry[], baseOctave = 4): string | null {
   const idx = parseInt(digit) - 1;
-  if (idx < 0 || idx > 6) return null;
+  if (!Number.isFinite(idx) || idx < 0 || idx > 6) return null;
 
-  const entry = scaleInfo[idx]!;
-  const tonicLetter = scaleInfo[0]!.letter;
+  const entry = scaleInfo[idx];
+  const tonic = scaleInfo[0];
+  if (!entry || !tonic) return null;
+  const tonicLetter = tonic.letter;
   const absOctave = naturalOctaveForDigit(idx + 1, tonicLetter, baseOctave) + octave;
 
   // VexFlow format: "letter/octave" (lowercase for sharps/flats via Accidental)

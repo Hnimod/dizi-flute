@@ -9,7 +9,7 @@ import { useSongLibraryStore } from "./store";
 import type { Song } from "@/shared/types";
 
 function getTitle(song: Song): string {
-  return [song.titleChinese, song.titlePinyin, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
+  return [song.titlePinyin, song.titleVietnamese, song.titleEnglish, song.titleChinese].filter(Boolean).join(" / ");
 }
 
 function matchesSearch(song: Song, query: string): boolean {
@@ -22,6 +22,14 @@ function matchesSearch(song: Song, query: string): boolean {
     song.titleEnglish.toLowerCase().includes(q) ||
     (song.origin?.toLowerCase().includes(q) ?? false)
   );
+}
+
+function sortKey(song: Song): string {
+  return (song.titlePinyin || song.titleEnglish).toLowerCase();
+}
+
+function compareSongs(a: Song, b: Song): number {
+  return sortKey(a).localeCompare(sortKey(b), "en", { sensitivity: "base" });
 }
 
 // ─── Heart Icon ───
@@ -52,100 +60,6 @@ function HeartButton({ songId }: { songId: string }) {
   );
 }
 
-// ─── Difficulty Dropdown ───
-
-function DifficultyDropdown({
-  difficulties,
-  selected,
-  onChange,
-}: {
-  difficulties: number[];
-  selected: Set<number>;
-  onChange: (next: Set<number>) => void;
-}) {
-  const [open, setOpen] = useState(false);
-
-  const label =
-    selected.size === 0
-      ? "All"
-      : [...selected].sort((a, b) => a - b).map((d) => `${d}`).join(", ");
-
-  function toggle(d: number) {
-    const next = new Set(selected);
-    if (next.has(d)) next.delete(d);
-    else next.add(d);
-    onChange(next);
-  }
-
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all"
-        style={{
-          backgroundColor: selected.size > 0 ? "var(--color-accent)" : "var(--color-bg-tertiary)",
-          color: selected.size > 0 ? "white" : "var(--color-text-secondary)",
-          border: `1px solid ${selected.size > 0 ? "var(--color-accent)" : "var(--color-border)"}`,
-        }}
-      >
-        <span className="truncate max-w-[120px]">{selected.size > 0 ? `Diff: ${label}` : "Difficulty"}</span>
-        <svg
-          className={`h-3 w-3 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2.5}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div
-            className="absolute right-0 top-full mt-1 z-50 rounded-xl p-2 shadow-lg min-w-[160px]"
-            style={{
-              backgroundColor: "var(--color-bg-secondary)",
-              border: "1px solid var(--color-border)",
-            }}
-          >
-            {selected.size > 0 && (
-              <button
-                onClick={() => { onChange(new Set()); setOpen(false); }}
-                className="w-full text-left px-3 py-1.5 text-xs rounded-lg hover:opacity-70 mb-1"
-                style={{ color: "var(--color-accent)" }}
-              >
-                Clear all
-              </button>
-            )}
-            {difficulties.map((d) => (
-              <button
-                key={d}
-                onClick={() => toggle(d)}
-                className="flex w-full items-center gap-2.5 px-3 py-2 text-xs rounded-lg transition-colors"
-                style={{ color: "var(--color-text)" }}
-              >
-                <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" strokeWidth={2}>
-                  {selected.has(d) ? (
-                    <>
-                      <rect x="3" y="3" width="18" height="18" rx="4" fill="var(--color-accent)" stroke="var(--color-accent)" />
-                      <path d="M9 12l2 2 4-4" stroke="white" strokeWidth={2.5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                    </>
-                  ) : (
-                    <rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="var(--color-border)" />
-                  )}
-                </svg>
-                <span>{d} — {difficultyLabels[d] ?? ""}</span>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
 // ─── Song Row ───
 
 function SongRow({ song, expanded, onToggle }: { song: Song; expanded: boolean; onToggle: () => void }) {
@@ -164,6 +78,7 @@ function SongRow({ song, expanded, onToggle }: { song: Song; expanded: boolean; 
             {getTitle(song)}
           </div>
           <div className="mt-0.5 flex flex-wrap gap-x-3 text-[11px] text-(--color-text-secondary)">
+            <span>{difficultyLabels[song.difficulty] ?? ""} · {song.difficulty}/10</span>
             <span>Key: {song.key}</span>
             <span>Time: {song.timeSignature}</span>
             {song.tempo && <span>{song.tempo} BPM</span>}
@@ -229,8 +144,7 @@ export function SongLibraryPage() {
   const favoritedItems = useProgressStore((s) => s.favoritedItems);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
-  const [selectedDifficulties, setSelectedDifficulties] = useState<Set<number>>(new Set());
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<number | "my" | "fav">>(() => {
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<"my" | "fav">>(() => {
     try {
       const saved = localStorage.getItem("dizi-library-collapsed");
       return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -256,24 +170,8 @@ export function SongLibraryPage() {
     if (filterMode === "favorites") {
       filtered = filtered.filter((s) => favoritedItems[s.id]);
     }
-    return filtered.sort((a, b) => {
-      const aFav = favoritedItems[a.id] ? 1 : 0;
-      const bFav = favoritedItems[b.id] ? 1 : 0;
-      return bFav - aFav;
-    });
+    return filtered.sort(compareSongs);
   }, [searchQuery, filterMode, favoritedItems]);
-
-  const songsByDifficulty = useMemo(() => {
-    const grouped = new Map<number, Song[]>();
-    for (const song of songs) {
-      const list = grouped.get(song.difficulty) ?? [];
-      list.push(song);
-      grouped.set(song.difficulty, list);
-    }
-    return grouped;
-  }, [songs]);
-
-  const sortedDifficulties = useMemo(() => [...songsByDifficulty.keys()].sort((a, b) => a - b), [songsByDifficulty]);
 
   const isSearching = searchQuery.trim().length > 0;
 
@@ -282,23 +180,18 @@ export function SongLibraryPage() {
     [userSongs, applyFilters],
   );
 
-  const filteredSongsByDifficulty = useMemo(() => {
-    const map = new Map<number, Song[]>();
-    for (const [diff, diffSongs] of songsByDifficulty) {
-      if (selectedDifficulties.size > 0 && !selectedDifficulties.has(diff)) continue;
-      const filtered = applyFilters(diffSongs);
-      if (filtered.length > 0) map.set(diff, filtered);
-    }
-    return map;
-  }, [songsByDifficulty, applyFilters, selectedDifficulties]);
+  const filteredSongs = useMemo(
+    () => applyFilters(songs),
+    [songs, applyFilters],
+  );
 
   const favoriteSongs = useMemo(() => {
     const allSongs = [...songs, ...userSongs];
     return allSongs
       .filter((s) => favoritedItems[s.id])
       .filter((s) => matchesSearch(s, searchQuery))
-      .filter((s) => selectedDifficulties.size === 0 || selectedDifficulties.has(s.difficulty));
-  }, [songs, userSongs, favoritedItems, searchQuery, selectedDifficulties]);
+      .sort(compareSongs);
+  }, [songs, userSongs, favoritedItems, searchQuery]);
 
   const toggleSong = useCallback((id: string) => {
     setExpandedSongs((prev) => {
@@ -309,7 +202,7 @@ export function SongLibraryPage() {
     });
   }, []);
 
-  const toggleGroup = useCallback((id: number | "my" | "fav") => {
+  const toggleGroup = useCallback((id: "my" | "fav") => {
     setCollapsedGroups((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -324,21 +217,17 @@ export function SongLibraryPage() {
     border: `1px solid ${active ? "var(--color-accent)" : "var(--color-border)"}`,
   });
 
-  const showUserSection =
-    selectedDifficulties.size === 0 &&
-    filteredUserSongs.length > 0;
+  const showUserSection = filteredUserSongs.length > 0;
 
-  const totalFiltered = filteredUserSongs.length + [...filteredSongsByDifficulty.values()].reduce((sum, s) => sum + s.length, 0);
+  const totalFiltered = filteredUserSongs.length + filteredSongs.length;
 
   const allVisibleSongIds = useMemo(() => {
     const ids: string[] = [];
-    for (const diffSongs of filteredSongsByDifficulty.values()) {
-      for (const s of diffSongs) ids.push(s.id);
-    }
+    for (const s of filteredSongs) ids.push(s.id);
     for (const s of filteredUserSongs) ids.push(s.id);
     for (const s of favoriteSongs) ids.push(s.id);
     return ids;
-  }, [filteredSongsByDifficulty, filteredUserSongs, favoriteSongs]);
+  }, [filteredSongs, filteredUserSongs, favoriteSongs]);
 
   const anyExpanded = allVisibleSongIds.some((id) => expandedSongs.has(id));
 
@@ -425,7 +314,7 @@ export function SongLibraryPage() {
           )}
         </div>
 
-        {/* Status pills + Difficulty dropdown */}
+        {/* Status pills */}
         <div className="flex items-center gap-1.5">
           <button
             className="shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all"
@@ -441,17 +330,11 @@ export function SongLibraryPage() {
           >
             Favorites
           </button>
-          <div className="flex-1" />
-          <DifficultyDropdown
-            difficulties={sortedDifficulties}
-            selected={selectedDifficulties}
-            onChange={setSelectedDifficulties}
-          />
         </div>
       </div>
 
       {/* Results count when filtering */}
-      {(isSearching || filterMode !== "all" || selectedDifficulties.size > 0) && (
+      {(isSearching || filterMode !== "all") && (
         <p className="text-xs mb-3" style={{ color: "var(--color-text-secondary)" }}>
           {totalFiltered} {filterMode === "favorites" ? "favorite " : ""}result{totalFiltered !== 1 ? "s" : ""}
         </p>
@@ -507,30 +390,16 @@ export function SongLibraryPage() {
         </section>
       )}
 
-      {/* Songs by difficulty */}
+      {/* All songs (flat, sorted by name) */}
       <div className="space-y-2">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-          .filter((diff) => selectedDifficulties.size === 0 || selectedDifficulties.has(diff))
-          .map((diff) => {
-            const diffSongs = filteredSongsByDifficulty.get(diff) ?? [];
-            const isCollapsed = collapsedGroups.has(diff);
-            return (
-              <div key={diff}>
-                <SectionDivider
-                  label={`${difficultyLabels[diff] ?? ""} · ${diff}/10`}
-                  count={diffSongs.length}
-                  collapsed={isCollapsed}
-                  onToggle={() => toggleGroup(diff)}
-                >
-                  {diffSongs.map((song) => (
-                    <div key={song.id} className="mb-2">
-                      <SongRow song={song} expanded={expandedSongs.has(song.id)} onToggle={() => toggleSong(song.id)} />
-                    </div>
-                  ))}
-                </SectionDivider>
-              </div>
-            );
-          })}
+        {filteredSongs.map((song) => (
+          <SongRow
+            key={song.id}
+            song={song}
+            expanded={expandedSongs.has(song.id)}
+            onToggle={() => toggleSong(song.id)}
+          />
+        ))}
       </div>
 
       {/* No results */}

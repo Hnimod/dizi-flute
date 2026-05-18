@@ -235,6 +235,7 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
 
       {/* Notation with highlight */}
       <div ref={containerRef}>
+        {content.trim() ? (
         <DualNotationRenderer
           content={content}
           abc={abc}
@@ -253,6 +254,18 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
           staffContent={staffContent}
           staffKey={staffKey}
         />
+        ) : (
+          <div
+            className="rounded-lg p-6 text-center text-sm"
+            style={{
+              backgroundColor: "var(--color-bg-secondary)",
+              color: "var(--color-text-secondary)",
+              border: "1px dashed var(--color-border)",
+            }}
+          >
+            Notation not available yet.
+          </div>
+        )}
       </div>
     </>
   );
