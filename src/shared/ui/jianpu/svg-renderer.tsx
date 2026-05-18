@@ -676,7 +676,9 @@ function renderSvgToken(
         const isDouble = graceMatch.length === 4;
         const graceRaws = isDouble ? [graceMatch[1]!, graceMatch[2]!] : [graceMatch[1]!];
         const graceText = graceRaws.map((g) => g.replace(/[',]/g, "")).join("");
-        const mainText = isDouble ? graceMatch[3]! : graceMatch[2]!;
+        // Strip trailing `.` so the dotted-rhythm dot isn't drawn twice
+        // (once as text, once as the augmentation-dot circle below).
+        const mainText = (isDouble ? graceMatch[3]! : graceMatch[2]!).replace(/\.+$/, "");
         // Grace notes as small superscript. Accidentals render at ~half the
         // digit size, mirroring how the main note's `♯`/`♭` (9pt) reads as
         // smaller than the 18pt digit.
