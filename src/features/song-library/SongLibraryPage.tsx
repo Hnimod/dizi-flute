@@ -20,7 +20,8 @@ function matchesSearch(song: Song, query: string): boolean {
     (song.titlePinyin?.toLowerCase().includes(q) ?? false) ||
     (song.titleVietnamese?.toLowerCase().includes(q) ?? false) ||
     song.titleEnglish.toLowerCase().includes(q) ||
-    (song.origin?.toLowerCase().includes(q) ?? false)
+    (song.origin?.toLowerCase().includes(q) ?? false) ||
+    (song.searchKeywords?.some((kw) => kw.toLowerCase().includes(q)) ?? false)
   );
 }
 

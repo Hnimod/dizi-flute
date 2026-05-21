@@ -51,6 +51,9 @@ export interface Song {
   videoUrls?: string[];
   origin?: string;
   techniques?: string[];
+  /** Free-text tags surfaced by search. Use for OST/drama names, aliases,
+   *  alternate romanizations — anything a user might type to find the song. */
+  searchKeywords?: string[];
   sheetImage?: string;
   abc?: string;
   /** Solfège name of the all-holes-covered note in the source jianpu (筒音作 X). Defaults to "Sol". */
