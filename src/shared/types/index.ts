@@ -54,7 +54,9 @@ export interface Song {
   /** Free-text tags surfaced by search. Use for OST/drama names, aliases,
    *  alternate romanizations — anything a user might type to find the song. */
   searchKeywords?: string[];
-  sheetImage?: string;
+  /** Original sheet image(s). Pass a string for a single page or a string[]
+   *  for a multi-page score (rendered top-to-bottom in the accordion). */
+  sheetImage?: string | string[];
   abc?: string;
   /** Solfège name of the all-holes-covered note in the source jianpu (筒音作 X). Defaults to "Sol". */
   sourceTongyin?: Tongyin;

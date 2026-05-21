@@ -14,14 +14,19 @@ function getTitle(song: Song): string {
   return [song.titleChinese, song.titlePinyin, song.titleVietnamese, song.titleEnglish].filter(Boolean).join(" / ");
 }
 
-function SheetImageAccordion({ src }: { src: string }) {
+function SheetImageAccordion({ src }: { src: string | string[] }) {
+  const pages = Array.isArray(src) ? src : [src];
   const [open, setOpen] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
+  // fullscreenIdx === null means closed; otherwise it's the page being viewed.
+  const [fullscreenIdx, setFullscreenIdx] = useState<number | null>(null);
+  const isFullscreen = fullscreenIdx !== null;
 
   useEffect(() => {
-    if (!fullscreen) return;
+    if (!isFullscreen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setFullscreen(false);
+      if (e.key === "Escape") setFullscreenIdx(null);
+      else if (e.key === "ArrowRight") setFullscreenIdx((i) => (i === null ? null : Math.min(pages.length - 1, i + 1)));
+      else if (e.key === "ArrowLeft") setFullscreenIdx((i) => (i === null ? null : Math.max(0, i - 1)));
     };
     window.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
@@ -30,7 +35,7 @@ function SheetImageAccordion({ src }: { src: string }) {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [fullscreen]);
+  }, [isFullscreen, pages.length]);
 
   return (
     <div className="my-4">
@@ -45,7 +50,7 @@ function SheetImageAccordion({ src }: { src: string }) {
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
-        Original Sheet
+        Original Sheet{pages.length > 1 && ` (${pages.length} pages)`}
       </button>
       <AnimatePresence>
         {open && (
@@ -56,33 +61,46 @@ function SheetImageAccordion({ src }: { src: string }) {
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div
-              className="mt-2 rounded-lg overflow-hidden relative group"
-              style={{ border: "1px solid var(--color-border)" }}
-            >
-              <img
-                src={src}
-                alt="Jianpu sheet"
-                className="w-full cursor-zoom-in"
-                onClick={() => setFullscreen(true)}
-              />
-              <button
-                onClick={() => setFullscreen(true)}
-                aria-label="View fullscreen"
-                title="View fullscreen"
-                className="absolute top-2 right-2 rounded-md p-1.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", color: "var(--color-text)" }}
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4" />
-                </svg>
-              </button>
+            <div className="mt-2 space-y-3">
+              {pages.map((page, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg overflow-hidden relative group"
+                  style={{ border: "1px solid var(--color-border)" }}
+                >
+                  <img
+                    src={page}
+                    alt={pages.length > 1 ? `Jianpu sheet page ${i + 1}` : "Jianpu sheet"}
+                    className="w-full cursor-zoom-in"
+                    onClick={() => setFullscreenIdx(i)}
+                  />
+                  {pages.length > 1 && (
+                    <div
+                      className="absolute top-2 left-2 rounded px-1.5 py-0.5 text-xs font-semibold"
+                      style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", color: "var(--color-text-secondary)" }}
+                    >
+                      {i + 1} / {pages.length}
+                    </div>
+                  )}
+                  <button
+                    onClick={() => setFullscreenIdx(i)}
+                    aria-label="View fullscreen"
+                    title="View fullscreen"
+                    className="absolute top-2 right-2 rounded-md p-1.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", color: "var(--color-text)" }}
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {fullscreen && (
+        {isFullscreen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -90,16 +108,50 @@ function SheetImageAccordion({ src }: { src: string }) {
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 cursor-zoom-out"
             style={{ background: "rgba(0,0,0,0.85)" }}
-            onClick={() => setFullscreen(false)}
+            onClick={() => setFullscreenIdx(null)}
           >
             <img
-              src={src}
-              alt="Jianpu sheet"
+              src={pages[fullscreenIdx!]}
+              alt={pages.length > 1 ? `Jianpu sheet page ${fullscreenIdx! + 1}` : "Jianpu sheet"}
               className="max-w-full max-h-full object-contain"
               onClick={(e) => e.stopPropagation()}
             />
+            {pages.length > 1 && (
+              <>
+                {fullscreenIdx! > 0 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setFullscreenIdx(fullscreenIdx! - 1); }}
+                    aria-label="Previous page"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full p-2 cursor-pointer hover:opacity-80"
+                    style={{ background: "rgba(255,255,255,0.15)", color: "white" }}
+                  >
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                )}
+                {fullscreenIdx! < pages.length - 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setFullscreenIdx(fullscreenIdx! + 1); }}
+                    aria-label="Next page"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-2 cursor-pointer hover:opacity-80"
+                    style={{ background: "rgba(255,255,255,0.15)", color: "white" }}
+                  >
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                )}
+                <div
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-sm font-medium"
+                  style={{ background: "rgba(255,255,255,0.15)", color: "white" }}
+                >
+                  {fullscreenIdx! + 1} / {pages.length}
+                </div>
+              </>
+            )}
             <button
-              onClick={() => setFullscreen(false)}
+              onClick={() => setFullscreenIdx(null)}
               aria-label="Close fullscreen"
               className="absolute top-4 right-4 rounded-full p-2 cursor-pointer hover:opacity-80"
               style={{ background: "rgba(255,255,255,0.15)", color: "white" }}

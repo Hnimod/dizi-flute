@@ -49,6 +49,15 @@ The user does **not** read Chinese. Treat the Chinese title as opaque — your j
    };
    ```
 
+   **Multi-page sheets:** `sheetImage` accepts `string | string[]`. For scores spanning multiple pages, import each page and pass an array — they'll render stacked in the accordion with page-number badges and a fullscreen viewer with prev/next nav.
+
+   ```ts
+   import sheetPage1 from "./<slug>-1.png";
+   import sheetPage2 from "./<slug>-2.png";
+   // ...
+   sheetImage: [sheetPage1, sheetPage2],
+   ```
+
 3. **Fill `searchKeywords` with copy-ready Chinese search phrases.** The user does NOT read Chinese — these strings live in the data file so they can open the song's `index.ts`, copy a phrase, and paste it into Baidu / Bilibili / Douyin / YouTube / Google to hunt down a dizi recording (then paste the URL back into `videoUrls`).
 
    Lead with full Chinese phrases that combine the song title with dizi search terms — these are what the user actually pastes externally:
