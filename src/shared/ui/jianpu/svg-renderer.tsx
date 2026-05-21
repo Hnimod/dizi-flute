@@ -290,8 +290,20 @@ export function renderSvgItems(
       pendingAnnotations.push(
         item.token.type === "tonguing" ? `T:${item.token.technique}` : item.token.name,
       );
-      const next = items[idx + 1];
+      // Look past any consecutive tonguing/ornament tokens so a run like
+      // `T bo 2` aligns both annotations above note 2 instead of cascading.
+      let lookahead = idx + 1;
+      let stackAbove = 0;
+      while (lookahead < items.length) {
+        const t = items[lookahead]!.token.type;
+        if (t !== "tonguing" && t !== "ornament") break;
+        stackAbove++;
+        lookahead++;
+      }
+      const next = items[lookahead];
       const targetX = next ? (next.children ? flatFirst(next.children)?.x ?? next.x : next.x) : item.x;
+      // Earlier-written annotations sit higher in the stack (smaller Y in SVG coords).
+      const stackedY = Y_MARK - stackAbove * 7;
       if (item.token.type === "tonguing") {
         const tInfo = SYMBOL_TECHNIQUE[item.token.technique];
         const tHover = opts?.onSymbolHover && tInfo ? (e: React.MouseEvent) => opts.onSymbolHover!(e, tInfo) : undefined;
@@ -299,7 +311,7 @@ export function renderSvgItems(
           <text
             key={key}
             x={targetX}
-            y={Y_MARK}
+            y={stackedY}
             textAnchor="middle"
             fontSize="8"
             fontWeight="600"
@@ -319,11 +331,11 @@ export function renderSvgItems(
           </text>,
         );
       } else if (item.token.name === "vibrato") {
-        elements.push(renderVibratoWave(targetX, Y_MARK, key, opts));
+        elements.push(renderVibratoWave(targetX, stackedY, key, opts));
       } else if (item.token.name === "bo") {
-        elements.push(renderMordentGlyph(targetX, Y_MARK, key, opts));
+        elements.push(renderMordentGlyph(targetX, stackedY, key, opts));
       } else if (item.token.name === "lower-bo") {
-        elements.push(renderLowerMordentGlyph(targetX, Y_MARK, key, opts));
+        elements.push(renderLowerMordentGlyph(targetX, stackedY, key, opts));
       } else {
         const { text: ornText, isChar } = ornamentDisplay(item.token.name);
         const oInfo = SYMBOL_TECHNIQUE[item.token.name];
@@ -332,7 +344,7 @@ export function renderSvgItems(
           <text
             key={key}
             x={targetX}
-            y={Y_MARK}
+            y={stackedY}
             textAnchor="middle"
             dominantBaseline="central"
             fontSize={8}

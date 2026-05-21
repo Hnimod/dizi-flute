@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate, Link } from "react-router";
 import { songs as staticSongs, getTechnique, difficultyLabels } from "@/data";
@@ -16,6 +16,22 @@ function getTitle(song: Song): string {
 
 function SheetImageAccordion({ src }: { src: string }) {
   const [open, setOpen] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFullscreen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [fullscreen]);
+
   return (
     <div className="my-4">
       <button
@@ -40,9 +56,58 @@ function SheetImageAccordion({ src }: { src: string }) {
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="mt-2 rounded-lg overflow-hidden" style={{ border: "1px solid var(--color-border)" }}>
-              <img src={src} alt="Jianpu sheet" className="w-full" />
+            <div
+              className="mt-2 rounded-lg overflow-hidden relative group"
+              style={{ border: "1px solid var(--color-border)" }}
+            >
+              <img
+                src={src}
+                alt="Jianpu sheet"
+                className="w-full cursor-zoom-in"
+                onClick={() => setFullscreen(true)}
+              />
+              <button
+                onClick={() => setFullscreen(true)}
+                aria-label="View fullscreen"
+                title="View fullscreen"
+                className="absolute top-2 right-2 rounded-md p-1.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", color: "var(--color-text)" }}
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4" />
+                </svg>
+              </button>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {fullscreen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 cursor-zoom-out"
+            style={{ background: "rgba(0,0,0,0.85)" }}
+            onClick={() => setFullscreen(false)}
+          >
+            <img
+              src={src}
+              alt="Jianpu sheet"
+              className="max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setFullscreen(false)}
+              aria-label="Close fullscreen"
+              className="absolute top-4 right-4 rounded-full p-2 cursor-pointer hover:opacity-80"
+              style={{ background: "rgba(255,255,255,0.15)", color: "white" }}
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
