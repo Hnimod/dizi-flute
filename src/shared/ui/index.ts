@@ -10,3 +10,4 @@ export { SongListSkeleton, SongDetailSkeleton, LevelSkeleton } from "./Skeleton"
 export { DualNotationRenderer } from "./notation/DualNotationRenderer";
 export { useNotationPreference } from "./notation/useNotationPreference";
 export { jianpuToAbc } from "./jianpu/abc-converter";
+export { useMetronome } from "./useMetronome";

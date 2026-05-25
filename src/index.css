@@ -43,6 +43,16 @@ html {
    Re-declaring the color CSS variables on this scope cascades to every
    child SVG (jianpu uses var(--color-text*) inline, staff CSS uses
    the same vars), making everything inside dark on light. */
+/* Metronome icon pendulum swing while running */
+@keyframes metronome-tick {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(12deg); }
+}
+.metronome-tick {
+  transform-origin: 50% 90%;
+  animation: metronome-tick 0.6s ease-in-out infinite;
+}
+
 .notation-card {
   --color-text: #1c1917;
   --color-text-secondary: #78716c;

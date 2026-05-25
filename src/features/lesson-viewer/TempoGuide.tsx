@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { DualNotationRenderer, useNotationPreference, buildBeatSchedule } from "@/shared/ui";
+import { DualNotationRenderer, useNotationPreference, buildBeatSchedule, useMetronome } from "@/shared/ui";
 
 interface TempoGuideProps {
   content: string;
@@ -103,6 +103,8 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
   const showStaff = useNotationPreference((s) => s.showStaff);
   const toggleStaff = useNotationPreference((s) => s.toggleStaff);
 
+  const metronome = useMetronome(bpm, timeSignature);
+
   // Escape exits fullscreen; lock body scroll while open.
   useEffect(() => {
     if (!isFullscreen) return;
@@ -176,6 +178,32 @@ export function TempoGuide({ content, tempo, className, style, title, keySignatu
             +
           </button>
         </div>
+
+        {/* Metronome toggle — clicks at the selected BPM */}
+        <button
+          onClick={metronome.toggle}
+          className="flex h-7 items-center gap-1 rounded-md px-2 transition-opacity hover:opacity-70"
+          style={{
+            color: metronome.isOn ? "var(--color-accent)" : "var(--color-text-secondary)",
+            border: "1px solid var(--color-border)",
+            fontSize: 11,
+          }}
+          title={metronome.isOn ? "Stop metronome" : "Start metronome at this tempo"}
+          aria-pressed={metronome.isOn}
+        >
+          <svg
+            className={`h-4 w-4 ${metronome.isOn ? "metronome-tick" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 3h6l3.5 18h-13L9 3z" />
+            <path strokeLinecap="round" d="M5 17h14" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l4-7" />
+          </svg>
+          <span>Metronome</span>
+        </button>
 
         {/* Staff notation toggle */}
         <button
